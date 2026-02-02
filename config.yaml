@@ -1,0 +1,59 @@
+# WIGOS Metadata Standard (WMO-No. 1192, 2019 edition)
+wmo_1192:
+  resource: resources/wmds_1192_en.pdf
+  result: results/wmd_elements_from_wmo_1192.csv
+
+# the WMO code tables used for WMDR1. NB: Not all existing code tables are listed here.
+wmdr_code_tables: 
+  1-01:
+    1-01-01: http://codes.wmo.int/wmdr/ObservedVariableAtmosphere
+    1-01-02: http://codes.wmo.int/wmdr/ObservedVariableEarth
+    1-01-03: http://codes.wmo.int/wmdr/ObservedVariableOcean
+    1-01-04: http://codes.wmo.int/wmdr/ObservedVariableOuterSpace
+    1-01-05: http://codes.wmo.int/wmdr/ObservedVariableTerrestrial
+  1-02: http://codes.wmo.int/wmdr/unit
+  1-04: 
+    1-04: http://codes.wmo.int/wmdr/Geometry
+    1-04-02: http://codes.wmo.int/wmdr/ObservedLayer
+  1-05: http://codes.wmo.int/wmdr/Representativeness
+  1-06: http://codes.wmo.int/wmdr/ParticleSizeRange
+  2-01: http://codes.wmo.int/wmdr/ApplicationArea
+  2-02: http://codes.wmo.int/wmdr/ProgramAffiliation
+  3-01: http://codes.wmo.int/wmdr/WMORegion
+  3-02: http://codes.wmo.int/wmdr/TerritoryName
+  3-04: http://codes.wmo.int/wmdr/FacilityType
+  3-08: http://codes.wmo.int/wmdr/DataCommunicationMethod
+  3-09: http://codes.wmo.int/wmdr/ReportingStatus
+  4-01:
+    4-01-01: http://codes.wmo.int/wmdr/SurfaceCoverIGBP
+    4-01-02: http://codes.wmo.int/wmdr/SurfaceCoverUMD
+    4-01-03: http://codes.wmo.int/wmdr/SurfaceCoverLAI
+    4-01-04: http://codes.wmo.int/wmdr/SurfaceCoverNPP
+    4-01-05: http://codes.wmo.int/wmdr/SurfaceCoverPFT
+    4-01-06: http://codes.wmo.int/wmdr/SurfaceCoverLCCS
+    4-01-07: http://codes.wmo.int/wmdr/SurfaceCoverGlob2009
+  4-02: http://codes.wmo.int/wmdr/SurfaceCoverClassification
+  5-01: http://codes.wmo.int/wmdr/SourceOfObservation
+  5-02:
+    5-02-01: http://codes.wmo.int/wmdr/ObservingMethodAtmosphere
+    5-02-03: http://codes.wmo.int/wmdr/ObservingMethodOcean
+    5-02-05: http://codes.wmo.int/wmdr/ObservingMethodTerrestrial
+  5-14: http://codes.wmo.int/wmdr/ObservationStatus
+  5-15: http://codes.wmo.int/wmdr/Exposure
+  6-03: http://codes.wmo.int/wmdr/SamplingStrategy
+  7-06: http://codes.wmo.int/wmdr/LevelOfData
+  7-07: http://codes.wmo.int/wmdr/DataFormat
+  7-10: http://codes.wmo.int/wmdr/ReferenceTime
+  8-02: http://codes.wmo.int/wmdr/UncertaintyEstimateProcedure
+  8-03:
+    8-03-02: http://codes.wmo.int/wmdr/WaterML2_0
+  8-04: http://codes.wmo.int/wmdr/QualityFlagSystem
+  9-02: http://codes.wmo.int/wmdr/DataPolicy
+  10-01: http://codes.wmo.int/wmdr/WIGOSFunction
+  11-01: http://codes.wmo.int/wmdr/GeopositioningMethod
+  11-02: http://codes.wmo.int/wmdr/CoordinateReferenceSystem
+  11-04: https://codes.wmo.int/wmdr/Timezone
+
+convert_wmdr10_xml_to_lean_json:
+  source: resources/wmdr10_xml_examples
+  target: resources/json_from_wmdr10_examples

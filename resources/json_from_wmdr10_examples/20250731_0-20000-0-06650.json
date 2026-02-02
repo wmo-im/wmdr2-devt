@@ -1,0 +1,1273 @@
+{
+  "facility": {
+    "identifier": "0-20000-0-06650",
+    "name": "LUZERN",
+    "responsibleParty": {
+      "@gml:id": "id_b074e824-41d2-7937-e053-148ef98d6de4",
+      "beginPosition": "1864-01-01T00:00:00Z",
+      "endPosition": null,
+      "organisationName": "Federal Office of Meteorology and Climatology MeteoSwiss",
+      "role": "https://standards.iso.org/iso/19115/resources/Codelists/gml/CI_RoleCode.xml/owner"
+    },
+    "geospatialLocation": [
+      {
+        "geoLocation": "47.037 8.302 450.0",
+        "@gml:id": "id_d840a7f0-8c54-41f5-bf60-a78a8f5d9e5c",
+        "beginPosition": "2025-07-01T00:00:00Z",
+        "endPosition": null
+      },
+      {
+        "geoLocation": "47.036442 8.301014 454.0",
+        "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+        "@gml:id": "id_b074e825-5f9f-7937-e053-148ef98d6de4",
+        "beginPosition": "1864-01-01T00:00:00Z",
+        "endPosition": null
+      }
+    ],
+    "onlineResource": {
+      "url": "https://www.meteoschweiz.admin.ch/home/messwerte.html?param=messnetz-automatisch&station=LUZ"
+    },
+    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
+    "dateEstablished": "1864-01-01Z",
+    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
+    "territory": {
+      "territoryName": "http://codes.wmo.int/wmdr/TerritoryName/CHE",
+      "@gml:id": "id_b074e824-8f91-7937-e053-148ef98d6de4",
+      "beginPosition": "1864-01-01T00:00:00Z",
+      "endPosition": null
+    },
+    "programAffiliation": [
+      {
+        "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+        "reportingStatus": {
+          "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+          "@gml:id": "id_b074e827-875e-7937-e053-148ef98d6de4",
+          "beginPosition": "1864-01-01T00:00:00Z",
+          "endPosition": null
+        }
+      },
+      {
+        "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+        "reportingStatus": {
+          "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+          "@gml:id": "e8262cec-6ae1-76a6-e053-148ef98d37b0",
+          "beginPosition": "2022-09-08T00:00:00Z",
+          "endPosition": null
+        }
+      }
+    ]
+  },
+  "observations": [
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-179-dg3-inc5-depl",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "exposure": {},
+          "beginPosition": "1998-03-10T00:00:00Z",
+          "endPosition": "2006-06-12T00:00:00Z",
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.040886 8.308403 445.0",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-3a30-7937-e053-148ef98d6de4",
+            "beginPosition": "1998-03-10T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00004992",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-179-dg3-inc5-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/percent",
+                "temporalReportingInterval": "PT6H",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "1998-03-10T00:00:00Z",
+              "endPosition": "2006-06-12T00:00:00Z",
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "06:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-179-dg3-inc4-depl",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "exposure": {},
+          "beginPosition": "1981-01-01T00:00:00Z",
+          "endPosition": "1998-03-09T00:00:00Z",
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.036536 8.3007 456.0",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-3a2f-7937-e053-148ef98d6de4",
+            "beginPosition": "1981-01-01T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00004991",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-179-dg3-inc4-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/percent",
+                "temporalReportingInterval": "PT6H",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "1981-01-01T00:00:00Z",
+              "endPosition": "1998-03-09T00:00:00Z",
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "06:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-179-dg3-inc3-depl",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "exposure": {},
+          "beginPosition": "1970-09-25T00:00:00Z",
+          "endPosition": "1980-12-31T00:00:00Z",
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.042153 8.319214 436.5",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-39fe-7937-e053-148ef98d6de4",
+            "beginPosition": "1970-09-25T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00004990",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-179-dg3-inc3-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/percent",
+                "temporalReportingInterval": "PT6H",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "1970-09-25T00:00:00Z",
+              "endPosition": "1980-12-31T00:00:00Z",
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "06:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-179-dg3-inc2-depl",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "exposure": {},
+          "beginPosition": "1919-05-01T00:00:00Z",
+          "endPosition": "1970-09-24T00:00:00Z",
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.061539 8.313344 498.0",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-39fd-7937-e053-148ef98d6de4",
+            "beginPosition": "1919-05-01T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00004989",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-179-dg3-inc2-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/percent",
+                "temporalReportingInterval": "PT6H",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "1919-05-01T00:00:00Z",
+              "endPosition": "1970-09-24T00:00:00Z",
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "06:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-179-dg3-inc1-depl",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "exposure": {},
+          "beginPosition": "1864-01-01T00:00:00Z",
+          "endPosition": "1919-04-30T00:00:00Z",
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.054394 8.306517 451.0",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-39fc-7937-e053-148ef98d6de4",
+            "beginPosition": "1864-01-01T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00004988",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-179-dg3-inc1-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/percent",
+                "temporalReportingInterval": "PT6H",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "1864-01-01T00:00:00Z",
+              "endPosition": "1919-04-30T00:00:00Z",
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "06:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-224-dg5-inc2-depl",
+          "heightAboveLocalReferenceSurface": {
+            "@uom": "m",
+            "#text": "0.05"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "exposure": {},
+          "beginPosition": "2006-06-12T00:00:00Z",
+          "endPosition": null,
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.036392 8.300933 454.46",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-3a42-7937-e053-148ef98d6de4",
+            "beginPosition": "2006-06-12T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00005010",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-224-dg6-inc2-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "true",
+                "uom": "http://codes.wmo.int/wmdr/unit/unknown",
+                "temporalReportingInterval": "PT1H",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "2006-06-12T00:00:00Z",
+              "endPosition": null,
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "00:00:00Z"
+              }
+            },
+            {
+              "@gml:id": "id-metch-68-224-dg5-inc2-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/degC",
+                "temporalReportingInterval": "PT10M",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "2006-06-12T00:00:00Z",
+              "endPosition": null,
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "00:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-224-dg5-inc7-depl",
+          "heightAboveLocalReferenceSurface": {
+            "@uom": "m",
+            "#text": "2.0"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "exposure": {},
+          "beginPosition": "2006-06-12T00:00:00Z",
+          "endPosition": null,
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.036419 8.30095 454.32",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-3a47-7937-e053-148ef98d6de4",
+            "beginPosition": "2006-06-12T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00005015",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-224-dg6-inc7-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "true",
+                "uom": "http://codes.wmo.int/wmdr/unit/unknown",
+                "temporalReportingInterval": "PT1H",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "2006-06-12T00:00:00Z",
+              "endPosition": null,
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "00:00:00Z"
+              }
+            },
+            {
+              "@gml:id": "id-metch-68-224-dg5-inc7-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/degC",
+                "temporalReportingInterval": "PT10M",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "2006-06-12T00:00:00Z",
+              "endPosition": null,
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "00:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-224-dg5-inc1-depl",
+          "heightAboveLocalReferenceSurface": {
+            "@uom": "m",
+            "#text": "0.05"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "exposure": {},
+          "beginPosition": "1981-01-01T00:00:00Z",
+          "endPosition": "2006-06-12T00:00:00Z",
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.036536 8.3007 456.0",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-3a41-7937-e053-148ef98d6de4",
+            "beginPosition": "1981-01-01T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00005009",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-224-dg5-inc1-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/degC",
+                "temporalReportingInterval": "PT10M",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "1981-01-01T00:00:00Z",
+              "endPosition": "2006-06-12T00:00:00Z",
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "00:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-224-dg5-inc6-depl",
+          "heightAboveLocalReferenceSurface": {
+            "@uom": "m",
+            "#text": "2.0"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "exposure": {},
+          "beginPosition": "1981-01-01T00:00:00Z",
+          "endPosition": "2006-06-12T00:00:00Z",
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.036536 8.3007 456.0",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-3a46-7937-e053-148ef98d6de4",
+            "beginPosition": "1981-01-01T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00005014",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-224-dg5-inc6-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/degC",
+                "temporalReportingInterval": "PT10M",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "1981-01-01T00:00:00Z",
+              "endPosition": "2006-06-12T00:00:00Z",
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "00:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-224-dg3-inc5-depl",
+          "heightAboveLocalReferenceSurface": {
+            "@uom": "m",
+            "#text": "2.0"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "exposure": {},
+          "beginPosition": "1970-09-25T00:00:00Z",
+          "endPosition": "1980-12-31T00:00:00Z",
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.042153 8.319214 436.5",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-3a45-7937-e053-148ef98d6de4",
+            "beginPosition": "1970-09-25T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00005013",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-224-dg3-inc5-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/degC",
+                "temporalReportingInterval": "PT6H",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "1970-09-25T00:00:00Z",
+              "endPosition": "1980-12-31T00:00:00Z",
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "06:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-224-dg3-inc4-depl",
+          "heightAboveLocalReferenceSurface": {
+            "@uom": "m",
+            "#text": "2.0"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "exposure": {},
+          "beginPosition": "1919-05-01T00:00:00Z",
+          "endPosition": "1970-09-24T00:00:00Z",
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.061539 8.313344 498.0",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-3a44-7937-e053-148ef98d6de4",
+            "beginPosition": "1919-05-01T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00005012",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-224-dg3-inc4-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/degC",
+                "temporalReportingInterval": "PT6H",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "1919-05-01T00:00:00Z",
+              "endPosition": "1970-09-24T00:00:00Z",
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "06:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
+      "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+      "type": "http://codes.wmo.int/wmdr/Geometry/point",
+      "metadata": {
+        "contact": {
+          "role": null
+        },
+        "dateStamp": {
+          "Date": null
+        },
+        "identificationInfo": {}
+      },
+      "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+      "result": {
+        "ResultSet": {
+          "distributionInfo": {
+            "distributor": {
+              "distributorContact": {
+                "role": null
+              }
+            }
+          }
+        }
+      },
+      "deployments": [
+        {
+          "@gml:id": "id-metch-68-224-dg3-inc3-depl",
+          "heightAboveLocalReferenceSurface": {
+            "@uom": "m",
+            "#text": "2.0"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "applicationArea": {},
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "exposure": {},
+          "beginPosition": "1864-01-01T00:00:00Z",
+          "endPosition": "1919-04-30T00:00:00Z",
+          "responsibleParty": {
+            "role": null
+          },
+          "geospatialLocation": {
+            "geoLocation": "47.054394 8.306517 451.0",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            "@gml:id": "id_b074e827-3a43-7937-e053-148ef98d6de4",
+            "beginPosition": "1864-01-01T00:00:00Z",
+            "endPosition": null
+          },
+          "manufacturer": "(unknown)",
+          "model": "unknown",
+          "serialNumber": "id-metch-sn-00005011",
+          "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+          "equipmentLog": {
+            "equipment": {}
+          },
+          "dataGeneration": [
+            {
+              "@gml:id": "id-metch-68-224-dg3-inc3-dage",
+              "sampling": {
+                "Sampling": null
+              },
+              "reporting": {
+                "internationalExchange": "false",
+                "uom": "http://codes.wmo.int/wmdr/unit/degC",
+                "temporalReportingInterval": "PT6H",
+                "timeStampMeaning": {},
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": null
+                    }
+                  }
+                },
+                "referenceTimeSource": {},
+                "levelOfData": {},
+                "dataFormat": {}
+              },
+              "beginPosition": "1864-01-01T00:00:00Z",
+              "endPosition": "1919-04-30T00:00:00Z",
+              "coverage": {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "06:00:00Z"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "header": {
+    "Header": {
+      "fileDateTime": "2025-07-31T00:00:00Z",
+      "recordOwner": {
+        "@id": "wmo_meteoswiss",
+        "organisationName": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "contactInfo": {
+          "address": {
+            "electronicMailAddress": [
+              "oscar@wmo.int",
+              "https://oscar.wmo.int/surface/#/feedback"
+            ]
+          },
+          "onlineResource": {
+            "url": "https://oscar.wmo.int/surface"
+          }
+        },
+        "role": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+      }
+    }
+  }
+}

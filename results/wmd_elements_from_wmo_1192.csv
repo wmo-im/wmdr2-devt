@@ -1,0 +1,69 @@
+category,id,name,definition,code_table,code_table_url,requirement
+Observed Variable,1-01,Observed variable – measurand,"Variable intended to be measured, observed or derived, including the biogeophysical context",1-01,http://codes.wmo.int/wmdr/ObservedVariableAtmosphere;http://codes.wmo.int/wmdr/ObservedVariableEarth;http://codes.wmo.int/wmdr/ObservedVariableOcean;http://codes.wmo.int/wmdr/ObservedVariableOuterSpace;http://codes.wmo.int/wmdr/ObservedVariableTerrestrial,M*
+Observed Variable,1-02,Measurement unit,"Real scalar quantity, defined and adopted by convention, with which any other quantity of the same kind can be compared to express the ratio of the two quantities as a number (JCGM, 2012; reference no. 1.9)",1-02,http://codes.wmo.int/wmdr/unit,C*
+Observed Variable,1-03,Temporal extent,Time period covered by a series of observations inclusive of the specified date/time indications (measurement history),,,M*
+Observed Variable,1-04,Spatial extent,Typical spatial georeferenced volume covered by the observations,1-04,http://codes.wmo.int/wmdr/Geometry;http://codes.wmo.int/wmdr/ObservedLayer,M*
+Observed Variable,1-05,Representativeness,Spatial extent of the region around the observation of which it is representative,1-05,http://codes.wmo.int/wmdr/Representativeness,O
+Purpose of Observation,2-01,Application area(s),"Context within, or intended application(s) for which the observation is primarily made or which has/have the most stringent requirements",2-01,http://codes.wmo.int/wmdr/ApplicationArea,O*
+Purpose of Observation,2-02,Programme/ network affiliation,"The global, regional or national programme(s)/ network(s) that the station/platform is associated with",2-02,http://codes.wmo.int/wmdr/ProgramAffiliation,M
+Station/Platform,3-01,Region of origin of data,WMO Region,3-01,http://codes.wmo.int/wmdr/WMORegion,C*
+Station/Platform,3-02,Territory of origin of data,Country or territory name of the location of the observation,3-02,http://codes.wmo.int/wmdr/TerritoryName,C*
+Station/Platform,3-03,Station/ platform name,Official name of the station/ platform,,,M
+Purpose of Observation,3-04,Station/ platform type,A categorization of the type of observing facility at which an observation is made,3-04,http://codes.wmo.int/wmdr/FacilityType,M*
+Purpose of Observation,3-06,Station/ platform unique identifier,"The WIGOS station identifier, which is a globally unique and consistent identifier for an observing facility (station/ platform)",,,M*
+Purpose of Observation,3-07,Geospatial location,Position in space defining the location of the observing station/platform at the time of observation,11-01;11-02,http://codes.wmo.int/wmdr/GeopositioningMethod;http://codes.wmo.int/wmdr/CoordinateReferenceSystem,M*
+Purpose of Observation,3-08,Data communication method,Data communication method between the station/platform and some central facility,3-08,http://codes.wmo.int/wmdr/DataCommunicationMethod,O
+Purpose of Observation,3-09,Station operating status,Declared reporting status of the station,3-09,http://codes.wmo.int/wmdr/ReportingStatus,M
+Purpose of Observation,3-10,Station/ platform cluster,"Indicates that a station/ platform is part of a grouping of stations/ platforms, which is identified by a name and a description",,,O
+Environment,4-01,Surface cover,The observed (bio)physical cover on the Earth’s surface in the vicinity of the observation,4-01,http://codes.wmo.int/wmdr/SurfaceCoverIGBP;http://codes.wmo.int/wmdr/SurfaceCoverUMD;http://codes.wmo.int/wmdr/SurfaceCoverLAI;http://codes.wmo.int/wmdr/SurfaceCoverNPP;http://codes.wmo.int/wmdr/SurfaceCoverPFT;http://codes.wmo.int/wmdr/SurfaceCoverLCCS;http://codes.wmo.int/wmdr/SurfaceCoverGlob2009,O
+Environment,4-02,Surface cover classification scheme,Name and reference or link to document describing the classification scheme,4-02,http://codes.wmo.int/wmdr/SurfaceCoverClassification,C#
+Environment,4-03,Topography or bathymetry,"The shape or configuration of a geographical feature, represented on a map by contour lines",4-03,,O
+Environment,4-04,Events at observing facility,Description of human action or natural event at the facility or in the vicinity that may influence the observation,4-04,,O
+Environment,4-05,Site information,Non-formalized information about the location and surroundings at which an observation is made and that may influence it,4-05,,O
+Environment,4-06,Surface roughness,Terrain classification in terms of aerodynamic roughness length,4-06,,O
+Environment,4-07,Climate zone,The Köppen climate classification of the region where the observing facility is located,4-07,,O
+Instruments and Methods of Observation,5-01,Source of observation,The source of the dataset described by the metadata,5-01,http://codes.wmo.int/wmdr/SourceOfObservation,M
+Instruments and Methods of Observation,5-02,Measurement/ observing method,The method of measurement/ observation used,5-02,http://codes.wmo.int/wmdr/ObservingMethodAtmosphere;http://codes.wmo.int/wmdr/ObservingMethodOcean;http://codes.wmo.int/wmdr/ObservingMethodTerrestrial,M#
+Instruments and Methods of Observation,5-03,Instrument specifications,"Intrinsic capability of the measurement/observing method to measure the designated element, including range, stability, precision, etc.",,,O*
+Instruments and Methods of Observation,5-04,Instrument operating status,The status of an instrument with respect to its operation,5-04,,O
+Instruments and Methods of Observation,5-05,Vertical distance of sensor,"Vertical distance of the sensor from a (specified) reference level, such as local ground, deck of a marine platform at the point where the sensor is located, or sea surface",,,C*
+Instruments and Methods of Observation,5-06,Configuration of instrumentation,Description of any shielding or configuration/setup of the instrumentation or auxiliary equipment needed to make the observation or to reduce the impact of extraneous influences on the observation,,,C#
+Instruments and Methods of Observation,5-07,Instrument control schedule,Description of schedule for calibrations or verification of instrument,,,O
+Instruments and Methods of Observation,5-08,Instrument control result,"The result of an instrument control check, including date, time, location, standard type and period of validity",5-08,,C#
+Instruments and Methods of Observation,5-09,Instrument model and serial number,"Details of manufacturer, model number, serial number and firmware version if applicable",,,O
+Instruments and Methods of Observation,5-10,Instrument routine maintenance,A description of maintenance that is routinely performed on an instrument,,,O
+Instruments and Methods of Observation,5-11,Maintenance party,Identifier of the organization or individual who performed the maintenance activity,,,O
+Instruments and Methods of Observation,5-12,Geospatial location,Geospatial location of instrument/sensor,11-01;11-02,http://codes.wmo.int/wmdr/GeopositioningMethod;http://codes.wmo.int/wmdr/CoordinateReferenceSystem,C*#
+Instruments and Methods of Observation,5-13,Maintenance activity,Description of maintenance performed on instrument,,,O
+Instruments and Methods of Observation,5-14,Status of observation,Official status of observation,5-14,http://codes.wmo.int/wmdr/ObservationStatus,O
+Instruments and Methods of Observation,5-15,Exposure of instruments,The degree to which an instrument is affected by external influences and reflects the value of the observed variable,5-15,http://codes.wmo.int/wmdr/Exposure,C#
+Sampling,6-01,Sampling procedures,Procedures involved in obtaining a sample,,,O
+Sampling,6-02,Sample treatment,Chemical or physical treatment of sample prior to analysis,,,O
+Sampling,6-03,Sampling strategy,The strategy used to generate the observed variable,6-03,http://codes.wmo.int/wmdr/SamplingStrategy,O*
+Sampling,6-04,Sampling time period,The period of time over which a measurement is taken,11-03,,O
+Sampling,6-05,Spatial sampling resolution,"Spatial resolution refers to the size of the smallest observable object. The intrinsic resolution of an imaging system is determined primarily by the instantaneous field of view of the sensor, which is a measure of the ground area viewed by a single detector element in a given instance in time.",,,O
+Sampling,6-06,Temporal sampling interval,Time period between the beginning of consecutive sampling periods,,,O
+Sampling,6-07,Diurnal base time,Time to which diurnal statistics are referenced,,,C#
+Sampling,6-08,Schedule of observation,Schedule of observation,,,M#
+Data Processing and Reporting,7-01,Data- processing methods and algorithms,A description of the processing used to generate the observation and list of algorithms utilized to derive the resultant value,,,O
+Data Processing and Reporting,7-02,Processing/ analysis centre,Centre at which the observation is processed.,,,O
+Data Processing and Reporting,7-03,Temporal reporting period,Time period over which the observed variable is reported,11-03,,M*
+Data Processing and Reporting,7-04,Spatial reporting interval,Spatial interval at which the observed variable is reported,,,C*
+Data Processing and Reporting,7-05,Software/ processor and version,Name and version of the software or processor utilized to derive the element value,,,O
+Data Processing and Reporting,7-06,Level of data,Level of data processing,7-06,http://codes.wmo.int/wmdr/LevelOfData,O
+Data Processing and Reporting,7-07,Data format1,Description of the format in which the observed variable is being provided,7-07,http://codes.wmo.int/wmdr/DataFormat,O
+Data Processing and Reporting,7-08,Version of data format1,Version of the data format in which the observed variable is being provided,,,O
+Data Processing and Reporting,7-09,Aggregation period,Time period over which individual samples/ observations are aggregated,11-03,,O
+Data Processing and Reporting,7-10,Reference time,Time base to which date and time stamps refer,7-10,http://codes.wmo.int/wmdr/ReferenceTime,O
+Data Processing and Reporting,7-11,Reference datum,Reference datum used to convert observed quantity to reported quantity,,,C
+Data Processing and Reporting,7-12,Numerical resolution,Measure of the detail in which a numerical quantity is expressed,,,O
+Data Processing and Reporting,7-13,Timeliness (of reporting),The typical time between completion of the observation or collection of the datum and when the datum is reported,,,O
+Data Processing and Reporting,7-14,Schedule of international exchange,Allows distinction if/ when observations are made/not made available internationally,,,M
+Data Quality,8-01,Uncertainty of measurement,"Non-negative parameter, associated with the result of a measurement, that characterizes the dispersion of the values that could reasonably be attributed to the observation/measurand",,,O*
+Data Quality,8-02,Procedure used to estimate uncertainty,A reference or link pointing to a document describing the procedures/algorithms used to derive the uncertainty statement,8-02,http://codes.wmo.int/wmdr/UncertaintyEstimateProcedure,C*
+Data Quality,8-03,Quality flag,An ordered list of qualifiers indicating the result of a quality control process applied to the observation,8-03,http://codes.wmo.int/wmdr/WaterML2_0,O
+Data Quality,8-04,Quality flagging system,Reference to the system used to flag the quality of the observation,8-04,http://codes.wmo.int/wmdr/QualityFlagSystem,C
+Data Quality,8-05,Traceability,"Statement defining traceability to a standard, including sequence of measurement standards and calibrations that is used to relate a measurement result to a reference (JCGM, 2012; reference no. 2.42)",8-05,,C*
+Ownership and Data Policy,9-01,Supervising organization,Name of organization who owns the observation,,,M
+Ownership and Data Policy,9-02,Data policy/use constraints,Details relating to the use and limitations surrounding data imposed by the supervising organization,9-02,http://codes.wmo.int/wmdr/DataPolicy,M*
+Contact,10-01,Contact (nominated focal point),Principal contact (nominated focal point) for resource,10-01,http://codes.wmo.int/wmdr/WIGOSFunction,M
