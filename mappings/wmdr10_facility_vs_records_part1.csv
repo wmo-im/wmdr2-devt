@@ -1,0 +1,66 @@
+wmdr10-json,wmdr10-cardinality,wmdr10-has_history,records-part1,records-part1-cardinality,description
+header.fileDateTime,1,false,properties.updated,0..1,
+header.recordOwner.@id,1,false,properties.contacts[*].identifier,0..*,
+header.recordOwner.contactInfo.address.electronicMailAddress[*],1,false,properties.contacts[*].emails[*].value,0..*,
+header.recordOwner.contactInfo.address.electronicMailAddress[*],1,false,properties.contacts[*].links[*].href,0..*,
+header.recordOwner.contactInfo.onlineResource.url,0..1,false,properties.contacts[*].links[*].href,0..*,
+header.recordOwner.organisationName,1,false,properties.contacts[*].organization,0..*,
+header.recordOwner.role,1,false,properties.contacts[*].roles[*],0..*,
+facility.climateZone.@gml:id,0..*,true,properties.wmdr:climateZoneHistory[*].identifier,0..*,
+facility.climateZone.beginPosition,0..*,true,properties.wmdr:climateZoneHistory[*].beginPosition,0..*,
+facility.climateZone.climateZone,0..*,true,propertieswmdr:climateZoneHistory[*].href,0..*,
+facility.climateZone.endPosition,0..*,true,properties.wmdr:climateZoneHistory[*].endPosition,0..*,*deprecate?*
+facility.dateClosed,0..1,false,time.interval[1],0..1,
+facility.dateEstablished,0..1,false,time.interval[0],0..1,
+facility.description.@gml:id,0..1,true,properties.wmdr:descriptionHistory[*].identifier,0..*,
+facility.description.beginPosition,0..1,true,properties.wmdr:descriptionHistory[*].time.interval[0],0..*,history of previous descriptions *including* current description
+facility.description.description,0..1,true,properties.description,0..1,current description of facility
+facility.description.endPosition,0..1,true,properties.wmdr:descriptionHistory[*].time.interval[1],0..*,*deprecate?*
+facility.facilityLog.facility,0..1,false,properties.wmdr:facilityLog.facility.id,0..*,back reference to WSI
+facility.facilityLog.logEntry.EventReport.@gml:id,0..*,false,properties.wmdr:facilityLog.EventReport[*].identifier,0..*,
+facility.facilityLog.logEntry.EventReport.author,0..*,false,properties.wmdr:facilityLog.EventReport[*].author,0..*,
+facility.facilityLog.logEntry.EventReport.beginPosition,0..*,false,properties.wmdr:facilityLog.EventReport[*].beginPosition,0..*,
+facility.facilityLog.logEntry.EventReport.datetime,0..*,false,properties.wmdr:facilityLog.EventReport[*].datetime,0..*,
+facility.facilityLog.logEntry.EventReport.description,0..*,false,properties.wmdr:facilityLog.EventReport[*].description,0..*,
+facility.facilityLog.logEntry.EventReport.documentationURL,0..*,false,properties.wmdr:facilityLog.EventReport[*].href,0..*,
+facility.facilityLog.logEntry.EventReport.endPosition,0..*,false,properties.wmdr:facilityLog.EventReport[*].endPosition,0..*,
+facility.facilityLog.logEntry.EventReport.typeOfEvent,0..*,false,properties.wmdr:facilityLog.EventReport[*].typeOfEvent[*].href,0..*,
+facility.facilityType,1,false,properties.type,0..1,
+facility.geospatialLocation[*].@gml:id,1,true,properties.wmdr:geospatialLocationHistory[*].identifier,0..*,
+facility.geospatialLocation[*].beginPosition,1,true,properties.wmdr:geospatialLocationHistory[*].time.interval[0],0..*,
+facility.geospatialLocation[*].endPosition,0..1,true,properties.wmdr:geospatialLocationHistory[*].time.interval[1],0..*,
+facility.geospatialLocation[*].geoLocation,1,false,geometry,1,current or last known position
+facility.geospatialLocation[*].geoLocation,0..*,true,properties.wmdr:geospatialLocationHistory[*].geometry,0..*,history of previous positions *including* current or last known position
+facility.geospatialLocation[*].geopositioningMethod,0..*,true,properties.wmdr:geospatialLocationHistory[*].geopositioningMethod,0..*,
+facility.identifier,1,false,id,1,WSI
+facility.identifier,0..*,false,properties.externalIds[*].value,0..*,alternative WSIs
+facility.name,1..*,false,properties.title,0..1,facility name
+facility.onlineResource.url,,false,links[*].href,0..*,
+facility.programAffiliation[*].programAffiliation,1..*,true,properties.wmdr:programAffiliationHistory[*].programAffiliation.href,0..*,history of previous programAffiliation(s) *including* current one(s)
+facility.programAffiliation[*].programSpecificFacilityId,1..*,false,properties.wmdr:programAffiliationHistory[*].identifier,0..*,
+facility.programAffiliation[*].reportingStatus[*].@gml:id,1..*,true,properties.wmdr:programAffiliationHistory[*].reportingStatusHistory[*].identifier,0..*,
+facility.programAffiliation[*].reportingStatus[*].beginPosition,1..*,true,properties.wmdr:programAffiliationHistory[*].reportingStatusHistory[*].time.interval[0],0..*,
+facility.programAffiliation[*].reportingStatus[*].endPosition,1..*,true,properties.wmdr:programAffiliationHistory[*].reportingStatusHistory[*].time.interval[1],0..*,*deprecate?*
+facility.programAffiliation[*].reportingStatus[*].reportingStatus,1..*,true,properties.wmdr:programAffiliationHistory[*].reportingStatusHistory[*].status,0..*,
+facility.responsibleParty.@gml:id,1..*,true,properties.contacts[*].identifier,0..*,current responsible party/ies
+facility.responsibleParty.beginPosition,1..*,true,properties.wmdr:contactsHistory[*].time.interval[0],0..*,history of responsible party/ies *including* current one(s)
+facility.responsibleParty.endPosition,1..*,true,properties.wmdr:contactsHistory[*].time.interval[1],0..*,*deprecate?*
+facility.responsibleParty.organisationName,1..*,true,properties.contacts[*].organization,0..*,
+facility.responsibleParty.role,1..*,true,properties.contacts[*].roles.href,0..1,
+facility.surfaceCover.@gml:id,0..1,true,properties.wmdr:surfaceCoverHistory[*].identifier,0..*,
+facility.surfaceCover.beginPosition,0..1,true,properties.wmdr:surfaceCoverHistory[*].beginPosition,0..*,
+facility.surfaceCover.endPosition,0..1,true,properties.wmdr:surfaceCoverHistory[*].endPosition,0..*,
+facility.surfaceCover.surfaceCover,0..1,true,properties.wmdr:surfaceCoverHistory[*].surfaceCover.href,0..*,
+facility.surfaceCover.surfaceCoverClassification,0..1,true,properties.wmdr:surfaceCoverHistory[*].classification.href,0..*,
+facility.territory.@gml:id,1,true,properties.wmdr:territoryHistory[*].identifier,0..*,
+facility.territory.beginPosition,1,true,properties.wmdr:territoryHistory[*].beginPosition,0..*,
+facility.territory.endPosition,0..1,true,properties.wmdr:territoryHistory[*].endPosition,0..*,*deprecate?*
+facility.territory.territoryName,1,true,properties.wmdr:territoryHistory[*].territory.href,0..*,
+facility.topographyBathymetry.@gml:id,0..1,true,properties.wmdr:topographyBathymetryHistory[*].identifier,0..*,history of topographyBathymetry *including* current one
+facility.topographyBathymetry.altitudeOrDepth,0..1,true,properties.wmdr:topographyBathymetryHistory[*].altitudeOrDepth.href,0..*,
+facility.topographyBathymetry.beginPosition,0..1,true,properties.wmdr:topographyBathymetryHistory[*].beginPosition,0..*,
+facility.topographyBathymetry.endPosition,0..1,true,properties.wmdr:topographyBathymetryHistory[*].endPosition,0..*,*deprecate?*
+facility.topographyBathymetry.localTopography,0..1,true,properties.wmdr:topographyBathymetryHistory[*].localTopography.href,0..*,
+facility.topographyBathymetry.relativeElevation,0..1,true,properties.wmdr:topographyBathymetryHistory[*].relativeElevation.href,0..*,
+facility.topographyBathymetry.topographicContext,0..1,true,properties.wmdr:topographyBathymetryHistory[*].topographicContext.href,0..*,
+facility.wmoRegion,1,false,properties.wmdr:wmoRegion.href,0..*,
