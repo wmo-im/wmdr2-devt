@@ -526,59 +526,6 @@ class WMDR10:
             return v
 
 
-        # def simplify_atomic_at(parent, key, val):
-        #     """Atomic simplifications. May MERGE/HOIST into parent (validPeriod, linkage)."""
-        #     v = val
-        #     if isinstance(v, dict):
-        #         # nil → None
-        #         if v.get('@xsi:nil') == 'true':
-        #             return None
-        #         # inline xlink href
-        #         if '@xlink:href' in v:
-        #             return v['@xlink:href']
-        #         # codeSpace/#text → value
-        #         if '@codeSpace' in v and '#text' in v:
-        #             return v['#text']
-        #         # drop @codeListValue; keep @codeList if present
-        #         if '@codeListValue' in v:
-        #             v = {kk: vv for kk, vv in v.items() if kk != '@codeListValue'}
-        #             if set(v.keys()) == {'@codeList'}:
-        #                 return v['@codeList']
-        #         # pos → value
-        #         if list(v.keys()) == ['pos']:
-        #             return v['pos']
-        #         # CharacterString → value
-        #         if list(v.keys()) == ['CharacterString']:
-        #             return v['CharacterString']
-        #         # linkage.URL → {'url': URL}
-        #         if key == 'linkage' and list(v.keys()) == ['URL']:
-        #             return {'url': v['URL']}
-        #         # geoLocation variants → string
-        #         if keynorm(key) == 'geolocation':
-        #             return _extract_geolocation_value(v)
-        #         # Hoist onlineResource.linkage.url → parent['url']
-        #         if keynorm(key) in ('onlineresource', 'onlineresources'):
-        #             link = v.get('linkage')
-        #             if isinstance(link, dict):
-        #                 if 'url' in link:
-        #                     parent['url'] = link['url']
-        #                     return '__DROPPED__'
-        #                 if 'URL' in link:
-        #                     parent['url'] = link['URL']
-        #                     return '__DROPPED__'
-        #         # Hoist plain linkage.url → parent['url']
-        #         if keynorm(key) == 'linkage' and ('url' in v or 'URL' in v):
-        #             parent['url'] = v.get('url', v.get('URL'))
-        #             return '__DROPPED__'
-        #         # validPeriod: MERGE fields into parent; KEEP None values
-        #         if key.lower() == 'validperiod':
-        #             inner = v.get('TimePeriod', v)
-        #             if isinstance(inner, dict):
-        #                 parent.pop(key, None)
-        #                 merge_into(parent, inner)
-        #                 return '__DROPPED__'
-        #     return v
-
         def atomic_pass(d):
             """Apply atomic simplifications recursively."""
             if not isinstance(d, dict):
@@ -809,6 +756,17 @@ class WMDR10:
         # 11) rename(s) last
         if isinstance(self.data, dict) and 'headerInformation' in self.data:
             self.data['header'] = self.data.pop('headerInformation')
+
+        # 11) Unwrap remaining schema-type wrapper:
+        #   {"header": {"Header": {...}}} -> {"header": {...}}
+        # (This can remain after the headerInformation -> header rename, because
+        #  the wrapper name "Header" does not match "headerInformation".)
+        if isinstance(self.data, dict):
+            hdr = self.data.get("header")
+            if isinstance(hdr, dict) and len(hdr) == 1:
+                (only_k, only_v), = hdr.items()
+                if isinstance(only_v, dict) and same_name(only_k, "header"):
+                    self.data["header"] = only_v
 
 
     def to_xml(self, output_path: Path | str | None = None, pretty: bool = True, encoding: str = "utf-8") -> str | None:
