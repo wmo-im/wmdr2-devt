@@ -1,6 +1,8 @@
 {
   "facility": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-  "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+  "programAffiliation": [
+    "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+  ],
   "type": "http://codes.wmo.int/wmdr/Geometry/point",
   "metadata": {
     "contact": {
@@ -8,8 +10,7 @@
     },
     "dateStamp": {
       "Date": null
-    },
-    "identificationInfo": {}
+    }
   },
   "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/265",
   "result": {
@@ -27,9 +28,6 @@
     {
       "@gml:id": "id_8a767a59-5fea-4c4a-ba63-a215b7a48731",
       "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-      "applicationArea": {},
-      "sourceOfObservation": {},
-      "exposure": {},
       "beginPosition": "2016-04-29T00:00:00Z",
       "endPosition": null,
       "responsibleParty": {
@@ -44,9 +42,6 @@
       "manufacturer": "(unknown)",
       "model": "unknown",
       "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-      "equipmentLog": {
-        "equipment": {}
-      },
       "dataGeneration": [
         {
           "@gml:id": "id_27d2bbb4-b432-4b1e-85f6-79d389e9e996",
@@ -57,17 +52,13 @@
             "internationalExchange": "false",
             "uom": "http://codes.wmo.int/wmdr/unit/unknown",
             "temporalReportingInterval": "PT1H",
-            "timeStampMeaning": {},
             "dataPolicy": {
               "attribution": {
                 "originator": {
                   "role": null
                 }
               }
-            },
-            "referenceTimeSource": {},
-            "levelOfData": {},
-            "dataFormat": {}
+            }
           },
           "beginPosition": "2016-04-29T00:00:00Z",
           "endPosition": null,

@@ -1,6 +1,8 @@
 {
   "facility": "http://codes.wmo.int/wmdr/0-20000-0-06650",
-  "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+  "programAffiliation": [
+    "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+  ],
   "type": "http://codes.wmo.int/wmdr/Geometry/point",
   "metadata": {
     "contact": {
@@ -8,8 +10,7 @@
     },
     "dateStamp": {
       "Date": null
-    },
-    "identificationInfo": {}
+    }
   },
   "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
   "result": {
@@ -31,9 +32,7 @@
         "#text": "0.05"
       },
       "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-      "applicationArea": {},
       "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-      "exposure": {},
       "beginPosition": "2006-06-12T00:00:00Z",
       "endPosition": null,
       "responsibleParty": {
@@ -50,9 +49,6 @@
       "model": "unknown",
       "serialNumber": "id-metch-sn-00005010",
       "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-      "equipmentLog": {
-        "equipment": {}
-      },
       "dataGeneration": [
         {
           "@gml:id": "id-metch-68-224-dg6-inc2-dage",
@@ -63,17 +59,13 @@
             "internationalExchange": "true",
             "uom": "http://codes.wmo.int/wmdr/unit/unknown",
             "temporalReportingInterval": "PT1H",
-            "timeStampMeaning": {},
             "dataPolicy": {
               "attribution": {
                 "originator": {
                   "role": null
                 }
               }
-            },
-            "referenceTimeSource": {},
-            "levelOfData": {},
-            "dataFormat": {}
+            }
           },
           "beginPosition": "2006-06-12T00:00:00Z",
           "endPosition": null,
@@ -98,17 +90,13 @@
             "internationalExchange": "false",
             "uom": "http://codes.wmo.int/wmdr/unit/degC",
             "temporalReportingInterval": "PT10M",
-            "timeStampMeaning": {},
             "dataPolicy": {
               "attribution": {
                 "originator": {
                   "role": null
                 }
               }
-            },
-            "referenceTimeSource": {},
-            "levelOfData": {},
-            "dataFormat": {}
+            }
           },
           "beginPosition": "2006-06-12T00:00:00Z",
           "endPosition": null,

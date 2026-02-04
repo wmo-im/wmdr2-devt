@@ -1,6 +1,8 @@
 {
   "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-  "programAffiliation": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+  "programAffiliation": [
+    "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+  ],
   "type": "http://codes.wmo.int/wmdr/Geometry/point",
   "metadata": {
     "contact": {
@@ -8,8 +10,7 @@
     },
     "dateStamp": {
       "Date": null
-    },
-    "identificationInfo": {}
+    }
   },
   "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/180",
   "result": {
@@ -27,9 +28,7 @@
     {
       "@gml:id": "id-metch-20-180-dg3-inc1-depl",
       "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-      "applicationArea": {},
       "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
-      "exposure": {},
       "beginPosition": "2000-08-17T00:00:00Z",
       "endPosition": "2013-07-01T00:00:00Z",
       "responsibleParty": {
@@ -46,9 +45,6 @@
       "model": "unknown",
       "serialNumber": "id-metch-sn-00001351",
       "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-      "equipmentLog": {
-        "equipment": {}
-      },
       "dataGeneration": [
         {
           "@gml:id": "id-metch-20-180-dg3-inc1-dage",
@@ -59,17 +55,13 @@
             "internationalExchange": "false",
             "uom": "http://codes.wmo.int/wmdr/unit/percent",
             "temporalReportingInterval": "PT6H",
-            "timeStampMeaning": {},
             "dataPolicy": {
               "attribution": {
                 "originator": {
                   "role": null
                 }
               }
-            },
-            "referenceTimeSource": {},
-            "levelOfData": {},
-            "dataFormat": {}
+            }
           },
           "beginPosition": "2000-08-17T00:00:00Z",
           "endPosition": "2013-07-01T00:00:00Z",

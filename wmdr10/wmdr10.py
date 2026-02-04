@@ -747,6 +747,102 @@ class WMDR10:
             return obj
         normalize_lists_inplace(self.data)
 
+        # 8b) Harmonize data shapes across records (stable downstream mapping)
+        #
+        # The XML source can legally contain repeated elements; xmltodict then produces either a scalar
+        # (single occurrence) or a list (multiple occurrences). For a few elements we have observed both
+        # shapes across your sample records and want a single, predictable representation:
+        #   - programAffiliation: always a list of href strings
+        #   - applicationArea: always a list of href strings
+        #   - transferOptions.onLine: always a list of online resource objects
+        #
+        # In addition, some code-list elements are encoded in WMDR as empty xlink "stubs" like
+        #   { "@xlink:type": "simple" }
+        # which turn into {} after we drop the type. Those empty dict placeholders are removed here.
+        ALWAYS_LIST_KEYS_NORM = {keynorm('programAffiliation'), keynorm('applicationArea'), keynorm('onLine')}
+
+        def harmonize_shapes(obj):
+            # recurse + normalize
+            if isinstance(obj, dict):
+                for k in list(obj.keys()):
+                    obj[k] = harmonize_shapes(obj[k])
+                    v = obj.get(k)
+
+                    # Ensure list-shape for selected keys (case-insensitive via keynorm)
+                    if keynorm(k) in ALWAYS_LIST_KEYS_NORM:
+                        if v is None:
+                            obj.pop(k, None)
+                            continue
+                        if isinstance(v, list):
+                            # flatten accidental nesting
+                            flat = []
+                            for el in v:
+                                if isinstance(el, list):
+                                    flat.extend(el)
+                                else:
+                                    flat.append(el)
+                            v = flat
+                        else:
+                            v = [v]
+
+                        # Clean list items
+                        cleaned = []
+                        for el in v:
+                            if el is None:
+                                continue
+                            if isinstance(el, dict) and not el:
+                                continue
+                            if isinstance(el, list) and not el:
+                                continue
+                            # If onLine is given as a plain URL string, wrap it as an object.
+                            if keynorm(k) == keynorm('onLine') and isinstance(el, str):
+                                cleaned.append({'url': el})
+                            else:
+                                cleaned.append(el)
+
+                        if cleaned:
+                            obj[k] = cleaned
+                            v = cleaned
+                        else:
+                            obj.pop(k, None)
+                            continue
+
+                    # Prune empty dict/list placeholders to keep the JSON lean and consistent
+                    if isinstance(v, dict) and not v:
+                        obj.pop(k, None)
+                    elif isinstance(v, list):
+                        vv = []
+                        for el in v:
+                            if el is None:
+                                continue
+                            if isinstance(el, dict) and not el:
+                                continue
+                            if isinstance(el, list) and not el:
+                                continue
+                            vv.append(el)
+                        if vv:
+                            obj[k] = vv
+                        else:
+                            obj.pop(k, None)
+                return obj
+
+            if isinstance(obj, list):
+                out = []
+                for el in obj:
+                    el = harmonize_shapes(el)
+                    if el is None:
+                        continue
+                    if isinstance(el, dict) and not el:
+                        continue
+                    if isinstance(el, list) and not el:
+                        continue
+                    out.append(el)
+                return out
+
+            return obj
+
+        self.data = harmonize_shapes(self.data)
+
         # 9) rename keys
         self.data = rename_key_ci(self.data, 'schedule', 'coverage')
 
