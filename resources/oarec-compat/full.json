@@ -1,0 +1,188 @@
+{
+    "id": "0-20008-0-THE",
+    "type": "Feature",
+    "conformsTo": [
+        "http://wis.wmo.int/spec/wmdr/2/conf/json"
+    ],
+    "geometry": {
+        "type": "Point",
+        "coordinates": [22.9560, 40.6340, 60]
+    },
+    "time": {
+        "interval": [
+            "1982-03-13",
+            ".."
+        ]
+    },
+    "temporalGeometry": {
+        "type": "MovingPoint",
+        "coordinates": [[22.9670, 40.5170, 60], [22.9560, 40.6340, 60]],
+        "datetimes": [["1982-03-13T00:00:00Z", "2001-05-05T00:00:00Z"], ["2001-05-05T00:00:00Z", ".."]]
+    },
+    "properties": {
+        "type": "station",
+        "title": "Thessaloniki",
+        "created": "2026-02-03T01:11:31Z",
+        "description": "The Brewer spectrophotometers and all radaition instruments are located on the roof of the 4-storey building of the Physics Dept., of the Aristotle University of Thessaloniki. The Campus is located in the city center about 500 m east of the seashore. The highest elevation of about 1100 m is at a distance of about 15 km towards the east. Thessaloniki is the second largest city of Greece with about 1000000 inhabitants in the greater metropolitan area.",
+       "stationType": {
+            "id": "landFixed",
+            "title": "Land (fixed)",
+            "description": "Station/platform on solid terrain, at fixed position",
+            "url": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
+        },
+        "programAffiliations": [{
+            "program": {
+                "id": "GALION",
+                "title": "GALION",
+                "description": "GAW Aerosol Lidar Observation Network",
+                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GALION"
+            },
+            "status": {
+                "id": "operational",
+                "title": "Operational",
+                "description": "The station fully complies with the reporting obligations of the observation programme/network concerned.",
+                "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "time": {
+                "interval": [
+                    "2008-01-01T00:00:00Z",
+                    "2024-12-11T00:00:00Z"
+                ]
+            }
+        }, {
+            "program": {
+                "id": "AERONET",
+                "title": "AERONET",
+                "description": "AErosol RObotic NETwork",
+                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+            },
+            "status": {
+                "id": "operational",
+                "title": "Operational",
+                "description": "The station fully complies with the reporting obligations of the observation programme/network concerned.",
+                "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "time": {
+                "interval": [
+                    "2003-06-01T00:00:00Z",
+                    "2024-12-11T00:00:00Z"
+                ]
+            }
+        }, {
+            "program": {
+                "id": "GAWregional",
+                "title": "GAW Regional",
+                "description": "Regional GAW station",
+                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "status": {
+                "id": "operational",
+                "title": "Operational",
+                "description": "The station fully complies with the reporting obligations of the observation programme/network concerned.",
+                "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "time": {
+                "interval": [
+                    "1982-03-13T00:00:00Z",
+                    ".."
+                ]
+            }
+        }],
+        "region": {
+            "id": "europe",
+            "title": "Europe",
+            "description": "Europe",
+            "url": "http://codes.wmo.int/wmdr/WMORegion/europe"
+        },
+        "country": {
+            "id": "GRC",
+            "title": "Greece",
+            "description": "Greece",
+            "url": "http://codes.wmo.int/wmdr/TerritoryName/GRC"
+        },
+        "status": {
+            "id": "operational",
+            "title": "Operational",
+            "description": "The station fully complies with the reporting obligations of the observation programme/network concerned.",
+            "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+        },
+        "contacts": [
+            {
+                "name": "Emeritus Prof. Alkiviadis Bais",
+                "organization": "Aristotle University of Thessaloniki",
+                "emails": [
+                    {
+                        "value": "abais@auth.gr"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "deliveryPoint": [
+                            "Laboratory of Atmospheric Phsyics",
+                            "Box 149"
+                        ],
+                        "city": "Thessaloniki",
+                        "postalCode": "54124",
+                        "country": "Greece"
+                    }
+                ],
+                "contactInstructions": "email",
+                "links": [
+                    {
+                        "rel": "canonical",
+                        "type": "text/html",
+                        "href": "https://lapweb.physics.auth.gr"
+                    }
+                ],
+                "roles": [
+                    "host"
+                ]
+            }
+        ],
+        "instruments": [{
+            "id": "78",
+            "title": "Brewer",
+            "description": "Brewer",
+            "observedVariable": {
+                "id": "263",
+                "title": "Total column ozone",
+                "description": "Total column ozone",
+                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
+                "units": "DU"
+            }
+        }],
+        "deployments": [{
+            "id": "serial123",
+            "instrument": "78",
+            "station": "0-20008-0-THE",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [22.9560, 40.6340, 60]
+            },
+            "sourceOfObservation": {
+                "id": "automaticReading",
+                "title": "Instrumental automatic reading",
+                "description": "Automatically produced measurement result",
+                "href": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "verticalDistance": {
+                "value": 22,
+                "units": "m"
+            },
+            "schedules": [],
+            "time": {
+                "interval": [
+                    "1982-03-13T00:00:00Z",
+                    "2010-12-31T00:00:00Z"
+                ]
+            }
+        }]
+    },
+    "links": [
+        {
+            "rel": "canonical",
+            "type": "text/html",
+            "href": "https://oscar.wmo.int/surface/#/search/station/stationReportDetails/0-20008-0-THE"
+        }
+    ]
+}
