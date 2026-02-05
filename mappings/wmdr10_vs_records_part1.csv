@@ -1,0 +1,169 @@
+wmdr10-part,wmdr10-json,records-part1,records-part1-cardinality,records-part1-link-relation,records-part1-link-group,wmdr10-codelist,description,wmdr10-cardinality,wmdr10-has_history
+facility,header.fileDateTime,properties.updated,0..1,,,,,1,False
+facility,header.recordOwner.@id,properties.contacts[*].identifier,0..*,,,,,1,False
+facility,header.recordOwner.contactInfo.address.electronicMailAddress[*],properties.contacts[*].emails[*].value,0..*,,,,,1,False
+facility,header.recordOwner.contactInfo.address.electronicMailAddress[*],properties.contacts[*].links[*].href,0..*,related,contact,,,1,False
+facility,header.recordOwner.contactInfo.onlineResource.url,properties.contacts[*].links[*].href,0..*,related,contact,,,0..1,False
+facility,header.recordOwner.organisationName,properties.contacts[*].organization,0..*,,,,,1,False
+facility,header.recordOwner.role,properties.contacts[*].roles[*],0..*,,,,,1,False
+facility,facility.climateZone.@gml:id,properties.wmdr:climateZoneHistory[*].identifier,0..*,,,,,0..*,True
+facility,facility.climateZone.beginPosition,properties.wmdr:climateZoneHistory[*].beginPosition,0..*,,,,,0..*,True
+facility,facility.climateZone.climateZone,properties.wmdr:climateZoneHistory[*].href,0..*,related,,http://codes.wmo.int/wmdr/ClimateZone,,0..*,True
+facility,facility.climateZone.endPosition,properties.wmdr:climateZoneHistory[*].endPosition,0..*,,,,*deprecate?*,0..*,True
+facility,facility.dateClosed,time.interval[1],0..1,,,,,0..1,False
+facility,facility.dateEstablished,time.interval[0],0..1,,,,,0..1,False
+facility,facility.description.@gml:id,properties.wmdr:descriptionHistory[*].identifier,0..*,,,,,0..1,True
+facility,facility.description.beginPosition,properties.wmdr:descriptionHistory[*].time.interval[0],0..*,,,,history of previous descriptions *including* current description,0..1,True
+facility,facility.description.description,properties.description,0..1,,,,current description of facility,0..1,True
+facility,facility.description.endPosition,properties.wmdr:descriptionHistory[*].time.interval[1],0..*,,,,*deprecate?*,0..1,True
+facility,facility.facilityLog.facility,properties.wmdr:facilityLog.facility.id,0..*,,,http://codes.wmo.int/wmdr,back reference to WSI,0..1,False
+facility,facility.facilityLog.logEntry.EventReport.@gml:id,properties.wmdr:facilityLog.EventReport[*].identifier,0..*,,,,,0..*,False
+facility,facility.facilityLog.logEntry.EventReport.author,properties.wmdr:facilityLog.EventReport[*].author,0..*,,,,,0..*,False
+facility,facility.facilityLog.logEntry.EventReport.beginPosition,properties.wmdr:facilityLog.EventReport[*].beginPosition,0..*,,,,,0..*,False
+facility,facility.facilityLog.logEntry.EventReport.datetime,properties.wmdr:facilityLog.EventReport[*].datetime,0..*,,,,,0..*,False
+facility,facility.facilityLog.logEntry.EventReport.description,properties.wmdr:facilityLog.EventReport[*].description,0..*,,,,,0..*,False
+facility,facility.facilityLog.logEntry.EventReport.documentationURL,properties.wmdr:facilityLog.EventReport[*].href,0..*,related,,,,0..*,False
+facility,facility.facilityLog.logEntry.EventReport.endPosition,properties.wmdr:facilityLog.EventReport[*].endPosition,0..*,,,,,0..*,False
+facility,facility.facilityLog.logEntry.EventReport.typeOfEvent,properties.wmdr:facilityLog.EventReport[*].typeOfEvent[*].href,0..*,related,,http://codes.wmo.int/wmdr/EventAtFacility,,0..*,False
+facility,facility.facilityType,properties.type,0..1,,,http://codes.wmo.int/wmdr/FacilityType,,1,False
+facility,facility.geospatialLocation[*].@gml:id,properties.wmdr:geospatialLocationHistory[*].identifier,0..*,,,,,1,True
+facility,facility.geospatialLocation[*].beginPosition,properties.wmdr:geospatialLocationHistory[*].time.interval[0],0..*,,,,,1,True
+facility,facility.geospatialLocation[*].endPosition,properties.wmdr:geospatialLocationHistory[*].time.interval[1],0..*,,,,,0..1,True
+facility,facility.geospatialLocation[*].geoLocation,geometry,1,,,,current or last known position,1,False
+facility,facility.geospatialLocation[*].geoLocation,properties.wmdr:geospatialLocationHistory[*].geometry,0..*,,,,history of previous positions *including* current or last known position,0..*,True
+facility,facility.geospatialLocation[*].geopositioningMethod,properties.wmdr:geospatialLocationHistory[*].geopositioningMethod,0..*,,,http://codes.wmo.int/wmdr/GeopositioningMethod,,0..*,True
+facility,facility.identifier,id,1,,,,WSI,1,False
+facility,facility.identifier,properties.externalIds[*].value,0..*,,,,alternative WSIs,0..*,False
+facility,facility.name,properties.title,0..1,,,,facility name,1..*,False
+facility,facility.onlineResource.url,links[*].href,0..*,describes,link to data,,,,False
+facility,facility.programAffiliation[*].programAffiliation,properties.wmdr:programAffiliationHistory[*].programAffiliation.href,0..*,related,,http://codes.wmo.int/wmdr/ProgramAffiliation,history of previous programAffiliation(s) *including* current one(s),1..*,True
+facility,facility.programAffiliation[*].programSpecificFacilityId,properties.wmdr:programAffiliationHistory[*].identifier,0..*,,,,,1..*,False
+facility,facility.programAffiliation[*].reportingStatus[*].@gml:id,properties.wmdr:programAffiliationHistory[*].reportingStatusHistory[*].identifier,0..*,,,,,1..*,True
+facility,facility.programAffiliation[*].reportingStatus[*].beginPosition,properties.wmdr:programAffiliationHistory[*].reportingStatusHistory[*].time.interval[0],0..*,,,,,1..*,True
+facility,facility.programAffiliation[*].reportingStatus[*].endPosition,properties.wmdr:programAffiliationHistory[*].reportingStatusHistory[*].time.interval[1],0..*,,,,*deprecate?*,1..*,True
+facility,facility.programAffiliation[*].reportingStatus[*].reportingStatus,properties.wmdr:programAffiliationHistory[*].reportingStatusHistory[*].status,0..*,,,http://codes.wmo.int/wmdr/ReportingStatus,,1..*,True
+facility,facility.responsibleParty.@gml:id,properties.contacts[*].identifier,0..*,,,,current responsible party/ies,1..*,True
+facility,facility.responsibleParty.beginPosition,properties.wmdr:contactsHistory[*].time.interval[0],0..*,,,,history of responsible party/ies *including* current one(s),1..*,True
+facility,facility.responsibleParty.endPosition,properties.wmdr:contactsHistory[*].time.interval[1],0..*,,,,*deprecate?*,1..*,True
+facility,facility.responsibleParty.organisationName,properties.contacts[*].organization,0..*,,,,,1..*,True
+facility,facility.responsibleParty.role,properties.contacts[*].roles.href,0..1,related,,,,1..*,True
+facility,facility.surfaceCover.@gml:id,properties.wmdr:surfaceCoverHistory[*].identifier,0..*,,,,,0..1,True
+facility,facility.surfaceCover.beginPosition,properties.wmdr:surfaceCoverHistory[*].beginPosition,0..*,,,,,0..1,True
+facility,facility.surfaceCover.endPosition,properties.wmdr:surfaceCoverHistory[*].endPosition,0..*,,,,,0..1,True
+facility,facility.surfaceCover.surfaceCover,properties.wmdr:surfaceCoverHistory[*].surfaceCover.href,0..*,related,,http://codes.wmo.int/wmdr/SurfaceCover<various>,,0..1,True
+facility,facility.surfaceCover.surfaceCoverClassification,properties.wmdr:surfaceCoverHistory[*].classification.href,0..*,related,,http://codes.wmo.int/wmdr/SurfaceCoverClassification,,0..1,True
+facility,facility.territory.@gml:id,properties.wmdr:territoryHistory[*].identifier,0..*,,,,,1,True
+facility,facility.territory.beginPosition,properties.wmdr:territoryHistory[*].beginPosition,0..*,,,,,1,True
+facility,facility.territory.endPosition,properties.wmdr:territoryHistory[*].endPosition,0..*,,,,*deprecate?*,0..1,True
+facility,facility.territory.territoryName,properties.wmdr:territoryHistory[*].territory.href,0..*,related,,http://codes.wmo.int/wmdr/TerritoryName,,1,True
+facility,facility.topographyBathymetry.@gml:id,properties.wmdr:topographyBathymetryHistory[*].identifier,0..*,,,,history of topographyBathymetry *including* current one,0..1,True
+facility,facility.topographyBathymetry.altitudeOrDepth,properties.wmdr:topographyBathymetryHistory[*].altitudeOrDepth.href,0..*,related,,http://codes.wmo.int/wmdr/AltitudeOrDepth,,0..1,True
+facility,facility.topographyBathymetry.beginPosition,properties.wmdr:topographyBathymetryHistory[*].beginPosition,0..*,,,,,0..1,True
+facility,facility.topographyBathymetry.endPosition,properties.wmdr:topographyBathymetryHistory[*].endPosition,0..*,,,,*deprecate?*,0..1,True
+facility,facility.topographyBathymetry.localTopography,properties.wmdr:topographyBathymetryHistory[*].localTopography.href,0..*,related,,http://codes.wmo.int/wmdr/LocalTopography,,0..1,True
+facility,facility.topographyBathymetry.relativeElevation,properties.wmdr:topographyBathymetryHistory[*].relativeElevation.href,0..*,related,,http://codes.wmo.int/wmdr/RelativeElevation,,0..1,True
+facility,facility.topographyBathymetry.topographicContext,properties.wmdr:topographyBathymetryHistory[*].topographicContext.href,0..*,related,,http://codes.wmo.int/wmdr/TopographicContext,,0..1,True
+facility,facility.wmoRegion,properties.wmdr:wmoRegion.href,0..*,related,,http://codes.wmo.int/wmdr/WMORegion,,1,False
+observations,observations[*].deployments[*].@gml:id,id,1,,,,"record identifier (use deployment @gml:id; if multiple deployments exist, pick the most recent as the record id)",1..*,True
+observations,observations[*].facility,links[*].href,0..*,related,facility,http://codes.wmo.int/wmdr,"association link to the parent facility record (e.g., /collections/facilities/items/{id} or codes.wmo URI) - this must be a WSI",1,False
+observations,observations[*].observedProperty,properties.wmdr:observedProperty.href,0..1,related,,http://codes.wmo.int/wmdr/ObservedVariableAtmosphere;http://codes.wmo.int/wmdr/ObservedVariable<domain>,observed variable / measurand (WMO code list URI),1,False
+observations,observations[*].programAffiliation[*],properties.wmdr:programAffiliation[*].href,0..*,related,,http://codes.wmo.int/wmdr/ProgramAffiliation,program affiliation (multi-value form),1..*,False
+observations,observations[*].type,properties.wmdr:geometryType.href,0..1,related,,http://codes.wmo.int/wmdr/Geometry,geometry type for this observation/deployment (WMO code list URI),1,False
+observations,observations[*].metadata.contact.organisationName,properties.contacts[*].organization,0..*,,,,organization name of principle investigator for this observationCapability,0..*,False
+observations,observations[*].metadata.contact.role,properties.contacts[*].roles[*],0..*,,,,"fixed role code ""principalInvestigator""",0..*,False
+observations,observations[*].metadata.contact.contactInfo.address.electronicMailAddress,properties.contacts[*].emails[*],0..*,,,,metadata contact email address,0..*,False
+observations,observations[*].metadata.contact.@id,properties.contacts[*].identifier,0..*,,,,metadata contact identifier,0..*,False
+observations,observations[*].metadata.dateStamp.Date,properties.updated,0..1,,,,metadata datestamp -> record updated timestamp,0..*,False
+observations,observations[*].result.ResultSet.distributionInfo.distributor.distributorContact.organisationName,properties.contacts[*].distributionInfo.organization,0..*,,,,distributor contact organization name,0..*,False
+observations,observations[*].result.ResultSet.distributionInfo.distributor.distributorContact.role,properties.contacts[*].distributionInfo.roles[*],0..*,,,,distributor contact role (value or URI),0..*,False
+observations,observations[*].result.ResultSet.distributionInfo.transferOptions.onLine[*].url,links[*].href,0..*,enclosure,distribution,,online resource URL (array form),0..*,False
+observations,observations[*].result.ResultSet.distributionInfo.transferOptions.onLine[*].description,links[*].title,0..*,,distribution,,online resource title/description (array form),0..*,False
+observations,observations[*].result.ResultSet.distributionInfo.transferOptions.onLine[*].@id,properties.wmdr:onlineResource[*].identifier,0..*,,,,identifier of online resource (array form),0..*,False
+observations,observations[*].deployments[*].beginPosition,time.interval[0],0..1,,,,deployment begin time (current/most-recent),0..*,True
+observations,observations[*].deployments[*].endPosition,time.interval[1],0..1,,,,deployment end time (if ended),0..*,True
+observations,observations[*].deployments[*].geospatialLocation.geoLocation,geometry,0..1,,,,deployment location (parse 'lat lon [alt]' to GeoJSON Point),1,True
+observations,observations[*].deployments[*].geospatialLocation.geopositioningMethod,properties.wmdr:geospatialLocationHistory[*].geopositioningMethod.href,0..*,related,,http://codes.wmo.int/wmdr/GeopositioningMethod,geopositioning method (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].geospatialLocation.@gml:id,properties.wmdr:geospatialLocationHistory[*].identifier,0..*,,,,geospatial location entry identifier,1..*,True
+observations,observations[*].deployments[*].geospatialLocation.beginPosition,properties.wmdr:geospatialLocationHistory[*].time.interval[0],0..*,,,,validity begin time for location entry,0..*,True
+observations,observations[*].deployments[*].geospatialLocation.endPosition,properties.wmdr:geospatialLocationHistory[*].time.interval[1],0..*,,,,*deprecate?*,0..*,True
+observations,observations[*].deployments[*].localReferenceSurface,properties.wmdr:deploymentHistory[*].localReferenceSurface.href,0..*,related,,http://codes.wmo.int/wmdr/ReferenceSurfaceType,local reference surface (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].heightAboveLocalReferenceSurface.#text,properties.wmdr:deploymentHistory[*].heightAboveLocalReferenceSurface.value,0..*,,,,height above local reference surface value,0..*,True
+observations,observations[*].deployments[*].heightAboveLocalReferenceSurface.@uom,properties.wmdr:deploymentHistory[*].heightAboveLocalReferenceSurface.uom,0..*,,,,unit of measure for height,0..*,True
+observations,observations[*].deployments[*].sourceOfObservation,properties.wmdr:deploymentHistory[*].sourceOfObservation.href,0..*,related,,http://codes.wmo.int/wmdr/SourceOfObservation,source of observation (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].observingMethod,properties.wmdr:deploymentHistory[*].observingMethod.href,0..*,related,,http://codes.wmo.int/wmdr;http://codes.wmo.int/wmdr/ObservingMethodAtmosphere,observing method (WMO code list URI),1,True
+observations,observations[*].deployments[*].exposure,properties.wmdr:deploymentHistory[*].exposure.href,0..*,related,,http://codes.wmo.int/wmdr/Exposure,exposure (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].representativeness,properties.wmdr:deploymentHistory[*].representativeness.href,0..*,related,,http://codes.wmo.int/wmdr/Representativeness,representativeness (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].applicationArea[*],properties.wmdr:deploymentHistory[*].applicationArea[*].href,0..*,related,,http://codes.wmo.int/wmdr/ApplicationArea,application area(s) (multi value form),0..*,True
+observations,observations[*].deployments[*].manufacturer,properties.wmdr:deploymentHistory[*].manufacturer,0..*,,,,instrument manufacturer,0..*,True
+observations,observations[*].deployments[*].model,properties.wmdr:deploymentHistory[*].model,0..*,,,,instrument model,0..*,True
+observations,observations[*].deployments[*].serialNumber,properties.wmdr:deploymentHistory[*].serialNumber,0..*,,,,instrument serial number,0..*,True
+observations,observations[*].deployments[*].configuration,properties.wmdr:deploymentHistory[*].configuration,0..*,,,,instrument configuration / setup details,0..*,True
+observations,observations[*].deployments[*].responsibleParty.role,properties.wmdr:deploymentHistory[*].responsibleParty.role.href,0..*,related,,,responsible party role (value or URI),0..*,True
+observations,observations[*].deployments[*].instrumentOperatingStatus.instrumentOperatingStatus,properties.wmdr:instrumentOperatingStatusHistory[*].instrumentOperatingStatus.href,0..*,related,,http://codes.wmo.int/wmdr/InstrumentOperatingStatus,operating status (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].instrumentOperatingStatus.@gml:id,properties.wmdr:instrumentOperatingStatusHistory[*].identifier,0..*,,,,operating status entry identifier,1..*,True
+observations,observations[*].deployments[*].instrumentOperatingStatus.beginPosition,properties.wmdr:instrumentOperatingStatusHistory[*].time.interval[0],0..*,,,,operating status begin time,0..*,True
+observations,observations[*].deployments[*].instrumentOperatingStatus.endPosition,properties.wmdr:instrumentOperatingStatusHistory[*].time.interval[1],0..*,,,,operating status end time,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].@gml:id,properties.wmdr:dataGenerationHistory[*].identifier,0..*,,,,dataGeneration identifier,1..*,True
+observations,observations[*].deployments[*].dataGeneration[*].beginPosition,properties.wmdr:dataGenerationHistory[*].time.interval[0],0..*,,,,dataGeneration begin time,1..*,True
+observations,observations[*].deployments[*].dataGeneration[*].endPosition,properties.wmdr:dataGenerationHistory[*].time.interval[1],0..*,,,,dataGeneration end time,1..*,True
+observations,observations[*].deployments[*].dataGeneration[*].sampling.Sampling,properties.wmdr:dataGenerationHistory[*].sampling.Sampling,0..*,,,,sampling block (often empty/null in examples),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].sampling.samplingProcedure,properties.wmdr:dataGenerationHistory[*].sampling.samplingProcedure.href,0..*,related,,http://codes.wmo.int/wmdr/SamplingProcedure,sampling procedure (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].sampling.samplingStrategy,properties.wmdr:dataGenerationHistory[*].sampling.samplingStrategy.href,0..*,related,,http://codes.wmo.int/wmdr/SamplingStrategy,sampling strategy (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].sampling.samplingTimePeriod,properties.wmdr:dataGenerationHistory[*].sampling.samplingTimePeriod,0..*,,,,sampling time period (ISO 8601 duration),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].sampling.temporalSamplingInterval,properties.wmdr:dataGenerationHistory[*].sampling.temporalSamplingInterval,0..*,,,,temporal sampling interval (ISO 8601 duration),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].processing.Processing,properties.wmdr:dataGenerationHistory[*].processing.Processing,0..*,,,,processing block (often empty/null in examples),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].processing.aggregationPeriod,properties.wmdr:dataGenerationHistory[*].processing.aggregationPeriod,0..*,,,,aggregation period (ISO 8601 duration),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.internationalExchange,properties.wmdr:dataGenerationHistory[*].reporting.internationalExchange,0..*,,,,international exchange flag,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.uom,properties.wmdr:dataGenerationHistory[*].reporting.uom.href,0..*,related,,http://codes.wmo.int/wmdr/unit,unit of measure for reporting (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.temporalReportingInterval,properties.wmdr:dataGenerationHistory[*].reporting.temporalReportingInterval,0..*,,,,temporal reporting interval (ISO 8601 duration),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.timeStampMeaning,properties.wmdr:dataGenerationHistory[*].reporting.timeStampMeaning.href,0..*,related,,http://codes.wmo.int/wmdr/TimeStampMeaning,timestamp meaning (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.officialStatus,properties.wmdr:dataGenerationHistory[*].reporting.officialStatus,0..*,,,,official status flag,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.numberOfObservationsInReportingInterval,properties.wmdr:dataGenerationHistory[*].reporting.numberOfObservationsInReportingInterval,0..*,,,,number of observations in reporting interval,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.levelOfData,properties.wmdr:dataGenerationHistory[*].reporting.levelOfData.href,0..*,related,,http://codes.wmo.int/wmdr/LevelOfData,level of data (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.dataFormat,properties.wmdr:dataGenerationHistory[*].reporting.dataFormat.href,0..*,related,,http://codes.wmo.int/wmdr/DataFormat,data format (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.dataPolicy.dataPolicy,properties.wmdr:dataGenerationHistory[*].reporting.dataPolicy.dataPolicy.href,0..*,related,,http://codes.wmo.int/wmdr/DataPolicy,data policy (WMO code list URI),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.dataPolicy.attribution.originator.role,properties.wmdr:dataGenerationHistory[*].reporting.dataPolicy.attribution.originator.role.href,0..*,related,,,originator role (value or URI),0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.referenceDatum.VerticalDatum.@gml:id,properties.wmdr:dataGenerationHistory[*].reporting.referenceDatum.VerticalDatum.identifier,0..*,,,,vertical datum gml:id,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.referenceDatum.VerticalDatum.identifier.@codeSpace,properties.wmdr:dataGenerationHistory[*].reporting.referenceDatum.VerticalDatum.codeSpace,0..*,,,,vertical datum identifier codespace,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.referenceDatum.VerticalDatum.remarks,properties.wmdr:dataGenerationHistory[*].reporting.referenceDatum.VerticalDatum.remarks,0..*,,,,vertical datum remarks,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].reporting.referenceDatum.VerticalDatum.scope,properties.wmdr:dataGenerationHistory[*].reporting.referenceDatum.VerticalDatum.scope,0..*,,,,vertical datum scope,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].coverage.startMonth,properties.wmdr:dataGenerationHistory[*].coverage.startMonth,0..*,,,,coverage constraint: startMonth,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].coverage.endMonth,properties.wmdr:dataGenerationHistory[*].coverage.endMonth,0..*,,,,coverage constraint: endMonth,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].coverage.startWeekday,properties.wmdr:dataGenerationHistory[*].coverage.startWeekday,0..*,,,,coverage constraint: startWeekday,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].coverage.endWeekday,properties.wmdr:dataGenerationHistory[*].coverage.endWeekday,0..*,,,,coverage constraint: endWeekday,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].coverage.startHour,properties.wmdr:dataGenerationHistory[*].coverage.startHour,0..*,,,,coverage constraint: startHour,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].coverage.endHour,properties.wmdr:dataGenerationHistory[*].coverage.endHour,0..*,,,,coverage constraint: endHour,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].coverage.startMinute,properties.wmdr:dataGenerationHistory[*].coverage.startMinute,0..*,,,,coverage constraint: startMinute,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].coverage.endMinute,properties.wmdr:dataGenerationHistory[*].coverage.endMinute,0..*,,,,coverage constraint: endMinute,0..*,True
+observations,observations[*].deployments[*].dataGeneration[*].coverage.diurnalBaseTime,properties.wmdr:dataGenerationHistory[*].coverage.diurnalBaseTime,0..*,,,,coverage constraint: diurnalBaseTime,0..*,True
+deployments,deployments[*].@gml:id,id,1,,,,deployment identifier (gml:id),1,False
+deployments,deployments[*].geospatialLocation.geoLocation,geometry,1,,,,deployment location (geoLocation string),0..1,True
+deployments,deployments[*].beginPosition,time.interval[0],0..1,,,,deployment begin,0..1,True
+deployments,deployments[*].endPosition,time.interval[1],0..1,,,,deployment end,0..1,True
+deployments,deployments[*].observingMethod,properties.wmdr:observingMethod.href,0..1,,,,observing method,0..1,False
+deployments,deployments[*].manufacturer,properties.wmdr:manufacturer,0..1,,,,manufacturer,0..1,False
+deployments,deployments[*].model,properties.wmdr:model,0..1,,,,model,0..1,False
+deployments,deployments[*].serialNumber,properties.wmdr:serialNumber,0..1,,,,serial number,0..1,False
+deployments,deployments[*].configuration,properties.wmdr:configuration,0..1,,,,configuration,0..1,False
+deployments,deployments[*].sourceOfObservation,properties.wmdr:sourceOfObservation.href,0..1,,,,source of observation,0..1,False
+deployments,deployments[*].exposure,properties.wmdr:exposure.href,0..1,,,,exposure class,0..1,False
+deployments,deployments[*].representativeness,properties.wmdr:representativeness.href,0..1,,,,representativeness,0..1,False
+deployments,deployments[*].localReferenceSurface,properties.wmdr:localReferenceSurface.href,0..1,,,,local reference surface,0..1,False
+deployments,deployments[*].heightAboveLocalReferenceSurface.#text,properties.wmdr:heightAboveLocalReferenceSurface.value,0..1,,,,height above local reference surface (value),0..1,False
+deployments,deployments[*].heightAboveLocalReferenceSurface.@uom,properties.wmdr:heightAboveLocalReferenceSurface.uom.href,0..1,,,,height above local reference surface (unit),0..1,False
+deployments,deployments[*].applicationArea[*],properties.wmdr:applicationArea[*].href,0..*,,,,application area(s),0..*,False
+deployments,deployments[*].instrumentOperatingStatus,properties.wmdr:instrumentOperatingStatus,0..1,,,,instrument operating status (may be time-bounded object),0..1,True
+deployments,deployments[*].geospatialLocation,properties.wmdr:geospatialLocation,0..1,,,,geospatialLocation with begin/end (for location history),0..1,True
+deployments,deployments[*].dataGeneration[*].@gml:id,properties.wmdr:dataGeneration[*].id,0..*,,,,dataGeneration identifier(s),0..*,False
+deployments,deployments[*].dataGeneration[*].beginPosition,properties.wmdr:dataGeneration[*].time.interval[0],0..*,,,,dataGeneration begin,0..*,True
+deployments,deployments[*].dataGeneration[*].endPosition,properties.wmdr:dataGeneration[*].time.interval[1],0..*,,,,dataGeneration end,0..*,True
+deployments,deployments[*].dataGeneration[*].reporting.temporalReportingInterval,properties.wmdr:dataGeneration[*].reporting.temporalReportingInterval,0..*,,,,reporting interval (ISO 8601 duration),0..*,False
+deployments,deployments[*].dataGeneration[*].reporting.uom,properties.wmdr:dataGeneration[*].reporting.uom.href,0..*,,,,unit of measure,0..*,False
+deployments,deployments[*].dataGeneration[*].reporting.levelOfData,properties.wmdr:dataGeneration[*].reporting.levelOfData.href,0..*,,,,level of data,0..*,False
+deployments,deployments[*].dataGeneration[*].reporting.dataFormat,properties.wmdr:dataGeneration[*].reporting.dataFormat.href,0..*,,,,data format,0..*,False
+deployments,deployments[*].dataGeneration[*].reporting.timeStampMeaning,properties.wmdr:dataGeneration[*].reporting.timeStampMeaning.href,0..*,,,,timestamp meaning,0..*,False
+deployments,deployments[*].dataGeneration[*].reporting.internationalExchange,properties.wmdr:dataGeneration[*].reporting.internationalExchange,0..*,,,,international exchange flag,0..*,False
+deployments,deployments[*].dataGeneration[*].reporting.officialStatus,properties.wmdr:dataGeneration[*].reporting.officialStatus,0..*,,,,official status flag,0..*,False
+deployments,deployments[*].dataGeneration[*].reporting.numberOfObservationsInReportingInterval,properties.wmdr:dataGeneration[*].reporting.numberOfObservationsInReportingInterval,0..*,,,,number of observations per interval,0..*,False
+deployments,deployments[*].dataGeneration[*].reporting.referenceDatum,properties.wmdr:dataGeneration[*].reporting.referenceDatum,0..*,,,,reference datum object (VerticalDatum),0..*,True
+deployments,deployments[*].dataGeneration[*].coverage,properties.wmdr:dataGeneration[*].coverage,0..*,,,,coverage schedule (months/weekdays/hours/minutes),0..*,True
