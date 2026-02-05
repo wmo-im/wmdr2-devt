@@ -2,616 +2,682 @@
 """convert_wmdr10_json_to_records_part1.py
 
 Convert WMDR10 lean JSON exports (full record or parts) into OGC API - Records - Part 1 Core
-GeoJSON encodings (Record(s) as GeoJSON Feature / FeatureCollection).
+GeoJSON encodings (Record(s) as GeoJSON Features in a FeatureCollection).
 
-OGC API - Records - Part 1 examples show:
-- A record is a GeoJSON Feature containing: id, type, geometry, (optional) time, (optional) conformsTo, properties, links
-- A records response container is a FeatureCollection with features[] and (optional) links, timeStamp, numberReturned, ...
+Key behavior (as requested):
+- Reads config.yaml first (default: alongside this script) to get:
+    convert_wmdr10_json_to_records_part1:
+      source: <file-or-directory>
+      target: <directory>
+      mapping: <combined mapping CSV>   # preferred
+      # or mapping_configs: { facility: ..., observations: ..., deployments: ... }  # legacy support
+- Walks the source folder (recursive by default) and writes ONE GeoJSON file per JSON input file.
+- Output file names are preserved: <input filename>.json -> <input filename>.geojson (same stem, same suffixes).
 
-See Listing 21 (FeatureCollection container) and Listing 22 (single Record as Feature). (OGC 20-004r1)
-https://docs.ogc.org/is/20-004r1/20-004r1.html
-
-This script is intentionally conservative:
-- It always emits GeoJSON FeatureCollection(s).
-- It ensures each record has: type="Feature", id, geometry (or null), properties{}, links[].
-- It uses the mapping CSVs to copy WMDR values into Records fields where it is a direct mapping.
-- For complex WMDR sub-structures (e.g., dataGeneration objects), it preserves the raw object in properties as extensions.
-
-Usage examples
---------------
-# Convert full WMDR JSON into 3 outputs in same folder:
-python convert_wmdr10_json_to_records_part1.py /path/to/20250504_0-20008-0-NRB.json
-
-# Convert only observations:
-python convert_wmdr10_json_to_records_part1.py /path/to/_observations.json --parts observations --out /tmp/outdir
-
-# Provide custom mapping files:
-python convert_wmdr10_json_to_records_part1.py input.json \
-  --mapping-facility wmdr10_facility_vs_records_part1_enriched_v2.csv \
-  --mapping-observations wmdr10_observations_vs_records_part1_enriched_v3.csv \
-  --mapping-deployments wmdr10_deployments_vs_records_part1_enriched.csv
-
-Notes
------
-- The mapping CSVs are expected to have (at least) these columns:
-  wmdr10-json, records-part1, description
-  Optionally: records-part1-link-relation
-
-- This converter supports limited wildcard handling:
-  * one [*] wildcard per path is supported for index-aligned list building.
-
-- Link objects:
-  * Rows targeting links[*].href/.title/.type are used to build link objects.
-  * If a mapping row provides records-part1-link-relation, it is used as the link.rel value.
+Notes:
+- A full WMDR JSON file produces a single FeatureCollection containing multiple record Features
+  (facility + observations + deployments, when present).
+- Part files (e.g., *_facility.json, *_observations.json, *_deployments.json, *_header.json) each produce
+  a FeatureCollection for that part, in a single output file with the same base name.
 
 """
 
 from __future__ import annotations
 
 import argparse
+import csv
 import json
-import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-import pandas as pd
+try:
+    import yaml  # type: ignore
+except Exception:
+    yaml = None
 
-CONFORMS_TO_RECORD_CORE = "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
 
-_seg_pat = re.compile(r"^(?P<key>.+?)\[(?P<idx>\*|\d+)\]$")
-
+# -----------------------------
+# Mapping model + loader
+# -----------------------------
 
 @dataclass(frozen=True)
 class MapRow:
-    src: str
-    dst: str
-    desc: str = ""
-    rel: str = ""
-    group: str = ""
+    part: str                   # facility | observations | deployments
+    src: str                    # wmdr10-json
+    dst: str                    # records-part1
+    cardinality: str = ""
+    link_relation: str = ""     # records-part1-link-relation
+    link_group: str = ""        # records-part1-link-group
+    codelist: str = ""
+    description: str = ""
 
+
+def _load_mapping_combined(path: Path) -> Dict[str, List[MapRow]]:
+    """Load a combined mapping file (wmdr10_vs_records_part1.csv) into groups by part."""
+    by_part: Dict[str, List[MapRow]] = {"facility": [], "observations": [], "deployments": []}
+    with path.open("r", encoding="utf-8", newline="") as f:
+        r = csv.DictReader(f)
+        for raw in r:
+            src = (raw.get("wmdr10-json") or "").strip()
+            dst = (raw.get("records-part1") or "").strip()
+            if not src or not dst:
+                continue
+            part = (raw.get("wmdr10-part") or "").strip() or _infer_part_from_src(src)
+            if part not in by_part:
+                # keep unknown parts out of conversion, but don't crash
+                continue
+            by_part[part].append(
+                MapRow(
+                    part=part,
+                    src=src,
+                    dst=dst,
+                    cardinality=(raw.get("records-part1-cardinality") or "").strip(),
+                    link_relation=(raw.get("records-part1-link-relation") or "").strip(),
+                    link_group=(raw.get("records-part1-link-group") or "").strip(),
+                    codelist=(raw.get("wmdr10-codelist") or "").strip(),
+                    description=(raw.get("description") or "").strip(),
+                )
+            )
+    return by_part
+
+
+def _load_mapping_simple(path: Path, part: str) -> List[MapRow]:
+    """Load a legacy part mapping file (no wmdr10-part column)."""
+    rows: List[MapRow] = []
+    with path.open("r", encoding="utf-8", newline="") as f:
+        r = csv.DictReader(f)
+        for raw in r:
+            src = (raw.get("wmdr10-json") or "").strip()
+            dst = (raw.get("records-part1") or "").strip()
+            if not src or not dst:
+                continue
+            rows.append(
+                MapRow(
+                    part=part,
+                    src=src,
+                    dst=dst,
+                    cardinality=(raw.get("records-part1-cardinality") or "").strip(),
+                    link_relation=(raw.get("records-part1-link-relation") or "").strip(),
+                    link_group=(raw.get("records-part1-link-group") or "").strip(),
+                    codelist=(raw.get("wmdr10-codelist") or "").strip(),
+                    description=(raw.get("description") or "").strip(),
+                )
+            )
+    return rows
+
+
+def _infer_part_from_src(src: str) -> str:
+    s = src.strip()
+    if s.startswith("facility.") or s.startswith("header."):
+        return "facility"
+    if s.startswith("observations"):
+        return "observations"
+    if s.startswith("deployments"):
+        return "deployments"
+    return "facility"
+
+
+# -----------------------------
+# Config
+# -----------------------------
+
+def _load_config(path: Path) -> Dict[str, Any]:
+    if yaml is None:
+        raise RuntimeError("PyYAML is required to read config.yaml (pip install pyyaml).")
+    with path.open("r", encoding="utf-8") as f:
+        return yaml.safe_load(f) or {}
+
+
+def _cfg_section(cfg: Dict[str, Any]) -> Dict[str, Any]:
+    sec = cfg.get("convert_wmdr10_json_to_records_part1")
+    return sec if isinstance(sec, dict) else {}
+
+
+# -----------------------------
+# Small helpers
+# -----------------------------
 
 def _now_utc_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def _load_mapping(path: Path) -> List[MapRow]:
-    df = pd.read_csv(path)
-    for col in ["wmdr10-json", "records-part1"]:
-        if col not in df.columns:
-            raise ValueError(f"Mapping file {path} missing required column '{col}'. Found: {list(df.columns)}")
-    desc_col = "description" if "description" in df.columns else None
-    rel_col = "records-part1-link-relation" if "records-part1-link-relation" in df.columns else None
-    group_col = "records-part1-link-group" if "records-part1-link-group" in df.columns else None
+def _iter_json_files(root: Path, recursive: bool = True, pattern: str = "*.json") -> List[Path]:
+    if root.is_file():
+        return [root] if root.suffix.lower() == ".json" else []
+    if not root.is_dir():
+        return []
+    if recursive:
+        return sorted([p for p in root.rglob(pattern) if p.is_file() and p.suffix.lower() == ".json"])
+    return sorted([p for p in root.glob(pattern) if p.is_file() and p.suffix.lower() == ".json"])
 
-    out: List[MapRow] = []
-    for _, r in df.iterrows():
-        src = str(r["wmdr10-json"]).strip()
-        dst = str(r["records-part1"]).strip()
-        if not src or not dst or src.lower() == "nan" or dst.lower() == "nan":
+
+def _parse_geo_pos(raw: Any) -> Optional[Dict[str, Any]]:
+    """Parse WMDR geoLocation (often a space-separated 'lat lon [z]') into GeoJSON Point."""
+    if raw is None:
+        return None
+    if isinstance(raw, dict):
+        for k in ("pos", "value", "text", "geoLocation"):
+            v = raw.get(k)
+            if isinstance(v, str):
+                raw = v
+                break
+    if not isinstance(raw, str):
+        return None
+    parts = raw.replace(",", " ").split()
+    nums: List[float] = []
+    for p in parts:
+        try:
+            nums.append(float(p))
+        except Exception:
             continue
-        desc = str(r[desc_col]).strip() if desc_col else ""
-        rel = str(r[rel_col]).strip() if rel_col and str(r[rel_col]).lower() != "nan" else ""
-        group = str(r[group_col]).strip() if group_col and str(r[group_col]).lower() != "nan" else ""
-        out.append(MapRow(src=src, dst=dst, desc=desc, rel=rel, group=group))
-    return out
-
-
-def _strip_prefix(src_path: str, part: str) -> str:
-    """Normalize mapping 'wmdr10-json' paths to be relative to the object being converted."""
-    src_path = src_path.strip()
-    if part == "facility" and src_path.startswith("facility."):
-        return src_path[len("facility.") :]
-    if part == "header" and src_path.startswith("header."):
-        return src_path[len("header.") :]
-    if part == "observations" and src_path.startswith("observations[*]."):
-        return src_path[len("observations[*].") :]
-    if part == "deployments" and src_path.startswith("deployments[*]."):
-        return src_path[len("deployments[*].") :]
-    return src_path
+    if len(nums) < 2:
+        return None
+    lat, lon = nums[0], nums[1]
+    return {"type": "Point", "coordinates": [lon, lat]}
 
 
 def _extract_indexed(obj: Any, path: str) -> List[Tuple[Optional[Tuple[int, ...]], Any]]:
-    """Extract values following a dotted path; returns (index_tuple, value).
-
-    Supports one or more [*] wildcards. For each wildcard, an index is appended to the index_tuple.
-
-    If no wildcard used, index_tuple is None.
-    """
-    if not path:
-        return []
-
-    parts = path.split(".")
+    """Extract nested values from dict/list with tokens, supporting [*] wildcards."""
+    tokens = [t for t in path.split(".") if t]
     results: List[Tuple[Optional[Tuple[int, ...]], Any]] = [(None, obj)]
 
-    for part in parts:
-        m = _seg_pat.match(part)
-        next_results: List[Tuple[Optional[Tuple[int, ...]], Any]] = []
+    for tok in tokens:
+        nxt: List[Tuple[Optional[Tuple[int, ...]], Any]] = []
 
-        if m:
-            key = m.group("key")
-            idx = m.group("idx")
+        if tok.endswith("[*]"):
+            key = tok[:-3]
             for idx_tuple, cur in results:
-                child = None
-                if isinstance(cur, dict):
-                    child = cur.get(key)
-                elif isinstance(cur, list):
-                    collected = []
-                    for it in cur:
-                        if isinstance(it, dict) and key in it:
-                            collected.append(it[key])
-                    child = collected if collected else None
-
-                if idx == "*":
-                    if isinstance(child, list):
-                        for i, item in enumerate(child):
-                            new_idx = (i,) if idx_tuple is None else (idx_tuple + (i,))
-                            next_results.append((new_idx, item))
-                    elif child is not None:
-                        # Treat scalar/dict as a single-element list at index 0 (helps harmonize shapes)
-                        new_idx = (0,) if idx_tuple is None else (idx_tuple + (0,))
-                        next_results.append((new_idx, child))
-                else:
-                    try:
-                        i = int(idx)
-                    except ValueError:
-                        continue
-                    if isinstance(child, list) and 0 <= i < len(child):
+                child = cur.get(key) if isinstance(cur, dict) else None
+                if isinstance(child, list):
+                    for i, item in enumerate(child):
                         new_idx = (i,) if idx_tuple is None else (idx_tuple + (i,))
-                        next_results.append((new_idx, child[i]))
-        else:
-            key = part
-            for idx_tuple, cur in results:
-                if isinstance(cur, dict) and key in cur:
-                    next_results.append((idx_tuple, cur[key]))
-                elif isinstance(cur, list):
-                    for it in cur:
-                        if isinstance(it, dict) and key in it:
-                            next_results.append((idx_tuple, it[key]))
-
-        results = next_results
-        if not results:
-            break
-
-    cleaned: List[Tuple[Optional[Tuple[int, ...]], Any]] = []
-    for idx_tuple, v in results:
-        if v is None:
+                        nxt.append((new_idx, item))
+                elif child is not None:
+                    new_idx = (0,) if idx_tuple is None else (idx_tuple + (0,))
+                    nxt.append((new_idx, child))
+            results = nxt
             continue
-        cleaned.append((idx_tuple, v))
-    return cleaned
+
+        for idx_tuple, cur in results:
+            if isinstance(cur, dict) and tok in cur:
+                nxt.append((idx_tuple, cur[tok]))
+        results = nxt
+
+    return results
 
 
-def _ensure_list_len(lst: List[Any], n: int) -> None:
-    while len(lst) < n:
-        lst.append({})
+def _ensure_list_len(lst: List[Any], idx: int) -> None:
+    while len(lst) <= idx:
+        lst.append(None)
 
 
-def _parse_geo_pos(pos: Any) -> Optional[Dict[str, Any]]:
-    """Parse WMDR geoLocation strings (usually "lat lon [alt]") into GeoJSON Point."""
-    if pos is None:
-        return None
-    if isinstance(pos, dict) and "geoLocation" in pos:
-        pos = pos.get("geoLocation")
-    if not isinstance(pos, str):
-        return None
-    s = pos.strip()
-    if not s:
-        return None
-    parts = [p for p in s.split() if p]
-    if len(parts) < 2:
-        return None
-    try:
-        a = float(parts[0]); b = float(parts[1])
-        c = float(parts[2]) if len(parts) >= 3 else None
-    except ValueError:
-        return None
+def _set_nested(root: Dict[str, Any], dst_path: str, val: Any, idx_tuple: Optional[Tuple[int, ...]]) -> None:
+    """Set value in a nested dict/list using dst_path with [*] slots, using idx_tuple for indexing."""
+    tokens = [t for t in dst_path.split(".") if t]
+    cur: Any = root
+    idx_pos = 0
 
-    # WMDR commonly uses lat lon [alt]; GeoJSON needs lon lat.
-    lat, lon, alt = a, b, c
-    if abs(lat) > 90 and abs(lon) <= 90:
-        lon, lat = a, b
+    for i, tok in enumerate(tokens):
+        last = i == len(tokens) - 1
 
-    coords: List[float] = [lon, lat]
-    if alt is not None:
-        coords.append(alt)
-    return {"type": "Point", "coordinates": coords}
+        if tok.endswith("[*]"):
+            key = tok[:-3]
+            if not isinstance(cur, dict):
+                return
+            if key not in cur or not isinstance(cur[key], list):
+                cur[key] = []
+            lst: List[Any] = cur[key]
 
+            use_idx = 0
+            if idx_tuple is not None and idx_pos < len(idx_tuple):
+                use_idx = idx_tuple[idx_pos]
+            idx_pos += 1
 
-def _set_nested(d: Dict[str, Any], keys: List[str], value: Any) -> None:
-    cur: Any = d
-    for k in keys[:-1]:
+            _ensure_list_len(lst, use_idx)
+            if last:
+                lst[use_idx] = val
+                return
+            if lst[use_idx] is None or not isinstance(lst[use_idx], dict):
+                lst[use_idx] = {}
+            cur = lst[use_idx]
+            continue
+
         if not isinstance(cur, dict):
             return
-        if k not in cur or not isinstance(cur[k], dict):
-            cur[k] = {}
-        cur = cur[k]
-    if isinstance(cur, dict):
-        cur[keys[-1]] = value
+        if last:
+            cur[tok] = val
+            return
+        if tok not in cur or not isinstance(cur[tok], dict):
+            cur[tok] = {}
+        cur = cur[tok]
 
 
-def _get_or_create_nested(d: Dict[str, Any], keys: List[str]) -> Dict[str, Any]:
-    cur = d
-    for k in keys:
-        if k not in cur or not isinstance(cur[k], dict):
-            cur[k] = {}
-        cur = cur[k]
-    return cur
+def _strip_prefix(src: str, prefix: str) -> str:
+    return src[len(prefix):] if src.startswith(prefix) else src
+
+
+# -----------------------------
+# Mapping application
+# -----------------------------
+
+def _record_template(record_type: str) -> Dict[str, Any]:
+    return {
+        "type": "Feature",
+        "id": None,
+        "geometry": None,
+        "properties": {"type": record_type},
+        "links": [],
+    }
 
 
 def _apply_mapping_to_record(
     src_obj: Dict[str, Any],
-    mapping: List[MapRow],
+    mapping_rows: List[MapRow],
     *,
     part: str,
     header: Optional[Dict[str, Any]] = None,
     record_type: str = "dataset",
+    src_prefix_to_strip: str = "",
     default_geometry: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    """Build a Records Part 1 record (GeoJSON Feature) from src_obj using mapping rows."""
-    record: Dict[str, Any] = {
-        "type": "Feature",
-        "id": None,
-        "geometry": None,
-        "properties": {},
-        "links": [],
-        "conformsTo": [CONFORMS_TO_RECORD_CORE],
-    }
+    rec = _record_template(record_type)
 
-    record["properties"]["type"] = record_type
+    # collect links by (group, idx_tuple)
+    link_indexed: Dict[Tuple[str, Tuple[int, ...]], Dict[str, Any]] = {}
+    link_appended: List[Dict[str, Any]] = []
 
-    # header-based defaults
-    if header:
-        file_dt = header.get("fileDateTime") or header.get("dateStamp") or header.get("fileDatetime")
-        if isinstance(file_dt, str) and file_dt:
-            record["properties"].setdefault("created", file_dt)
-            record["properties"].setdefault("updated", file_dt)
-
-    # Link collection:
-    # - If source has wildcards, we can index-align links (e.g., onLine[*])
-    # - Otherwise, use records-part1-link-group to avoid collisions when multiple WMDR fields map to links[*]
-    indexed_links: Dict[Tuple[str, Tuple[int, ...]], Dict[str, Any]] = {}
-    appended_links_by_group: Dict[str, List[Dict[str, Any]]] = {}
-
-    for row in mapping:
-        src_path = _strip_prefix(row.src, part)
-        dst_path = row.dst.strip()
-
-        extracted = _extract_indexed(src_obj, src_path)
-        if not extracted:
+    for row in mapping_rows:
+        if row.part != part:
             continue
 
-        for idx_tuple, val in extracted:
-            # geometry
-            if dst_path == "geometry":
+        src_path = row.src
+
+        # header mappings
+        use_obj: Any = src_obj
+        if src_path.startswith("header."):
+            if header is None:
+                continue
+            use_obj = header
+            src_path = _strip_prefix(src_path, "header.")
+
+        if src_prefix_to_strip:
+            src_path = _strip_prefix(src_path, src_prefix_to_strip)
+
+        for idx_tuple, val in _extract_indexed(use_obj, src_path):
+            # geometry special case
+            if row.dst == "geometry":
                 geom = _parse_geo_pos(val)
                 if geom is not None:
-                    record["geometry"] = geom
+                    rec["geometry"] = geom
                 continue
 
-            # id
-            if dst_path == "id":
-                if record.get("id") is None and isinstance(val, str) and val:
-                    record["id"] = val
-                continue
-
-            # time interval
-            if dst_path.startswith("time.interval"):
-                m = _seg_pat.match(dst_path.replace("time.", ""))
-                if m and m.group("key") == "interval":
-                    try:
-                        i = int(m.group("idx"))
-                    except ValueError:
-                        continue
-                    record.setdefault("time", {}).setdefault("interval", ["..", ".."])
-                    if isinstance(val, str) and val:
-                        record["time"]["interval"][i] = val
-                    elif val is None:
-                        record["time"]["interval"][i] = ".."
-                continue
-
-            # links
-            if dst_path.startswith("links[*]."):
-                field = dst_path.split(".", 1)[1].replace("[*].", "")
-                group = row.group or row.rel or "link"
-
+            # link fields are routed into links[*].<field>
+            if row.dst.startswith("links[*]."):
+                field = row.dst.split(".", 1)[1]
                 if idx_tuple is not None:
-                    key = (group, idx_tuple)
-                    link = indexed_links.setdefault(key, {})
+                    key = (row.link_group or row.link_relation or "link", idx_tuple)
+                    link = link_indexed.setdefault(key, {})
                     if field == "href":
                         link["href"] = val
-                        link["rel"] = row.rel or link.get("rel") or "related"
+                        link["rel"] = row.link_relation or link.get("rel") or "related"
                     else:
                         link[field] = val
+                        link.setdefault("rel", row.link_relation or "related")
                 else:
-                    grp_list = appended_links_by_group.setdefault(group, [])
-
+                    # append mode
                     if field == "href":
-                        grp_list.append({"href": val, "rel": row.rel or "related"})
+                        link_appended.append({"href": val, "rel": row.link_relation or "related"})
                     else:
-                        # attach to the latest link of that group if possible, otherwise stage a placeholder
-                        if not grp_list:
-                            grp_list.append({})
-                        grp_list[-1][field] = val
-                        # ensure rel exists if later becomes a valid link
-                        grp_list[-1].setdefault("rel", row.rel or "related")
+                        if not link_appended:
+                            link_appended.append({"rel": row.link_relation or "related"})
+                        link_appended[-1][field] = val
+                        link_appended[-1].setdefault("rel", row.link_relation or "related")
                 continue
 
-            # generic with wildcard support
-            parts = dst_path.split(".")
-            wildcard_pos = None
-            for j, p in enumerate(parts):
-                mm = _seg_pat.match(p)
-                if mm and mm.group("idx") == "*":
-                    wildcard_pos = j
-                    break
+            _set_nested(rec, row.dst, val, idx_tuple)
 
-            if wildcard_pos is None:
-                _set_nested(record, parts, val)
-                continue
-
-            pre = parts[:wildcard_pos]
-            seg = parts[wildcard_pos]
-            mm = _seg_pat.match(seg)
-            assert mm is not None
-            list_key = mm.group("key")
-            post = parts[wildcard_pos + 1 :]
-
-            parent = _get_or_create_nested(record, pre)
-            arr = parent.get(list_key)
-            if not isinstance(arr, list):
-                arr = []
-                parent[list_key] = arr
-
-            if idx_tuple is not None:
-                i = idx_tuple[-1]
-                _ensure_list_len(arr, i + 1)
-                if not isinstance(arr[i], dict):
-                    arr[i] = {}
-                tgt = arr[i]
-                if post == ["href"] and isinstance(val, str):
-                    tgt["href"] = val
-                elif len(post) == 1:
-                    tgt[post[0]] = val
-                else:
-                    _set_nested(tgt, post, val)
-            else:
-                if post == []:
-                    arr.append(val)
-                elif post == ["href"]:
-                    arr.append({"href": val})
-                else:
-                    obj = {}
-                    _set_nested(obj, post, val)
-                    arr.append(obj)
-
-    # Finalize links:
-    # 1) indexed links (sorted by group then index)
-    for (group, idx), link in sorted(indexed_links.items(), key=lambda x: (x[0][0], x[0][1])):
+    # finalize links
+    links: List[Dict[str, Any]] = []
+    for (_g, _idx), link in sorted(link_indexed.items(), key=lambda x: (x[0][0], x[0][1])):
         if "href" in link:
-            record["links"].append(link)
+            links.append(link)
+    for link in link_appended:
+        if "href" in link:
+            links.append(link)
+    rec["links"] = links
 
-    # 2) appended links (preserve group order by appearance in mapping iteration)
-    for group, links in appended_links_by_group.items():
-        for link in links:
-            if isinstance(link, dict) and "href" in link:
-                record["links"].append(link)
-
-    # Geometry fallback from common WMDR keys (useful when mapping CSV uses a different key spelling)
-    if record.get("geometry") is None:
+    # fallback geometry from WMDR keys
+    if rec.get("geometry") is None:
         for k in ("geospatialLocation", "geoSpatialLocation"):
-            if isinstance(src_obj.get(k), dict) and "geoLocation" in src_obj.get(k):
-                geom = _parse_geo_pos(src_obj[k].get("geoLocation"))
+            loc = src_obj.get(k)
+            if isinstance(loc, dict) and "geoLocation" in loc:
+                geom = _parse_geo_pos(loc.get("geoLocation"))
                 if geom is not None:
-                    record["geometry"] = geom
+                    rec["geometry"] = geom
                     break
+    if rec.get("geometry") is None and default_geometry is not None:
+        rec["geometry"] = default_geometry
 
-    # mandatory members
-    if record["id"] is None:
-        record["id"] = f"urn:uuid:{abs(hash(json.dumps(src_obj, sort_keys=True))) % (10**12)}"
-    if "geometry" not in record:
-        record["geometry"] = None
-    if "links" not in record:
-        record["links"] = []
+    # id fallback
+    if rec.get("id") in (None, "", {}):
+        for k in ("wigosStationIdentifier", "gawId", "facilityId", "@gml:id", "id"):
+            v = src_obj.get(k)
+            if isinstance(v, str) and v:
+                rec["id"] = v
+                break
 
-    # optional geometry fallback (e.g., apply facility geometry to deployments without own location)
-    if record.get("geometry") is None and default_geometry is not None:
-        record["geometry"] = default_geometry
+    # Ensure records response fields are not wildly non-compliant
+    rec.setdefault("type", "Feature")
+    rec["properties"].setdefault("type", record_type)
 
-    if "time" in record and isinstance(record["time"], dict):
-        interval = record["time"].get("interval")
-        if isinstance(interval, list):
-            record["time"]["interval"] = [(x if x is not None else "..") for x in interval]
+    # helpful part marker
+    rec["properties"].setdefault("wmdr:part", part)
 
-    return record
+    return rec
 
 
 def _as_feature_collection(features: List[Dict[str, Any]]) -> Dict[str, Any]:
     return {
         "type": "FeatureCollection",
+        "features": features,
         "timeStamp": _now_utc_iso(),
         "numberReturned": len(features),
-        "numberMatched": len(features),
-        "features": features,
-        "links": [],
     }
 
 
-def _detect_input_kind(payload: Any) -> str:
-    """Return one of {"full", "facility", "observations", "deployments"}."""
+# -----------------------------
+# Input classification
+# -----------------------------
+
+def _classify_by_filename(p: Path) -> Optional[str]:
+    name = p.stem.lower()
+    if name.endswith("_facility"):
+        return "facility"
+    if "_observations" in name:
+        return "observations"
+    if "_deployments" in name:
+        return "deployments"
+    if name.endswith("_header"):
+        return "header"
+    return None
+
+
+def _classify_by_payload(payload: Any) -> str:
+    if isinstance(payload, dict) and ("facility" in payload or "observations" in payload or "header" in payload):
+        return "full"
     if isinstance(payload, dict):
-        if "facility" in payload and "observations" in payload:
-            return "full"
-        if "facilityName" in payload or "wigosStationIdentifier" in payload or "observingFacility" in payload:
-            return "facility"
-        if "observedProperty" in payload and "deployments" in payload:
+        if "observedProperty" in payload or "resultTime" in payload or "procedure" in payload:
             return "observations"
-        if "@gml:id" in payload and ("beginPosition" in payload or "observingMethod" in payload):
+        if "serialNumber" in payload or "manufacturer" in payload or "model" in payload:
             return "deployments"
+        # header-only often has fileIdentifier / recordOwner / fileDateTime
+        if "recordOwner" in payload or "fileIdentifier" in payload or "fileDateTime" in payload:
+            return "header"
+        return "facility"
     if isinstance(payload, list):
-        if not payload:
+        # guess by first dict
+        first = next((x for x in payload if isinstance(x, dict)), None)
+        if first is None:
+            return "unknown"
+        if "observedProperty" in first or "resultTime" in first:
             return "observations"
-        first = payload[0]
-        if isinstance(first, dict) and "observedProperty" in first:
-            return "observations"
-        if isinstance(first, dict) and "@gml:id" in first and ("beginPosition" in first or "observingMethod" in first):
+        if "serialNumber" in first or "manufacturer" in first:
             return "deployments"
-    return "full"
+        return "observations"
+    return "unknown"
 
 
 def _flatten_deployments_from_observations(observations: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    out: List[Dict[str, Any]] = []
+    deps: List[Dict[str, Any]] = []
     for o in observations:
-        ds = o.get("deployments") or []
-        if isinstance(ds, list):
-            out.extend([d for d in ds if isinstance(d, dict)])
-    return out
+        dep_raw = o.get("deployments")
+        if isinstance(dep_raw, list):
+            deps.extend([d for d in dep_raw if isinstance(d, dict)])
+    return deps
 
 
-def main() -> None:
-    ap = argparse.ArgumentParser(description="Convert WMDR10 lean JSON to OGC API Records Part 1 GeoJSON.")
-    ap.add_argument("input", type=Path, help="Input WMDR10 lean JSON file (full or part).")
-    ap.add_argument("--out", type=Path, default=None, help="Output directory (default: same as input).")
+# -----------------------------
+# Conversion for a single file
+# -----------------------------
 
-    ap.add_argument("--parts", choices=["auto", "facility", "observations", "deployments", "all"], default="auto",
-                    help="Which part(s) to generate. 'auto' detects from input; 'all' generates facility+observations+deployments when possible.")
+def _convert_file(
+    inp: Path,
+    payload: Any,
+    mapping: Dict[str, List[MapRow]],
+    *,
+    record_type_facility: str = "dataset",
+    record_type_observation: str = "dataset",
+    record_type_deployment: str = "dataset",
+) -> Dict[str, Any]:
+    """Return a FeatureCollection for this input file."""
+    file_hint = _classify_by_filename(inp)
+    kind = file_hint or _classify_by_payload(payload)
 
-    ap.add_argument("--mapping-facility", type=Path, default=Path("mappings/wmdr10_facility_vs_records_part1.csv"))
-    ap.add_argument("--mapping-observations", type=Path, default=Path("mappings/wmdr10_observations_vs_records_part1.csv"))
-    ap.add_argument("--mapping-deployments", type=Path, default=Path("mappings/wmdr10_deployments_vs_records_part1.csv"))
-
-    ap.add_argument("--record-type-facility", default="dataset", help="records properties.type value for facility records")
-    ap.add_argument("--record-type-observation", default="dataset", help="records properties.type value for observation records")
-    ap.add_argument("--record-type-deployment", default="dataset", help="records properties.type value for deployment records")
-
-    args = ap.parse_args()
-
-    inp = args.input
-    out_dir = args.out or inp.parent
-    out_dir.mkdir(parents=True, exist_ok=True)
-
-    payload = json.loads(inp.read_text(encoding="utf-8"))
-    detected = _detect_input_kind(payload)
-    kind = detected if args.parts == "auto" else args.parts
-    if kind == "all":
-        kind = "full"
-
-    script_dir = Path(__file__).resolve().parent
-
-    def resolve_map(p: Path) -> Path:
-        if p.exists():
-            return p
-        q = script_dir / p
-        if q.exists():
-            return q
-        r = inp.parent / p
-        if r.exists():
-            return r
-        raise FileNotFoundError(f"Mapping file not found: {p} (also tried {q} and {r})")
-
-    map_fac = _load_mapping(resolve_map(args.mapping_facility))
-    map_obs = _load_mapping(resolve_map(args.mapping_observations))
-    map_dep = _load_mapping(resolve_map(args.mapping_deployments))
-
-    header = None
-    facility = None
+    header: Optional[Dict[str, Any]] = None
+    facility: Optional[Dict[str, Any]] = None
     observations: List[Dict[str, Any]] = []
     deployments: List[Dict[str, Any]] = []
 
-    if isinstance(payload, dict) and kind == "full":
+    if kind == "full" and isinstance(payload, dict):
         header = payload.get("header") if isinstance(payload.get("header"), dict) else None
         facility = payload.get("facility") if isinstance(payload.get("facility"), dict) else None
-        observations = payload.get("observations") if isinstance(payload.get("observations"), list) else []
+        obs_raw = payload.get("observations")
+        observations = [o for o in obs_raw if isinstance(o, dict)] if isinstance(obs_raw, list) else []
         deployments = _flatten_deployments_from_observations(observations)
-    elif kind == "facility":
-        facility = payload if isinstance(payload, dict) else None
+
+    elif kind == "facility" and isinstance(payload, dict):
+        facility = payload
+
+    elif kind == "header" and isinstance(payload, dict):
+        header = payload
+
     elif kind == "observations":
         if isinstance(payload, dict) and "observations" in payload:
-            observations = payload.get("observations") if isinstance(payload.get("observations"), list) else []
+            obs_raw = payload.get("observations")
+            observations = [o for o in obs_raw if isinstance(o, dict)] if isinstance(obs_raw, list) else []
             header = payload.get("header") if isinstance(payload.get("header"), dict) else None
             facility = payload.get("facility") if isinstance(payload.get("facility"), dict) else None
         elif isinstance(payload, list):
-            observations = payload
+            observations = [o for o in payload if isinstance(o, dict)]
         elif isinstance(payload, dict):
             observations = [payload]
         deployments = _flatten_deployments_from_observations(observations)
+
     elif kind == "deployments":
         if isinstance(payload, dict) and "deployments" in payload:
-            deployments = payload.get("deployments") if isinstance(payload.get("deployments"), list) else []
+            dep_raw = payload.get("deployments")
+            deployments = [d for d in dep_raw if isinstance(d, dict)] if isinstance(dep_raw, list) else []
             header = payload.get("header") if isinstance(payload.get("header"), dict) else None
             facility = payload.get("facility") if isinstance(payload.get("facility"), dict) else None
         elif isinstance(payload, list):
-            deployments = payload
+            deployments = [d for d in payload if isinstance(d, dict)]
         elif isinstance(payload, dict):
             deployments = [payload]
+
     else:
-        # fallback: treat as full
+        # best-effort: try as full dict
         if isinstance(payload, dict):
             header = payload.get("header") if isinstance(payload.get("header"), dict) else None
             facility = payload.get("facility") if isinstance(payload.get("facility"), dict) else None
-            observations = payload.get("observations") if isinstance(payload.get("observations"), list) else []
+            obs_raw = payload.get("observations")
+            observations = [o for o in obs_raw if isinstance(o, dict)] if isinstance(obs_raw, list) else []
             deployments = _flatten_deployments_from_observations(observations)
 
-    outputs: List[Tuple[str, Dict[str, Any]]] = []
+    features: List[Dict[str, Any]] = []
 
-    facility_geometry = None
+    # facility geometry for fallback
+    facility_geom: Optional[Dict[str, Any]] = None
 
-    if facility is not None and (args.parts in ("auto", "all") or kind in ("full", "facility")):
-        rec = _apply_mapping_to_record(facility, map_fac, part="facility", header=header, record_type=args.record_type_facility)
-        facility_geometry = rec.get("geometry")
+    if facility is not None:
+        rec = _apply_mapping_to_record(
+            facility,
+            mapping["facility"],
+            part="facility",
+            header=header,
+            record_type=record_type_facility,
+            src_prefix_to_strip="facility.",
+        )
         if not rec["properties"].get("title"):
             name = facility.get("facilityName") or facility.get("name") or facility.get("gawId")
             rec["properties"]["title"] = name if isinstance(name, str) and name else "Facility"
-        outputs.append(("facility", _as_feature_collection([rec])))
+        facility_geom = rec.get("geometry")
+        features.append(rec)
 
-    if observations and (args.parts in ("auto", "all") or kind in ("full", "observations")):
-        feats: List[Dict[str, Any]] = []
+    # header-only input -> create a record only from header rows (no facility object)
+    if facility is None and header is not None and kind == "header":
+        dummy: Dict[str, Any] = {}
+        rec = _apply_mapping_to_record(
+            dummy,
+            mapping["facility"],
+            part="facility",
+            header=header,
+            record_type=record_type_facility,
+            src_prefix_to_strip="facility.",
+        )
+        rec["properties"].setdefault("title", "Header")
+        features.append(rec)
+
+    if observations:
         for o in observations:
-            if not isinstance(o, dict):
-                continue
-            rec = _apply_mapping_to_record(o, map_obs, part="observations", header=header, record_type=args.record_type_observation, default_geometry=facility_geometry)
+            rec = _apply_mapping_to_record(
+                o,
+                mapping["observations"],
+                part="observations",
+                header=header,
+                record_type=record_type_observation,
+                src_prefix_to_strip="observations[*].",
+                default_geometry=facility_geom,
+            )
             if not rec["properties"].get("title"):
                 op = o.get("observedProperty")
-                fac = None
-                if isinstance(o.get("facility"), dict):
-                    fac = o["facility"].get("wigosStationIdentifier") or o["facility"].get("facilityName")
-                title = "Observation"
-                if isinstance(op, str) and op:
-                    title = op.rsplit("/", 1)[-1]
-                if fac:
-                    title = f"{title} @ {fac}"
+                title = op.rsplit("/", 1)[-1] if isinstance(op, str) and op else "Observation"
                 rec["properties"]["title"] = title
-            if "deployments" in o:
-                rec["properties"].setdefault("wmdr:deployments", o.get("deployments"))
-            feats.append(rec)
-        outputs.append(("observations", _as_feature_collection(feats)))
+            features.append(rec)
 
-    if deployments and (args.parts in ("auto", "all") or kind in ("full", "deployments")):
-        feats = []
+    if deployments:
         for d in deployments:
-            if not isinstance(d, dict):
-                continue
-            rec = _apply_mapping_to_record(d, map_dep, part="deployments", header=header, record_type=args.record_type_deployment, default_geometry=facility_geometry)
+            rec = _apply_mapping_to_record(
+                d,
+                mapping["deployments"],
+                part="deployments",
+                header=header,
+                record_type=record_type_deployment,
+                src_prefix_to_strip="deployments[*].",
+                default_geometry=facility_geom,
+            )
             if not rec["properties"].get("title"):
                 man = d.get("manufacturer")
                 mod = d.get("model")
                 ser = d.get("serialNumber")
                 bits = [b for b in [man, mod, f"SN {ser}" if ser else None] if isinstance(b, str) and b]
                 rec["properties"]["title"] = " ".join(bits) if bits else "Deployment"
-            for k in ("dataGeneration", "instrumentOperatingStatus", "geospatialLocation"):
-                if k in d:
-                    rec["properties"].setdefault(f"wmdr:{k}", d.get(k))
-            feats.append(rec)
-        outputs.append(("deployments", _as_feature_collection(feats)))
+            features.append(rec)
 
-    stem = inp.stem
-    for tag, fc in outputs:
-        out_path = out_dir / f"{stem}_{tag}.geojson" if kind == "full" else out_dir / f"{stem}.geojson"
-        out_path.write_text(json.dumps(fc, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"Wrote: {out_path}")
+    return _as_feature_collection(features)
 
-    if not outputs:
-        raise SystemExit("No outputs produced (input did not contain requested part(s)).")
+
+# -----------------------------
+# CLI
+# -----------------------------
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description="Convert WMDR10 lean JSON to OGC Records Part 1 GeoJSON, preserving filenames.")
+    ap.add_argument(
+        "--config",
+        type=Path,
+        default=Path(__file__).parent / "config.yaml",
+        help="Path to config.yaml (default: script folder/config.yaml)",
+    )
+    ap.add_argument("--source", type=Path, default=None, help="Override config source (file or directory).")
+    ap.add_argument("--target", type=Path, default=None, help="Override config target directory.")
+    ap.add_argument("--mapping", type=Path, default=None, help="Override combined mapping CSV path.")
+    ap.add_argument("--pattern", type=str, default="*.json", help="Glob pattern for JSON files (default: *.json)")
+    ap.add_argument("--recursive", action="store_true", help="Scan source directory recursively (default).")
+    ap.add_argument("--no-recursive", dest="recursive", action="store_false", help="Scan only top-level.")
+    ap.set_defaults(recursive=True)
+    args = ap.parse_args()
+
+    cfg = _cfg_section(_load_config(args.config))
+
+    source = args.source or Path(cfg.get("source", ""))
+    target = args.target or Path(cfg.get("target", ""))
+
+    if not str(source):
+        raise SystemExit("Missing source. Set convert_wmdr10_json_to_records_part1.source in config.yaml or pass --source.")
+    if not str(target):
+        raise SystemExit("Missing target. Set convert_wmdr10_json_to_records_part1.target in config.yaml or pass --target.")
+
+    # Resolve mapping
+    mapping_path = args.mapping
+    if mapping_path is None:
+        mapping_path = cfg.get("mapping")
+        if mapping_path:
+            mapping_path = Path(str(mapping_path))
+        else:
+            raise SystemExit("Missing mapping. Provide convert_wmdr10_json_to_records_part1.mapping or mapping_configs.* in config.yaml.")
+    if "mapping" not in locals():
+        # combined mapping path case
+        mp = Path(mapping_path)  # type: ignore[arg-type]
+        if not mp.is_absolute():
+            mp = (args.config.parent / mp).resolve()
+        if not mp.exists():
+            raise SystemExit(f"Mapping file not found: {mp}")
+        mapping = _load_mapping_combined(mp)
+
+    source = source if source.is_absolute() else (args.config.parent / source).resolve()
+    target = target if target.is_absolute() else (args.config.parent / target).resolve()
+    target.mkdir(parents=True, exist_ok=True)
+
+    json_files = _iter_json_files(source, recursive=args.recursive, pattern=args.pattern)
+    if not json_files:
+        raise SystemExit(f"No JSON files found under: {source}")
+
+    ok = 0
+    failed: List[Tuple[Path, str]] = []
+
+    # record type defaults (could be extended via config later)
+    rt_fac = "dataset"
+    rt_obs = "dataset"
+    rt_dep = "dataset"
+
+    for inp in json_files:
+        try:
+            payload = json.loads(inp.read_text(encoding="utf-8"))
+
+            # Preserve relative path structure
+            rel = inp.relative_to(source) if source.is_dir() else inp.name
+            if isinstance(rel, Path):
+                out_path = (target / rel).with_suffix(".geojson")
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+            else:
+                out_path = (target / inp.name).with_suffix(".geojson")
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+
+            fc = _convert_file(
+                inp,
+                payload,
+                mapping,
+                record_type_facility=rt_fac,
+                record_type_observation=rt_obs,
+                record_type_deployment=rt_dep,
+            )
+
+            out_path.write_text(json.dumps(fc, ensure_ascii=False, indent=2), encoding="utf-8")
+            print(f"Wrote: {out_path}")
+            ok += 1
+
+        except Exception as e:
+            failed.append((inp, str(e)))
+            print(f"ERROR: {inp}: {e}")
+
+    print(f"Done. Converted {ok}/{len(json_files)} file(s).")
+    if failed:
+        print("Failures:")
+        for p, msg in failed:
+            print(f"  - {p}: {msg}")
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":

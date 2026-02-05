@@ -54,10 +54,15 @@ wmdr_code_tables:
   11-02: http://codes.wmo.int/wmdr/CoordinateReferenceSystem
   11-04: https://codes.wmo.int/wmdr/Timezone
 
-convert_wmdr10_xml_to_lean_json:
+convert_wmdr10_xml_to_wmdr10_json:
   source: resources/wmdr10_xml_examples
-  target: resources/json_from_wmdr10_examples
+  target: resources/wmdr10_json_examples
 
-mappings_wmdr10_records_part1:
-  facility: mappings/wmdr10_facility_vs_records_part1.csv
-  observations: mappings/wmdr10_observations_vs_records_part1.csv
+convert_wmdr10_json_to_records_part1:
+  source: resources/wmdr10_json_examples
+  target: results/records_part1_geojson_examples
+  mapping: mappings/wmdr10_vs_records_part1.csv
+    # facility: mappings/wmdr10_facility_vs_records_part1.csv
+    # observations: mappings/wmdr10_observations_vs_records_part1.csv
+    # deployments: mappings/wmdr10_deployments_vs_records_part1.csv
+    # full: mappings/wmdr10_full_vs_records_part1.csv

@@ -39,8 +39,8 @@ from wmdr10.wmdr10 import WMDR10
 
 def main():
     config = load_config(Path("config.yaml"))
-    source_path = Path(config['convert_wmdr10_xml_to_lean_json']['source'])
-    target_path = Path(config['convert_wmdr10_xml_to_lean_json']['target'])
+    source_path = Path(config['convert_wmdr10_xml_to_wmdr10_json']['source'])
+    target_path = Path(config['convert_wmdr10_xml_to_wmdr10_json']['target'])
     target_path.mkdir(parents=True, exist_ok=True)
 
     # read WMDR10 XML files and convert to lean json
@@ -50,13 +50,12 @@ def main():
         wmdr10.export(path=target_path / xml_file.name.replace('.xml', ''))
 
         # extract parts of WMDR10 object and store as lean json
-        # facility = wmdr10.extract(parts='facility')
-        # observations = wmdr10.extract(parts='observations')
-        # deployments = wmdr10.extract(parts='deployments')
         print(f"{wmdr10.export(parts='header', path=target_path / xml_file.name)} created.")
         print(f"{wmdr10.export(parts='facility', path=target_path / xml_file.name)} created.")
         print(f"{wmdr10.export(parts='observations', path=target_path / xml_file.name)} created.")
         print(f"{wmdr10.export(parts='deployments', path=target_path / xml_file.name)} created.")
+
+        # extract specific observation and deployment by index
         print(f"{wmdr10.export(parts='observations', index=1, path=target_path / xml_file.name)} created.")
         print(f"{wmdr10.export(parts='observations', index=5, path=target_path / xml_file.name)} created.")
         print(f"{wmdr10.export(parts='deployments', index=1, path=target_path / xml_file.name)} created.")
