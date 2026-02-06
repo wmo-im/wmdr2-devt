@@ -1,3 +1,9 @@
+# References
+- OGC API - Records - Part 1: Core (https://docs.ogc.org/is/22-079r3/22-079r3.html)
+- WMO 1192 WIGOS Metadata Standard (https://library.wmo.int/documents/wmo-1192)
+- WMDR1.0 (https://schemas.wmo.int/wmdr/1.0/)
+- WMDR2 draft UML aligned to OMS (https://wmo-im.github.io/wmdr2/oms/html/)
+
 # mappings
 ## WMDR1.0 vs OGC Records - Part 1:Core
 ### Facility identity
