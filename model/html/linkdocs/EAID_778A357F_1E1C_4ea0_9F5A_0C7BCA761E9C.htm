@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<title></title>
+<meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+</head>
+<body>
+<div align="left"><font face="Times New Roman" size="2">Changes from WMDR1.0</font></div>
+<div align="left"><font face="Times New Roman" size="2"><br /></font></div><div align="left"><font face="Times New Roman" size="2"><b>replaced</b></font></div>
+<div align="left"><font face="Times New Roman" size="2">- GeospatialLocation becomes Location</font></div>
+<div align="left"><font face="Times New Roman" size="2">- Equipment is split into AbstractEquipment ('catalogue entry') and Equipment ('instance')</font></div>
+<div align="left"><font face="Times New Roman" size="2">- ObservingCapability becomes ObservationCollection with several more attributes, in part taken from the previous 
+Deployment.</font></div>
+<p><font face="Times New Roman" size="2">- </font><font face="Calibri" size="2">The concept 'ObservationCollection.temporalCoverage' concept replaces the 'schedule' from WMDR1.0</font></p>
+<div align="left"><font face="Times New Roman" size="2"><br /></font></div><div align="left"><font face="Times New Roman" size="2"><b>removed</b></font></div>
+<div align="left"><font face="Times New Roman" size="2">- AbstractEnvironmentalMonitoringFacility attributes are embedded explicity in ObservingFacility (Host) and 
+Equipment (Observer)</font></div>
+<div align="left"><font face="Times New Roman" size="2">- dataPolicy:DataPolicy is split into dataPolicy:DataPolicyType and attribution:Attribution</font></div>
+<div align="left"><font face="Times New Roman" size="2">- deployment:Deployment</font></div>
+<div align="left"><font face="Times New Roman" size="2">- schedule:Schedule is removed. Relevant information on the temporal coverage of an ObservationCollection can be 
+expressed using ObservationCollection.temporalCoverage</font></div>
+<div align="left"><font face="Times New Roman" size="2">- FeatureType MaintenanceReport removed; attribute maintenanceParty integrated into EquipmentLog</font></div>
+<div align="left"><font face="Times New Roman" size="2">- FeatureType EventReport removed; attribute typeOfEevent integrated into FacilityLog</font></div>
+<div align="left"><font face="Times New Roman" size="2">- Abstract class Log is removed</font></div>
+<div align="left"><font face="Times New Roman" size="2">- MD_Distribution removed; Attribution covers important aspects</font></div>
+<div align="left"><font face="Times New Roman" size="2"><br /></font></div><div align="left"><font face="Times New Roman" size="2"><b>renamed</b></font></div>
+<div align="left"><font face="Times New Roman" size="2">- ControlCheckReport becomes QualityAssuranceLog</font></div>
+<div align="left"><font face="Times New Roman" size="2"><br /></font></div><div align="left"><font face="Times New Roman" size="2"><b>new</b></font></div>
+<div align="left"><font face="Times New Roman" size="2">- aggregation:Aggregation</font></div>
+<div align="left"><font face="Times New Roman" size="2"><br /></font></div><div align="left"><font face="Times New Roman" size="2"><br /></font></div><div align="left"><font face="Times New Roman" size="2"><br /></font></div><div align="left"><font face="Times New Roman" size="2"><br /></font></div><div align="left"><font face="Times New Roman" size="2">moved to 'obsolete' </font></div>
+<div align="left"><font face="Times New Roman" size="2">- Left-over in EA Model</font></div>
+<div align="left"><font face="Times New Roman" size="2">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;- &quot;master document&quot; Manual On Codes Text</font></div>
+<div align="left"><font face="Times New Roman" size="2">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;- Requirements Classes for Manual on Codes</font></div>
+<div align="left"><font face="Times New Roman" size="2">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;NB: I don't know how to work with this, but it may be very useful for documentation purposes ... otherwise 
+remove eventually.</font></div>
+</body>
+</html>

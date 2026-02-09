@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>WMDR2.0 Full Model</title>
+<link href="../css/ea.css" rel="stylesheet" type="text/css" />
+<script>
+function initPage(src) {	
+	if(parent==this&&(this.location+"").indexOf('EARoot')!=-1)
+		document.location=(this.location+"").substring(0,(this.location+"").indexOf('EARoot'))+"index"+(this.location+"").substring((this.location+"").lastIndexOf('.'))+"?goto="+((this.location+"").substring((this.location+"").indexOf('EARoot')+7,(this.location+"").lastIndexOf('.')).replace(/\//g,':').replace(/EA/g,""));
+	else
+		parent.initPage(src);
+}
+
+function nameClassifier(name, separator)
+{
+  var str = name;
+  var classifierName;
+  var node = document.getElementById('name_classifier');
+  if(node != null)
+  {
+    classifierName = node.innerHTML;
+  }
+  if(classifierName != "")
+  {
+   str += separator + classifierName;
+  }
+  
+  return str;
+}
+</script>
+</head>
+<body onload="initPage(this);" class="Content">
+<div class="PageBody">
+	
+<img src="EA4.png" usemap="#EA4" border="0" />
+
+<MAP NAME="EA4">
+<area shape="rect" coords="10,940,140,1040" href="EA21.htm" target="_self">
+<area shape="rect" coords="179,930,392,1025" href="EA24.htm" target="_self">
+<area shape="rect" coords="150,750,420,880" href="EA59.htm" target="_self">
+<area shape="rect" coords="449,591,695,701" href="EA58.htm" target="_self">
+<area shape="rect" coords="1160,760,1352,840" href="EA19.htm" target="_self">
+<area shape="rect" coords="710,411,906,471" href="EA41.htm" target="_self">
+<area shape="rect" coords="1469,400,1663,480" href="EA44.htm" target="_self">
+<area shape="rect" coords="2060,671,2180,730" href="EA29.htm" target="_self">
+<area shape="rect" coords="851,90,1041,240" href="EA65.htm" target="_self">
+<area shape="rect" coords="2712,1345,2896,1443" href="EA50.htm" target="_self">
+<area shape="rect" coords="2470,1020,2642,1105" href="EA27.htm" target="_self">
+<area shape="rect" coords="2470,1346,2696,1431" href="EA62.htm" target="_self">
+<area shape="rect" coords="2470,1213,2736,1337" href="EA64.htm" target="_self">
+<area shape="rect" coords="2470,1114,2773,1212" href="EA61.htm" target="_self">
+<area shape="rect" coords="2650,1020,2821,1098" href="EA63.htm" target="_self">
+<area shape="rect" coords="2480,1479,2809,1552" href="EA37.htm" target="_self">
+<area shape="rect" coords="851,260,1040,350" href="EA35.htm" target="_self">
+<area shape="rect" coords="1310,1470,1531,1555" href="EA49.htm" target="_self">
+<area shape="rect" coords="1570,1630,1780,1741" href="EA51.htm" target="_self">
+<area shape="rect" coords="2641,120,2975,270" href="EA54.htm" target="_self">
+<area shape="rect" coords="2371,10,2559,112" href="EA39.htm" target="_self">
+<area shape="rect" coords="2321,728,2588,917" href="EA23.htm" target="_self">
+<area shape="rect" coords="2730,420,3012,609" href="EA34.htm" target="_self">
+<area shape="rect" coords="2371,240,2581,315" href="EA31.htm" target="_self">
+<area shape="rect" coords="2304,368,2604,648" href="EA30.htm" target="_self">
+<area shape="rect" coords="1720,391,1830,431" href="EA33.htm" target="_self">
+<area shape="rect" coords="2210,150,2360,220" href="EA32.htm" target="_self">
+<area shape="rect" coords="1940,359,2184,613" href="EA47.htm" target="_self">
+<area shape="rect" coords="1971,200,2155,298" href="EA26.htm" target="_self">
+<area shape="rect" coords="1642,29,1896,140" href="EA25.htm" target="_self">
+<area shape="rect" coords="1082,148,1202,232" href="EA22.htm" target="_self">
+<area shape="rect" coords="1232,160,1496,350" href="EA42.htm" target="_self">
+<area shape="rect" coords="1644,149,1899,364" href="EA55.htm" target="_self">
+</MAP>
+
+	<div class="ObjectTitle">WMDR2.0 Full Model : Class diagram</div>
+	<table border="0" cellpadding="0" cellspacing="0" class="ObjectDetails">
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Created:</td>
+			<td width="85%" class="ObjectDetailsValue">9/13/2022 12:00:04 PM</td>
+		</tr>
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic">Modified:</td>
+			<td width="85%" class="ObjectDetailsValue">10/5/2022 12:46:50 PM</td>
+		</tr>
+		<tr style="padding-top: 10px;">
+			<td width="15%" class="ObjectDetailsTopic"><img src="../images/plus03.gif" align="absmiddle" id="proj" onclick="parent.toggleData(this.id)" />Project:</td>
+			<td width="85%" class="ObjectDetailsValue"></td>			
+		</tr>
+		<tr id="proj00" style="display: none;">
+			<td width="15%" class="ObjectDetailsTopic" style="padding-left: 18px;">Author:</td>
+			<td width="85%" class="ObjectDetailsValue">jkl</td>
+		</tr>
+		<tr id="proj01" style="display: none;">
+			<td width="15%" class="ObjectDetailsTopic" style="padding-left: 18px;">Version:</td>
+			<td width="85%" class="ObjectDetailsValue">0.0</td>
+		</tr>
+		<tr>
+			<td width="15%" class="ObjectDetailsTopic"><img src="../images/plus03.gif" align="absmiddle" id="adv" onclick="parent.toggleData(this.id)" />Advanced:</td>
+			<td width="85%" class="ObjectDetailsValue"></td>			
+		</tr>
+		<tr id="adv00" style="display: none;">
+			<td width="15%" class="ObjectDetailsTopic" style="padding-left: 18px;">ID:</td>
+			<td width="85%" class="ObjectDetailsValue">{E8D20554-D4EE-4b5f-A013-6651AF04E006}</td>
+		</tr>
+	</table>
+	
+</div>
+ 
+</body>
+</html>
