@@ -6,30 +6,29 @@
       "id": "id_10307340-c9f1-478d-9d64-ad37dfbe938f",
       "geometry": null,
       "properties": {
-        "type": "dataset",
-        "wmdr:observingMethod": {
+        "type": "deployment",
+        "observingMethod": {
           "href": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
         },
-        "wmdr:manufacturer": "R&J Beck London",
-        "wmdr:model": "Dobson",
-        "wmdr:serialNumber": "18",
-        "wmdr:sourceOfObservation": {
+        "manufacturer": "R&J Beck London",
+        "model": "Dobson",
+        "serialNumber": "18",
+        "sourceOfObservation": {
           "href": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
         },
-        "wmdr:exposure": {
+        "exposure": {
           "href": "http://codes.wmo.int/wmdr/Exposure/class1"
         },
-        "wmdr:applicationArea": [
+        "applicationArea": [
           {
             "href": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
           }
         ],
-        "wmdr:dataGeneration": [
+        "dataGeneration": [
           {
             "id": "id_cc041b1f-b29a-4d3d-a7ed-c48ddcaafc53",
             "time": {
-              "interval[0]": "2005-05-01T00:00:00Z",
-              "interval[1]": "2012-12-31T00:00:00Z"
+              "interval": ["2005-05-01T00:00:00Z","2012-12-31T00:00:00Z"]
             },
             "reporting": {
               "temporalReportingInterval": "P11M25DT10H",
@@ -54,16 +53,14 @@
             }
           }
         ],
-        "wmdr:part": "deployments",
         "title": "R&J Beck London Dobson SN 18"
       },
       "links": [],
       "time": {
-        "interval[0]": "2005-05-01T00:00:00Z",
-        "interval[1]": "2012-12-31T00:00:00Z"
+        "interval": ["2005-05-01","2012-12-31"]
       }
     }
   ],
-  "timeStamp": "2026-02-05T17:00:17Z",
+  "timeStamp": "2026-02-20T14:39:10Z",
   "numberReturned": 1
 }

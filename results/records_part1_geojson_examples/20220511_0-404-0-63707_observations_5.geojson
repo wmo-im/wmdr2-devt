@@ -6,44 +6,44 @@
       "id": "id_b074e829-f42d-7937-e053-148ef98d6de4",
       "geometry": null,
       "properties": {
-        "type": "dataset",
-        "wmdr:observedProperty": {
+        "type": "observationCollection",
+        "observedProperty": {
           "href": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225"
         },
-        "wmdr:programAffiliation": [
+        "programAffiliation": [
           {
             "href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
           }
         ],
-        "wmdr:geometryType": {
+        "geometryType": {
           "href": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "contacts": [
           {
-            "roles": [
-              null
-            ],
+            "roles": [null],
             "distributionInfo": {
-              "roles": [
-                null
-              ]
+              "roles": [null]
             }
           }
         ],
         "updated": null,
-        "wmdr:deploymentHistory": [
+        "deploymentHistory": [
           {
-            "observingMethod": {
-              "href": "http://codes.wmo.int/wmdr/inapplicable"
-            },
-            "responsibleParty": {
-              "role": {
-                "href": null
+            "observingMethod": [
+              {
+                "href": "http://codes.wmo.int/wmdr/inapplicable"
               }
-            }
+            ],
+            "responsibleParty": [
+              {
+                "role": {
+                  "href": null
+                }
+              }
+            ],
+            "datetimes": [null,".."]
           }
         ],
-        "wmdr:part": "observations",
         "title": "225"
       },
       "links": [
@@ -53,8 +53,7 @@
         }
       ],
       "time": {
-        "interval[0]": "2020-09-22T00:00:00Z",
-        "interval[1]": null
+        "interval": ["2020-09-22",".."]
       }
     },
     {
@@ -62,20 +61,18 @@
       "id": "id_b074e829-f42d-7937-e053-148ef98d6de4",
       "geometry": null,
       "properties": {
-        "type": "dataset",
-        "wmdr:observingMethod": {
+        "type": "deployment",
+        "observingMethod": {
           "href": "http://codes.wmo.int/wmdr/inapplicable"
         },
-        "wmdr:part": "deployments",
         "title": "Deployment"
       },
       "links": [],
       "time": {
-        "interval[0]": "2020-09-22T00:00:00Z",
-        "interval[1]": null
+        "interval": ["2020-09-22",".."]
       }
     }
   ],
-  "timeStamp": "2026-02-05T17:00:17Z",
+  "timeStamp": "2026-02-20T14:39:10Z",
   "numberReturned": 2
 }

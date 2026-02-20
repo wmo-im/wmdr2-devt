@@ -6,156 +6,155 @@
       "id": "id_cca5e647-05b3-4d9c-bb5a-cbd300e3ae4c",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.956,
-          40.634
-        ]
+        "coordinates": [22.956,40.634,60]
       },
       "properties": {
-        "type": "dataset",
-        "wmdr:observedProperty": {
+        "type": "observationCollection",
+        "observedProperty": {
           "href": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573"
         },
-        "wmdr:programAffiliation": [
+        "programAffiliation": [
           {
             "href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
           }
         ],
-        "wmdr:geometryType": {
+        "geometryType": {
           "href": "http://codes.wmo.int/wmdr/Geometry/area"
         },
         "contacts": [
           {
-            "roles": [
-              "https://standards.iso.org/iso/19115/resources/Codelists/gml/CI_RoleCode.xml/principalInvestigator"
-            ],
-            "emails": [
-              "abais@auth.gr"
-            ],
+            "roles": ["https://standards.iso.org/iso/19115/resources/Codelists/gml/CI_RoleCode.xml/principalInvestigator"],
+            "emails": ["abais@auth.gr"],
             "distributionInfo": {
               "organization": "WRDC",
-              "roles": [
-                null
-              ]
+              "roles": [null]
             }
           }
         ],
         "updated": null,
-        "wmdr:onlineResource": [
+        "onlineResource": [
           {
             "identifier": "id_e9184075-63b2-3237-e053-148ef98d6314"
           }
         ],
-        "wmdr:geospatialLocationHistory": [
+        "deploymentHistory": [
           {
-            "geopositioningMethod": {
-              "href": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-            },
-            "identifier": "id_b074e827-1efc-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": null,
-              "interval[1]": null
-            }
-          }
-        ],
-        "wmdr:deploymentHistory": [
-          {
-            "localReferenceSurface": {
-              "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "heightAboveLocalReferenceSurface": {
-              "value": "20.0",
-              "uom": "m"
-            },
-            "sourceOfObservation": {
-              "href": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
-            },
-            "observingMethod": {
-              "href": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
-            },
-            "exposure": {
-              "href": "http://codes.wmo.int/wmdr/Exposure/class1"
-            },
-            "representativeness": {
-              "href": "http://codes.wmo.int/wmdr/Representativeness/toposcale"
-            },
-            "applicationArea": [
+            "localReferenceSurface": [
               {
-                "href": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
+                "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ],
-            "manufacturer": "Kipp&Zonen",
-            "model": "CM21",
-            "responsibleParty": {
-              "role": {
-                "href": null
+            "heightAboveLocalReferenceSurface": [
+              {
+                "value": "20.0",
+                "uom": "m"
               }
-            }
+            ],
+            "sourceOfObservation": [
+              {
+                "href": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              }
+            ],
+            "observingMethod": [
+              {
+                "href": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
+              }
+            ],
+            "exposure": [
+              {
+                "href": "http://codes.wmo.int/wmdr/Exposure/class1"
+              }
+            ],
+            "representativeness": [
+              {
+                "href": "http://codes.wmo.int/wmdr/Representativeness/toposcale"
+              }
+            ],
+            "applicationArea": [
+              [
+                {
+                  "href": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
+                }
+              ]
+            ],
+            "manufacturer": ["Kipp&Zonen"],
+            "model": ["CM21"],
+            "responsibleParty": [
+              {
+                "role": {
+                  "href": null
+                }
+              }
+            ],
+            "datetimes": [null,".."]
           }
         ],
-        "wmdr:instrumentOperatingStatusHistory": [
+        "instrumentOperatingStatusHistory": [
           {
-            "instrumentOperatingStatus": {
-              "href": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
-            },
             "identifier": "id_b074e827-5347-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": "1993-01-19T00:00:00Z",
-              "interval[1]": null
-            }
+            "instrumentOperatingStatus": [
+              {
+                "href": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+              }
+            ],
+            "datetimes": [["1993-01-19T00:00:00Z",".."]]
           }
         ],
-        "wmdr:dataGenerationHistory": [
+        "dataGenerationHistory": [
           {
             "identifier": "id_966fae01-648f-4de9-9d88-4a8ae15bd746",
-            "time": {
-              "interval[0]": "1993-01-19T00:00:00Z",
-              "interval[1]": null
-            },
-            "sampling": {
-              "samplingStrategy": {
-                "href": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-              },
-              "samplingTimePeriod": "PT2S",
-              "temporalSamplingInterval": "PT2S"
-            },
-            "processing": {
-              "aggregationPeriod": "PT1M"
-            },
-            "reporting": {
-              "internationalExchange": "false",
-              "uom": {
-                "href": "http://codes.wmo.int/wmdr/unit/W.m-2"
-              },
-              "temporalReportingInterval": "PT1H",
-              "numberOfObservationsInReportingInterval": "60",
-              "dataPolicy": {
-                "dataPolicy": {
-                  "href": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            "sampling": [
+              {
+                "samplingStrategy": {
+                  "href": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
                 },
-                "attribution": {
-                  "originator": {
-                    "role": {
-                      "href": null
+                "samplingTimePeriod": "PT2S",
+                "temporalSamplingInterval": "PT2S"
+              }
+            ],
+            "processing": [
+              {
+                "aggregationPeriod": "PT1M"
+              }
+            ],
+            "reporting": [
+              {
+                "internationalExchange": "false",
+                "uom": {
+                  "href": "http://codes.wmo.int/wmdr/unit/W.m-2"
+                },
+                "temporalReportingInterval": "PT1H",
+                "numberOfObservationsInReportingInterval": "60",
+                "dataPolicy": {
+                  "dataPolicy": {
+                    "href": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+                  },
+                  "attribution": {
+                    "originator": {
+                      "role": {
+                        "href": null
+                      }
                     }
                   }
                 }
               }
-            },
-            "coverage": {
-              "startMonth": "1",
-              "endMonth": "12",
-              "startWeekday": "1",
-              "endWeekday": "7",
-              "startHour": "0",
-              "endHour": "23",
-              "startMinute": "0",
-              "endMinute": "59",
-              "diurnalBaseTime": "00:00:00Z"
-            }
+            ],
+            "coverage": [
+              {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "00:00:00Z"
+              }
+            ],
+            "datetimes": [["1993-01-19T00:00:00Z",".."]]
           }
         ],
-        "wmdr:part": "observations",
         "title": "573"
       },
       "links": [
@@ -170,8 +169,7 @@
         }
       ],
       "time": {
-        "interval[0]": "1992-05-27T00:00:00Z",
-        "interval[1]": null
+        "interval": ["1992-05-27",".."]
       }
     },
     {
@@ -179,60 +177,56 @@
       "id": "id_cca5e647-05b3-4d9c-bb5a-cbd300e3ae4c",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.956,
-          40.634
-        ]
+        "coordinates": [22.956,40.634,60]
       },
       "properties": {
-        "type": "dataset",
-        "wmdr:observingMethod": {
+        "type": "deployment",
+        "observingMethod": {
           "href": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
         },
-        "wmdr:manufacturer": "Kipp&Zonen",
-        "wmdr:model": "CM21",
-        "wmdr:sourceOfObservation": {
+        "manufacturer": "Kipp&Zonen",
+        "model": "CM21",
+        "sourceOfObservation": {
           "href": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
         },
-        "wmdr:exposure": {
+        "exposure": {
           "href": "http://codes.wmo.int/wmdr/Exposure/class1"
         },
-        "wmdr:representativeness": {
+        "representativeness": {
           "href": "http://codes.wmo.int/wmdr/Representativeness/toposcale"
         },
-        "wmdr:localReferenceSurface": {
+        "localReferenceSurface": {
           "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
         },
-        "wmdr:heightAboveLocalReferenceSurface": {
+        "heightAboveLocalReferenceSurface": {
           "value": "20.0",
           "uom": {
             "href": "m"
           }
         },
-        "wmdr:applicationArea": [
+        "applicationArea": [
           {
             "href": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
           }
         ],
-        "wmdr:instrumentOperatingStatus": {
+        "instrumentOperatingStatus": {
           "instrumentOperatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
           "@gml:id": "id_b074e827-5347-7937-e053-148ef98d6de4",
           "beginPosition": "1993-01-19T00:00:00Z",
           "endPosition": null
         },
-        "wmdr:geospatialLocation": {
+        "geospatialLocation": {
           "geoLocation": "40.634 22.956 60.0",
           "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
           "@gml:id": "id_b074e827-1efc-7937-e053-148ef98d6de4",
           "beginPosition": null,
           "endPosition": null
         },
-        "wmdr:dataGeneration": [
+        "dataGeneration": [
           {
             "id": "id_966fae01-648f-4de9-9d88-4a8ae15bd746",
             "time": {
-              "interval[0]": "1993-01-19T00:00:00Z",
-              "interval[1]": null
+              "interval": ["1993-01-19T00:00:00Z",".."]
             },
             "reporting": {
               "temporalReportingInterval": "PT1H",
@@ -255,16 +249,14 @@
             }
           }
         ],
-        "wmdr:part": "deployments",
         "title": "Kipp&Zonen CM21"
       },
       "links": [],
       "time": {
-        "interval[0]": "1992-05-27T00:00:00Z",
-        "interval[1]": null
+        "interval": ["1992-05-27",".."]
       }
     }
   ],
-  "timeStamp": "2026-02-05T17:00:17Z",
+  "timeStamp": "2026-02-20T14:39:10Z",
   "numberReturned": 2
 }

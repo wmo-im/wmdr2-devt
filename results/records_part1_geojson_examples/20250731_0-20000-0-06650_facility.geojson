@@ -6,72 +6,48 @@
       "id": "0-20000-0-06650",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          8.301014,
-          47.036442
-        ]
+        "coordinates": [8.302,47.037,450]
       },
       "properties": {
-        "type": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-        "wmdr:geospatialLocationHistory": [
-          {
-            "identifier": "id_d840a7f0-8c54-41f5-bf60-a78a8f5d9e5c",
-            "time": {
-              "interval[0]": "2025-07-01T00:00:00Z",
-              "interval[1]": null
-            },
-            "geometry": "47.037 8.302 450.0"
-          },
-          {
-            "identifier": "id_b074e825-5f9f-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": "1864-01-01T00:00:00Z",
-              "interval[1]": null
-            },
-            "geometry": "47.036442 8.301014 454.0",
-            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          }
-        ],
+        "type": "stationPlatform",
+        "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
         "externalIds": [
           {
             "value": "0-20000-0-06650"
           }
         ],
         "title": "LUZERN",
-        "wmdr:programAffiliationHistory": [
+        "programAffiliationHistory": [
           {
-            "programAffiliation": {
-              "href": [
-                "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              ]
-            },
-            "reportingStatusHistory": [
+            "programAffiliation": [
               {
-                "identifier": "id_b074e827-875e-7937-e053-148ef98d6de4",
-                "time": {
-                  "interval[0]": "1864-01-01T00:00:00Z",
-                  "interval[1]": null
-                },
-                "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
-              }
-            ]
-          },
-          {
-            "programAffiliation": {
-              "href": [
-                "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
-              ]
-            },
-            "reportingStatusHistory": [
+                "href": ["http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"]
+              },
               {
-                "identifier": "e8262cec-6ae1-76a6-e053-148ef98d37b0",
-                "time": {
-                  "interval[0]": "2022-09-08T00:00:00Z",
-                  "interval[1]": null
-                },
-                "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                "href": ["http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"]
               }
-            ]
+            ],
+            "reportingStatusHistory": [
+              [
+                {
+                  "identifier": "id_b074e827-875e-7937-e053-148ef98d6de4",
+                  "time": {
+                    "interval": ["1864-01-01T00:00:00Z",".."]
+                  },
+                  "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                }
+              ],
+              [
+                {
+                  "identifier": "e8262cec-6ae1-76a6-e053-148ef98d37b0",
+                  "time": {
+                    "interval": ["2022-09-08T00:00:00Z",".."]
+                  },
+                  "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                }
+              ]
+            ],
+            "datetimes": [[null,".."],[null,".."]]
           }
         ],
         "contacts": [
@@ -83,28 +59,36 @@
             }
           }
         ],
-        "wmdr:contactsHistory": [
+        "contactsHistory": [
           {
-            "time": {
-              "interval[0]": "1864-01-01T00:00:00Z",
-              "interval[1]": null
-            }
+            "contacts": [
+              [
+                {
+                  "identifier": "id_b074e824-41d2-7937-e053-148ef98d6de4",
+                  "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+                  "roles": {
+                    "href": "https://standards.iso.org/iso/19115/resources/Codelists/gml/CI_RoleCode.xml/owner"
+                  }
+                }
+              ]
+            ],
+            "datetimes": [["1864-01-01T00:00:00Z",".."]]
           }
         ],
-        "wmdr:territoryHistory": [
+        "territoryHistory": [
           {
             "identifier": "id_b074e824-8f91-7937-e053-148ef98d6de4",
-            "beginPosition": "1864-01-01T00:00:00Z",
-            "endPosition": null,
-            "territory": {
-              "href": "http://codes.wmo.int/wmdr/TerritoryName/CHE"
-            }
+            "territory": [
+              {
+                "href": "http://codes.wmo.int/wmdr/TerritoryName/CHE"
+              }
+            ],
+            "datetimes": ["1864-01-01T00:00:00Z",".."]
           }
         ],
-        "wmdr:wmoRegion": {
+        "wmoRegion": {
           "href": "http://codes.wmo.int/wmdr/WMORegion/europe"
-        },
-        "wmdr:part": "facility"
+        }
       },
       "links": [
         {
@@ -113,10 +97,15 @@
         }
       ],
       "time": {
-        "interval[0]": "1864-01-01Z"
+        "interval": ["1864-01-01",".."]
+      },
+      "geometryHistory": {
+        "type": "MovingPoint",
+        "coordinates": [[8.301014,47.036442,454],[8.302,47.037,450]],
+        "datetimes": [["1864-01-01T00:00:00Z","2025-07-01T00:00:00Z"],["2025-07-01T00:00:00Z",".."]]
       }
     }
   ],
-  "timeStamp": "2026-02-05T17:00:17Z",
+  "timeStamp": "2026-02-20T14:39:10Z",
   "numberReturned": 1
 }

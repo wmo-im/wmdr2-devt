@@ -6,73 +6,56 @@
       "id": "0-20000-0-06494",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          6.0733333333,
-          50.5108333333
-        ]
+        "coordinates": [6.0733333333,50.5108333333,671]
       },
       "properties": {
-        "type": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-        "wmdr:descriptionHistory": [
+        "type": "stationPlatform",
+        "descriptionHistory": [
           {
             "identifier": "id_b074e824-bc17-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": "2016-04-28T00:00:00Z",
-              "interval[1]": null
-            }
+            "description": ["The station was originally registered based on WMO Pub 9 Vol A information containing these observation remarks: SOILTEMP;SOLRA;SUNDUR;TOTRA (see code table A for explanations). These remarks imply the following additional observations that could not be registered automatically: Solar radiation measurements; Total radiation measurements."],
+            "datetimes": [["2016-04-28T00:00:00Z",".."]]
           }
         ],
         "description": "The station was originally registered based on WMO Pub 9 Vol A information containing these observation remarks: SOILTEMP;SOLRA;SUNDUR;TOTRA (see code table A for explanations). These remarks imply the following additional observations that could not be registered automatically: Solar radiation measurements; Total radiation measurements.",
-        "wmdr:geospatialLocationHistory": [
-          {
-            "identifier": "id_b074e825-0e41-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": "2016-04-28T00:00:00Z",
-              "interval[1]": null
-            },
-            "geometry": "50.5108333333 6.0733333333 671.0"
-          }
-        ],
+        "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
         "externalIds": [
           {
             "value": "0-20000-0-06494"
           }
         ],
         "title": "MONT-RIGI",
-        "wmdr:programAffiliationHistory": [
+        "programAffiliationHistory": [
           {
-            "programAffiliation": {
-              "href": [
-                "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
-              ]
-            },
-            "reportingStatusHistory": [
+            "programAffiliation": [
               {
-                "identifier": "e8262cec-6ab8-76a6-e053-148ef98d37b0",
-                "time": {
-                  "interval[0]": "2022-09-08T00:00:00Z",
-                  "interval[1]": null
-                },
-                "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
-              }
-            ]
-          },
-          {
-            "programAffiliation": {
-              "href": [
-                "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              ]
-            },
-            "reportingStatusHistory": [
+                "href": ["http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"]
+              },
               {
-                "identifier": "id_b074e827-91f1-7937-e053-148ef98d6de4",
-                "time": {
-                  "interval[0]": "2016-04-28T00:00:00Z",
-                  "interval[1]": null
-                },
-                "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                "href": ["http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"]
               }
-            ]
+            ],
+            "reportingStatusHistory": [
+              [
+                {
+                  "identifier": "e8262cec-6ab8-76a6-e053-148ef98d37b0",
+                  "time": {
+                    "interval": ["2022-09-08T00:00:00Z",".."]
+                  },
+                  "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                }
+              ],
+              [
+                {
+                  "identifier": "id_b074e827-91f1-7937-e053-148ef98d6de4",
+                  "time": {
+                    "interval": ["2016-04-28T00:00:00Z",".."]
+                  },
+                  "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                }
+              ]
+            ],
+            "datetimes": [[null,".."],[null,".."]]
           }
         ],
         "contacts": [
@@ -84,32 +67,48 @@
             }
           }
         ],
-        "wmdr:contactsHistory": [
+        "contactsHistory": [
           {
-            "time": {
-              "interval[0]": "2016-04-28T00:00:00Z",
-              "interval[1]": null
-            }
+            "contacts": [
+              [
+                {
+                  "identifier": "id_b074e824-1628-7937-e053-148ef98d6de4",
+                  "organization": "Royal Meteorological Institute of Belgium",
+                  "roles": {
+                    "href": "https://standards.iso.org/iso/19115/resources/Codelists/gml/CI_RoleCode.xml/owner"
+                  }
+                }
+              ]
+            ],
+            "datetimes": [["2016-04-28T00:00:00Z",".."]]
           }
         ],
-        "wmdr:territoryHistory": [
+        "territoryHistory": [
           {
             "identifier": "id_b074e824-599e-7937-e053-148ef98d6de4",
-            "beginPosition": "2016-04-28T00:00:00Z",
-            "endPosition": null,
-            "territory": {
-              "href": "http://codes.wmo.int/wmdr/TerritoryName/BEL"
-            }
+            "territory": [
+              {
+                "href": "http://codes.wmo.int/wmdr/TerritoryName/BEL"
+              }
+            ],
+            "datetimes": ["2016-04-28T00:00:00Z",".."]
           }
         ],
-        "wmdr:wmoRegion": {
+        "wmoRegion": {
           "href": "http://codes.wmo.int/wmdr/WMORegion/europe"
-        },
-        "wmdr:part": "facility"
+        }
       },
-      "links": []
+      "links": [],
+      "geometryHistory": {
+        "type": "MovingPoint",
+        "coordinates": [[6.0733333333,50.5108333333,671]],
+        "datetimes": [["2016-04-28T00:00:00Z",".."]]
+      },
+      "time": {
+        "interval": ["2016-04-28",".."]
+      }
     }
   ],
-  "timeStamp": "2026-02-05T17:00:17Z",
+  "timeStamp": "2026-02-20T14:39:10Z",
   "numberReturned": 1
 }

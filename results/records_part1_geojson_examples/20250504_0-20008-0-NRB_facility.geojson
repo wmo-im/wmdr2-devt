@@ -6,158 +6,149 @@
       "id": "0-20008-0-NRB",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          36.75919,
-          -1.30169
-        ]
+        "coordinates": [36.75919,-1.30169,1795]
       },
       "properties": {
-        "type": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-        "wmdr:climateZoneHistory": [
+        "type": "stationPlatform",
+        "climateZoneHistory": [
           {
             "identifier": "id_b074e824-ec62-7937-e053-148ef98d6de4",
-            "beginPosition": "1996-01-01T00:00:00Z",
-            "href": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer",
-            "endPosition": null
+            "hrefs": ["http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer"],
+            "datetimes": ["1996-01-01T00:00:00Z",".."]
           }
         ],
-        "wmdr:descriptionHistory": [
+        "descriptionHistory": [
           {
             "identifier": "id_b074e824-b0a9-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": "2008-12-05T00:00:00Z",
-              "interval[1]": null
-            }
+            "description": ["The  station is located at 01° 18'S  36° 45' E at an altitude of 1795m and is within the compound of the Kenya Meteorological Department headquarters at Dagoretti Corner, Nairobi."],
+            "datetimes": [["2008-12-05T00:00:00Z",".."]]
           }
         ],
         "description": "The  station is located at 01° 18'S  36° 45' E at an altitude of 1795m and is within the compound of the Kenya Meteorological Department headquarters at Dagoretti Corner, Nairobi.",
-        "wmdr:geospatialLocationHistory": [
-          {
-            "identifier": "id_b074e824-fed7-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": "1996-01-01T00:00:00Z",
-              "interval[1]": null
-            },
-            "geometry": "-1.30169 36.75919 1795.0",
-            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          }
-        ],
+        "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
         "externalIds": [
           {
             "value": "0-20008-0-NRB"
           }
         ],
         "title": "Nairobi",
-        "wmdr:programAffiliationHistory": [
+        "programAffiliationHistory": [
           {
-            "programAffiliation": {
-              "href": [
-                "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
-              ]
-            },
             "identifier": "NRB",
-            "reportingStatusHistory": [
+            "programAffiliation": [
               {
-                "identifier": "id_b074e827-8540-7937-e053-148ef98d6de4",
-                "time": {
-                  "interval[0]": "1996-01-01T00:00:00Z",
-                  "interval[1]": null
-                },
-                "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                "href": ["http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"]
               }
-            ]
+            ],
+            "reportingStatusHistory": [
+              [
+                {
+                  "identifier": "id_b074e827-8540-7937-e053-148ef98d6de4",
+                  "time": {
+                    "interval": ["1996-01-01T00:00:00Z",".."]
+                  },
+                  "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                }
+              ]
+            ],
+            "datetimes": [null,".."]
           },
           {
-            "programAffiliation": {
-              "href": [
-                "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
-              ]
-            },
             "identifier": "Nairobi",
-            "reportingStatusHistory": [
+            "programAffiliation": [
               {
-                "identifier": "id_b074e827-8541-7937-e053-148ef98d6de4",
-                "time": {
-                  "interval[0]": "1996-01-01T00:00:00Z",
-                  "interval[1]": null
-                },
-                "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
-              }
-            ]
-          },
-          {
-            "programAffiliation": {
-              "href": [
-                "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-              ]
-            },
-            "identifier": "Nairobi",
-            "reportingStatusHistory": [
-              {
-                "identifier": "id_c66fe359-3dde-4f65-ab97-0062edb0ce55",
-                "time": {
-                  "interval[0]": "2010-06-11T00:00:00Z",
-                  "interval[1]": null
-                },
-                "status": "http://codes.wmo.int/wmdr/ReportingStatus/unknown"
+                "href": ["http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"]
               },
               {
-                "identifier": "id_b074e827-8542-7937-e053-148ef98d6de4",
-                "time": {
-                  "interval[0]": "2004-10-22T00:00:00Z",
-                  "interval[1]": "2010-06-10T00:00:00Z"
-                },
-                "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                "href": ["http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"]
               }
-            ]
+            ],
+            "reportingStatusHistory": [
+              [
+                {
+                  "identifier": "id_b074e827-8541-7937-e053-148ef98d6de4",
+                  "time": {
+                    "interval": ["1996-01-01T00:00:00Z",".."]
+                  },
+                  "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                }
+              ],
+              [
+                {
+                  "identifier": "id_c66fe359-3dde-4f65-ab97-0062edb0ce55",
+                  "time": {
+                    "interval": ["2010-06-11T00:00:00Z",".."]
+                  },
+                  "status": "http://codes.wmo.int/wmdr/ReportingStatus/unknown"
+                },
+                {
+                  "identifier": "id_b074e827-8542-7937-e053-148ef98d6de4",
+                  "time": {
+                    "interval": ["2004-10-22T00:00:00Z","2010-06-10T00:00:00Z"]
+                  },
+                  "status": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+                }
+              ]
+            ],
+            "datetimes": [[null,".."],[null,".."]]
           }
         ],
-        "wmdr:surfaceCoverHistory": [
+        "surfaceCoverHistory": [
           {
             "identifier": "id_b074e824-472b-7937-e053-148ef98d6de4",
-            "beginPosition": "1996-01-01T00:00:00Z",
-            "endPosition": null,
-            "surfaceCover": {
-              "href": "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/urbanBuiltup"
-            },
-            "classification": {
-              "href": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
-            }
+            "surfaceCover": [
+              {
+                "href": "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/urbanBuiltup"
+              }
+            ],
+            "classification": [
+              {
+                "href": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
+              }
+            ],
+            "datetimes": ["1996-01-01T00:00:00Z",".."]
           }
         ],
-        "wmdr:territoryHistory": [
+        "territoryHistory": [
           {
             "identifier": "id_b074e824-4f87-7937-e053-148ef98d6de4",
-            "beginPosition": "2008-12-05T00:00:00Z",
-            "endPosition": null,
-            "territory": {
-              "href": "http://codes.wmo.int/wmdr/TerritoryName/KEN"
-            }
+            "territory": [
+              {
+                "href": "http://codes.wmo.int/wmdr/TerritoryName/KEN"
+              }
+            ],
+            "datetimes": ["2008-12-05T00:00:00Z",".."]
           }
         ],
-        "wmdr:topographyBathymetryHistory": [
+        "topographyBathymetryHistory": [
           {
             "identifier": "id_b074e824-f724-7937-e053-148ef98d6de4",
-            "altitudeOrDepth": {
-              "href": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
-            },
-            "beginPosition": "1996-01-01T00:00:00Z",
-            "endPosition": null,
-            "localTopography": {
-              "href": "http://codes.wmo.int/wmdr/LocalTopography/unknown"
-            },
-            "relativeElevation": {
-              "href": "http://codes.wmo.int/wmdr/RelativeElevation/middle"
-            },
-            "topographicContext": {
-              "href": "http://codes.wmo.int/wmdr/TopographicContext/hills"
-            }
+            "altitudeOrDepth": [
+              {
+                "href": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
+              }
+            ],
+            "localTopography": [
+              {
+                "href": "http://codes.wmo.int/wmdr/LocalTopography/unknown"
+              }
+            ],
+            "relativeElevation": [
+              {
+                "href": "http://codes.wmo.int/wmdr/RelativeElevation/middle"
+              }
+            ],
+            "topographicContext": [
+              {
+                "href": "http://codes.wmo.int/wmdr/TopographicContext/hills"
+              }
+            ],
+            "datetimes": ["1996-01-01T00:00:00Z",".."]
           }
         ],
-        "wmdr:wmoRegion": {
+        "wmoRegion": {
           "href": "http://codes.wmo.int/wmdr/WMORegion/africa"
-        },
-        "wmdr:part": "facility"
+        }
       },
       "links": [
         {
@@ -166,10 +157,15 @@
         }
       ],
       "time": {
-        "interval[0]": "1996-01-01Z"
+        "interval": ["1996-01-01",".."]
+      },
+      "geometryHistory": {
+        "type": "MovingPoint",
+        "coordinates": [[36.75919,-1.30169,1795]],
+        "datetimes": [["1996-01-01T00:00:00Z",".."]]
       }
     }
   ],
-  "timeStamp": "2026-02-05T17:00:17Z",
+  "timeStamp": "2026-02-20T14:39:10Z",
   "numberReturned": 1
 }

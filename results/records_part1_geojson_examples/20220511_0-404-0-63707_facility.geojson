@@ -6,110 +6,113 @@
       "id": "0-404-0-63707",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          35.3833,
-          -0.714732
-        ]
+        "coordinates": [35.3833,-0.714732,2156]
       },
       "properties": {
-        "type": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-        "wmdr:climateZoneHistory": [
+        "type": "stationPlatform",
+        "climateZoneHistory": [
           {
             "identifier": "id_b074e824-f182-7937-e053-148ef98d6de4",
-            "beginPosition": "2020-09-21T00:00:00Z",
-            "href": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer",
-            "endPosition": null
+            "hrefs": ["http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer"],
+            "datetimes": ["2020-09-21T00:00:00Z",".."]
           }
         ],
-        "wmdr:geospatialLocationHistory": [
-          {
-            "identifier": "id_b074e825-427f-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": "2020-09-21T00:00:00Z",
-              "interval[1]": null
-            },
-            "geometry": "-0.714732 35.3833 2156.0",
-            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          }
-        ],
+        "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
         "externalIds": [
           {
             "value": "0-404-0-63707"
           }
         ],
         "title": "BOMET",
-        "wmdr:programAffiliationHistory": [
+        "programAffiliationHistory": [
           {
-            "programAffiliation": {
-              "href": [
-                "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              ]
-            },
-            "reportingStatusHistory": [
+            "programAffiliation": [
               {
-                "identifier": "id_4cff8c39-8f42-4983-b913-b6557b69bd19",
-                "time": {
-                  "interval[0]": "2022-05-11T00:00:00Z",
-                  "interval[1]": null
-                },
-                "status": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+                "href": ["http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"]
               }
-            ]
+            ],
+            "reportingStatusHistory": [
+              [
+                {
+                  "identifier": "id_4cff8c39-8f42-4983-b913-b6557b69bd19",
+                  "time": {
+                    "interval": ["2022-05-11T00:00:00Z",".."]
+                  },
+                  "status": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+                }
+              ]
+            ],
+            "datetimes": [null,".."]
           }
         ],
-        "wmdr:surfaceCoverHistory": [
+        "surfaceCoverHistory": [
           {
             "identifier": "id_b074e824-4bf6-7937-e053-148ef98d6de4",
-            "beginPosition": "2020-09-21T00:00:00Z",
-            "endPosition": null,
-            "surfaceCover": {
-              "href": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/rainfedCroplands"
-            },
-            "classification": {
-              "href": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
-            }
+            "surfaceCover": [
+              {
+                "href": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/rainfedCroplands"
+              }
+            ],
+            "classification": [
+              {
+                "href": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
+              }
+            ],
+            "datetimes": ["2020-09-21T00:00:00Z",".."]
           }
         ],
-        "wmdr:territoryHistory": [
+        "territoryHistory": [
           {
             "identifier": "id_b074e824-af54-7937-e053-148ef98d6de4",
-            "beginPosition": "2020-09-21T00:00:00Z",
-            "endPosition": null,
-            "territory": {
-              "href": "http://codes.wmo.int/wmdr/TerritoryName/KEN"
-            }
+            "territory": [
+              {
+                "href": "http://codes.wmo.int/wmdr/TerritoryName/KEN"
+              }
+            ],
+            "datetimes": ["2020-09-21T00:00:00Z",".."]
           }
         ],
-        "wmdr:topographyBathymetryHistory": [
+        "topographyBathymetryHistory": [
           {
             "identifier": "id_b074e824-fb4c-7937-e053-148ef98d6de4",
-            "altitudeOrDepth": {
-              "href": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
-            },
-            "beginPosition": "2020-09-21T00:00:00Z",
-            "endPosition": null,
-            "localTopography": {
-              "href": "http://codes.wmo.int/wmdr/LocalTopography/unknown"
-            },
-            "relativeElevation": {
-              "href": "http://codes.wmo.int/wmdr/RelativeElevation/middle"
-            },
-            "topographicContext": {
-              "href": "http://codes.wmo.int/wmdr/TopographicContext/valleys"
-            }
+            "altitudeOrDepth": [
+              {
+                "href": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
+              }
+            ],
+            "localTopography": [
+              {
+                "href": "http://codes.wmo.int/wmdr/LocalTopography/unknown"
+              }
+            ],
+            "relativeElevation": [
+              {
+                "href": "http://codes.wmo.int/wmdr/RelativeElevation/middle"
+              }
+            ],
+            "topographicContext": [
+              {
+                "href": "http://codes.wmo.int/wmdr/TopographicContext/valleys"
+              }
+            ],
+            "datetimes": ["2020-09-21T00:00:00Z",".."]
           }
         ],
-        "wmdr:wmoRegion": {
+        "wmoRegion": {
           "href": "http://codes.wmo.int/wmdr/WMORegion/africa"
-        },
-        "wmdr:part": "facility"
+        }
       },
       "links": [],
       "time": {
-        "interval[0]": "2020-09-21Z"
+        "interval": ["2020-09-21",".."]
+      },
+      "geometryHistory": {
+        "type": "MovingPoint",
+        "coordinates": [[35.3833,-0.714732,2156]],
+        "datetimes": [["2020-09-21T00:00:00Z",".."]]
       }
     }
   ],
-  "timeStamp": "2026-02-05T17:00:17Z",
+  "timeStamp": "2026-02-20T14:39:10Z",
   "numberReturned": 1
 }

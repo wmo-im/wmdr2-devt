@@ -6,110 +6,102 @@
       "id": "id-metch-20-180-dg3-inc1-depl",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          7.821056,
-          46.419478
-        ]
+        "coordinates": [7.821056,46.419478,1535]
       },
       "properties": {
-        "type": "dataset",
-        "wmdr:observedProperty": {
+        "type": "observationCollection",
+        "observedProperty": {
           "href": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/180"
         },
-        "wmdr:programAffiliation": [
+        "programAffiliation": [
           {
             "href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
           }
         ],
-        "wmdr:geometryType": {
+        "geometryType": {
           "href": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "contacts": [
           {
-            "roles": [
-              null
-            ],
+            "roles": [null],
             "distributionInfo": {
-              "roles": [
-                null
-              ]
+              "roles": [null]
             }
           }
         ],
         "updated": null,
-        "wmdr:geospatialLocationHistory": [
+        "deploymentHistory": [
           {
-            "geopositioningMethod": {
-              "href": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-            },
-            "identifier": "id_b074e827-24b6-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": "2000-08-17T00:00:00Z",
-              "interval[1]": null
-            }
-          }
-        ],
-        "wmdr:deploymentHistory": [
-          {
-            "localReferenceSurface": {
-              "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "sourceOfObservation": {
-              "href": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation"
-            },
-            "observingMethod": {
-              "href": "http://codes.wmo.int/wmdr/unknown"
-            },
-            "manufacturer": "(unknown)",
-            "model": "unknown",
-            "serialNumber": "id-metch-sn-00001351",
-            "responsibleParty": {
-              "role": {
-                "href": null
+            "localReferenceSurface": [
+              {
+                "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
-            }
+            ],
+            "sourceOfObservation": [
+              {
+                "href": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation"
+              }
+            ],
+            "observingMethod": [
+              {
+                "href": "http://codes.wmo.int/wmdr/unknown"
+              }
+            ],
+            "manufacturer": ["(unknown)"],
+            "model": ["unknown"],
+            "serialNumber": ["id-metch-sn-00001351"],
+            "responsibleParty": [
+              {
+                "role": {
+                  "href": null
+                }
+              }
+            ],
+            "datetimes": [null,".."]
           }
         ],
-        "wmdr:dataGenerationHistory": [
+        "dataGenerationHistory": [
           {
             "identifier": "id-metch-20-180-dg3-inc1-dage",
-            "time": {
-              "interval[0]": "2000-08-17T00:00:00Z",
-              "interval[1]": "2013-07-01T00:00:00Z"
-            },
-            "sampling": {
-              "Sampling": null
-            },
-            "reporting": {
-              "internationalExchange": "false",
-              "uom": {
-                "href": "http://codes.wmo.int/wmdr/unit/percent"
-              },
-              "temporalReportingInterval": "PT6H",
-              "dataPolicy": {
-                "attribution": {
-                  "originator": {
-                    "role": {
-                      "href": null
+            "sampling": [
+              {
+                "Sampling": null
+              }
+            ],
+            "reporting": [
+              {
+                "internationalExchange": "false",
+                "uom": {
+                  "href": "http://codes.wmo.int/wmdr/unit/percent"
+                },
+                "temporalReportingInterval": "PT6H",
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": {
+                        "href": null
+                      }
                     }
                   }
                 }
               }
-            },
-            "coverage": {
-              "startMonth": "1",
-              "endMonth": "12",
-              "startWeekday": "1",
-              "endWeekday": "7",
-              "startHour": "0",
-              "endHour": "23",
-              "startMinute": "0",
-              "endMinute": "59",
-              "diurnalBaseTime": "06:00:00Z"
-            }
+            ],
+            "coverage": [
+              {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "06:00:00Z"
+              }
+            ],
+            "datetimes": [["2000-08-17T00:00:00Z","2013-07-01T00:00:00Z"]]
           }
         ],
-        "wmdr:part": "observations",
         "title": "180"
       },
       "links": [
@@ -119,8 +111,7 @@
         }
       ],
       "time": {
-        "interval[0]": "2000-08-17T00:00:00Z",
-        "interval[1]": "2013-07-01T00:00:00Z"
+        "interval": ["2000-08-17","2013-07-01"]
       }
     },
     {
@@ -128,38 +119,34 @@
       "id": "id-metch-20-180-dg3-inc1-depl",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          7.821056,
-          46.419478
-        ]
+        "coordinates": [7.821056,46.419478,1535]
       },
       "properties": {
-        "type": "dataset",
-        "wmdr:observingMethod": {
+        "type": "deployment",
+        "observingMethod": {
           "href": "http://codes.wmo.int/wmdr/unknown"
         },
-        "wmdr:manufacturer": "(unknown)",
-        "wmdr:model": "unknown",
-        "wmdr:serialNumber": "id-metch-sn-00001351",
-        "wmdr:sourceOfObservation": {
+        "manufacturer": "(unknown)",
+        "model": "unknown",
+        "serialNumber": "id-metch-sn-00001351",
+        "sourceOfObservation": {
           "href": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation"
         },
-        "wmdr:localReferenceSurface": {
+        "localReferenceSurface": {
           "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
         },
-        "wmdr:geospatialLocation": {
+        "geospatialLocation": {
           "geoLocation": "46.419478 7.821056 1535.0",
           "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
           "@gml:id": "id_b074e827-24b6-7937-e053-148ef98d6de4",
           "beginPosition": "2000-08-17T00:00:00Z",
           "endPosition": null
         },
-        "wmdr:dataGeneration": [
+        "dataGeneration": [
           {
             "id": "id-metch-20-180-dg3-inc1-dage",
             "time": {
-              "interval[0]": "2000-08-17T00:00:00Z",
-              "interval[1]": "2013-07-01T00:00:00Z"
+              "interval": ["2000-08-17T00:00:00Z","2013-07-01T00:00:00Z"]
             },
             "reporting": {
               "temporalReportingInterval": "PT6H",
@@ -181,16 +168,14 @@
             }
           }
         ],
-        "wmdr:part": "deployments",
         "title": "(unknown) unknown SN id-metch-sn-00001351"
       },
       "links": [],
       "time": {
-        "interval[0]": "2000-08-17T00:00:00Z",
-        "interval[1]": "2013-07-01T00:00:00Z"
+        "interval": ["2000-08-17","2013-07-01"]
       }
     }
   ],
-  "timeStamp": "2026-02-05T17:00:17Z",
+  "timeStamp": "2026-02-20T14:39:10Z",
   "numberReturned": 2
 }

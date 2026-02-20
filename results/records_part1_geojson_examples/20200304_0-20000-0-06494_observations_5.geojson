@@ -6,103 +6,96 @@
       "id": "id_8a767a59-5fea-4c4a-ba63-a215b7a48731",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          6.0733333333,
-          50.5108333333
-        ]
+        "coordinates": [6.0733333333,50.5108333333,671]
       },
       "properties": {
-        "type": "dataset",
-        "wmdr:observedProperty": {
+        "type": "observationCollection",
+        "observedProperty": {
           "href": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/265"
         },
-        "wmdr:programAffiliation": [
+        "programAffiliation": [
           {
             "href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
           }
         ],
-        "wmdr:geometryType": {
+        "geometryType": {
           "href": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "contacts": [
           {
-            "roles": [
-              null
-            ],
+            "roles": [null],
             "distributionInfo": {
-              "roles": [
-                null
-              ]
+              "roles": [null]
             }
           }
         ],
         "updated": null,
-        "wmdr:geospatialLocationHistory": [
+        "deploymentHistory": [
           {
-            "identifier": "id_b074e825-fa50-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": null,
-              "interval[1]": null
-            }
-          }
-        ],
-        "wmdr:deploymentHistory": [
-          {
-            "localReferenceSurface": {
-              "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "observingMethod": {
-              "href": "http://codes.wmo.int/wmdr/unknown"
-            },
-            "manufacturer": "(unknown)",
-            "model": "unknown",
-            "responsibleParty": {
-              "role": {
-                "href": null
+            "localReferenceSurface": [
+              {
+                "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
-            }
+            ],
+            "observingMethod": [
+              {
+                "href": "http://codes.wmo.int/wmdr/unknown"
+              }
+            ],
+            "manufacturer": ["(unknown)"],
+            "model": ["unknown"],
+            "responsibleParty": [
+              {
+                "role": {
+                  "href": null
+                }
+              }
+            ],
+            "datetimes": [null,".."]
           }
         ],
-        "wmdr:dataGenerationHistory": [
+        "dataGenerationHistory": [
           {
             "identifier": "id_27d2bbb4-b432-4b1e-85f6-79d389e9e996",
-            "time": {
-              "interval[0]": "2016-04-29T00:00:00Z",
-              "interval[1]": null
-            },
-            "sampling": {
-              "Sampling": null
-            },
-            "reporting": {
-              "internationalExchange": "false",
-              "uom": {
-                "href": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              "temporalReportingInterval": "PT1H",
-              "dataPolicy": {
-                "attribution": {
-                  "originator": {
-                    "role": {
-                      "href": null
+            "sampling": [
+              {
+                "Sampling": null
+              }
+            ],
+            "reporting": [
+              {
+                "internationalExchange": "false",
+                "uom": {
+                  "href": "http://codes.wmo.int/wmdr/unit/unknown"
+                },
+                "temporalReportingInterval": "PT1H",
+                "dataPolicy": {
+                  "attribution": {
+                    "originator": {
+                      "role": {
+                        "href": null
+                      }
                     }
                   }
                 }
               }
-            },
-            "coverage": {
-              "startMonth": "1",
-              "endMonth": "12",
-              "startWeekday": "1",
-              "endWeekday": "7",
-              "startHour": "0",
-              "endHour": "23",
-              "startMinute": "0",
-              "endMinute": "59",
-              "diurnalBaseTime": "00:00:00Z"
-            }
+            ],
+            "coverage": [
+              {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "00:00:00Z"
+              }
+            ],
+            "datetimes": [["2016-04-29T00:00:00Z",".."]]
           }
         ],
-        "wmdr:part": "observations",
         "title": "265"
       },
       "links": [
@@ -112,8 +105,7 @@
         }
       ],
       "time": {
-        "interval[0]": "2016-04-29T00:00:00Z",
-        "interval[1]": null
+        "interval": ["2016-04-29",".."]
       }
     },
     {
@@ -121,33 +113,29 @@
       "id": "id_8a767a59-5fea-4c4a-ba63-a215b7a48731",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          6.0733333333,
-          50.5108333333
-        ]
+        "coordinates": [6.0733333333,50.5108333333,671]
       },
       "properties": {
-        "type": "dataset",
-        "wmdr:observingMethod": {
+        "type": "deployment",
+        "observingMethod": {
           "href": "http://codes.wmo.int/wmdr/unknown"
         },
-        "wmdr:manufacturer": "(unknown)",
-        "wmdr:model": "unknown",
-        "wmdr:localReferenceSurface": {
+        "manufacturer": "(unknown)",
+        "model": "unknown",
+        "localReferenceSurface": {
           "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
         },
-        "wmdr:geospatialLocation": {
+        "geospatialLocation": {
           "geoLocation": "50.5108333333 6.0733333333 671.0",
           "@gml:id": "id_b074e825-fa50-7937-e053-148ef98d6de4",
           "beginPosition": null,
           "endPosition": null
         },
-        "wmdr:dataGeneration": [
+        "dataGeneration": [
           {
             "id": "id_27d2bbb4-b432-4b1e-85f6-79d389e9e996",
             "time": {
-              "interval[0]": "2016-04-29T00:00:00Z",
-              "interval[1]": null
+              "interval": ["2016-04-29T00:00:00Z",".."]
             },
             "reporting": {
               "temporalReportingInterval": "PT1H",
@@ -169,16 +157,14 @@
             }
           }
         ],
-        "wmdr:part": "deployments",
         "title": "(unknown) unknown"
       },
       "links": [],
       "time": {
-        "interval[0]": "2016-04-29T00:00:00Z",
-        "interval[1]": null
+        "interval": ["2016-04-29",".."]
       }
     }
   ],
-  "timeStamp": "2026-02-05T17:00:17Z",
+  "timeStamp": "2026-02-20T14:39:10Z",
   "numberReturned": 2
 }

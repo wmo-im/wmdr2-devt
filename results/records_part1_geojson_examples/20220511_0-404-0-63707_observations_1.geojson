@@ -6,98 +6,107 @@
       "id": "id_b074e829-f3a1-7937-e053-148ef98d6de4",
       "geometry": null,
       "properties": {
-        "type": "dataset",
-        "wmdr:observedProperty": {
+        "type": "observationCollection",
+        "observedProperty": {
           "href": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210"
         },
-        "wmdr:programAffiliation": [
+        "programAffiliation": [
           {
             "href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
           }
         ],
-        "wmdr:geometryType": {
+        "geometryType": {
           "href": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "contacts": [
           {
-            "roles": [
-              null
-            ],
+            "roles": [null],
             "distributionInfo": {
-              "roles": [
-                null
-              ]
+              "roles": [null]
             }
           }
         ],
         "updated": null,
-        "wmdr:deploymentHistory": [
+        "deploymentHistory": [
           {
-            "localReferenceSurface": {
-              "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "heightAboveLocalReferenceSurface": {
-              "value": "2.0",
-              "uom": "m"
-            },
-            "sourceOfObservation": {
-              "href": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
-            },
-            "observingMethod": {
-              "href": "http://codes.wmo.int/wmdr/inapplicable"
-            },
-            "manufacturer": "(unknown)",
-            "model": "unknown",
-            "responsibleParty": {
-              "role": {
-                "href": null
+            "localReferenceSurface": [
+              {
+                "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
-            }
+            ],
+            "heightAboveLocalReferenceSurface": [
+              {
+                "value": "2.0",
+                "uom": "m"
+              }
+            ],
+            "sourceOfObservation": [
+              {
+                "href": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              }
+            ],
+            "observingMethod": [
+              {
+                "href": "http://codes.wmo.int/wmdr/inapplicable"
+              }
+            ],
+            "manufacturer": ["(unknown)"],
+            "model": ["unknown"],
+            "responsibleParty": [
+              {
+                "role": {
+                  "href": null
+                }
+              }
+            ],
+            "datetimes": [null,".."]
           }
         ],
-        "wmdr:dataGenerationHistory": [
+        "dataGenerationHistory": [
           {
             "identifier": "id_b074e82a-980a-7937-e053-148ef98d6de4",
-            "time": {
-              "interval[0]": "2020-09-22T00:00:00Z",
-              "interval[1]": null
-            },
-            "sampling": {
-              "Sampling": null
-            },
-            "reporting": {
-              "internationalExchange": "true",
-              "uom": {
-                "href": "http://codes.wmo.int/wmdr/unit/inapplicable"
-              },
-              "temporalReportingInterval": "PT1H",
-              "dataPolicy": {
-                "dataPolicy": {
-                  "href": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            "sampling": [
+              {
+                "Sampling": null
+              }
+            ],
+            "reporting": [
+              {
+                "internationalExchange": "true",
+                "uom": {
+                  "href": "http://codes.wmo.int/wmdr/unit/inapplicable"
                 },
-                "attribution": {
-                  "originator": {
-                    "role": {
-                      "href": null
+                "temporalReportingInterval": "PT1H",
+                "dataPolicy": {
+                  "dataPolicy": {
+                    "href": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+                  },
+                  "attribution": {
+                    "originator": {
+                      "role": {
+                        "href": null
+                      }
                     }
                   }
                 }
               }
-            },
-            "coverage": {
-              "startMonth": "1",
-              "endMonth": "12",
-              "startWeekday": "1",
-              "endWeekday": "7",
-              "startHour": "0",
-              "endHour": "23",
-              "startMinute": "0",
-              "endMinute": "59",
-              "diurnalBaseTime": "00:00:00Z"
-            }
+            ],
+            "coverage": [
+              {
+                "startMonth": "1",
+                "endMonth": "12",
+                "startWeekday": "1",
+                "endWeekday": "7",
+                "startHour": "0",
+                "endHour": "23",
+                "startMinute": "0",
+                "endMinute": "59",
+                "diurnalBaseTime": "00:00:00Z"
+              }
+            ],
+            "datetimes": [["2020-09-22T00:00:00Z",".."]]
           }
         ],
-        "wmdr:part": "observations",
         "title": "210"
       },
       "links": [
@@ -107,8 +116,7 @@
         }
       ],
       "time": {
-        "interval[0]": "2020-09-22T00:00:00Z",
-        "interval[1]": null
+        "interval": ["2020-09-22",".."]
       }
     },
     {
@@ -116,30 +124,29 @@
       "id": "id_b074e829-f3a1-7937-e053-148ef98d6de4",
       "geometry": null,
       "properties": {
-        "type": "dataset",
-        "wmdr:observingMethod": {
+        "type": "deployment",
+        "observingMethod": {
           "href": "http://codes.wmo.int/wmdr/inapplicable"
         },
-        "wmdr:manufacturer": "(unknown)",
-        "wmdr:model": "unknown",
-        "wmdr:sourceOfObservation": {
+        "manufacturer": "(unknown)",
+        "model": "unknown",
+        "sourceOfObservation": {
           "href": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
         },
-        "wmdr:localReferenceSurface": {
+        "localReferenceSurface": {
           "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
         },
-        "wmdr:heightAboveLocalReferenceSurface": {
+        "heightAboveLocalReferenceSurface": {
           "value": "2.0",
           "uom": {
             "href": "m"
           }
         },
-        "wmdr:dataGeneration": [
+        "dataGeneration": [
           {
             "id": "id_b074e82a-980a-7937-e053-148ef98d6de4",
             "time": {
-              "interval[0]": "2020-09-22T00:00:00Z",
-              "interval[1]": null
+              "interval": ["2020-09-22T00:00:00Z",".."]
             },
             "reporting": {
               "temporalReportingInterval": "PT1H",
@@ -161,16 +168,14 @@
             }
           }
         ],
-        "wmdr:part": "deployments",
         "title": "(unknown) unknown"
       },
       "links": [],
       "time": {
-        "interval[0]": "2020-09-22T00:00:00Z",
-        "interval[1]": null
+        "interval": ["2020-09-22",".."]
       }
     }
   ],
-  "timeStamp": "2026-02-05T17:00:17Z",
+  "timeStamp": "2026-02-20T14:39:10Z",
   "numberReturned": 2
 }
