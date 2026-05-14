@@ -1,0 +1,51 @@
+wmdr10-part,wmdr10-json,wmdr2-geojson,notes
+header,fileDateTime,features[*].properties.created|features[*].properties.updated,Used as record creation/update timestamp when available.
+header,recordOwner,features[*].properties.contacts[*],Normalized into OGC Records contact objects and mirrored into properties.wmdr2.*.contact.
+facility,identifier,features[facility].id|features[facility].properties.externalIds[WMO:WIGOS],Primary facility identity.
+facility,name,features[facility].properties.title|features[facility].properties.wmdr2.facility.name,Human-readable facility title.
+facility,dateEstablished|dateClosed,features[facility].time|features[facility].properties.wmdr2.facility.temporalPeriod,Primary facility temporal extent.
+facility,description.description,features[facility].properties.description|features[facility].properties.wmdr2.facility.description,Current facility description.
+facility,geospatialLocation.geoLocation,features[facility].geometry,Current facility GeoJSON Point.
+facility,geospatialLocation(+history),features[facility].properties.wmdr2.facility.temporalGeometry,Converted into WMDR2 temporalGeometry.
+facility,responsibleParty,features[facility].properties.contacts|features[facility].properties.wmdr2.facility.contact,Normalized contacts.
+facility,facilitySet,features[facility].properties.wmdr2.facility.facilitySet,Formal facility set URI preserved.
+facility,facilityType,features[facility].properties.wmdr2.facility.facilityTypes[*],Facility type URI(s).
+facility,additionalWSI,features[facility].properties.wmdr2.facility.additionalWsi[*],Additional station identifiers.
+facility,territory.territoryName,features[facility].properties.wmdr2.facility.territory.value,Timed territory classification.
+facility,wmoRegion,features[facility].properties.wmdr2.facility.wmoRegion,WMO region URI.
+facility,programAffiliation[*],features[facility].properties.wmdr2.facility.programAffiliation[*],Program affiliations with reporting status history.
+facility,climateZone.climateZone,features[facility].properties.wmdr2.facility.climateZone.value,Timed climate zone.
+facility,surfaceCover.surfaceCover,features[facility].properties.wmdr2.facility.surfaceCover.value,Timed surface cover.
+facility,topographyBathymetry.*,features[facility].properties.wmdr2.facility.topographyBathymetry.*,Current topography/bathymetry context.
+observation,@gml:id|@id,features[observation].id|features[observation].properties.externalIds[WMDR1:gml],Primary observation identity.
+observation,facility,features[observation].properties.wmdr2.observation.facility,Link back to facility URI.
+observation,programAffiliation[*],features[observation].properties.wmdr2.observation.programAffiliation[*],Observation program affiliation(s).
+observation,type,features[observation].properties.wmdr2.observation.observationType,WMDR observation geometry/type URI.
+observation,observedProperty,features[observation].properties.title|features[observation].properties.wmdr2.observation.observedProperty,Observed variable URI.
+observation,observedVariableCoordinates[*],features[observation].properties.wmdr2.observation.observedVariableCoordinates[*],Coordinate qualifiers if present.
+observation,beginPosition|endPosition,features[observation].time|features[observation].properties.wmdr2.observation.temporalExtent,Primary observation temporal extent.
+observation,metadata.contact,features[observation].properties.contacts|features[observation].properties.wmdr2.observation.contact,Observation-level metadata contact.
+observation,deployments[*],features[deployment],Embedded deployments are emitted as separate deployment records.
+observation,deployments[*].dataGeneration[*].reporting.internationalExchange,features[observation].properties.wmdr2.observation.internationalExchange,Derived from embedded deployments when consistent.
+observation,deployments[*].dataGeneration[*].reporting.temporalReportingInterval|coverage,features[observation].properties.wmdr2.observation.internationalReportingSchedule[*],Derived observation-level reporting schedule.
+observation,result,features[observation].properties.wmdr2.observation.result,Result/distribution block preserved as extension payload.
+deployment,@gml:id|@id,features[deployment].id|features[deployment].properties.externalIds[WMDR1:gml],Primary deployment identity.
+deployment,facility,features[deployment].properties.wmdr2.deployment.facility,Link back to facility URI.
+deployment,observedProperty,features[deployment].properties.wmdr2.deployment.observedProperty,Observed property served by this deployment.
+deployment,type,features[deployment].properties.wmdr2.deployment.deploymentType,WMDR deployment geometry/type URI.
+deployment,beginPosition|endPosition,features[deployment].time|features[deployment].properties.wmdr2.deployment.temporalExtent,Primary deployment temporal extent.
+deployment,sourceOfObservation,features[deployment].properties.wmdr2.deployment.sourceOfObservation,Source of observation URI.
+deployment,exposure,features[deployment].properties.wmdr2.deployment.exposure,Exposure class URI.
+deployment,representativeness,features[deployment].properties.wmdr2.deployment.representativeness,Representativeness URI.
+deployment,configuration,features[deployment].properties.wmdr2.deployment.configuration,Free-text configuration details.
+deployment,responsibleParty,features[deployment].properties.contacts|features[deployment].properties.wmdr2.deployment.contact,Deployment contact(s).
+deployment,heightAboveLocalReferenceSurface,features[deployment].properties.wmdr2.deployment.heightAboveLocalReferenceSurface,Normalized quantity object.
+deployment,localReferenceSurface,features[deployment].properties.wmdr2.deployment.localReferenceSurface,Reference surface URI.
+deployment,heightAboveLocalReferenceSurface|localReferenceSurface,features[deployment].properties.wmdr2.deployment.temporalGeometry,Vertical deployment geometry context.
+deployment,manufacturer|model|serialNumber|observingMethod,features[deployment].properties.wmdr2.deployment.procedure,Collapsed into WMDR2 procedure object.
+deployment,instrumentOperatingStatus,features[deployment].properties.wmdr2.deployment.temporalReportingStatus[*],Instrument status history normalized as reporting status.
+deployment,dataGeneration[*].sampling.*,features[deployment].properties.wmdr2.deployment.temporalObservingSchedule[*],Sampling interval/schedule normalization.
+deployment,dataGeneration[*].reporting.temporalReportingInterval|coverage,features[deployment].properties.wmdr2.deployment.temporalReportingSchedule[*],Reporting schedule normalization.
+deployment,dataGeneration[*].reporting.dataPolicy,features[deployment].properties.wmdr2.deployment.temporalDataPolicy[*],Data policy history normalization.
+shared,formal URI fields,features[*].properties.themes[*],WMO/ISO code-list URIs grouped into OGC Records themes.
+shared,selected labels and URIs,features[*].properties.keywords[*],Free-form keywords for discoverability.

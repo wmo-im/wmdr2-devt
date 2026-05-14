@@ -66,3 +66,9 @@ convert_wmdr10_json_to_records_part1:
     # observations: mappings/wmdr10_observations_vs_records_part1.csv
     # deployments: mappings/wmdr10_deployments_vs_records_part1.csv
     # full: mappings/wmdr10_full_vs_records_part1.csv
+
+convert_wmdr10_json_to_wmdr2_geojson:
+  source: resources/wmdr10_json_examples
+  target: results/wmdr2_geojson_examples
+  pattern: "*.json"
+  recursive: true
