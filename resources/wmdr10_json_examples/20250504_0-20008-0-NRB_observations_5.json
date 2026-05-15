@@ -15,23 +15,21 @@
   },
   "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264",
   "result": {
-    "ResultSet": {
-      "distributionInfo": {
-        "distributor": {
-          "distributorContact": {
-            "organisationName": "WOUDC",
-            "role": null
-          }
-        },
-        "transferOptions": {
-          "onLine": [
-            {
-              "@id": "id_e9184075-5f98-3237-e053-148ef98d6314",
-              "description": "Archive",
-              "url": "http://woudc.org/archive/Archive-NewFormat/OzoneSonde_1.0_1/stn175/ecc"
-            }
-          ]
+    "distributionInfo": {
+      "distributor": {
+        "distributorContact": {
+          "organisationName": "WOUDC",
+          "role": null
         }
+      },
+      "transferOptions": {
+        "onLine": [
+          {
+            "@id": "id_e9184075-5f98-3237-e053-148ef98d6314",
+            "description": "Archive",
+            "url": "http://woudc.org/archive/Archive-NewFormat/OzoneSonde_1.0_1/stn175/ecc"
+          }
+        ]
       }
     }
   },
@@ -48,12 +46,8 @@
       "dataGeneration": [
         {
           "@gml:id": "id_2cca703f-79ee-46ba-8d34-44e04f96bb71",
-          "sampling": {
-            "Sampling": null
-          },
-          "processing": {
-            "Processing": null
-          },
+          "sampling": null,
+          "processing": null,
           "reporting": {
             "internationalExchange": "true",
             "uom": "http://codes.wmo.int/wmdr/unit/unknown",

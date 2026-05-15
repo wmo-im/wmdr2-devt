@@ -75,17 +75,17 @@
     ],
     "geospatialLocation": [
       {
-        "geoLocation": "40.634 22.956 60.0",
-        "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-        "@gml:id": "id_b074e825-0046-7937-e053-148ef98d6de4",
-        "beginPosition": "2001-05-05T00:00:00Z",
-        "endPosition": null
-      },
-      {
         "geoLocation": "40.517 22.967 60.0",
         "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/map",
         "@gml:id": "id_b074e825-5cdb-7937-e053-148ef98d6de4",
         "beginPosition": "1982-03-13T00:00:00Z",
+        "endPosition": "2001-05-05T00:00:00Z"
+      },
+      {
+        "geoLocation": "40.634 22.956 60.0",
+        "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+        "@gml:id": "id_b074e825-0046-7937-e053-148ef98d6de4",
+        "beginPosition": "2001-05-05T00:00:00Z",
         "endPosition": null
       }
     ],
@@ -187,13 +187,11 @@
       },
       "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
       "result": {
-        "ResultSet": {
-          "distributionInfo": {
-            "distributor": {
-              "distributorContact": {
-                "organisationName": "WOUDC",
-                "role": null
-              }
+        "distributionInfo": {
+          "distributor": {
+            "distributorContact": {
+              "organisationName": "WOUDC",
+              "role": null
             }
           }
         }
@@ -211,9 +209,7 @@
           "dataGeneration": [
             {
               "@gml:id": "id_df44c8b8-88f3-4bd6-838d-989e3527f576",
-              "sampling": {
-                "Sampling": null
-              },
+              "sampling": null,
               "reporting": {
                 "internationalExchange": "false",
                 "uom": "http://codes.wmo.int/wmdr/unit/DU",
@@ -253,9 +249,7 @@
       ],
       "type": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
       "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/314",
-      "result": {
-        "ResultSet": null
-      }
+      "result": null
     },
     {
       "facility": "http://codes.wmo.int/wmdr/0-20008-0-THE",
@@ -264,9 +258,7 @@
       ],
       "type": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
       "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/325",
-      "result": {
-        "ResultSet": null
-      }
+      "result": null
     },
     {
       "facility": "http://codes.wmo.int/wmdr/0-20008-0-THE",
@@ -284,12 +276,10 @@
       },
       "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/359",
       "result": {
-        "ResultSet": {
-          "distributionInfo": {
-            "distributor": {
-              "distributorContact": {
-                "role": null
-              }
+        "distributionInfo": {
+          "distributor": {
+            "distributorContact": {
+              "role": null
             }
           }
         }
@@ -327,12 +317,10 @@
       },
       "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/572",
       "result": {
-        "ResultSet": {
-          "distributionInfo": {
-            "distributor": {
-              "distributorContact": {
-                "role": null
-              }
+        "distributionInfo": {
+          "distributor": {
+            "distributorContact": {
+              "role": null
             }
           }
         }
@@ -370,9 +358,7 @@
           "dataGeneration": [
             {
               "@gml:id": "id_2a9b37e1-fae0-4285-b0cd-86b667e1fb21",
-              "sampling": {
-                "Sampling": null
-              },
+              "sampling": null,
               "reporting": {
                 "internationalExchange": "false",
                 "uom": "http://codes.wmo.int/wmdr/unit/W.m-2",
@@ -413,23 +399,21 @@
       },
       "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573",
       "result": {
-        "ResultSet": {
-          "distributionInfo": {
-            "distributor": {
-              "distributorContact": {
-                "organisationName": "WRDC",
-                "role": null
-              }
-            },
-            "transferOptions": {
-              "onLine": [
-                {
-                  "@id": "id_e9184075-63b2-3237-e053-148ef98d6314",
-                  "description": "Archive",
-                  "url": "http://wrdc.mgo.rssi.ru"
-                }
-              ]
+        "distributionInfo": {
+          "distributor": {
+            "distributorContact": {
+              "organisationName": "WRDC",
+              "role": null
             }
+          },
+          "transferOptions": {
+            "onLine": [
+              {
+                "@id": "id_e9184075-63b2-3237-e053-148ef98d6314",
+                "description": "Archive",
+                "url": "http://wrdc.mgo.rssi.ru"
+              }
+            ]
           }
         }
       },
@@ -521,9 +505,7 @@
       ],
       "type": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
       "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12150",
-      "result": {
-        "ResultSet": null
-      }
+      "result": null
     },
     {
       "facility": "http://codes.wmo.int/wmdr/0-20008-0-THE",
@@ -532,9 +514,7 @@
       ],
       "type": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
       "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12151",
-      "result": {
-        "ResultSet": null
-      }
+      "result": null
     },
     {
       "facility": "http://codes.wmo.int/wmdr/0-20008-0-THE",
@@ -543,9 +523,7 @@
       ],
       "type": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
       "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12153",
-      "result": {
-        "ResultSet": null
-      }
+      "result": null
     },
     {
       "facility": "http://codes.wmo.int/wmdr/0-20008-0-THE",
@@ -554,9 +532,7 @@
       ],
       "type": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
       "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12159",
-      "result": {
-        "ResultSet": null
-      }
+      "result": null
     }
   ],
   "header": {
