@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import copy
 import json
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -62,6 +63,34 @@ def _parse_iso_like(value: Any) -> datetime | None:
 def _is_open_interval_end(value: Any) -> bool:
     """Return True when the value represents an open or missing interval end."""
     return value in (None, "", "..")
+
+
+def _normalize_unknown_string(value: Any) -> Any:
+    """Normalize common unknown placeholders in plain text strings."""
+    if not isinstance(value, str):
+        return value
+    text = value.strip()
+    if not text:
+        return value
+    if text.startswith(("http://", "https://")):
+        return value
+
+    normalized = re.sub(r"\((unknown|null|none|nil)\)", "unknown", text, flags=re.IGNORECASE)
+    normalized = re.sub(r"\bunknown\s*/\s*unknown\b", "unknown", normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r"\bunknown\s+unknown\b", "unknown", normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r"\s+", " ", normalized).strip()
+    if normalized.lower() in {"unknown", "none", "null", "nil"}:
+        return "unknown"
+    return normalized
+
+
+def _normalize_unknown_strings_inplace(node: Any) -> Any:
+    """Recursively normalize unknown placeholders in scalar string values."""
+    if isinstance(node, list):
+        return [_normalize_unknown_strings_inplace(item) for item in node]
+    if isinstance(node, dict):
+        return {key: _normalize_unknown_strings_inplace(value) for key, value in node.items()}
+    return _normalize_unknown_string(node)
 
 
 def _collapse_local_wrappers(node: Any, parent_key: str | None = None) -> Any:
@@ -151,6 +180,7 @@ def normalize_stage1_payload(data: dict[str, Any]) -> dict[str, Any]:
     """
     normalized = copy.deepcopy(data)
     normalized = _collapse_local_wrappers(normalized)
+    normalized = _normalize_unknown_strings_inplace(normalized)
     _normalize_geospatial_location_history_inplace(normalized)
     return normalized
 
