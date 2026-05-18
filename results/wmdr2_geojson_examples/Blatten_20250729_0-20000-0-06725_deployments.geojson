@@ -4,6 +4,14 @@
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-57-dg3-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -15,37 +23,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001368",
+        "title": "unknown SN id-metch-sn-00001368",
         "description": "humanObservation; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-57-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-57-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/57"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001368"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001368",
-          "humanObservation",
-          "localGround",
-          "57"
+          "humanObservation"
         ],
         "themes": [
           {
@@ -65,96 +47,45 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "57",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/57"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-57-dg3-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/57",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-07-01T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001368"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-57-dg3-inc1-dage",
-                "interval": "PT6H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-57-dg3-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/57",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001368"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-57-dg3-inc1-dage",
+              "interval": "PT6H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-57-dg3-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-180-dg3-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -166,37 +97,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001351",
+        "title": "unknown SN id-metch-sn-00001351",
         "description": "humanObservation; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-180-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-180-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/180"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001351"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001351",
-          "humanObservation",
-          "localGround",
-          "180"
+          "humanObservation"
         ],
         "themes": [
           {
@@ -216,96 +121,45 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "180",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/180"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "percent",
-                "url": "http://codes.wmo.int/wmdr/unit/percent"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-180-dg3-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/180",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-07-01T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001351"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-180-dg3-inc1-dage",
-                "interval": "PT6H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-180-dg3-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/180",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001351"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-180-dg3-inc1-dage",
+              "interval": "PT6H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-180-dg3-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-210-dg5-inc2-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823197,
+          46.420408,
+          1538
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -317,37 +171,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001353",
+        "title": "unknown SN id-metch-sn-00001353",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-210-dg5-inc2-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-210-dg5-inc2-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001353"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001353",
-          "automaticReading",
-          "localGround",
-          "210"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -367,115 +195,57 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "210",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              {
-                "id": "mm",
-                "url": "http://codes.wmo.int/wmdr/unit/mm"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-210-dg5-inc2-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001353"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-210-dg6-inc2-dage",
+              "interval": "PT1H"
             },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
+            {
+              "id": "id-metch-20-210-dg5-inc2-dage",
+              "interval": "PT10M"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-210-dg6-inc2-dage",
+              "interval": "unknown"
             },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001353"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-210-dg6-inc2-dage",
-                "interval": "PT1H"
-              },
-              {
-                "id": "id-metch-20-210-dg5-inc2-dage",
-                "interval": "PT10M"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-210-dg6-inc2-dage"
-              },
-              {
-                "id": "id-metch-20-210-dg5-inc2-dage"
-              }
-            ]
-          }
+            {
+              "id": "id-metch-20-210-dg5-inc2-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-210-dg2-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2001-03-01T00:00:00Z",
@@ -487,37 +257,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001352",
+        "title": "unknown SN id-metch-sn-00001352",
         "description": "manualReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-210-dg2-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-210-dg2-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001352"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001352",
-          "manualReading",
-          "localGround",
-          "210"
+          "manualReading"
         ],
         "themes": [
           {
@@ -537,104 +281,49 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "210",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "mm",
-                "url": "http://codes.wmo.int/wmdr/unit/mm"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-210-dg2-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2001-03-01T00:00:00Z",
-                "2013-05-30T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
-            },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001352"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-210-dg2-inc1-dage",
-                "interval": "PT12H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-210-dg2-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001352"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-210-dg2-inc1-dage",
+              "interval": "PT12H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-210-dg2-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-216-dg5-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823197,
+          46.420453,
+          1538.86
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -646,37 +335,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001354",
+        "title": "unknown SN id-metch-sn-00001354",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-216-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-216-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001354"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001354",
-          "automaticReading",
-          "localGround",
-          "216"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -696,115 +359,57 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "216",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              {
-                "id": "hPa",
-                "url": "http://codes.wmo.int/wmdr/unit/hPa"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-216-dg5-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 0.86,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001354"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-216-dg6-inc1-dage",
+              "interval": "PT1H"
             },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 0.86,
-              "uom": "m"
+            {
+              "id": "id-metch-20-216-dg5-inc1-dage",
+              "interval": "PT10M"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-216-dg6-inc1-dage",
+              "interval": "unknown"
             },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 0.86,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001354"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-216-dg6-inc1-dage",
-                "interval": "PT1H"
-              },
-              {
-                "id": "id-metch-20-216-dg5-inc1-dage",
-                "interval": "PT10M"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-216-dg6-inc1-dage"
-              },
-              {
-                "id": "id-metch-20-216-dg5-inc1-dage"
-              }
-            ]
-          }
+            {
+              "id": "id-metch-20-216-dg5-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-224-dg5-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823261,
+          46.420369,
+          1538
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -816,37 +421,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001355",
+        "title": "unknown SN id-metch-sn-00001355",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-224-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-224-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001355"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001355",
-          "automaticReading",
-          "localGround",
-          "224"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -866,115 +445,57 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "224",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              {
-                "id": "degC",
-                "url": "http://codes.wmo.int/wmdr/unit/degC"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-224-dg5-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 0.05,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001355"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-224-dg6-inc1-dage",
+              "interval": "PT1H"
             },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 0.05,
-              "uom": "m"
+            {
+              "id": "id-metch-20-224-dg5-inc1-dage",
+              "interval": "PT10M"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-224-dg6-inc1-dage",
+              "interval": "unknown"
             },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 0.05,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001355"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-224-dg6-inc1-dage",
-                "interval": "PT1H"
-              },
-              {
-                "id": "id-metch-20-224-dg5-inc1-dage",
-                "interval": "PT10M"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-224-dg6-inc1-dage"
-              },
-              {
-                "id": "id-metch-20-224-dg5-inc1-dage"
-              }
-            ]
-          }
+            {
+              "id": "id-metch-20-224-dg5-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-224-dg5-inc3-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823222,
+          46.420372,
+          1538
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -986,37 +507,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001357",
+        "title": "unknown SN id-metch-sn-00001357",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-224-dg5-inc3-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-224-dg5-inc3-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001357"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001357",
-          "automaticReading",
-          "localGround",
-          "224"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -1036,115 +531,57 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "224",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              {
-                "id": "degC",
-                "url": "http://codes.wmo.int/wmdr/unit/degC"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-224-dg5-inc3-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001357"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-224-dg6-inc3-dage",
+              "interval": "PT1H"
             },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
+            {
+              "id": "id-metch-20-224-dg5-inc3-dage",
+              "interval": "PT10M"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-224-dg6-inc3-dage",
+              "interval": "unknown"
             },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001357"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-224-dg6-inc3-dage",
-                "interval": "PT1H"
-              },
-              {
-                "id": "id-metch-20-224-dg5-inc3-dage",
-                "interval": "PT10M"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-224-dg6-inc3-dage"
-              },
-              {
-                "id": "id-metch-20-224-dg5-inc3-dage"
-              }
-            ]
-          }
+            {
+              "id": "id-metch-20-224-dg5-inc3-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-224-dg3-inc2-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2001-03-01T00:00:00Z",
@@ -1156,37 +593,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001356",
+        "title": "unknown SN id-metch-sn-00001356",
         "description": "manualReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-224-dg3-inc2-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-224-dg3-inc2-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001356"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001356",
-          "manualReading",
-          "localGround",
-          "224"
+          "manualReading"
         ],
         "themes": [
           {
@@ -1206,104 +617,49 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "224",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "degC",
-                "url": "http://codes.wmo.int/wmdr/unit/degC"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-224-dg3-inc2-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2001-03-01T00:00:00Z",
-                "2013-05-30T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
-            },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001356"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-224-dg3-inc2-dage",
-                "interval": "PT6H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-224-dg3-inc2-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001356"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-224-dg3-inc2-dage",
+              "interval": "PT6H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-224-dg3-inc2-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-225-dg5-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823222,
+          46.420372,
+          1538
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -1315,37 +671,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001358",
+        "title": "unknown SN id-metch-sn-00001358",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-225-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-225-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001358"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001358",
-          "automaticReading",
-          "localGround",
-          "225"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -1365,115 +695,57 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "225",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              {
-                "id": "degC",
-                "url": "http://codes.wmo.int/wmdr/unit/degC"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-225-dg5-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001358"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-225-dg6-inc1-dage",
+              "interval": "PT1H"
             },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
+            {
+              "id": "id-metch-20-225-dg5-inc1-dage",
+              "interval": "PT10M"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-225-dg6-inc1-dage",
+              "interval": "unknown"
             },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001358"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-225-dg6-inc1-dage",
-                "interval": "PT1H"
-              },
-              {
-                "id": "id-metch-20-225-dg5-inc1-dage",
-                "interval": "PT10M"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-225-dg6-inc1-dage"
-              },
-              {
-                "id": "id-metch-20-225-dg5-inc1-dage"
-              }
-            ]
-          }
+            {
+              "id": "id-metch-20-225-dg5-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-226-dg2-inc3-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823222,
+          46.420372,
+          1538
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -1485,37 +757,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001361",
+        "title": "unknown SN id-metch-sn-00001361",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-226-dg2-inc3-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-226-dg2-inc3-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001361"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001361",
-          "automaticReading",
-          "localGround",
-          "226"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -1535,104 +781,49 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "226",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "degC",
-                "url": "http://codes.wmo.int/wmdr/unit/degC"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-226-dg2-inc3-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
-            },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001361"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-226-dg2-inc3-dage",
-                "interval": "PT12H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-226-dg2-inc3-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001361"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-226-dg2-inc3-dage",
+              "interval": "PT12H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-226-dg2-inc3-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-226-dg2-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -1644,37 +835,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001359",
+        "title": "unknown SN id-metch-sn-00001359",
         "description": "manualReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-226-dg2-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-226-dg2-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001359"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001359",
-          "manualReading",
-          "localGround",
-          "226"
+          "manualReading"
         ],
         "themes": [
           {
@@ -1694,104 +859,49 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "226",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "degC",
-                "url": "http://codes.wmo.int/wmdr/unit/degC"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-226-dg2-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-05-30T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
-            },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001359"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-226-dg2-inc1-dage",
-                "interval": "PT12H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-226-dg2-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001359"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-226-dg2-inc1-dage",
+              "interval": "PT12H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-226-dg2-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-226-dg2-inc2-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -1803,37 +913,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001360",
+        "title": "unknown SN id-metch-sn-00001360",
         "description": "manualReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-226-dg2-inc2-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-226-dg2-inc2-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001360"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001360",
-          "manualReading",
-          "localGround",
-          "226"
+          "manualReading"
         ],
         "themes": [
           {
@@ -1853,104 +937,49 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "226",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "degC",
-                "url": "http://codes.wmo.int/wmdr/unit/degC"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-226-dg2-inc2-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-05-30T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
-            },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001360"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-226-dg2-inc2-dage",
-                "interval": "PT12H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-226-dg2-inc2-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/226",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001360"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-226-dg2-inc2-dage",
+              "interval": "PT12H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-226-dg2-inc2-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-230-dg3-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -1962,37 +991,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001362",
+        "title": "unknown SN id-metch-sn-00001362",
         "description": "humanObservation; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-230-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-230-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/230"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001362"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001362",
-          "humanObservation",
-          "localGround",
-          "230"
+          "humanObservation"
         ],
         "themes": [
           {
@@ -2012,96 +1015,45 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "230",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/230"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-230-dg3-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/230",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-07-01T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001362"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-230-dg3-inc1-dage",
-                "interval": "PT6H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-230-dg3-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/230",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001362"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-230-dg3-inc1-dage",
+              "interval": "PT6H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-230-dg3-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-251-dg5-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823222,
+          46.420372,
+          1538
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -2113,37 +1065,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001363",
+        "title": "unknown SN id-metch-sn-00001363",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-251-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-251-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001363"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001363",
-          "automaticReading",
-          "localGround",
-          "12249"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -2163,115 +1089,57 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "12249",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              {
-                "id": "percent",
-                "url": "http://codes.wmo.int/wmdr/unit/percent"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-251-dg5-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001363"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-251-dg6-inc1-dage",
+              "interval": "PT1H"
             },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
+            {
+              "id": "id-metch-20-251-dg5-inc1-dage",
+              "interval": "PT10M"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-251-dg6-inc1-dage",
+              "interval": "unknown"
             },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001363"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-251-dg6-inc1-dage",
-                "interval": "PT1H"
-              },
-              {
-                "id": "id-metch-20-251-dg5-inc1-dage",
-                "interval": "PT10M"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-251-dg6-inc1-dage"
-              },
-              {
-                "id": "id-metch-20-251-dg5-inc1-dage"
-              }
-            ]
-          }
+            {
+              "id": "id-metch-20-251-dg5-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-265-dg3-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -2283,37 +1151,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001364",
+        "title": "unknown SN id-metch-sn-00001364",
         "description": "humanObservation; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-265-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-265-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/265"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001364"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001364",
-          "humanObservation",
-          "localGround",
-          "265"
+          "humanObservation"
         ],
         "themes": [
           {
@@ -2333,96 +1175,45 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "265",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/265"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-265-dg3-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/265",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-07-01T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001364"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-265-dg3-inc1-dage",
-                "interval": "PT6H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-265-dg3-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/265",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001364"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-265-dg3-inc1-dage",
+              "interval": "PT6H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-265-dg3-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-266-dg3-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -2434,37 +1225,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001365",
+        "title": "unknown SN id-metch-sn-00001365",
         "description": "humanObservation; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-266-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-266-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/266"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001365"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001365",
-          "humanObservation",
-          "localGround",
-          "266"
+          "humanObservation"
         ],
         "themes": [
           {
@@ -2484,96 +1249,45 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "266",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/266"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-266-dg3-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/266",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-07-01T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001365"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-266-dg3-inc1-dage",
-                "interval": "PT6H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-266-dg3-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/266",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001365"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-266-dg3-inc1-dage",
+              "interval": "PT6H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-266-dg3-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-270-dg5-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823222,
+          46.420372,
+          1538
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -2585,37 +1299,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001366",
+        "title": "unknown SN id-metch-sn-00001366",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-270-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-270-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/270"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001366"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001366",
-          "automaticReading",
-          "localGround",
-          "270"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -2635,115 +1323,57 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "270",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/270"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              {
-                "id": "min",
-                "url": "http://codes.wmo.int/wmdr/unit/min"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-270-dg5-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/270",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/270",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001366"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-270-dg6-inc1-dage",
+              "interval": "PT1H"
             },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
+            {
+              "id": "id-metch-20-270-dg5-inc1-dage",
+              "interval": "PT10M"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-270-dg6-inc1-dage",
+              "interval": "unknown"
             },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001366"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-270-dg6-inc1-dage",
-                "interval": "PT1H"
-              },
-              {
-                "id": "id-metch-20-270-dg5-inc1-dage",
-                "interval": "PT10M"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-270-dg6-inc1-dage"
-              },
-              {
-                "id": "id-metch-20-270-dg5-inc1-dage"
-              }
-            ]
-          }
+            {
+              "id": "id-metch-20-270-dg5-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-531-dg3-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -2755,37 +1385,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001367",
+        "title": "unknown SN id-metch-sn-00001367",
         "description": "humanObservation; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-531-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-531-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/531"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001367"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001367",
-          "humanObservation",
-          "localGround",
-          "531"
+          "humanObservation"
         ],
         "themes": [
           {
@@ -2805,96 +1409,45 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "531",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/531"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-531-dg3-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/531",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-07-01T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001367"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-531-dg3-inc1-dage",
-                "interval": "PT6H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-531-dg3-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/531",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001367"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-531-dg3-inc1-dage",
+              "interval": "PT6H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-531-dg3-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-573-dg5-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823222,
+          46.420372,
+          1538
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -2906,37 +1459,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001369",
+        "title": "unknown SN id-metch-sn-00001369",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-573-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-573-dg5-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001369"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001369",
-          "automaticReading",
-          "localGround",
-          "573"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -2956,115 +1483,57 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "573",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              {
-                "id": "W.m-2",
-                "url": "http://codes.wmo.int/wmdr/unit/W.m-2"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-573-dg5-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 2.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001369"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-573-dg6-inc1-dage",
+              "interval": "PT1H"
             },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
+            {
+              "id": "id-metch-20-573-dg5-inc1-dage",
+              "interval": "PT10M"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-573-dg6-inc1-dage",
+              "interval": "unknown"
             },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 2.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001369"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-573-dg6-inc1-dage",
-                "interval": "PT1H"
-              },
-              {
-                "id": "id-metch-20-573-dg5-inc1-dage",
-                "interval": "PT10M"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-573-dg6-inc1-dage"
-              },
-              {
-                "id": "id-metch-20-573-dg5-inc1-dage"
-              }
-            ]
-          }
+            {
+              "id": "id-metch-20-573-dg5-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-627-dg2-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -3076,37 +1545,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001370",
+        "title": "unknown SN id-metch-sn-00001370",
         "description": "manualReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-627-dg2-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-627-dg2-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/627"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001370"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001370",
-          "manualReading",
-          "localGround",
-          "627"
+          "manualReading"
         ],
         "themes": [
           {
@@ -3126,96 +1569,45 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial",
-            "concepts": [
-              {
-                "id": "627",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/627"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "cm",
-                "url": "http://codes.wmo.int/wmdr/unit/cm"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-627-dg2-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/627",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-05-30T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001370"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-627-dg2-inc1-dage",
-                "interval": "PT12H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-627-dg2-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/627",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001370"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-627-dg2-inc1-dage",
+              "interval": "PT12H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-627-dg2-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-629-dg2-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -3227,37 +1619,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001371",
+        "title": "unknown SN id-metch-sn-00001371",
         "description": "manualReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-629-dg2-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-629-dg2-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/629"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001371"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001371",
-          "manualReading",
-          "localGround",
-          "629"
+          "manualReading"
         ],
         "themes": [
           {
@@ -3277,96 +1643,45 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial",
-            "concepts": [
-              {
-                "id": "629",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/629"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "cm",
-                "url": "http://codes.wmo.int/wmdr/unit/cm"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-629-dg2-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/629",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-05-30T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001371"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-629-dg2-inc1-dage",
-                "interval": "PT12H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-629-dg2-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/629",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001371"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-629-dg2-inc1-dage",
+              "interval": "PT12H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-629-dg2-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-12005-dg5-inc2-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823197,
+          46.420408,
+          1538
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -3378,37 +1693,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001348",
+        "title": "unknown SN id-metch-sn-00001348",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-12005-dg5-inc2-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-12005-dg5-inc2-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001348"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001348",
-          "automaticReading",
-          "localGround",
-          "12005"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -3428,115 +1717,57 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "12005",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              {
-                "id": "deg",
-                "url": "http://codes.wmo.int/wmdr/unit/deg"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-12005-dg5-inc2-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 10.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001348"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-12005-dg6-inc2-dage",
+              "interval": "PT1H"
             },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 10.0,
-              "uom": "m"
+            {
+              "id": "id-metch-20-12005-dg5-inc2-dage",
+              "interval": "PT10M"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-12005-dg6-inc2-dage",
+              "interval": "unknown"
             },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 10.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001348"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-12005-dg6-inc2-dage",
-                "interval": "PT1H"
-              },
-              {
-                "id": "id-metch-20-12005-dg5-inc2-dage",
-                "interval": "PT10M"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-12005-dg6-inc2-dage"
-              },
-              {
-                "id": "id-metch-20-12005-dg5-inc2-dage"
-              }
-            ]
-          }
+            {
+              "id": "id-metch-20-12005-dg5-inc2-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-12005-dg3-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -3548,37 +1779,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001347",
+        "title": "unknown SN id-metch-sn-00001347",
         "description": "manualReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-12005-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-12005-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001347"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001347",
-          "manualReading",
-          "localGround",
-          "12005"
+          "manualReading"
         ],
         "themes": [
           {
@@ -3598,104 +1803,49 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "12005",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "deg",
-                "url": "http://codes.wmo.int/wmdr/unit/deg"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-12005-dg3-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-05-30T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 10.0,
-              "uom": "m"
-            },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 10.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001347"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-12005-dg3-inc1-dage",
-                "interval": "PT6H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-12005-dg3-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 10.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001347"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-12005-dg3-inc1-dage",
+              "interval": "PT6H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-12005-dg3-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-12006-dg5-inc2-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.823197,
+          46.420408,
+          1538
+        ]
+      },
       "time": {
         "interval": [
           "2013-05-31T00:00:00Z",
@@ -3707,37 +1857,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001350",
+        "title": "unknown SN id-metch-sn-00001350",
         "description": "automaticReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-12006-dg5-inc2-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-12006-dg5-inc2-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001350"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001350",
-          "automaticReading",
-          "localGround",
-          "12006"
+          "automaticReading"
         ],
         "themes": [
           {
@@ -3757,115 +1881,57 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "12006",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unit/unknown"
-              },
-              {
-                "id": "m.s-1",
-                "url": "http://codes.wmo.int/wmdr/unit/m.s-1"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-12006-dg5-inc2-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2013-05-31T00:00:00Z",
-                "2025-05-28T00:00:00Z"
-              ]
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 10.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001350"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-12006-dg6-inc2-dage",
+              "interval": "PT1H"
             },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 10.0,
-              "uom": "m"
+            {
+              "id": "id-metch-20-12006-dg5-inc2-dage",
+              "interval": "PT10M"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-12006-dg6-inc2-dage",
+              "interval": "unknown"
             },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 10.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001350"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-12006-dg6-inc2-dage",
-                "interval": "PT1H"
-              },
-              {
-                "id": "id-metch-20-12006-dg5-inc2-dage",
-                "interval": "PT10M"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-12006-dg6-inc2-dage"
-              },
-              {
-                "id": "id-metch-20-12006-dg5-inc2-dage"
-              }
-            ]
-          }
+            {
+              "id": "id-metch-20-12006-dg5-inc2-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     },
     {
       "type": "Feature",
       "id": "deployment:id-metch-20-12006-dg3-inc1-depl",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.821056,
+          46.419478,
+          1535
+        ]
+      },
       "time": {
         "interval": [
           "2000-08-17T00:00:00Z",
@@ -3877,37 +1943,11 @@
       ],
       "properties": {
         "type": "deployment",
-        "title": "(unknown) unknown SN id-metch-sn-00001349",
+        "title": "unknown SN id-metch-sn-00001349",
         "description": "manualReading; unknown",
-        "externalIds": [
-          {
-            "scheme": "WMDR1:gml",
-            "value": "id-metch-20-12006-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "deployment:id-metch-20-12006-dg3-inc1-depl"
-          },
-          {
-            "scheme": "WMO:facility-uri",
-            "value": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          },
-          {
-            "scheme": "WMO:observed-property-uri",
-            "value": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
-          },
-          {
-            "scheme": "instrument:serialNumber",
-            "value": "id-metch-sn-00001349"
-          }
-        ],
         "keywords": [
-          "(unknown)",
-          "unknown",
           "id-metch-sn-00001349",
-          "manualReading",
-          "localGround",
-          "12006"
+          "manualReading"
         ],
         "themes": [
           {
@@ -3927,100 +1967,37 @@
                 "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "0-20000-0-06725",
-                "url": "http://codes.wmo.int/wmdr/0-20000-0-06725"
-              },
-              {
-                "id": "unknown",
-                "url": "http://codes.wmo.int/wmdr/unknown"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere",
-            "concepts": [
-              {
-                "id": "12006",
-                "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Geometry",
-            "concepts": [
-              {
-                "id": "point",
-                "url": "http://codes.wmo.int/wmdr/Geometry/point"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/unit",
-            "concepts": [
-              {
-                "id": "m.s-1",
-                "url": "http://codes.wmo.int/wmdr/unit/m.s-1"
-              }
-            ]
           }
         ],
         "wmdr2": {
-          "deployment": {
-            "class": "deployment",
-            "id": "deployment:id-metch-20-12006-dg3-inc1-depl",
-            "facility": "http://codes.wmo.int/wmdr/0-20000-0-06725",
-            "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
-            "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
-            "temporalExtent": {
-              "interval": [
-                "2000-08-17T00:00:00Z",
-                "2013-05-30T00:00:00Z"
-              ]
-            },
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "heightAboveLocalReferenceSurface": {
-              "value": 10.0,
-              "uom": "m"
-            },
-            "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "temporalGeometry": {
-              "heightAboveLocalReferenceSurface": {
-                "value": 10.0,
-                "uom": "m"
-              },
-              "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-            },
-            "procedure": {
-              "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-              "instrumentManufacturer": "(unknown)",
-              "instrumentModel": "unknown",
-              "instrumentSerialNumber": "id-metch-sn-00001349"
-            },
-            "temporalReportingSchedule": [
-              {
-                "id": "id-metch-20-12006-dg3-inc1-dage",
-                "interval": "PT6H"
-              }
-            ],
-            "temporalObservingSchedule": [
-              {
-                "id": "id-metch-20-12006-dg3-inc1-dage"
-              }
-            ]
-          }
+          "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
+          "deploymentType": "http://codes.wmo.int/wmdr/Geometry/point",
+          "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+          "heightAboveLocalReferenceSurface": {
+            "value": 10.0,
+            "uom": "m"
+          },
+          "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+          "procedure": {
+            "observingMethod": "unknown",
+            "instrumentManufacturer": "unknown",
+            "instrumentModel": "unknown",
+            "instrumentSerialNumber": "id-metch-sn-00001349"
+          },
+          "temporalReportingSchedule": [
+            {
+              "id": "id-metch-20-12006-dg3-inc1-dage",
+              "interval": "PT6H"
+            }
+          ],
+          "temporalObservingSchedule": [
+            {
+              "id": "id-metch-20-12006-dg3-inc1-dage",
+              "interval": "unknown"
+            }
+          ]
         }
-      },
-      "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/unknown",
-          "rel": "type"
-        }
-      ]
+      }
     }
   ]
 }

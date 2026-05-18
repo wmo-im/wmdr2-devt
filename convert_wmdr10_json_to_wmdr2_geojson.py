@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-convert_wmdr10_json_to_wmdr2_geojson.py
+convert_wmdr10_json_to_wmdr2_geojson_simplified.py
 
 Convert WMDR 1.0 JSON exports derived from WMDR 1.0 XML into a WMDR2-oriented
 GeoJSON representation that remains compliant with OGC API - Records - Part 1.
@@ -58,6 +58,8 @@ convert_wmdr10_json_to_wmdr2_geojson:
 from __future__ import annotations
 
 import argparse
+import copy
+import csv
 import json
 import re
 from pathlib import Path
@@ -71,6 +73,46 @@ except Exception:  # pragma: no cover
 
 OGC_RECORD_CORE_CONF = "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
 DEFAULT_PATTERN = "*.json"
+DEFAULT_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
+    "facility": {
+        "keywords": ["identifier", "name"],
+        "themes": [
+            "facilitySet",
+            "facilityType",
+            "wmoRegion",
+            "territoryName",
+            "climateZone",
+            "surfaceCover",
+            "surfaceCoverClassification",
+            "localTopography",
+            "relativeElevation",
+            "topographicContext",
+            "altitudeOrDepth",
+            "programAffiliation",
+            "reportingStatus",
+        ],
+        "links": ["onlineResource"],
+    },
+    "observation": {
+        "keywords": [],
+        "themes": ["programAffiliation"],
+        "links": [],
+    },
+    "deployment": {
+        "keywords": ["manufacturer", "model", "serialNumber", "sourceOfObservation", "observingMethod"],
+        "themes": [
+            "sourceOfObservation",
+            "observingMethod",
+            "exposure",
+            "representativeness",
+            "localReferenceSurface",
+            "instrumentOperatingStatus",
+        ],
+        "links": [],
+    },
+}
+DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
+CODE_LIST_LABELS: Dict[str, Dict[str, str]] = {}
 
 
 # ---------------------------------------------------------------------------
@@ -91,6 +133,152 @@ def _cfg_section(cfg: Dict[str, Any]) -> Dict[str, Any]:
     section = cfg.get("convert_wmdr10_json_to_wmdr2_geojson")
     return section if isinstance(section, dict) else {}
 
+
+def _normalize_discovery_policy(section: Dict[str, Any]) -> Dict[str, Dict[str, List[str]]]:
+    policy = copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
+    raw = section.get("discovery")
+    if not isinstance(raw, dict):
+        return policy
+    for entity in ("facility", "observation", "deployment"):
+        entity_cfg = raw.get(entity)
+        if not isinstance(entity_cfg, dict):
+            continue
+        for bucket in ("keywords", "themes", "links"):
+            values = entity_cfg.get(bucket)
+            if isinstance(values, list):
+                policy[entity][bucket] = [str(v).strip() for v in values if isinstance(v, str) and str(v).strip()]
+    return policy
+
+
+
+
+def _extract_code_list_ref(value: Any) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+    """Return ``(uri, domain, code)`` for a WMO code-list URI or code-like value.
+
+    Examples
+    --------
+    ``http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179`` becomes
+    ``("http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179", "ObservedVariableAtmosphere", "179")``.
+    """
+    if not isinstance(value, str):
+        return None, None, None
+    text = value.strip().strip("<>")
+    if not text:
+        return None, None, None
+    if text.startswith(("http://", "https://")):
+        parts = [part for part in text.rstrip("/#").split("/") if part]
+        if len(parts) < 2:
+            return text, None, None
+        domain = parts[-2].lstrip("_")
+        code = parts[-1].lstrip("_")
+        return text, domain, code
+    return None, None, text.lstrip("_")
+
+
+def _load_code_list_labels(section: Dict[str, Any], *, base_dir: Optional[Path] = None) -> Dict[str, Dict[str, str]]:
+    """Load optional code-list labels used for human-readable titles.
+
+    The preferred CSV columns are ``uri, domain, notation, label``. The loader
+    also understands the WMO Codes Registry CSV columns ``@id``,
+    ``skos:notation`` and ``rdfs:label``. This keeps label resolution offline
+    and reproducible once a registry snapshot has been placed in the repo.
+    """
+    labels: Dict[str, Dict[str, str]] = {}
+    raw = section.get("codeListLabels") or section.get("code_list_labels") or {}
+    if not isinstance(raw, dict):
+        return labels
+
+    inline = raw.get("inline")
+    if isinstance(inline, dict):
+        for domain, mapping in inline.items():
+            if not isinstance(mapping, dict):
+                continue
+            domain_key = str(domain).strip()
+            if not domain_key:
+                continue
+            target = labels.setdefault(domain_key, {})
+            for code, label in mapping.items():
+                code_key = str(code).strip().lstrip("_")
+                label_text = str(label).strip() if label is not None else ""
+                if code_key and label_text:
+                    target[code_key] = label_text
+
+    files = raw.get("files", [])
+    if isinstance(files, (str, Path)):
+        files = [files]
+    if not isinstance(files, list):
+        return labels
+
+    for item in files:
+        path_text: Optional[str] = None
+        if isinstance(item, dict):
+            raw_path = item.get("path")
+            if isinstance(raw_path, str):
+                path_text = raw_path
+        elif isinstance(item, (str, Path)):
+            path_text = str(item)
+        if not path_text:
+            continue
+        path = Path(path_text)
+        if not path.is_absolute() and base_dir is not None:
+            path = base_dir / path
+        if not path.exists():
+            continue
+        with path.open("r", encoding="utf-8-sig", newline="") as handle:
+            reader = csv.DictReader(handle)
+            for row in reader:
+                uri = (row.get("uri") or row.get("@id") or row.get("id") or "").strip().strip("<>")
+                domain = (row.get("domain") or "").strip()
+                code = (row.get("notation") or row.get("skos:notation") or row.get("code") or "").strip().strip("'").lstrip("_")
+                label = (row.get("label") or row.get("rdfs:label") or row.get("name") or "").strip()
+                if uri and (not domain or not code):
+                    _, uri_domain, uri_code = _extract_code_list_ref(uri)
+                    domain = domain or (uri_domain or "")
+                    code = code or (uri_code or "")
+                if domain and code and label:
+                    labels.setdefault(domain, {})[code] = label
+    return labels
+
+
+def _lookup_code_list_label(domain: Optional[str], code: Optional[str]) -> Optional[str]:
+    if not domain or not code:
+        return None
+    return CODE_LIST_LABELS.get(domain, {}).get(code.lstrip("_"))
+
+
+def _humanize_identifier(value: Any) -> Optional[str]:
+    text = _last_segment(value) if isinstance(value, str) else None
+    if not text:
+        return None
+    text = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", text)
+    text = text.replace("_", " ").replace("-", " ")
+    text = re.sub(r"\s+", " ", text).strip()
+    return text.lower() if text else None
+
+
+def _display_domain_name(domain: Optional[str]) -> Optional[str]:
+    if not domain:
+        return None
+    text = re.sub(r"^ObservedVariable", "", domain)
+    text = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", text)
+    text = text.replace("_", " ").replace("-", " ")
+    text = re.sub(r"\s+", " ", text).strip()
+    return text or domain
+
+
+def _format_observation_title(value: Any) -> Optional[str]:
+    """Build a discovery title from an observed-property code-list URI."""
+    _, domain, code = _extract_code_list_ref(value)
+    if not code:
+        return None
+    label = _lookup_code_list_label(domain, code)
+    domain_label = _display_domain_name(domain)
+    prefix = f"variable {code}"
+    if label:
+        prefix = f"{prefix}: {label}"
+    if domain_label:
+        return f"{prefix}; domain: {domain_label}"
+    return prefix
 
 def _iter_json_files(root: Path, *, pattern: str = DEFAULT_PATTERN, recursive: bool = True) -> List[Path]:
     if root.is_file():
@@ -152,6 +340,12 @@ def _as_list(value: Any) -> List[Any]:
     return [value]
 
 
+def _as_dict(value: Any) -> Dict[str, Any]:
+    if isinstance(value, dict):
+        return value
+    return {}
+
+
 def _non_empty(value: Any) -> bool:
     return value not in (None, "", [], {})
 
@@ -187,14 +381,129 @@ def _sanitize_id(text: str) -> str:
     return text.strip("-") or "record"
 
 
+def _is_unknown_token(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    text = value.strip()
+    if text.startswith(("http://", "https://")):
+        tail = text.rstrip("/#").rsplit("/", 1)[-1]
+        text = tail
+    if re.fullmatch(r"\(([^()]+)\)", text):
+        text = re.fullmatch(r"\(([^()]+)\)", text).group(1)  # type: ignore[union-attr]
+    return text.strip().lower() in {"unknown", "none", "null", "nil"}
+
+
+def _simplify_unknown_text(value: Any) -> Any:
+    if not isinstance(value, str):
+        return value
+    text = value.strip()
+    if not text:
+        return None
+    normalized = re.sub(r"[()]", " ", text)
+    normalized = re.sub(r"\s+", " ", normalized).strip()
+    if not normalized:
+        return None
+    tokens = [token.lower() for token in normalized.split()]
+    if tokens and all(token in {"unknown", "none", "null", "nil"} for token in tokens):
+        return "unknown"
+    return text
+
+
+def _normalize_code_value(value: Any) -> Any:
+    if not isinstance(value, str):
+        return value
+    text = _simplify_unknown_text(value)
+    if not isinstance(text, str):
+        return text
+    text = text.strip()
+    if not text:
+        return None
+    match = re.fullmatch(r"\(([^()]+)\)", text)
+    if match:
+        text = match.group(1).strip()
+    simplified = _simplify_unknown_text(text)
+    if isinstance(simplified, str):
+        text = simplified.strip()
+    if _is_unknown_token(text):
+        return "unknown"
+    return text
+
+
+def _normalize_display_text(value: Any) -> Optional[str]:
+    """Normalize human-facing text while keeping non-empty meaningful values."""
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        value = str(value)
+    text = value.strip()
+    if not text:
+        return None
+    normalized = re.sub(r"\((unknown|null|none|nil)\)", "unknown", text, flags=re.IGNORECASE)
+    normalized = re.sub(r"\bunknown\s*/\s*unknown\b", "unknown", normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r"\bunknown\s+unknown\b", "unknown", normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r"\s+", " ", normalized).strip()
+    return "unknown" if _is_unknown_token(normalized) else normalized
+
+
+def _compact_display_values(values: Iterable[Any]) -> List[str]:
+    """Return unique display values, dropping unknown when real values exist."""
+    known: List[str] = []
+    unknown_seen = False
+    seen: set[str] = set()
+    for raw in values:
+        normalized = _normalize_display_text(raw)
+        if not normalized:
+            continue
+        key = normalized.lower()
+        if key == "unknown":
+            unknown_seen = True
+            continue
+        if key in seen:
+            continue
+        seen.add(key)
+        known.append(normalized)
+    if known:
+        return known
+    return ["unknown"] if unknown_seen else []
+
+
+def _summarize_intervals(intervals: Sequence[Sequence[Any]]) -> Optional[Dict[str, Any]]:
+    starts = [str(item[0]) for item in intervals if len(item) >= 1 and isinstance(item[0], str) and item[0] != ".."]
+    ends = [str(item[1]) for item in intervals if len(item) >= 2 and isinstance(item[1], str) and item[1] != ".."]
+    has_open = any(len(item) >= 2 and item[1] == ".." for item in intervals)
+    if not starts and not ends and not has_open:
+        return None
+    return {"interval": [min(starts) if starts else "..", ".." if has_open else (max(ends) if ends else "..")] }
+
+
+def _derive_observation_time(observation: Dict[str, Any], deployments: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    intervals: List[List[Any]] = []
+    for dep in deployments:
+        candidates = [dep, _as_dict(dep.get("temporalExtent")), _as_dict(dep.get("time"))]
+        for candidate in candidates:
+            start, end = _extract_interval(candidate)
+            interval = _time_interval(start, end)
+            if interval and isinstance(interval.get("interval"), list):
+                intervals.append(interval["interval"])
+                break
+    if intervals:
+        return _summarize_intervals(intervals)
+    return _time_interval(observation.get("beginPosition"), observation.get("endPosition"))
+
+
 def _last_segment(value: Any) -> Optional[str]:
     if not isinstance(value, str) or not value.strip():
         return None
-    raw = value.rstrip("/#")
+    raw = value.strip().rstrip("/#")
+    match = re.fullmatch(r"\(([^()]+)\)", raw)
+    if match:
+        raw = match.group(1).strip()
     if "/" in raw:
-        return raw.rsplit("/", 1)[-1]
-    if "#" in raw:
-        return raw.rsplit("#", 1)[-1]
+        raw = raw.rsplit("/", 1)[-1]
+    elif "#" in raw:
+        raw = raw.rsplit("#", 1)[-1]
+    if _is_unknown_token(raw):
+        return "unknown"
     return raw
 
 
@@ -290,10 +599,10 @@ def _parse_pos_lon_lat_z(raw: Any) -> Optional[List[Any]]:
     if raw is None:
         return None
 
-    if isinstance(raw, dict) and isinstance(raw.get("coordinates"), list):
-        coords = raw.get("coordinates")
-        if len(coords) >= 2:
-            return coords  # already GeoJSON style
+    if isinstance(raw, dict):
+        coords_value = raw.get("coordinates")
+        if isinstance(coords_value, list) and len(coords_value) >= 2:
+            return coords_value  # already GeoJSON style
 
     if isinstance(raw, dict):
         for key in ("geoLocation", "pos", "value", "text", "geometry"):
@@ -368,19 +677,24 @@ def _uniq_dicts(items: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return out
 
 
+
 def _themes_from_uris(values: Iterable[Any]) -> List[Dict[str, Any]]:
     grouped: Dict[str, List[Dict[str, str]]] = {}
     for raw in values:
         if not isinstance(raw, str) or not raw.startswith(("http://", "https://")):
             continue
-        scheme = _uri_parent(raw)
-        concept_id = _last_segment(raw)
-        if not concept_id:
+        if _is_unknown_token(raw):
             continue
+        concept_id = _last_segment(raw)
+        if not concept_id or _is_unknown_token(concept_id):
+            continue
+        scheme = _uri_parent(raw)
         grouped.setdefault(scheme, []).append({"id": concept_id, "url": raw})
-    themes = [{"scheme": scheme, "concepts": concepts} for scheme, concepts in grouped.items()]
-    return _uniq_dicts(themes)
 
+    themes: List[Dict[str, Any]] = []
+    for scheme, concepts in grouped.items():
+        themes.append({"scheme": scheme, "concepts": _uniq_dicts(concepts)})
+    return _uniq_dicts(themes)
 
 def _keywords_from_values(values: Iterable[Any]) -> List[str]:
     out: List[str] = []
@@ -389,9 +703,11 @@ def _keywords_from_values(values: Iterable[Any]) -> List[str]:
         if raw is None:
             continue
         if isinstance(raw, str):
-            candidate = _last_segment(raw) or raw
+            candidate = _normalize_code_value(_last_segment(raw) or raw)
+            if not isinstance(candidate, str):
+                continue
             candidate = candidate.replace("_", " ").strip()
-            if not candidate:
+            if not candidate or _is_unknown_token(candidate):
                 continue
             key = candidate.lower()
             if key in seen:
@@ -457,11 +773,9 @@ def _normalize_contact(raw: Any) -> Tuple[Optional[Dict[str, Any]], Optional[Dic
     if isinstance(organization, str):
         contact["organization"] = organization
 
-    info = payload.get("contactInfo") if isinstance(payload.get("contactInfo"), dict) else {}
-    if not isinstance(info, dict):
-        info = {}
+    info: Dict[str, Any] = _as_dict(payload.get("contactInfo"))
 
-    phone_obj = info.get("phone") if isinstance(info.get("phone"), dict) else {}
+    phone_obj: Dict[str, Any] = _as_dict(info.get("phone"))
     voices = _as_list(phone_obj.get("voice"))
     phones = []
     for voice in voices:
@@ -470,7 +784,7 @@ def _normalize_contact(raw: Any) -> Tuple[Optional[Dict[str, Any]], Optional[Dic
     if phones:
         contact["phones"] = phones
 
-    address_obj = info.get("address") if isinstance(info.get("address"), dict) else {}
+    address_obj: Dict[str, Any] = _as_dict(info.get("address"))
     emails = []
     for email in _as_list(address_obj.get("electronicMailAddress")):
         if isinstance(email, str) and "@" in email:
@@ -499,7 +813,7 @@ def _normalize_contact(raw: Any) -> Tuple[Optional[Dict[str, Any]], Optional[Dic
         contact["addresses"] = addresses
 
     links = []
-    online = info.get("onlineResource") if isinstance(info.get("onlineResource"), dict) else {}
+    online: Dict[str, Any] = _as_dict(info.get("onlineResource"))
     href = online.get("url")
     if isinstance(href, str) and href.strip():
         links.append(_about_link(href.strip()))
@@ -567,15 +881,28 @@ def _normalize_reporting_status(value: Any) -> List[Dict[str, Any]]:
 def _normalize_program_affiliation(value: Any) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     for item in _as_list(value):
+        if isinstance(item, str):
+            normalized = _normalize_code_value(item)
+            if isinstance(normalized, str) and not _is_unknown_token(normalized):
+                out.append({"programAffiliation": [normalized]})
+            continue
         if not isinstance(item, dict):
             continue
         record: Dict[str, Any] = {}
-        affiliations = [x for x in _as_list(item.get("programAffiliation")) if isinstance(x, str) and x.strip()]
+        affiliations = [
+            normalized
+            for raw in _as_list(item.get("programAffiliation"))
+            for normalized in [raw if isinstance(raw, str) else None]
+            if isinstance(normalized, str) and normalized.strip() and not _is_unknown_token(normalized)
+        ]
         if affiliations:
-            record["programAffiliation"] = affiliations
+            record["programAffiliation"] = [_normalize_code_value(x) for x in affiliations]
         psfi = item.get("programSpecificFacilityId")
         if isinstance(psfi, str) and psfi.strip():
             record["programSpecificFacilityId"] = psfi.strip()
+        valid_time = _time_interval(item.get("beginPosition"), item.get("endPosition"))
+        if valid_time:
+            record["time"] = valid_time
         statuses = _normalize_reporting_status(item.get("reportingStatus"))
         if statuses:
             record["reportingStatus"] = statuses
@@ -587,7 +914,7 @@ def _normalize_program_affiliation(value: Any) -> List[Dict[str, Any]]:
 def _normalize_simple_timed_value(value: Any, *, value_key: str) -> Optional[Dict[str, Any]]:
     if not isinstance(value, dict):
         return None
-    actual = value.get(value_key)
+    actual = _normalize_code_value(value.get(value_key))
     if actual in (None, ""):
         return None
     out: Dict[str, Any] = {"value": actual}
@@ -602,65 +929,130 @@ def _normalize_simple_timed_value(value: Any, *, value_key: str) -> Optional[Dic
     return _clean_none(out)
 
 
-def _normalize_temporal_geometry(current: Any, history: Any = None) -> Optional[Dict[str, Any]]:
+def _normalize_temporal_geometry(current: Any, history: Any = None) -> List[Dict[str, Any]]:
+    """Collect geospatial history entries in chronological order.
+
+    Returns a list of dictionaries with the keys:
+    - coordinates: GeoJSON-style [lon, lat, z?]
+    - datetimes: [begin, end] using ".." for open bounds
+    - id: optional source identifier
+
+    The stage-1 XML -> JSON converter now normalizes facility geospatialLocation
+    histories into a clean chronological list. Stage 2 uses that shape directly to
+    build WMDR2 temporalGeometry as a MovingPoint when more than one location is
+    present.
+    """
+
     entries: List[Tuple[Optional[str], str, Dict[str, Any]]] = []
 
     def add_entry(item: Any) -> None:
+        if isinstance(item, str):
+            coords = _parse_pos_lon_lat_z(item)
+            if coords is None:
+                return
+            payload = {"coordinates": coords, "datetimes": ["..", ".."]}
+            entries.append((None, json.dumps(coords, sort_keys=True), payload))
+            return
+
         if not isinstance(item, dict):
             return
-        geometry = _point_from_pos(item.get("geometry") or item.get("geoLocation") or item.get("pos") or item)
-        if geometry is None:
-            return
-        start, end = _extract_interval(item)
-        interval = _time_interval(start, end)
-        if interval is None:
-            interval = {"interval": ["..", ".."]}
-        start_key = interval["interval"][0]
-        entries.append((None if start_key == ".." else str(start_key), json.dumps(geometry, sort_keys=True), {"time": interval, "geometry": geometry}))
 
-    add_entry(current)
+        coords = _parse_pos_lon_lat_z(item.get("geometry") or item.get("geoLocation") or item.get("pos") or item)
+        if coords is None:
+            return
+
+        start, end = _extract_interval(item)
+        interval_dict = _time_interval(start, end)
+        interval = interval_dict["interval"] if interval_dict else ["..", ".."]
+        start_key = interval[0]
+
+        payload: Dict[str, Any] = {
+            "coordinates": coords,
+            "datetimes": interval,
+        }
+        source_id = _first_non_empty(item.get("@gml:id"), item.get("@id"), item.get("id"))
+        if isinstance(source_id, str) and source_id.strip():
+            payload["id"] = source_id.strip()
+
+        entries.append((None if start_key == ".." else str(start_key), json.dumps(coords, sort_keys=True), payload))
+
+    for item in _as_list(current):
+        add_entry(item)
     for item in _as_list(history):
         add_entry(item)
 
     if not entries:
-        return None
+        return []
 
     deduped: List[Dict[str, Any]] = []
     seen: set[str] = set()
-    for _, payload_key, entry in sorted(entries, key=lambda item: (item[0] is None, item[0] or "", item[1])):
-        marker = json.dumps(entry, sort_keys=True)
+    for _, _, entry in sorted(entries, key=lambda item: (item[0] is None, item[0] or "", item[1])):
+        marker = json.dumps(entry, sort_keys=True, ensure_ascii=False)
         if marker in seen:
             continue
         seen.add(marker)
         deduped.append(entry)
 
-    datetimes = [entry["time"]["interval"] for entry in deduped]
-    geometries = [entry["geometry"] for entry in deduped]
-    out = {"datetime": datetimes, "geometry": geometries}
-    return out
+    return deduped
 
 
-def _current_geometry_from_temporal_geometry(temporal_geometry: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
-    if not isinstance(temporal_geometry, dict):
+def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    if len(entries) <= 1:
         return None
-    geometries = temporal_geometry.get("geometry")
-    datetimes = temporal_geometry.get("datetime")
-    if not isinstance(geometries, list) or not geometries:
-        return None
-    if not isinstance(datetimes, list) or len(datetimes) != len(geometries):
-        return geometries[-1] if isinstance(geometries[-1], dict) else None
 
-    def rank(interval: Any) -> Tuple[int, str]:
+    out: Dict[str, Any] = {
+        "type": "MovingPoint",
+        "coordinates": [entry["coordinates"] for entry in entries if isinstance(entry.get("coordinates"), list)],
+        "datetimes": [entry["datetimes"] for entry in entries if isinstance(entry.get("datetimes"), list)],
+    }
+    ids = []
+    for entry in entries:
+        entry_id = entry.get("id")
+        if isinstance(entry_id, str) and entry_id.strip():
+            ids.append(entry_id)
+    if ids:
+        out["id"] = ids if len(ids) > 1 else ids[0]
+    return _clean_none(out)
+
+
+def _current_geometry_from_temporal_geometry(temporal_geometry: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    if not isinstance(temporal_geometry, list) or not temporal_geometry:
+        return None
+
+    def rank(entry: Dict[str, Any]) -> Tuple[int, str, str]:
+        interval = entry.get("datetimes")
         if isinstance(interval, list) and len(interval) == 2:
-            end = interval[1]
+            start = str(interval[0])
+            end = str(interval[1])
             if end == "..":
-                return (0, "")
-            return (1, str(end))
-        return (2, "")
+                return (0, start, "")
+            return (1, end, start)
+        return (2, "", "")
 
-    paired = list(zip(datetimes, geometries))
-    paired.sort(key=lambda pair: rank(pair[0]))
-    return paired[0][1] if paired else None
+    latest = sorted(temporal_geometry, key=rank)[0]
+    coords = latest.get("coordinates")
+    if not isinstance(coords, list) or len(coords) < 2:
+        return None
+    return {"type": "Point", "coordinates": coords}
+
+
+def _time_from_temporal_geometry(entries: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    if not isinstance(entries, list) or not entries:
+        return None
+
+    intervals: List[List[Any]] = []
+    for entry in entries:
+        raw_interval = entry.get("datetimes")
+        if isinstance(raw_interval, list) and len(raw_interval) == 2:
+            intervals.append(raw_interval)
+    if not intervals:
+        return None
+
+    starts = [str(interval[0]) for interval in intervals if isinstance(interval[0], str) and interval[0] != ".."]
+    ends = [str(interval[1]) for interval in intervals if isinstance(interval[1], str) and interval[1] != ".."]
+    start = min(starts) if starts else ".."
+    end = ".." if any(isinstance(interval[1], str) and interval[1] == ".." for interval in intervals) else (max(ends) if ends else "..")
+    return {"interval": [start, end]}
 
 
 def _normalize_schedule_coverage(value: Any) -> Optional[Dict[str, Any]]:
@@ -786,6 +1178,8 @@ def _normalize_temporal_reporting_schedule(data_generation: Any) -> List[Dict[st
             schedule_obj["id"] = entry["id"]
         if _non_empty(report.get("temporalReportingInterval")):
             schedule_obj["interval"] = report["temporalReportingInterval"]
+        elif entry.get("id"):
+            schedule_obj["interval"] = "unknown"
         coverage = report.get("coverage")
         if coverage:
             schedule_obj["schedule"] = coverage
@@ -814,6 +1208,8 @@ def _normalize_temporal_observing_schedule(data_generation: Any) -> List[Dict[st
             schedule = reporting.get("coverage") if isinstance(reporting, dict) else None
             if schedule:
                 obj["schedule"] = schedule
+        if entry.get("id") and not _non_empty(obj.get("interval")):
+            obj["interval"] = "unknown"
         if obj:
             out.append(obj)
     return _uniq_dicts(out)
@@ -827,7 +1223,7 @@ def _derive_observation_level_reporting(deployments: Sequence[Dict[str, Any]]) -
         for dg in _as_list(dep.get("dataGeneration")):
             if not isinstance(dg, dict):
                 continue
-            report = dg.get("reporting") if isinstance(dg.get("reporting"), dict) else {}
+            report: Dict[str, Any] = _as_dict(dg.get("reporting"))
             flag = _parse_bool(report.get("internationalExchange"))
             if flag is not None:
                 current_flags.append(flag)
@@ -926,8 +1322,10 @@ def _facility_description_text(facility: Dict[str, Any]) -> Optional[str]:
     return None
 
 
-def _facility_geometry_and_extension(facility: Dict[str, Any]) -> Tuple[Optional[Dict[str, Any]], Optional[Dict[str, Any]]]:
-    temporal_geometry = _normalize_temporal_geometry(
+def _facility_geometry_and_extension(
+    facility: Dict[str, Any],
+) -> Tuple[Optional[Dict[str, Any]], Optional[Dict[str, Any]], List[Dict[str, Any]]]:
+    temporal_entries = _normalize_temporal_geometry(
         facility.get("geospatialLocation"),
         _first_non_empty(
             facility.get("geospatialLocationHistory"),
@@ -935,8 +1333,9 @@ def _facility_geometry_and_extension(facility: Dict[str, Any]) -> Tuple[Optional
             facility.get("temporalGeometry"),
         ),
     )
-    geometry = _current_geometry_from_temporal_geometry(temporal_geometry)
-    return geometry, temporal_geometry
+    geometry = _current_geometry_from_temporal_geometry(temporal_entries)
+    temporal_geometry = _temporal_geometry_extension(temporal_entries)
+    return geometry, temporal_geometry, temporal_entries
 
 
 def _collect_facility_formal_uris(facility: Dict[str, Any]) -> List[str]:
@@ -974,6 +1373,101 @@ def _collect_facility_formal_uris(facility: Dict[str, Any]) -> List[str]:
     return uris
 
 
+
+def _policy_list(entity: str, bucket: str) -> List[str]:
+    entity_cfg = DISCOVERY_POLICY.get(entity, {})
+    values = entity_cfg.get(bucket, [])
+    return [value for value in values if isinstance(value, str) and value]
+
+
+def _facility_discovery_values(facility: Dict[str, Any], token: str) -> List[Any]:
+    mapping: Dict[str, List[Any]] = {
+        "identifier": [facility.get("identifier")],
+        "name": [facility.get("name"), facility.get("facilityName")],
+        "facilitySet": [facility.get("facilitySet")],
+        "facilityType": [facility.get("facilityType")],
+        "wmoRegion": [facility.get("wmoRegion")],
+        "territoryName": [_as_dict(facility.get("territory")).get("territoryName")],
+        "climateZone": [_as_dict(facility.get("climateZone")).get("climateZone")],
+        "surfaceCover": [_as_dict(facility.get("surfaceCover")).get("surfaceCover")],
+        "surfaceCoverClassification": [_as_dict(facility.get("surfaceCover")).get("surfaceCoverClassification")],
+        "localTopography": [_as_dict(facility.get("topographyBathymetry")).get("localTopography")],
+        "relativeElevation": [_as_dict(facility.get("topographyBathymetry")).get("relativeElevation")],
+        "topographicContext": [_as_dict(facility.get("topographyBathymetry")).get("topographicContext")],
+        "altitudeOrDepth": [_as_dict(facility.get("topographyBathymetry")).get("altitudeOrDepth")],
+        "onlineResource": [_as_dict(facility.get("onlineResource")).get("url")],
+        "programAffiliation": [
+            uri
+            for entry in _as_list(facility.get("programAffiliation")) if isinstance(entry, dict)
+            for uri in _as_list(entry.get("programAffiliation"))
+        ],
+        "reportingStatus": [
+            status.get("reportingStatus")
+            for entry in _as_list(facility.get("programAffiliation")) if isinstance(entry, dict)
+            for status in _as_list(entry.get("reportingStatus")) if isinstance(status, dict)
+        ],
+    }
+    return mapping.get(token, [])
+
+
+def _observation_discovery_values(observation: Dict[str, Any], deployments: Sequence[Dict[str, Any]], token: str) -> List[Any]:
+    mapping: Dict[str, List[Any]] = {
+        "programAffiliation": list(_as_list(observation.get("programAffiliation"))),
+    }
+    return mapping.get(token, [])
+
+
+def _deployment_discovery_values(deployment: Dict[str, Any], token: str) -> List[Any]:
+    if token == "instrumentOperatingStatus":
+        status = _as_dict(deployment.get("instrumentOperatingStatus")).get("instrumentOperatingStatus")
+        return [status]
+    mapping: Dict[str, List[Any]] = {
+        "manufacturer": [deployment.get("manufacturer")],
+        "model": [deployment.get("model")],
+        "serialNumber": [deployment.get("serialNumber")],
+        "sourceOfObservation": [deployment.get("sourceOfObservation")],
+        "observingMethod": [deployment.get("observingMethod")],
+        "exposure": [deployment.get("exposure")],
+        "representativeness": [deployment.get("representativeness")],
+        "localReferenceSurface": [deployment.get("localReferenceSurface")],
+    }
+    return mapping.get(token, [])
+
+
+def _discovery_keywords(entity: str, source: Dict[str, Any], *, deployments: Optional[Sequence[Dict[str, Any]]] = None) -> List[str]:
+    raw_values: List[Any] = []
+    for token in _policy_list(entity, "keywords"):
+        if entity == "facility":
+            raw_values.extend(_facility_discovery_values(source, token))
+        elif entity == "observation":
+            raw_values.extend(_observation_discovery_values(source, deployments or [], token))
+        else:
+            raw_values.extend(_deployment_discovery_values(source, token))
+    return _keywords_from_values(raw_values)
+
+
+def _discovery_themes(entity: str, source: Dict[str, Any], *, deployments: Optional[Sequence[Dict[str, Any]]] = None) -> List[Dict[str, Any]]:
+    raw_values: List[Any] = []
+    for token in _policy_list(entity, "themes"):
+        if entity == "facility":
+            raw_values.extend(_facility_discovery_values(source, token))
+        elif entity == "observation":
+            raw_values.extend(_observation_discovery_values(source, deployments or [], token))
+        else:
+            raw_values.extend(_deployment_discovery_values(source, token))
+    return _themes_from_uris(raw_values)
+
+
+def _discovery_links(entity: str, source: Dict[str, Any]) -> List[Dict[str, Any]]:
+    links: List[Dict[str, Any]] = []
+    for token in _policy_list(entity, "links"):
+        if entity == "facility" and token == "onlineResource":
+            url = _as_dict(source.get("onlineResource")).get("url")
+            if isinstance(url, str) and url.strip() and not _is_unknown_token(url):
+                links.append(_about_link(url.strip(), title="Facility online resource"))
+    return _uniq_dicts(links)
+
+
 def _build_facility_feature(facility: Dict[str, Any], header: Optional[Dict[str, Any]]) -> Dict[str, Any]:
     record_id = _facility_record_id(facility)
     feature = _record_template(record_id, "facility")
@@ -993,79 +1487,47 @@ def _build_facility_feature(facility: Dict[str, Any], header: Optional[Dict[str,
     if description:
         feature["properties"]["description"] = description
 
-    geometry, temporal_geometry = _facility_geometry_and_extension(facility)
+    geometry, temporal_geometry, temporal_entries = _facility_geometry_and_extension(facility)
     feature["geometry"] = geometry
+    feature["time"] = _time_interval(facility.get("dateEstablished"), facility.get("dateClosed")) or _time_from_temporal_geometry(temporal_entries)
 
-    feature["time"] = _time_interval(facility.get("dateEstablished"), facility.get("dateClosed"))
-
-    ogc_contacts, ext_contacts = _collect_contacts(facility.get("responsibleParty"), _record_owner_contact(header))
+    ogc_contacts, _ = _collect_contacts(facility.get("responsibleParty"))
     if ogc_contacts:
         feature["properties"]["contacts"] = ogc_contacts
 
     external_ids = _uniq_dicts(
-        [
-            item
-            for item in [
-                _external_id(identifier, "WMO:WIGOS"),
-                _external_id(record_id, "WMDR2:record"),
-            ]
-            if item
-        ]
+        [item for item in [_external_id(identifier, "WMO:WIGOS")] if item]
     )
     if external_ids:
         feature["properties"]["externalIds"] = external_ids
 
-    keywords = _keywords_from_values(
-        [
-            identifier,
-            facility.get("name"),
-            facility.get("facilityType"),
-            facility.get("facilitySet"),
-            facility.get("wmoRegion"),
-            facility.get("onlineResource", {}).get("url") if isinstance(facility.get("onlineResource"), dict) else None,
-            *(entry.get("programAffiliation") for entry in _as_list(facility.get("programAffiliation")) if isinstance(entry, dict)),
-        ]
-    )
+    keywords = _discovery_keywords("facility", facility)
     if keywords:
         feature["properties"]["keywords"] = keywords
 
-    formal_uris = _collect_facility_formal_uris(facility)
-    themes = _themes_from_uris(formal_uris)
+    themes = _discovery_themes("facility", facility)
     if themes:
         feature["properties"]["themes"] = themes
 
-    links: List[Dict[str, Any]] = []
-    if isinstance(facility.get("facilityType"), str):
-        links.append(_canonical_type_link(facility["facilityType"]))
-    online_resource = facility.get("onlineResource")
-    if isinstance(online_resource, dict) and isinstance(online_resource.get("url"), str):
-        links.append(_about_link(online_resource["url"], title="Facility online resource"))
+    links = _discovery_links("facility", facility)
     if links:
-        feature["links"] = _uniq_dicts(links)
+        feature["links"] = links
 
-    facility_ext: Dict[str, Any] = {
-        "class": "facility",
-        "id": record_id,
-        "identifier": identifier,
-        "name": facility.get("name"),
-        "temporalPeriod": _time_interval(facility.get("dateEstablished"), facility.get("dateClosed")),
-        "description": description,
-        "temporalGeometry": temporal_geometry,
-        "contact": ext_contacts,
-        "facilitySet": facility.get("facilitySet"),
-        "facilityTypes": [x for x in _as_list(facility.get("facilityType")) if isinstance(x, str)],
-        "additionalWsi": [x for x in _as_list(facility.get("additionalWSI")) if isinstance(x, str)],
-        "territory": _normalize_simple_timed_value(facility.get("territory"), value_key="territoryName"),
-        "wmoRegion": facility.get("wmoRegion"),
-        "programAffiliation": _normalize_program_affiliation(facility.get("programAffiliation")),
-        "climateZone": _normalize_simple_timed_value(facility.get("climateZone"), value_key="climateZone"),
-        "surfaceCover": _normalize_simple_timed_value(facility.get("surfaceCover"), value_key="surfaceCover"),
-        "topographyBathymetry": _normalize_simple_timed_value(facility.get("topographyBathymetry"), value_key="localTopography"),
-    }
-    feature["properties"]["wmdr2"] = _clean_none({"facility": facility_ext})
+    feature["properties"]["wmdr2"] = _clean_none(
+        {
+            "facilitySet": _normalize_code_value(facility.get("facilitySet")),
+            "additionalWsi": [x for x in _as_list(facility.get("additionalWSI")) if isinstance(x, str)],
+            "temporalProgramAffiliation": _normalize_program_affiliation(facility.get("programAffiliation")),
+            "climateZone": _normalize_simple_timed_value(facility.get("climateZone"), value_key="climateZone"),
+            "surfaceCover": _normalize_simple_timed_value(facility.get("surfaceCover"), value_key="surfaceCover"),
+            "topographyBathymetry": _normalize_simple_timed_value(facility.get("topographyBathymetry"), value_key="localTopography"),
+            "temporalGeometry": temporal_geometry,
+            "observationIds": [],
+            "deploymentIds": [],
+        }
+    )
 
     return _clean_none(feature)
-
 
 def _collect_observation_formal_uris(observation: Dict[str, Any], deployments: Sequence[Dict[str, Any]]) -> List[str]:
     uris: List[str] = []
@@ -1087,19 +1549,26 @@ def _collect_observation_formal_uris(observation: Dict[str, Any], deployments: S
 def _observation_description(observation: Dict[str, Any], deployments: Sequence[Dict[str, Any]]) -> Optional[str]:
     observed = _last_segment(observation.get("observedProperty"))
     geom_type = _last_segment(observation.get("type"))
-    manufacturers = [dep.get("manufacturer") for dep in deployments if isinstance(dep.get("manufacturer"), str)]
-    models = [dep.get("model") for dep in deployments if isinstance(dep.get("model"), str)]
-    bits = []
+    manufacturers = _compact_display_values(dep.get("manufacturer") for dep in deployments if isinstance(dep, dict))
+    models = _compact_display_values(dep.get("model") for dep in deployments if isinstance(dep, dict))
+    methods = _compact_display_values(_humanize_identifier(dep.get("observingMethod")) for dep in deployments if isinstance(dep, dict))
+    bits: List[str] = []
     if observed:
         bits.append(f"Observed property {observed}")
     if geom_type:
         bits.append(f"geometry type {geom_type}")
-    if manufacturers or models:
-        proc = " / ".join([x for x in [", ".join(sorted(set(manufacturers))) if manufacturers else None,
-                                      ", ".join(sorted(set(models))) if models else None] if x])
-        if proc:
-            bits.append(f"deployment procedure {proc}")
-    return "; ".join(bits) if bits else None
+    proc_sources: List[str] = []
+    proc_sources.extend(manufacturers)
+    proc_sources.extend(models)
+    proc_sources.extend(methods)
+    proc_parts = _compact_display_values(proc_sources)
+    if proc_parts:
+        proc = " / ".join(proc_parts)
+        proc = _normalize_display_text(proc) or proc
+        bits.append(f"deployment procedure {proc}")
+    description = "; ".join(bits) if bits else None
+    return _normalize_display_text(description) if description else None
+
 
 
 def _build_observation_feature(
@@ -1122,7 +1591,7 @@ def _build_observation_feature(
     deployments = [dep for dep in _as_list(observation.get("deployments")) if isinstance(dep, dict)]
 
     observed_property = observation.get("observedProperty")
-    title = _last_segment(observed_property) or f"Observation {index + 1}"
+    title = _format_observation_title(observed_property) or _last_segment(observed_property) or f"Observation {index + 1}"
     feature["properties"]["title"] = title
 
     description = _observation_description(observation, deployments)
@@ -1130,80 +1599,39 @@ def _build_observation_feature(
         feature["properties"]["description"] = description
 
     feature["geometry"] = facility_geometry
-    feature["time"] = _time_interval(observation.get("beginPosition"), observation.get("endPosition"))
+    feature["time"] = _derive_observation_time(observation, deployments)
 
-    record_owner = _record_owner_contact(header)
     metadata_contact = observation.get("metadata", {}).get("contact") if isinstance(observation.get("metadata"), dict) else None
-    ogc_contacts, ext_contacts = _collect_contacts(metadata_contact, record_owner)
+    ogc_contacts, _ = _collect_contacts(metadata_contact)
     if ogc_contacts:
         feature["properties"]["contacts"] = ogc_contacts
 
-    external_ids = _uniq_dicts(
-        [
-            item
-            for item in [
-                _external_id(str(_first_non_empty(observation.get("@gml:id"), observation.get("@id"), record_id)), "WMDR1:gml"),
-                _external_id(record_id, "WMDR2:record"),
-                _external_id(observation.get("facility"), "WMO:facility-uri"),
-                _external_id(observed_property, "WMO:observed-property-uri"),
-            ]
-            if item
-        ]
-    )
-    if external_ids:
-        feature["properties"]["externalIds"] = external_ids
-
-    observation_program_affiliations = observation.get("programAffiliation") if isinstance(observation.get("programAffiliation"), list) else []
-    keywords = _keywords_from_values(
-        [
-            observed_property,
-            observation.get("type"),
-            *observation_program_affiliations,
-            *(dep.get("manufacturer") for dep in deployments if isinstance(dep, dict)),
-            *(dep.get("model") for dep in deployments if isinstance(dep, dict)),
-        ]
-    )
+    keywords = _discovery_keywords("observation", observation, deployments=deployments)
     if keywords:
         feature["properties"]["keywords"] = keywords
 
-    formal_uris = _collect_observation_formal_uris(observation, deployments)
-    themes = _themes_from_uris(formal_uris)
+    themes = _discovery_themes("observation", observation, deployments=deployments)
     if themes:
         feature["properties"]["themes"] = themes
 
-    links: List[Dict[str, Any]] = []
-    if isinstance(observed_property, str):
-        links.append(_canonical_type_link(observed_property))
-    if links:
-        feature["links"] = _uniq_dicts(links)
-
     inferred_exchange, reporting_schedule = _derive_observation_level_reporting(deployments)
-    related_records = []
-    if facility_record_id:
-        related_records.append(facility_record_id)
-
     deployment_ids = [_deployment_record_id(dep, dep_index) for dep_index, dep in enumerate(deployments)]
-    related_records.extend(deployment_ids)
 
-    obs_ext: Dict[str, Any] = {
-        "class": "observation",
-        "id": record_id,
-        "facility": observation.get("facility"),
-        "relatedRecords": related_records,
-        "observationType": observation.get("type"),
-        "observedProperty": observed_property,
-        "observedVariableCoordinates": observation.get("observedVariableCoordinates"),
-        "temporalExtent": _time_interval(observation.get("beginPosition"), observation.get("endPosition")),
-        "contact": ext_contacts,
-        "programAffiliation": [x for x in _as_list(observation.get("programAffiliation")) if isinstance(x, str)],
-        "internationalExchange": inferred_exchange,
-        "internationalReportingSchedule": reporting_schedule,
-        "result": observation.get("result"),
-    }
-    feature["properties"]["wmdr2"] = _clean_none({"observation": obs_ext})
+    feature["properties"]["wmdr2"] = _clean_none(
+        {
+            "facilityId": facility_record_id,
+            "deploymentIds": deployment_ids,
+            "observationType": _normalize_code_value(observation.get("type")),
+            "observedProperty": _normalize_code_value(observed_property),
+            "observedVariableCoordinates": observation.get("observedVariableCoordinates"),
+            "temporalProgramAffiliation": _normalize_program_affiliation(observation.get("programAffiliation")),
+            "internationalExchange": inferred_exchange,
+            "internationalReportingSchedule": reporting_schedule,
+            "result": observation.get("result"),
+        }
+    )
 
     return _clean_none(feature), deployments
-
 
 def _collect_deployment_formal_uris(deployment: Dict[str, Any]) -> List[str]:
     uris: List[str] = []
@@ -1230,7 +1658,7 @@ def _collect_deployment_formal_uris(deployment: Dict[str, Any]) -> List[str]:
     for dg in _as_list(deployment.get("dataGeneration")):
         if not isinstance(dg, dict):
             continue
-        reporting = dg.get("reporting") if isinstance(dg.get("reporting"), dict) else {}
+        reporting: Dict[str, Any] = _as_dict(dg.get("reporting"))
         for key in ("uom", "timeStampMeaning"):
             value = reporting.get(key)
             if isinstance(value, str):
@@ -1248,6 +1676,7 @@ def _collect_deployment_formal_uris(deployment: Dict[str, Any]) -> List[str]:
                 if isinstance(value, str):
                     uris.append(value)
     return uris
+
 
 
 def _build_deployment_feature(
@@ -1273,104 +1702,71 @@ def _build_deployment_feature(
         deployment.get("model") if isinstance(deployment.get("model"), str) else None,
         f"SN {deployment.get('serialNumber')}" if isinstance(deployment.get("serialNumber"), str) else None,
     ]
-    title = " ".join(bit for bit in title_bits if bit) or _last_segment(deployment.get("observedProperty")) or f"Deployment {index + 1}"
-    feature["properties"]["title"] = title
+    raw_title = " ".join(bit for bit in title_bits if bit) or _last_segment(deployment.get("observedProperty")) or f"Deployment {index + 1}"
+    normalized_title = _normalize_display_text(raw_title) or _normalize_code_value(raw_title)
+    feature["properties"]["title"] = normalized_title if isinstance(normalized_title, str) else raw_title
 
     description_bits = [
-        _last_segment(deployment.get("sourceOfObservation")),
-        deployment.get("configuration") if isinstance(deployment.get("configuration"), str) else None,
-        _last_segment(deployment.get("observingMethod")),
+        _normalize_display_text(_last_segment(deployment.get("sourceOfObservation"))),
+        _normalize_display_text(deployment.get("configuration") if isinstance(deployment.get("configuration"), str) else None),
+        _normalize_display_text(_humanize_identifier(deployment.get("observingMethod"))),
     ]
     description = "; ".join(bit for bit in description_bits if bit)
     if description:
         feature["properties"]["description"] = description
 
-    feature["geometry"] = facility_geometry
-    feature["time"] = _time_interval(deployment.get("beginPosition"), deployment.get("endPosition"))
+    deployment_temporal_entries = _normalize_temporal_geometry(
+        _first_non_empty(
+            deployment.get("temporalGeometry"),
+            deployment.get("geospatialLocation"),
+            deployment.get("geometry"),
+        ),
+        deployment.get("geometryHistory"),
+    )
+    deployment_geometry = _current_geometry_from_temporal_geometry(deployment_temporal_entries) or facility_geometry
+    deployment_temporal_geometry = _temporal_geometry_extension(deployment_temporal_entries)
 
-    ogc_contacts, ext_contacts = _collect_contacts(deployment.get("responsibleParty"), _record_owner_contact(header))
+    feature["geometry"] = deployment_geometry
+    feature["time"] = _time_interval(deployment.get("beginPosition"), deployment.get("endPosition")) or _time_from_temporal_geometry(deployment_temporal_entries)
+
+    ogc_contacts, _ = _collect_contacts(deployment.get("responsibleParty"))
     if ogc_contacts:
         feature["properties"]["contacts"] = ogc_contacts
 
-    external_ids = _uniq_dicts(
-        [
-            item
-            for item in [
-                _external_id(str(_first_non_empty(deployment.get("@gml:id"), deployment.get("@id"), record_id)), "WMDR1:gml"),
-                _external_id(record_id, "WMDR2:record"),
-                _external_id(deployment.get("facility"), "WMO:facility-uri"),
-                _external_id(deployment.get("observedProperty"), "WMO:observed-property-uri"),
-                _external_id(deployment.get("serialNumber"), "instrument:serialNumber"),
-            ]
-            if item
-        ]
-    )
-    if external_ids:
-        feature["properties"]["externalIds"] = external_ids
-
-    keywords = _keywords_from_values(
-        [
-            deployment.get("manufacturer"),
-            deployment.get("model"),
-            deployment.get("serialNumber"),
-            deployment.get("sourceOfObservation"),
-            deployment.get("observingMethod"),
-            deployment.get("localReferenceSurface"),
-            deployment.get("observedProperty"),
-        ]
-    )
+    keywords = _discovery_keywords("deployment", deployment)
     if keywords:
         feature["properties"]["keywords"] = keywords
 
-    formal_uris = _collect_deployment_formal_uris(deployment)
-    themes = _themes_from_uris(formal_uris)
+    themes = _discovery_themes("deployment", deployment)
     if themes:
         feature["properties"]["themes"] = themes
 
-    links: List[Dict[str, Any]] = []
-    obs_method = deployment.get("observingMethod")
-    if isinstance(obs_method, str):
-        links.append(_canonical_type_link(obs_method))
-    if links:
-        feature["links"] = _uniq_dicts(links)
-
     procedure = _clean_none(
         {
-            "observingMethod": deployment.get("observingMethod"),
+            "observingMethod": _normalize_code_value(deployment.get("observingMethod")),
             "instrumentManufacturer": deployment.get("manufacturer"),
             "instrumentModel": deployment.get("model"),
             "instrumentSerialNumber": deployment.get("serialNumber"),
         }
     )
 
-    vertical_geometry = _clean_none(
-        {
-            "heightAboveLocalReferenceSurface": _parse_quantity(deployment.get("heightAboveLocalReferenceSurface")),
-            "localReferenceSurface": deployment.get("localReferenceSurface"),
-        }
-    )
-
     reporting_status = _normalize_reporting_status([deployment.get("instrumentOperatingStatus")] if deployment.get("instrumentOperatingStatus") is not None else [])
 
-    wmdr2_dep = _clean_none(
+    feature["properties"]["wmdr2"] = _clean_none(
         {
-            "class": "deployment",
-            "id": record_id,
-            "relatedRecords": [x for x in [facility_record_id, observation_record_id] if x],
-            "facility": deployment.get("facility"),
-            "observedProperty": deployment.get("observedProperty"),
-            "deploymentType": deployment.get("type"),
-            "temporalExtent": _time_interval(deployment.get("beginPosition"), deployment.get("endPosition")),
+            "facilityId": facility_record_id,
+            "observationId": observation_record_id,
+            "observedProperty": _normalize_code_value(deployment.get("observedProperty")),
+            "deploymentType": _normalize_code_value(deployment.get("type")),
             "temporalReportingStatus": reporting_status,
-            "sourceOfObservation": deployment.get("sourceOfObservation"),
-            "exposure": deployment.get("exposure"),
-            "representativeness": deployment.get("representativeness"),
+            "sourceOfObservation": _normalize_code_value(deployment.get("sourceOfObservation")),
+            "exposure": _normalize_code_value(deployment.get("exposure")),
+            "representativeness": _normalize_code_value(deployment.get("representativeness")),
             "configuration": deployment.get("configuration"),
             "heightAboveLocalReferenceSurface": _parse_quantity(deployment.get("heightAboveLocalReferenceSurface")),
-            "localReferenceSurface": deployment.get("localReferenceSurface"),
-            "temporalGeometry": vertical_geometry,
+            "localReferenceSurface": _normalize_code_value(deployment.get("localReferenceSurface")),
+            "temporalGeometry": deployment_temporal_geometry,
             "procedure": procedure,
-            "contact": ext_contacts,
             "temporalReportingSchedule": _normalize_temporal_reporting_schedule(deployment.get("dataGeneration")),
             "temporalObservingSchedule": _normalize_temporal_observing_schedule(deployment.get("dataGeneration")),
             "temporalDataPolicy": [
@@ -1385,9 +1781,7 @@ def _build_deployment_feature(
         }
     )
 
-    feature["properties"]["wmdr2"] = {"deployment": wmdr2_dep}
     return _clean_none(feature)
-
 
 def _feature_collection(features: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
     return {"type": "FeatureCollection", "features": list(features)}
@@ -1451,7 +1845,20 @@ def _split_payload(kind: str, payload: Any) -> Tuple[Optional[Dict[str, Any]], O
     return header, facility, observations, deployments
 
 
-def convert_payload(payload: Any, *, source_name: str = "input.json") -> Dict[str, Any]:
+def convert_payload(
+    payload: Any,
+    *,
+    source_name: str = "input.json",
+    discovery_policy: Optional[Dict[str, Dict[str, List[str]]]] = None,
+    code_list_labels: Optional[Dict[str, Dict[str, str]]] = None,
+) -> Dict[str, Any]:
+    global DISCOVERY_POLICY, CODE_LIST_LABELS
+    previous_policy = copy.deepcopy(DISCOVERY_POLICY)
+    previous_labels = copy.deepcopy(CODE_LIST_LABELS)
+    if discovery_policy is not None:
+        DISCOVERY_POLICY = copy.deepcopy(discovery_policy)
+    if code_list_labels is not None:
+        CODE_LIST_LABELS = copy.deepcopy(code_list_labels)
     kind = _detect_kind(Path(source_name), payload)
     header, facility, observations, deployments = _split_payload(kind, payload)
 
@@ -1505,12 +1912,35 @@ def convert_payload(payload: Any, *, source_name: str = "input.json") -> Dict[st
             )
             features.append(dep_feature)
 
-    return _feature_collection(features)
+    if facility_feature is not None:
+        facility_wmdr2 = _as_dict(facility_feature.get("properties", {}).get("wmdr2"))
+        if facility_wmdr2:
+            facility_wmdr2["observationIds"] = [feature["id"] for feature in observation_features]
+            facility_wmdr2["deploymentIds"] = [
+                feature["id"] for feature in features if feature.get("properties", {}).get("type") == "deployment"
+            ]
+            facility_feature["properties"]["wmdr2"] = _clean_none(facility_wmdr2)
+
+    collection = _feature_collection(features)
+    DISCOVERY_POLICY = previous_policy
+    CODE_LIST_LABELS = previous_labels
+    return collection
 
 
-def convert_file(inp: Path, out_dir: Path) -> Path:
+def convert_file(
+    inp: Path,
+    out_dir: Path,
+    *,
+    discovery_policy: Optional[Dict[str, Dict[str, List[str]]]] = None,
+    code_list_labels: Optional[Dict[str, Dict[str, str]]] = None,
+) -> Path:
     payload = _load_json(inp)
-    collection = convert_payload(payload, source_name=inp.name)
+    collection = convert_payload(
+        payload,
+        source_name=inp.name,
+        discovery_policy=discovery_policy,
+        code_list_labels=code_list_labels,
+    )
     rel_name = inp.with_suffix(".geojson").name
     out_path = out_dir / rel_name
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1532,6 +1962,8 @@ def main() -> None:
     args = parser.parse_args()
 
     cfg = _cfg_section(_load_config(args.config))
+    discovery_policy = _normalize_discovery_policy(cfg)
+    code_list_labels = _load_code_list_labels(cfg, base_dir=args.config.parent)
     source = args.source or Path(str(cfg.get("source", "")))
     target = args.target or Path(str(cfg.get("target", "")))
     pattern = args.pattern or str(cfg.get("pattern", DEFAULT_PATTERN))
@@ -1549,7 +1981,7 @@ def main() -> None:
     target.mkdir(parents=True, exist_ok=True)
     written = []
     for inp in files:
-        out = convert_file(inp, target)
+        out = convert_file(inp, target, discovery_policy=discovery_policy, code_list_labels=code_list_labels)
         written.append(out)
 
     print(f"Wrote {len(written)} WMDR2 GeoJSON file(s) to {target}")

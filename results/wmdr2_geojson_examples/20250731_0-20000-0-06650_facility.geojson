@@ -4,6 +4,14 @@
     {
       "type": "Feature",
       "id": "facility:0-20000-0-06650",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.302,
+          47.037,
+          450
+        ]
+      },
       "time": {
         "interval": [
           "1864-01-01",
@@ -29,29 +37,14 @@
           {
             "scheme": "WMO:WIGOS",
             "value": "0-20000-0-06650"
-          },
-          {
-            "scheme": "WMDR2:record",
-            "value": "facility:0-20000-0-06650"
           }
         ],
         "keywords": [
           "0-20000-0-06650",
           "LUZERN",
-          "landFixed",
-          "europe",
-          "messwerte.html?param=messnetz-automatisch&station=LUZ"
+          "landFixed"
         ],
         "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/FacilityType",
-            "concepts": [
-              {
-                "id": "landFixed",
-                "url": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
-              }
-            ]
-          },
           {
             "scheme": "http://codes.wmo.int/wmdr/WMORegion",
             "concepts": [
@@ -89,99 +82,79 @@
               {
                 "id": "operational",
                 "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
-              },
-              {
-                "id": "operational",
-                "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
               }
             ]
           }
         ],
         "wmdr2": {
-          "facility": {
-            "class": "facility",
-            "id": "facility:0-20000-0-06650",
-            "identifier": "0-20000-0-06650",
-            "name": "LUZERN",
-            "temporalPeriod": {
-              "interval": [
-                "1864-01-01",
-                ".."
+          "temporalProgramAffiliation": [
+            {
+              "programAffiliation": [
+                "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              ],
+              "reportingStatus": [
+                {
+                  "value": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+                  "id": "id_b074e827-875e-7937-e053-148ef98d6de4",
+                  "time": {
+                    "interval": [
+                      "1864-01-01T00:00:00Z",
+                      ".."
+                    ]
+                  }
+                }
               ]
             },
-            "contact": [
-              {
-                "identifier": "id_b074e824-41d2-7937-e053-148ef98d6de4",
-                "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
-                "roles": [
-                  "owner"
-                ],
-                "validTime": {
-                  "interval": [
-                    "1864-01-01T00:00:00Z",
-                    ".."
-                  ]
+            {
+              "programAffiliation": [
+                "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              ],
+              "reportingStatus": [
+                {
+                  "value": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+                  "id": "e8262cec-6ae1-76a6-e053-148ef98d37b0",
+                  "time": {
+                    "interval": [
+                      "2022-09-08T00:00:00Z",
+                      ".."
+                    ]
+                  }
                 }
-              }
+              ]
+            }
+          ],
+          "temporalGeometry": {
+            "type": "MovingPoint",
+            "coordinates": [
+              [
+                8.301014,
+                47.036442,
+                454
+              ],
+              [
+                8.302,
+                47.037,
+                450
+              ]
             ],
-            "facilityTypes": [
-              "http://codes.wmo.int/wmdr/FacilityType/landFixed"
+            "datetimes": [
+              [
+                "1864-01-01T00:00:00Z",
+                "2025-07-01T00:00:00Z"
+              ],
+              [
+                "2025-07-01T00:00:00Z",
+                ".."
+              ]
             ],
-            "territory": {
-              "value": "http://codes.wmo.int/wmdr/TerritoryName/CHE",
-              "id": "id_b074e824-8f91-7937-e053-148ef98d6de4",
-              "time": {
-                "interval": [
-                  "1864-01-01T00:00:00Z",
-                  ".."
-                ]
-              }
-            },
-            "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
-            "programAffiliation": [
-              {
-                "programAffiliation": [
-                  "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-                ],
-                "reportingStatus": [
-                  {
-                    "value": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-                    "id": "id_b074e827-875e-7937-e053-148ef98d6de4",
-                    "time": {
-                      "interval": [
-                        "1864-01-01T00:00:00Z",
-                        ".."
-                      ]
-                    }
-                  }
-                ]
-              },
-              {
-                "programAffiliation": [
-                  "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
-                ],
-                "reportingStatus": [
-                  {
-                    "value": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-                    "id": "e8262cec-6ae1-76a6-e053-148ef98d37b0",
-                    "time": {
-                      "interval": [
-                        "2022-09-08T00:00:00Z",
-                        ".."
-                      ]
-                    }
-                  }
-                ]
-              }
+            "id": [
+              "id_b074e825-5f9f-7937-e053-148ef98d6de4",
+              "id_d840a7f0-8c54-41f5-bf60-a78a8f5d9e5c"
             ]
           }
         }
       },
       "links": [
-        {
-          "href": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-          "rel": "type"
-        },
         {
           "href": "https://www.meteoschweiz.admin.ch/home/messwerte.html?param=messnetz-automatisch&station=LUZ",
           "rel": "about",

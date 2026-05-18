@@ -72,3 +72,47 @@ convert_wmdr10_json_to_wmdr2_geojson:
   target: results/wmdr2_geojson_examples
   pattern: "*.json"
   recursive: true
+  discovery:
+    facility:
+      keywords:
+        - identifier
+        - name
+        - facilityType
+      themes:
+        - facilitySet
+        - wmoRegion
+        - territoryName
+        - climateZone
+        - surfaceCover
+        - surfaceCoverClassification
+        - localTopography
+        - relativeElevation
+        - topographicContext
+        - altitudeOrDepth
+        - programAffiliation
+        - reportingStatus
+      links:
+        - onlineResource
+    observation:
+      keywords: []
+      themes:
+        - programAffiliation
+      links: []
+    deployment:
+      keywords:
+        - manufacturer
+        - model
+        - serialNumber
+        - sourceOfObservation
+        - observingMethod
+      themes:
+        - sourceOfObservation
+        - observingMethod
+        - exposure
+        - representativeness
+        - localReferenceSurface
+        - instrumentOperatingStatus
+      links: []
+  codeListLabels:
+    files:
+      - path: wmdr_observed_variable_labels.csv
