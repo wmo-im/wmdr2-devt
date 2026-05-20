@@ -1,0 +1,469 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "wmdr2-common.schema.json",
+  "title": "WMDR2 common definitions for simplified OGC Records encoding",
+  "$defs": {
+    "openEndOrDateTime": {
+      "type": "string",
+      "pattern": "^(\\.\\.|\\d{4}-\\d{2}-\\d{2}(T\\d{2}:\\d{2}:\\d{2}Z)?)$"
+    },
+    "timeObject": {
+      "type": "object",
+      "properties": {
+        "interval": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/openEndOrDateTime"
+          }
+        },
+        "resolution": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "interval"
+      ],
+      "additionalProperties": false
+    },
+    "coordinate": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 3,
+      "items": {
+        "type": "number"
+      }
+    },
+    "pointGeometry": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "Point"
+        },
+        "coordinates": {
+          "$ref": "#/$defs/coordinate"
+        }
+      },
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "additionalProperties": false
+    },
+    "movingPointGeometry": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "MovingPoint"
+        },
+        "coordinates": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/coordinate"
+          }
+        },
+        "datetimes": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "$ref": "#/$defs/openEndOrDateTime"
+            }
+          }
+        },
+        "id": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            }
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "coordinates",
+        "datetimes"
+      ],
+      "additionalProperties": false
+    },
+    "link": {
+      "type": "object",
+      "properties": {
+        "href": {
+          "type": "string"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "href",
+        "rel"
+      ],
+      "additionalProperties": true
+    },
+    "externalId": {
+      "type": "object",
+      "properties": {
+        "scheme": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "scheme",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "themeConcept": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "theme": {
+      "type": "object",
+      "properties": {
+        "scheme": {
+          "type": "string"
+        },
+        "concepts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/themeConcept"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "scheme",
+        "concepts"
+      ],
+      "additionalProperties": false
+    },
+    "phone": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "email": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "deliveryPoint": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "city": {
+          "type": "string"
+        },
+        "administrativeArea": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "contact": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "phones": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/phone"
+          }
+        },
+        "emails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/email"
+          }
+        },
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/address"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "contactInstructions": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "validTime": {
+          "$ref": "#/$defs/timeObject"
+        }
+      },
+      "additionalProperties": false
+    },
+    "quantity": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "uom": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "reportingStatusEntry": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/$defs/timeObject"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "programAffiliationEntry": {
+      "type": "object",
+      "properties": {
+        "programAffiliation": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "programSpecificFacilityId": {
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/$defs/timeObject"
+        },
+        "reportingStatus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reportingStatusEntry"
+          }
+        }
+      },
+      "required": [
+        "programAffiliation"
+      ],
+      "additionalProperties": false
+    },
+    "timedCodeValue": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/$defs/timeObject"
+        },
+        "surfaceCoverClassification": {
+          "type": "string"
+        },
+        "localTopography": {
+          "type": "string"
+        },
+        "relativeElevation": {},
+        "topographicContext": {},
+        "altitudeOrDepth": {}
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "scheduleCoverage": {
+      "type": "object",
+      "properties": {
+        "startMonth": {},
+        "endMonth": {},
+        "startWeekday": {},
+        "endWeekday": {},
+        "startHour": {},
+        "endHour": {},
+        "startMinute": {},
+        "endMinute": {},
+        "diurnalBaseTime": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "temporalReportingScheduleEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "interval": {
+          "type": "string"
+        },
+        "schedule": {
+          "$ref": "#/$defs/scheduleCoverage"
+        },
+        "time": {
+          "$ref": "#/$defs/timeObject"
+        }
+      },
+      "required": [
+        "interval"
+      ],
+      "additionalProperties": false
+    },
+    "temporalObservingScheduleEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "interval": {
+          "type": "string"
+        },
+        "schedule": {
+          "$ref": "#/$defs/scheduleCoverage"
+        }
+      },
+      "required": [
+        "interval"
+      ],
+      "additionalProperties": false
+    },
+    "procedure": {
+      "type": "object",
+      "properties": {
+        "observingMethod": {
+          "type": "string"
+        },
+        "instrumentManufacturer": {
+          "type": "string"
+        },
+        "instrumentModel": {
+          "type": "string"
+        },
+        "instrumentSerialNumber": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "dataPolicy": {
+      "type": "object",
+      "properties": {
+        "dataPolicy": {
+          "type": "string"
+        },
+        "levelOfData": {
+          "type": "string"
+        },
+        "attribution": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/contact"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "wmdr2-feature-collection.schema.json",
+  "title": "WMDR2 simplified OGC Records FeatureCollection (aligned to current example corpus)",
+  "type": "object",
+  "properties": {
+    "type": {
+      "const": "FeatureCollection"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-record-feature.schema.json"
+      },
+      "description": "May be empty for partial exports such as header-only or station-observation slices.",
+      "minItems": 1
+    }
+  },
+  "required": [
+    "type",
+    "features"
+  ],
+  "additionalProperties": false
+}
