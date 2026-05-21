@@ -1,4 +1,82 @@
 {
-  "type": "FeatureCollection",
-  "features": []
+  "type": "Feature",
+  "id": "facility:20250731_0-20000-0-06650_observations_5",
+  "time": {
+    "interval": [
+      "..",
+      ".."
+    ]
+  },
+  "conformsTo": [
+    "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core",
+    "https://schemas.wmo.int/wmdr/2.0/core/facility-record"
+  ],
+  "properties": {
+    "type": "facility",
+    "title": "20250731_0-20000-0-06650_observations_5",
+    "created": "2025-07-31T00:00:00Z",
+    "updated": "2025-07-31T00:00:00Z",
+    "description": "WMDR2 facility record for 20250731_0-20000-0-06650_observations_5",
+    "externalIds": [
+      {
+        "scheme": "WMO:WIGOS",
+        "value": "20250731_0-20000-0-06650_observations_5"
+      }
+    ],
+    "keywords": [
+      "20250731 0-20000-0-06650 observations 5"
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id-metch-68-224-dg5-inc2-depl",
+        "title": "id-metch-sn-00005010",
+        "time": {
+          "interval": [
+            "2006-06-12T00:00:00Z",
+            ".."
+          ]
+        },
+        "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+        "observingMethod": "http://codes.wmo.int/wmdr/unknown",
+        "manufacturer": "unknown",
+        "model": "unknown",
+        "serialNumber": "id-metch-sn-00005010",
+        "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+        "temporalObservingSchedule": [
+          {
+            "id": "id-metch-68-224-dg6-inc2-dage",
+            "interval": "unknown"
+          },
+          {
+            "id": "id-metch-68-224-dg5-inc2-dage",
+            "interval": "unknown"
+          }
+        ],
+        "keywords": [
+          "id-metch-sn-00005010",
+          "automaticReading"
+        ],
+        "themes": [
+          {
+            "scheme": "http://codes.wmo.int/wmdr/SourceOfObservation",
+            "concepts": [
+              {
+                "id": "automaticReading",
+                "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              }
+            ]
+          },
+          {
+            "scheme": "http://codes.wmo.int/wmdr/ReferenceSurfaceType",
+            "concepts": [
+              {
+                "id": "localGround",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }
