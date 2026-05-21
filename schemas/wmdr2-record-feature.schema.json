@@ -1,443 +1,89 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "wmdr2-record-feature.schema.json",
-  "title": "WMDR2 simplified OGC Records feature",
-  "$defs": {
-    "facilityWmdr2": {
+  "$id": "https://schemas.wmo.int/wmdr/2.0/schemas/wmdr2-record-feature.schema.json",
+  "title": "WMDR2 core facility-centric record Feature",
+  "description": "Facility-centric WMDR2 core JSON representation using a GeoJSON/OGC Records Feature envelope.",
+  "type": "object",
+  "required": ["type", "id", "geometry", "time", "conformsTo", "properties"],
+  "additionalProperties": true,
+  "properties": {
+    "type": { "const": "Feature" },
+    "id": { "type": "string", "pattern": "^facility:" },
+    "geometry": { "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry" },
+    "time": { "$ref": "wmdr2-common.schema.json#/$defs/timeInterval" },
+    "conformsTo": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "contains": {
+        "const": "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": { "$ref": "wmdr2-common.schema.json#/$defs/link" }
+    },
+    "properties": {
       "type": "object",
+      "required": ["type", "title"],
+      "additionalProperties": true,
+      "allOf": [
+        { "not": { "required": ["wmdr2"] } },
+        { "not": { "required": ["themes"] } },
+        { "not": { "required": ["temporalContacts"] } },
+        { "not": { "required": ["dateEstablished"] } },
+        { "not": { "required": ["dateClosed"] } }
+      ],
       "properties": {
-        "facilitySet": {
-          "type": "string"
-        },
-        "additionalWsi": {
+        "type": { "const": "facility" },
+        "title": { "type": "string", "minLength": 1 },
+        "created": { "type": "string" },
+        "updated": { "type": "string" },
+        "description": { "type": "string" },
+        "externalIds": {
           "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "items": { "$ref": "wmdr2-common.schema.json#/$defs/externalId" }
         },
+        "contacts": {
+          "type": "array",
+          "items": { "$ref": "wmdr2-common.schema.json#/$defs/contact" }
+        },
+        "keywords": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "links": {
+          "type": "array",
+          "items": { "$ref": "wmdr2-common.schema.json#/$defs/link" }
+        },
+        "facilitySet": {},
+        "facilityType": { "type": "string" },
+        "wmoRegion": { "type": "string" },
+        "surfaceCoverClassification": {},
+        "localTopography": {},
+        "relativeElevation": {},
+        "topographicContext": {},
+        "altitudeOrDepth": {},
+        "timeZone": {},
+        "regionOfOrigin": {},
+        "temporalTerritory": { "$ref": "wmdr2-common.schema.json#/$defs/temporalTerritory" },
+        "temporalClimateZone": { "$ref": "wmdr2-common.schema.json#/$defs/temporalClimateZone" },
+        "temporalSurfaceCover": { "$ref": "wmdr2-common.schema.json#/$defs/temporalSurfaceCover" },
+        "temporalGeometry": { "$ref": "wmdr2-common.schema.json#/$defs/temporalGeometry" },
         "temporalProgramAffiliation": {
           "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/programAffiliationEntry"
-          }
+          "items": { "$ref": "wmdr2-common.schema.json#/$defs/programAffiliationTimeline" }
         },
-        "climateZone": {
-          "$ref": "wmdr2-common.schema.json#/$defs/timedCodeValue"
-        },
-        "surfaceCover": {
-          "$ref": "wmdr2-common.schema.json#/$defs/timedCodeValue"
-        },
-        "topographyBathymetry": {
-          "$ref": "wmdr2-common.schema.json#/$defs/timedCodeValue"
-        },
-        "temporalGeometry": {
-          "$ref": "wmdr2-common.schema.json#/$defs/movingPointGeometry"
-        },
-        "observationIds": {
+        "temporalReportingStatus": { "$ref": "wmdr2-common.schema.json#/$defs/reportingStatusTimeline" },
+        "observations": {
           "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "items": { "$ref": "wmdr2-common.schema.json#/$defs/observation" }
         },
-        "deploymentIds": {
+        "deployments": {
           "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "items": { "$ref": "wmdr2-common.schema.json#/$defs/deployment" }
         }
-      },
-      "additionalProperties": false
-    },
-    "observationWmdr2": {
-      "type": "object",
-      "properties": {
-        "facilityId": {
-          "type": "string"
-        },
-        "deploymentIds": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "observationType": {
-          "type": "string"
-        },
-        "observedProperty": {
-          "type": "string"
-        },
-        "observedVariableCoordinates": {},
-        "temporalProgramAffiliation": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/programAffiliationEntry"
-          }
-        },
-        "internationalExchange": {
-          "type": "boolean"
-        },
-        "internationalReportingSchedule": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/temporalReportingScheduleEntry"
-          }
-        },
-        "result": {}
-      },
-      "additionalProperties": false
-    },
-    "deploymentWmdr2": {
-      "type": "object",
-      "properties": {
-        "facilityId": {
-          "type": "string"
-        },
-        "observationId": {
-          "type": "string"
-        },
-        "observedProperty": {
-          "type": "string"
-        },
-        "deploymentType": {
-          "type": "string"
-        },
-        "temporalReportingStatus": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/reportingStatusEntry"
-          }
-        },
-        "sourceOfObservation": {
-          "type": "string"
-        },
-        "exposure": {
-          "type": "string"
-        },
-        "representativeness": {
-          "type": "string"
-        },
-        "configuration": {
-          "type": "string"
-        },
-        "heightAboveLocalReferenceSurface": {
-          "$ref": "wmdr2-common.schema.json#/$defs/quantity"
-        },
-        "localReferenceSurface": {
-          "type": "string"
-        },
-        "temporalGeometry": {
-          "$ref": "wmdr2-common.schema.json#/$defs/movingPointGeometry"
-        },
-        "procedure": {
-          "$ref": "wmdr2-common.schema.json#/$defs/procedure"
-        },
-        "temporalReportingSchedule": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/temporalReportingScheduleEntry"
-          }
-        },
-        "temporalObservingSchedule": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/temporalObservingScheduleEntry"
-          }
-        },
-        "temporalDataPolicy": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/dataPolicy"
-          }
-        }
-      },
-      "additionalProperties": false
-    },
-    "facilityFeature": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "Feature"
-        },
-        "id": {
-          "type": "string",
-          "pattern": "^facility:"
-        },
-        "geometry": {
-          "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry"
-        },
-        "time": {
-          "$ref": "wmdr2-common.schema.json#/$defs/timeObject"
-        },
-        "conformsTo": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1
-        },
-        "links": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/link"
-          }
-        },
-        "properties": {
-          "$ref": "#/$defs/facilityProperties"
-        }
-      },
-      "required": [
-        "type",
-        "id",
-        "conformsTo",
-        "properties"
-      ],
-      "additionalProperties": false
-    },
-    "observationFeature": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "Feature"
-        },
-        "id": {
-          "type": "string",
-          "pattern": "^observation:"
-        },
-        "geometry": {
-          "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry"
-        },
-        "time": {
-          "$ref": "wmdr2-common.schema.json#/$defs/timeObject"
-        },
-        "conformsTo": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1
-        },
-        "links": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/link"
-          }
-        },
-        "properties": {
-          "$ref": "#/$defs/observationProperties"
-        }
-      },
-      "required": [
-        "type",
-        "id",
-        "conformsTo",
-        "properties"
-      ],
-      "additionalProperties": false
-    },
-    "deploymentFeature": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "Feature"
-        },
-        "id": {
-          "type": "string",
-          "pattern": "^deployment:"
-        },
-        "geometry": {
-          "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry"
-        },
-        "time": {
-          "$ref": "wmdr2-common.schema.json#/$defs/timeObject"
-        },
-        "conformsTo": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1
-        },
-        "links": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/link"
-          }
-        },
-        "properties": {
-          "$ref": "#/$defs/deploymentProperties"
-        }
-      },
-      "required": [
-        "type",
-        "id",
-        "conformsTo",
-        "properties"
-      ],
-      "additionalProperties": false
-    },
-    "facilityProperties": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "facility"
-        },
-        "created": {
-          "type": "string"
-        },
-        "updated": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "contacts": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/contact"
-          }
-        },
-        "externalIds": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/externalId"
-          }
-        },
-        "keywords": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "themes": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/theme"
-          }
-        },
-        "wmdr2": {
-          "$ref": "#/$defs/facilityWmdr2"
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "observationProperties": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "observation"
-        },
-        "created": {
-          "type": "string"
-        },
-        "updated": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "contacts": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/contact"
-          }
-        },
-        "externalIds": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/externalId"
-          }
-        },
-        "keywords": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "themes": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/theme"
-          }
-        },
-        "wmdr2": {
-          "$ref": "#/$defs/observationWmdr2"
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "deploymentProperties": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "const": "deployment"
-        },
-        "created": {
-          "type": "string"
-        },
-        "updated": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "contacts": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/contact"
-          }
-        },
-        "externalIds": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/externalId"
-          }
-        },
-        "keywords": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "themes": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/theme"
-          }
-        },
-        "wmdr2": {
-          "$ref": "#/$defs/deploymentWmdr2"
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
+      }
     }
-  },
-  "oneOf": [
-    {
-      "$ref": "#/$defs/facilityFeature"
-    },
-    {
-      "$ref": "#/$defs/observationFeature"
-    },
-    {
-      "$ref": "#/$defs/deploymentFeature"
-    }
-  ]
+  }
 }
