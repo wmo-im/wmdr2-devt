@@ -31,7 +31,7 @@ python convert_wmdr10_json_to_wmdr2_geojson.py \
     --source resources/wmdr10_json_examples \
     --target resources/wmdr2_json_examples
 
-python convert_wmdr10_json_to_wmdr2_geojson.py --config config.yaml
+python convert_wmdr10_json_to_wmdr2_json.py --config config.yaml
 
 Example config.yaml section
 ---------------------------
