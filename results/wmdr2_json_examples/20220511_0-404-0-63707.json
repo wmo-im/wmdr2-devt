@@ -33,14 +33,12 @@
     ],
     "contacts": [
       {
-        "identifier": "id_b074e824-3f18-7937-e053-148ef98d6de4",
         "organization": "Kenyan Meteorological Department",
         "roles": [
           "owner"
         ]
       },
       {
-        "identifier": "id_0a89ebf7-8ee5-4ec8-9d20-355488c4d5d4",
         "name": "KAIGUA,JAMES",
         "organization": "Kenya Meteorological Department",
         "phones": [
@@ -66,7 +64,6 @@
         ]
       },
       {
-        "identifier": "wmo_meteoswiss",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -82,62 +79,6 @@
         ]
       }
     ],
-    "themes": [
-      {
-        "scheme": "http://codes.wmo.int/wmdr/WMORegion",
-        "concepts": [
-          {
-            "id": "africa",
-            "url": "http://codes.wmo.int/wmdr/WMORegion/africa"
-          }
-        ]
-      },
-      {
-        "scheme": "http://codes.wmo.int/wmdr/ClimateZone",
-        "concepts": [
-          {
-            "id": "warmTemperateFullyHumidWarmSummer",
-            "url": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer"
-          }
-        ]
-      },
-      {
-        "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009",
-        "concepts": [
-          {
-            "id": "rainfedCroplands",
-            "url": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/rainfedCroplands"
-          }
-        ]
-      },
-      {
-        "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification",
-        "concepts": [
-          {
-            "id": "globCover2009",
-            "url": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
-          }
-        ]
-      },
-      {
-        "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-        "concepts": [
-          {
-            "id": "GOSGeneral",
-            "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-          }
-        ]
-      },
-      {
-        "scheme": "http://codes.wmo.int/wmdr/ReportingStatus",
-        "concepts": [
-          {
-            "id": "preOperational",
-            "url": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
-          }
-        ]
-      }
-    ],
     "keywords": [
       "0-404-0-63707",
       "BOMET",
@@ -145,27 +86,28 @@
     ],
     "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
     "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/africa",
-    "climateZone": {
-      "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer",
-      "@gml:id": "id_b074e824-f182-7937-e053-148ef98d6de4",
-      "beginPosition": "2020-09-21T00:00:00Z"
-    },
-    "surfaceCover": {
-      "surfaceCover": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/rainfedCroplands",
-      "surfaceCoverClassification": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009",
-      "@gml:id": "id_b074e824-4bf6-7937-e053-148ef98d6de4",
-      "beginPosition": "2020-09-21T00:00:00Z"
-    },
-    "dateEstablished": "2020-09-21Z",
     "temporalTerritory": {
       "territory": [
         "http://codes.wmo.int/wmdr/TerritoryName/KEN"
       ],
       "datetimes": [
-        [
-          "2020-09-21T00:00:00Z",
-          ".."
-        ]
+        "2020-09-21T00:00:00Z"
+      ]
+    },
+    "temporalClimateZone": {
+      "climateZone": [
+        "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer"
+      ],
+      "datetimes": [
+        "2020-09-21T00:00:00Z"
+      ]
+    },
+    "temporalSurfaceCover": {
+      "surfaceCover": [
+        "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/rainfedCroplands"
+      ],
+      "datetimes": [
+        "2020-09-21T00:00:00Z"
       ]
     },
     "temporalProgramAffiliation": [
@@ -174,16 +116,10 @@
           "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "reportingStatus": [
-          {
-            "value": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational",
-            "id": "id_4cff8c39-8f42-4983-b913-b6557b69bd19",
-            "time": {
-              "interval": [
-                "2022-05-11T00:00:00Z",
-                ".."
-              ]
-            }
-          }
+          "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+        ],
+        "datetimes": [
+          "2022-05-11T00:00:00Z"
         ]
       }
     ],
@@ -210,25 +146,12 @@
         ],
         "internationalReportingSchedule": [
           {
-            "id": "id_d679998b-55db-40b4-b6aa-03f783efd88a",
-            "interval": "unknown",
             "internationalExchange": false,
             "temporalReportingInterval": "PT1H"
           }
         ],
         "deployments": [
           "deployment:id_f98fadaa-67f5-4269-9460-ecb3117da5af"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GOSGeneral",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              }
-            ]
-          }
         ]
       },
       {
@@ -253,8 +176,6 @@
         ],
         "internationalReportingSchedule": [
           {
-            "id": "id_b074e82a-980a-7937-e053-148ef98d6de4",
-            "interval": "unknown",
             "internationalExchange": true,
             "uom": "http://codes.wmo.int/wmdr/unit/inapplicable",
             "temporalReportingInterval": "PT1H",
@@ -265,17 +186,6 @@
         ],
         "deployments": [
           "deployment:id_b074e829-f3a1-7937-e053-148ef98d6de4"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GOSGeneral",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              }
-            ]
-          }
         ]
       },
       {
@@ -300,17 +210,6 @@
         ],
         "deployments": [
           "deployment:id_b074e829-f429-7937-e053-148ef98d6de4"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GOSGeneral",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              }
-            ]
-          }
         ]
       },
       {
@@ -335,25 +234,12 @@
         ],
         "internationalReportingSchedule": [
           {
-            "id": "id_6acb0b4a-6bea-4282-adfe-61647d13a2cf",
-            "interval": "unknown",
             "internationalExchange": false,
             "temporalReportingInterval": "PT1H"
           }
         ],
         "deployments": [
           "deployment:id_2a3bfeda-275b-4ec7-a4f0-37fdb7ea3201"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GOSGeneral",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              }
-            ]
-          }
         ]
       },
       {
@@ -378,25 +264,12 @@
         ],
         "internationalReportingSchedule": [
           {
-            "id": "id_140d7aa2-85ce-4874-8926-3f0fffa89945",
-            "interval": "unknown",
             "internationalExchange": false,
             "temporalReportingInterval": "PT1H"
           }
         ],
         "deployments": [
           "deployment:id_497d5aff-c0d6-4002-ab1c-6c661c36a566"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GOSGeneral",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              }
-            ]
-          }
         ]
       },
       {
@@ -421,17 +294,6 @@
         ],
         "deployments": [
           "deployment:id_b074e829-f42d-7937-e053-148ef98d6de4"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GOSGeneral",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              }
-            ]
-          }
         ]
       },
       {
@@ -456,17 +318,6 @@
         ],
         "deployments": [
           "deployment:id_b074e829-f42e-7937-e053-148ef98d6de4"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GOSGeneral",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              }
-            ]
-          }
         ]
       },
       {
@@ -491,25 +342,12 @@
         ],
         "internationalReportingSchedule": [
           {
-            "id": "id_e7c31407-5094-447d-b35b-0eb1e5508fe3",
-            "interval": "unknown",
             "internationalExchange": false,
             "temporalReportingInterval": "PT1H"
           }
         ],
         "deployments": [
           "deployment:id_e8092fc4-ec5d-4bee-957e-99a648fd56ad"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GOSGeneral",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              }
-            ]
-          }
         ]
       },
       {
@@ -534,32 +372,18 @@
         ],
         "internationalReportingSchedule": [
           {
-            "id": "cca8c9b3-9ca9-23ea-e053-148ef98d1a71",
-            "interval": "unknown",
             "internationalExchange": false,
             "temporalReportingInterval": "PT1H"
           }
         ],
         "deployments": [
           "deployment:cca8c9b3-9ca8-23ea-e053-148ef98d1a71"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GOSGeneral",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-              }
-            ]
-          }
         ]
       }
     ],
     "deployments": [
       {
         "id": "deployment:id_f98fadaa-67f5-4269-9460-ecb3117da5af",
-        "title": "http://codes.wmo.int/wmdr/inapplicable",
         "time": {
           "interval": [
             "2020-12-15T00:00:00Z",
@@ -569,28 +393,15 @@
         "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
         "temporalObservingSchedule": [
           {
-            "id": "id_d679998b-55db-40b4-b6aa-03f783efd88a",
             "interval": "unknown"
           }
         ],
         "keywords": [
           "inapplicable"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "inapplicable",
-                "url": "http://codes.wmo.int/wmdr/inapplicable"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:id_b074e829-f3a1-7937-e053-148ef98d6de4",
-        "title": "http://codes.wmo.int/wmdr/inapplicable",
         "time": {
           "interval": [
             "2020-09-22T00:00:00Z",
@@ -604,47 +415,16 @@
         "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
         "temporalObservingSchedule": [
           {
-            "id": "id_b074e82a-980a-7937-e053-148ef98d6de4",
             "interval": "unknown"
           }
         ],
         "keywords": [
           "automaticReading",
           "inapplicable"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/SourceOfObservation",
-            "concepts": [
-              {
-                "id": "automaticReading",
-                "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "inapplicable",
-                "url": "http://codes.wmo.int/wmdr/inapplicable"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ReferenceSurfaceType",
-            "concepts": [
-              {
-                "id": "localGround",
-                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:id_b074e829-f429-7937-e053-148ef98d6de4",
-        "title": "http://codes.wmo.int/wmdr/inapplicable",
         "time": {
           "interval": [
             "2020-09-22T00:00:00Z",
@@ -654,22 +434,10 @@
         "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
         "keywords": [
           "inapplicable"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "inapplicable",
-                "url": "http://codes.wmo.int/wmdr/inapplicable"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:id_2a3bfeda-275b-4ec7-a4f0-37fdb7ea3201",
-        "title": "http://codes.wmo.int/wmdr/inapplicable",
         "time": {
           "interval": [
             "2020-12-15T00:00:00Z",
@@ -679,28 +447,15 @@
         "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
         "temporalObservingSchedule": [
           {
-            "id": "id_6acb0b4a-6bea-4282-adfe-61647d13a2cf",
             "interval": "unknown"
           }
         ],
         "keywords": [
           "inapplicable"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "inapplicable",
-                "url": "http://codes.wmo.int/wmdr/inapplicable"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:id_497d5aff-c0d6-4002-ab1c-6c661c36a566",
-        "title": "http://codes.wmo.int/wmdr/inapplicable",
         "time": {
           "interval": [
             "2020-12-15T00:00:00Z",
@@ -710,28 +465,15 @@
         "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
         "temporalObservingSchedule": [
           {
-            "id": "id_140d7aa2-85ce-4874-8926-3f0fffa89945",
             "interval": "unknown"
           }
         ],
         "keywords": [
           "inapplicable"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "inapplicable",
-                "url": "http://codes.wmo.int/wmdr/inapplicable"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:id_b074e829-f42d-7937-e053-148ef98d6de4",
-        "title": "http://codes.wmo.int/wmdr/inapplicable",
         "time": {
           "interval": [
             "2020-09-22T00:00:00Z",
@@ -741,22 +483,10 @@
         "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
         "keywords": [
           "inapplicable"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "inapplicable",
-                "url": "http://codes.wmo.int/wmdr/inapplicable"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:id_b074e829-f42e-7937-e053-148ef98d6de4",
-        "title": "http://codes.wmo.int/wmdr/inapplicable",
         "time": {
           "interval": [
             "2020-09-22T00:00:00Z",
@@ -766,22 +496,10 @@
         "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
         "keywords": [
           "inapplicable"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "inapplicable",
-                "url": "http://codes.wmo.int/wmdr/inapplicable"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:id_e8092fc4-ec5d-4bee-957e-99a648fd56ad",
-        "title": "http://codes.wmo.int/wmdr/inapplicable",
         "time": {
           "interval": [
             "2020-12-15T00:00:00Z",
@@ -791,28 +509,15 @@
         "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
         "temporalObservingSchedule": [
           {
-            "id": "id_e7c31407-5094-447d-b35b-0eb1e5508fe3",
             "interval": "unknown"
           }
         ],
         "keywords": [
           "inapplicable"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "inapplicable",
-                "url": "http://codes.wmo.int/wmdr/inapplicable"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:cca8c9b3-9ca8-23ea-e053-148ef98d1a71",
-        "title": "http://codes.wmo.int/wmdr/inapplicable",
         "time": {
           "interval": [
             "2020-12-15T00:00:00Z",
@@ -822,23 +527,11 @@
         "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
         "temporalObservingSchedule": [
           {
-            "id": "cca8c9b3-9ca9-23ea-e053-148ef98d1a71",
             "interval": "unknown"
           }
         ],
         "keywords": [
           "inapplicable"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr",
-            "concepts": [
-              {
-                "id": "inapplicable",
-                "url": "http://codes.wmo.int/wmdr/inapplicable"
-              }
-            ]
-          }
         ]
       }
     ]

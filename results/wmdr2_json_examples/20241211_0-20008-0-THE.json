@@ -25,14 +25,12 @@
     ],
     "contacts": [
       {
-        "identifier": "id_b074e824-4281-7937-e053-148ef98d6de4",
         "organization": "Aristotle University of Thessaloniki",
         "roles": [
           "owner"
         ]
       },
       {
-        "identifier": "id_b074e82c-4562-7937-e053-148ef98d6de4",
         "name": "Michelaraki,M.,Mrs",
         "organization": "Hellenic National Meteorological Service",
         "phones": [
@@ -61,7 +59,6 @@
         ]
       },
       {
-        "identifier": "id_b074e82c-486b-7937-e053-148ef98d6de4",
         "name": "Bais,Alkiviadis,Emeritus Prof.",
         "organization": "Aristotle University of Thessaloniki",
         "phones": [
@@ -93,7 +90,6 @@
         ]
       },
       {
-        "identifier": "id_9e618142-e58e-460a-9b24-0683e8395b38",
         "name": "Balis,Dimitris,Professor",
         "organization": "Aristotle University of Thessaloniki",
         "phones": [
@@ -122,7 +118,6 @@
         ]
       },
       {
-        "identifier": "wmo_meteoswiss",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -134,70 +129,6 @@
             "href": "https://oscar.wmo.int/surface",
             "rel": "about",
             "type": "text/html"
-          }
-        ]
-      }
-    ],
-    "themes": [
-      {
-        "scheme": "http://codes.wmo.int/wmdr/WMORegion",
-        "concepts": [
-          {
-            "id": "europe",
-            "url": "http://codes.wmo.int/wmdr/WMORegion/europe"
-          }
-        ]
-      },
-      {
-        "scheme": "http://codes.wmo.int/wmdr/ClimateZone",
-        "concepts": [
-          {
-            "id": "warmTemperateFullyHumidHotSummer",
-            "url": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidHotSummer"
-          }
-        ]
-      },
-      {
-        "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverIGBP",
-        "concepts": [
-          {
-            "id": "urbanBuiltup",
-            "url": "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/urbanBuiltup"
-          }
-        ]
-      },
-      {
-        "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification",
-        "concepts": [
-          {
-            "id": "igbp",
-            "url": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/igbp"
-          }
-        ]
-      },
-      {
-        "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-        "concepts": [
-          {
-            "id": "GAWregional",
-            "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
-          },
-          {
-            "id": "GALION",
-            "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GALION"
-          },
-          {
-            "id": "AERONET",
-            "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-          }
-        ]
-      },
-      {
-        "scheme": "http://codes.wmo.int/wmdr/ReportingStatus",
-        "concepts": [
-          {
-            "id": "operational",
-            "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
           }
         ]
       }
@@ -216,27 +147,28 @@
     ],
     "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
     "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
-    "climateZone": {
-      "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidHotSummer",
-      "@gml:id": "id_b074e824-e718-7937-e053-148ef98d6de4",
-      "beginPosition": "1982-03-13T00:00:00Z"
-    },
-    "surfaceCover": {
-      "surfaceCover": "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/urbanBuiltup",
-      "surfaceCoverClassification": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/igbp",
-      "@gml:id": "id_b074e824-44f7-7937-e053-148ef98d6de4",
-      "beginPosition": "1982-03-13T00:00:00Z"
-    },
-    "dateEstablished": "1982-03-13Z",
     "temporalTerritory": {
       "territory": [
         "http://codes.wmo.int/wmdr/TerritoryName/GRC"
       ],
       "datetimes": [
-        [
-          "2011-02-16T00:00:00Z",
-          ".."
-        ]
+        "2011-02-16T00:00:00Z"
+      ]
+    },
+    "temporalClimateZone": {
+      "climateZone": [
+        "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidHotSummer"
+      ],
+      "datetimes": [
+        "1982-03-13T00:00:00Z"
+      ]
+    },
+    "temporalSurfaceCover": {
+      "surfaceCover": [
+        "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/urbanBuiltup"
+      ],
+      "datetimes": [
+        "1982-03-13T00:00:00Z"
       ]
     },
     "temporalGeometry": {
@@ -254,14 +186,8 @@
         ]
       ],
       "datetimes": [
-        [
-          "1982-03-13T00:00:00Z",
-          "2001-05-05T00:00:00Z"
-        ],
-        [
-          "2001-05-05T00:00:00Z",
-          ".."
-        ]
+        "1982-03-13T00:00:00Z",
+        "2001-05-05T00:00:00Z"
       ]
     },
     "temporalProgramAffiliation": [
@@ -271,16 +197,10 @@
         ],
         "programSpecificFacilityId": "THE",
         "reportingStatus": [
-          {
-            "value": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-            "id": "id_b074e827-857d-7937-e053-148ef98d6de4",
-            "time": {
-              "interval": [
-                "1982-03-13T00:00:00Z",
-                ".."
-              ]
-            }
-          }
+          "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+        ],
+        "datetimes": [
+          "1982-03-13T00:00:00Z"
         ]
       },
       {
@@ -289,16 +209,10 @@
         ],
         "programSpecificFacilityId": "THE",
         "reportingStatus": [
-          {
-            "value": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-            "id": "id_0c6e8fcf-fe78-4a8c-b6da-b57d841e8ba0",
-            "time": {
-              "interval": [
-                "2008-01-01T00:00:00Z",
-                "2024-12-11T00:00:00Z"
-              ]
-            }
-          }
+          "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+        ],
+        "datetimes": [
+          "2008-01-01T00:00:00Z"
         ]
       },
       {
@@ -307,16 +221,10 @@
         ],
         "programSpecificFacilityId": "Thessaloniki",
         "reportingStatus": [
-          {
-            "value": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-            "id": "id_2fbb6867-1060-4bba-955f-dcea2a1168c6",
-            "time": {
-              "interval": [
-                "2003-06-01T00:00:00Z",
-                "2024-12-11T00:00:00Z"
-              ]
-            }
-          }
+          "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+        ],
+        "datetimes": [
+          "2003-06-01T00:00:00Z"
         ]
       }
     ],
@@ -343,8 +251,6 @@
         ],
         "internationalReportingSchedule": [
           {
-            "id": "id_df44c8b8-88f3-4bd6-838d-989e3527f576",
-            "interval": "unknown",
             "internationalExchange": false,
             "uom": "http://codes.wmo.int/wmdr/unit/DU",
             "temporalReportingInterval": "P1M",
@@ -356,17 +262,6 @@
         ],
         "deployments": [
           "deployment:id_dbac206e-0e1e-4e50-baa5-42ec0909a02b"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GAWregional",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
-              }
-            ]
-          }
         ]
       },
       {
@@ -382,17 +277,6 @@
               "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             ]
           }
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "AERONET",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-              }
-            ]
-          }
         ]
       },
       {
@@ -406,17 +290,6 @@
           {
             "programAffiliation": [
               "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-            ]
-          }
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "AERONET",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-              }
             ]
           }
         ]
@@ -443,17 +316,6 @@
         ],
         "deployments": [
           "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GAWregional",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
-              }
-            ]
-          }
         ]
       },
       {
@@ -478,25 +340,12 @@
         ],
         "internationalReportingSchedule": [
           {
-            "id": "id_2a9b37e1-fae0-4285-b0cd-86b667e1fb21",
-            "interval": "unknown",
             "internationalExchange": false,
             "uom": "http://codes.wmo.int/wmdr/unit/W.m-2"
           }
         ],
         "deployments": [
           "deployment:id_f5f50866-9c93-4e3a-9c0e-c13d32c342e6"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GAWregional",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
-              }
-            ]
-          }
         ]
       },
       {
@@ -521,8 +370,6 @@
         ],
         "internationalReportingSchedule": [
           {
-            "id": "id_966fae01-648f-4de9-9d88-4a8ae15bd746",
-            "interval": "unknown",
             "internationalExchange": false,
             "uom": "http://codes.wmo.int/wmdr/unit/W.m-2",
             "temporalReportingInterval": "PT1H",
@@ -536,17 +383,6 @@
         ],
         "deployments": [
           "deployment:id_cca5e647-05b3-4d9c-bb5a-cbd300e3ae4c"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GAWregional",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
-              }
-            ]
-          }
         ]
       },
       {
@@ -560,17 +396,6 @@
           {
             "programAffiliation": [
               "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-            ]
-          }
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "AERONET",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-              }
             ]
           }
         ]
@@ -588,17 +413,6 @@
               "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             ]
           }
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "AERONET",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-              }
-            ]
-          }
         ]
       },
       {
@@ -612,17 +426,6 @@
           {
             "programAffiliation": [
               "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-            ]
-          }
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "AERONET",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-              }
             ]
           }
         ]
@@ -640,24 +443,12 @@
               "http://codes.wmo.int/wmdr/ProgramAffiliation/GALION"
             ]
           }
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation",
-            "concepts": [
-              {
-                "id": "GALION",
-                "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GALION"
-              }
-            ]
-          }
         ]
       }
     ],
     "deployments": [
       {
         "id": "deployment:id_dbac206e-0e1e-4e50-baa5-42ec0909a02b",
-        "title": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
         "time": {
           "interval": [
             "1982-03-13T00:00:00Z",
@@ -668,38 +459,16 @@
         "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
         "temporalObservingSchedule": [
           {
-            "id": "id_df44c8b8-88f3-4bd6-838d-989e3527f576",
             "interval": "unknown"
           }
         ],
         "keywords": [
           "automaticReading",
           "78"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/SourceOfObservation",
-            "concepts": [
-              {
-                "id": "automaticReading",
-                "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere",
-            "concepts": [
-              {
-                "id": "78",
-                "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197",
-        "title": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/268",
         "time": {
           "interval": [
             "1993-08-26T00:00:00Z",
@@ -709,22 +478,10 @@
         "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/268",
         "keywords": [
           "268"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere",
-            "concepts": [
-              {
-                "id": "268",
-                "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/268"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:id_f5f50866-9c93-4e3a-9c0e-c13d32c342e6",
-        "title": "Kipp&Zonen CHP 1 http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/264",
         "time": {
           "interval": [
             "2016-04-01T00:00:00Z",
@@ -740,7 +497,6 @@
         "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
         "temporalObservingSchedule": [
           {
-            "id": "id_2a9b37e1-fae0-4285-b0cd-86b667e1fb21",
             "interval": "unknown"
           }
         ],
@@ -749,58 +505,10 @@
           "CHP 1",
           "automaticReading",
           "264"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/SourceOfObservation",
-            "concepts": [
-              {
-                "id": "automaticReading",
-                "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere",
-            "concepts": [
-              {
-                "id": "264",
-                "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/264"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Exposure",
-            "concepts": [
-              {
-                "id": "class1",
-                "url": "http://codes.wmo.int/wmdr/Exposure/class1"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Representativeness",
-            "concepts": [
-              {
-                "id": "toposcale",
-                "url": "http://codes.wmo.int/wmdr/Representativeness/toposcale"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ReferenceSurfaceType",
-            "concepts": [
-              {
-                "id": "localGround",
-                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-              }
-            ]
-          }
         ]
       },
       {
         "id": "deployment:id_cca5e647-05b3-4d9c-bb5a-cbd300e3ae4c",
-        "title": "Kipp&Zonen CM21 http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
         "time": {
           "interval": [
             "1992-05-27T00:00:00Z",
@@ -828,7 +536,6 @@
         ],
         "temporalObservingSchedule": [
           {
-            "id": "id_966fae01-648f-4de9-9d88-4a8ae15bd746",
             "interval": "unknown"
           }
         ],
@@ -837,62 +544,6 @@
           "CM21",
           "automaticReading",
           "266"
-        ],
-        "themes": [
-          {
-            "scheme": "http://codes.wmo.int/wmdr/SourceOfObservation",
-            "concepts": [
-              {
-                "id": "automaticReading",
-                "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere",
-            "concepts": [
-              {
-                "id": "266",
-                "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Exposure",
-            "concepts": [
-              {
-                "id": "class1",
-                "url": "http://codes.wmo.int/wmdr/Exposure/class1"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/Representativeness",
-            "concepts": [
-              {
-                "id": "toposcale",
-                "url": "http://codes.wmo.int/wmdr/Representativeness/toposcale"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/ReferenceSurfaceType",
-            "concepts": [
-              {
-                "id": "localGround",
-                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-              }
-            ]
-          },
-          {
-            "scheme": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus",
-            "concepts": [
-              {
-                "id": "operational",
-                "url": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
-              }
-            ]
-          }
         ]
       }
     ]

@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 """
-convert_wmdr10_json_to_wmdr2_geojson.py
+convert_wmdr10_json_to_wmdr2_json.py
 
 Convert simplified WMDR 1.0 JSON records into a WMDR2 core JSON
 representation.
 
 Important naming note
 ---------------------
-The script name is intentionally kept for backwards compatibility with the
-current repository and tests. The generated output files are now ``.json``
-files, not ``.geojson`` files.
+The generated output files are ``.json`` records.
 
 Design choices
 --------------
@@ -22,12 +20,15 @@ Design choices
   There is deliberately no ``properties.wmdr2`` wrapper.
 - Observations and deployments are embedded under the facility record as
   ``properties.observations`` and ``properties.deployments``.
+- ``keywords`` are retained as lightweight discovery text. Controlled-vocabulary
+  WMDR concepts are emitted as explicit properties, not as OGC Records
+  ``themes``.
 - The converter remains defensive because the simplified WMDR1 JSON shape has
   varied across iterations of the XML-to-JSON simplifier.
 
 Example
 -------
-python convert_wmdr10_json_to_wmdr2_geojson.py \
+python convert_wmdr10_json_to_wmdr2_json.py \
     --source resources/wmdr10_json_examples \
     --target resources/wmdr2_json_examples
 
@@ -42,7 +43,7 @@ convert_wmdr10_json_to_wmdr2_json:
   recursive: true
 
 The legacy config section name ``convert_wmdr10_json_to_wmdr2_geojson`` is also
-accepted for now.
+accepted for now, to ease migration of older local configs.
 """
 
 from __future__ import annotations
@@ -69,26 +70,10 @@ OUTPUT_SUFFIX = ".json"
 DEFAULT_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
     "facility": {
         "keywords": ["identifier", "name"],
-        "themes": [
-            "facilitySet",
-            "facilityType",
-            "wmoRegion",
-            "territoryName",
-            "climateZone",
-            "surfaceCover",
-            "surfaceCoverClassification",
-            "localTopography",
-            "relativeElevation",
-            "topographicContext",
-            "altitudeOrDepth",
-            "programAffiliation",
-            "reportingStatus",
-        ],
         "links": ["onlineResource"],
     },
     "observation": {
         "keywords": [],
-        "themes": ["programAffiliation"],
         "links": [],
     },
     "deployment": {
@@ -98,14 +83,6 @@ DEFAULT_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
             "serialNumber",
             "sourceOfObservation",
             "observingMethod",
-        ],
-        "themes": [
-            "sourceOfObservation",
-            "observingMethod",
-            "exposure",
-            "representativeness",
-            "localReferenceSurface",
-            "instrumentOperatingStatus",
         ],
         "links": [],
     },
@@ -222,7 +199,7 @@ def _normalize_discovery_policy(section: Dict[str, Any]) -> Dict[str, Dict[str, 
         entity_cfg = raw.get(entity)
         if not isinstance(entity_cfg, dict):
             continue
-        for bucket in ("keywords", "themes", "links"):
+        for bucket in ("keywords", "links"):
             values = entity_cfg.get(bucket)
             if isinstance(values, list):
                 policy[entity][bucket] = [
@@ -880,25 +857,6 @@ def _format_observation_title(value: Any) -> Optional[str]:
     return prefix
 
 
-def _themes_from_uris(values: Iterable[Any]) -> List[Dict[str, Any]]:
-    grouped: Dict[str, List[Dict[str, str]]] = {}
-    for raw in values:
-        if not isinstance(raw, str) or not raw.startswith(("http://", "https://")):
-            continue
-        if _is_unknown_token(raw):
-            continue
-        concept_id = _last_segment(raw)
-        if not concept_id or _is_unknown_token(concept_id):
-            continue
-        scheme = _uri_parent(raw)
-        grouped.setdefault(scheme, []).append({"id": concept_id, "url": raw})
-
-    themes: List[Dict[str, Any]] = []
-    for scheme, concepts in grouped.items():
-        themes.append({"scheme": scheme, "concepts": _uniq_dicts(concepts)})
-    return _uniq_dicts(themes)
-
-
 def _keywords_from_values(values: Iterable[Any]) -> List[str]:
     out: List[str] = []
     seen: set[str] = set()
@@ -1172,6 +1130,104 @@ def _normalize_program_affiliation(value: Any) -> List[Dict[str, Any]]:
     return _uniq_dicts(_clean_none(out))
 
 
+def _normalize_reporting_status_timeline(value: Any) -> Optional[Dict[str, Any]]:
+    """Normalize reporting-status history into aligned value/begin-date arrays.
+
+    Each reporting status becomes valid at the datetime in the same position
+    and remains valid until the next datetime entry. End dates from WMDR1 are
+    therefore not carried into WMDR2.
+    """
+    rows: List[Tuple[str, str]] = []
+
+    for item in _as_list(value):
+        if isinstance(item, str):
+            status = _normalize_code_value(item)
+            if isinstance(status, str) and status and not _is_unknown_token(status):
+                rows.append(("..", status))
+            continue
+
+        if not isinstance(item, dict):
+            continue
+
+        status = _normalize_code_value(
+            _first_non_empty(
+                item.get("reportingStatus"),
+                item.get("instrumentOperatingStatus"),
+                item.get("value"),
+                item.get("href"),
+            )
+        )
+        if not isinstance(status, str) or not status or _is_unknown_token(status):
+            continue
+
+        rows.append((_temporal_begin_datetime(item), status))
+
+    if not rows:
+        return None
+
+    # Sort known begin dates chronologically. Unknown begin dates are retained
+    # after known dates so that explicit temporal history appears first.
+    rows = sorted(rows, key=lambda row: (row[0] == "..", row[0]))
+
+    statuses: List[str] = []
+    datetimes: List[str] = []
+    seen: set[Tuple[str, str]] = set()
+    for begin, status in rows:
+        marker = (begin, status)
+        if marker in seen:
+            continue
+        seen.add(marker)
+        datetimes.append(begin)
+        statuses.append(status)
+
+    return _clean_none({"reportingStatus": statuses, "datetimes": datetimes})
+
+
+def _normalize_temporal_program_affiliation(value: Any) -> List[Dict[str, Any]]:
+    """Normalize temporal program affiliations with simple status timelines.
+
+    A facility can participate in multiple programs. Each item in the returned
+    list represents one program-affiliation timeline. Within that timeline,
+    ``reportingStatus`` and ``datetimes`` are aligned arrays: a status becomes
+    valid at the datetime in the same position and remains valid until the next
+    entry.
+    """
+    out: List[Dict[str, Any]] = []
+
+    for item in _as_list(value):
+        if isinstance(item, str):
+            affiliation = _normalize_code_value(item)
+            if isinstance(affiliation, str) and affiliation and not _is_unknown_token(affiliation):
+                out.append({"programAffiliation": [affiliation]})
+            continue
+
+        if not isinstance(item, dict):
+            continue
+
+        affiliations = [
+            _normalize_code_value(raw)
+            for raw in _as_list(item.get("programAffiliation") or item.get("href") or item.get("value"))
+            if isinstance(raw, str) and raw.strip() and not _is_unknown_token(raw)
+        ]
+        affiliations = [aff for aff in affiliations if isinstance(aff, str) and aff]
+        if not affiliations:
+            continue
+
+        record: Dict[str, Any] = {"programAffiliation": affiliations}
+
+        psfi = item.get("programSpecificFacilityId")
+        if isinstance(psfi, str) and psfi.strip():
+            record["programSpecificFacilityId"] = psfi.strip()
+
+        status_timeline = _normalize_reporting_status_timeline(item.get("reportingStatus"))
+        if status_timeline:
+            record.update(status_timeline)
+
+        out.append(record)
+
+    return _uniq_dicts(_clean_none(out))
+
+
 def _normalize_simple_timed_value(value: Any, *, value_key: str) -> Optional[Dict[str, Any]]:
     if isinstance(value, str):
         actual = _normalize_code_value(value)
@@ -1208,7 +1264,13 @@ def _normalize_simple_timed_value(value: Any, *, value_key: str) -> Optional[Dic
 
 
 def _normalize_temporal_geometry(current: Any, history: Any = None) -> List[Dict[str, Any]]:
-    """Collect geospatial history entries in chronological order."""
+    """Collect geospatial history entries in chronological order.
+
+    WMDR2 temporal geometry uses aligned ``coordinates`` and begin-date
+    ``datetimes`` arrays. Each coordinate becomes valid at the datetime in the
+    same position and remains valid until the next entry. End dates from WMDR1
+    are not carried into WMDR2.
+    """
     entries: List[Tuple[Optional[str], str, Dict[str, Any]]] = []
 
     def add_entry(item: Any) -> None:
@@ -1216,26 +1278,30 @@ def _normalize_temporal_geometry(current: Any, history: Any = None) -> List[Dict
             coords = _parse_pos_lon_lat_z(item)
             if coords is None:
                 return
-            payload = {"coordinates": coords, "datetimes": ["..", ".."]}
-            entries.append((None, json.dumps(coords, sort_keys=True), payload))
+            entries.append((None, json.dumps(coords, sort_keys=True), {"coordinates": coords, "datetime": ".."}))
             return
 
         if not isinstance(item, dict):
             return
+
         coords = _parse_pos_lon_lat_z(
-            item.get("geometry") or item.get("geoLocation") or item.get("geospatialLocation") or item.get("pos") or item
+            item.get("geometry")
+            or item.get("geoLocation")
+            or item.get("geospatialLocation")
+            or item.get("pos")
+            or item
         )
         if coords is None:
             return
-        start, end = _extract_interval(item)
-        interval_dict = _time_interval(start, end)
-        interval = interval_dict["interval"] if interval_dict else ["..", ".."]
-        source_id = _first_non_empty(item.get("@gml:id"), item.get("@id"), item.get("id"))
-        payload: Dict[str, Any] = {"coordinates": coords, "datetimes": interval}
-        if isinstance(source_id, str) and source_id.strip():
-            payload["id"] = source_id.strip()
-        start_key = interval[0]
-        entries.append((None if start_key == ".." else str(start_key), json.dumps(coords, sort_keys=True), payload))
+
+        begin = _temporal_begin_datetime(item)
+        entries.append(
+            (
+                None if begin == ".." else begin,
+                json.dumps(coords, sort_keys=True),
+                {"coordinates": coords, "datetime": begin},
+            )
+        )
 
     for item in _as_list(current):
         add_entry(item)
@@ -1257,27 +1323,35 @@ def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[
     """Return a MovingPoint-style temporal geometry if a history exists."""
     if len(entries) <= 1:
         return None
-    return {
-        "type": "MovingPoint",
-        "coordinates": [entry["coordinates"] for entry in entries if "coordinates" in entry],
-        "datetimes": [entry["datetimes"] for entry in entries if "datetimes" in entry],
-    }
+
+    coordinates: List[Any] = []
+    datetimes: List[str] = []
+    for entry in entries:
+        if "coordinates" not in entry:
+            continue
+        coordinates.append(entry["coordinates"])
+        dt = entry.get("datetime")
+        datetimes.append(dt if isinstance(dt, str) and dt else "..")
+
+    if len(coordinates) <= 1:
+        return None
+
+    return {"type": "MovingPoint", "coordinates": coordinates, "datetimes": datetimes}
 
 
 def _normalize_temporal_observing_schedule(value: Any) -> List[Dict[str, Any]]:
     """Normalize temporal observing schedules.
 
-    The current tests require an ``interval: unknown`` fallback when a schedule
-    entry carries only an identifier.
+    Observing-schedule entries are not referenceable WMDR2 entities, so source
+    XML ids are deliberately not carried over. A generic ``interval`` fallback
+    is retained for now because observing schedules may otherwise consist only
+    of time-window fields or a schedule placeholder.
     """
     out: List[Dict[str, Any]] = []
     for item in _as_list(value):
         if not isinstance(item, dict):
             continue
         record: Dict[str, Any] = {}
-        source_id = _first_non_empty(item.get("@gml:id"), item.get("@id"), item.get("id"))
-        if isinstance(source_id, str) and source_id.strip():
-            record["id"] = source_id.strip()
 
         interval = _first_non_empty(
             item.get("interval"),
@@ -1443,37 +1517,73 @@ def _facility_title(facility: Dict[str, Any]) -> str:
 
 def _extract_links(source: Dict[str, Any], entity_type: str) -> List[Dict[str, Any]]:
     links: List[Dict[str, Any]] = []
+
     for key in DISCOVERY_POLICY.get(entity_type, {}).get("links", []):
         for item in _as_list(source.get(key)):
             href: Optional[str] = None
             title: Optional[str] = None
-            media_type = "text/html"
+            media_type: str = "text/html"
+
             if isinstance(item, str):
-                href = item
+                candidate_href = item.strip()
+                if candidate_href:
+                    href = candidate_href
+
             elif isinstance(item, dict):
-                raw_href = _first_non_empty(item.get("url"), item.get("href"), item.get("linkage"), item.get("value"))
-                if isinstance(raw_href, str):
-                    href = raw_href
-                if isinstance(item.get("title"), str):
-                    title = item.get("title")
-                if isinstance(item.get("type"), str):
-                    media_type = item.get("type")
+                raw_href = _first_non_empty(
+                    item.get("url"),
+                    item.get("href"),
+                    item.get("linkage"),
+                    item.get("value"),
+                )
+                if isinstance(raw_href, str) and raw_href.strip():
+                    href = raw_href.strip()
+
+                raw_title = item.get("title")
+                if isinstance(raw_title, str) and raw_title.strip():
+                    title = raw_title.strip()
+
+                raw_media_type = item.get("type")
+                if isinstance(raw_media_type, str) and raw_media_type.strip():
+                    media_type = raw_media_type.strip()
+
             if href and href.startswith(("http://", "https://")):
                 links.append(_about_link(href, title=title, media_type=media_type))
+
     return _uniq_dicts(links)
 
 
+def _temporal_begin_datetime(item: Any) -> str:
+    """Return the begin datetime for a temporal facility value.
+
+    WMDR2 temporal facility descriptors use two aligned arrays, for example
+    ``climateZone`` and ``datetimes``. Each datetime is interpreted as the
+    begin date for the corresponding value; the value remains valid until the
+    next datetime entry. Unknown begin dates are represented as ``".."``.
+    """
+    if isinstance(item, dict):
+        return _normalize_time_value(
+            _first_non_empty(
+                item.get("beginPosition"),
+                item.get("begin"),
+                item.get("start"),
+                item.get("date"),
+            )
+        ) or ".."
+    return ".."
+
+
 def _normalize_temporal_territory(value: Any) -> Optional[Dict[str, Any]]:
-    """Normalize WMDR1 territory history into a temporal WMDR2 structure."""
+    """Normalize WMDR1 territory history into aligned value/begin-date arrays."""
     territories: List[Any] = []
-    datetimes: List[List[Any]] = []
+    datetimes: List[str] = []
 
     for item in _as_list(value):
         if isinstance(item, str):
             territory = _normalize_code_value(item)
             if territory and not _is_unknown_token(territory):
                 territories.append(territory)
-                datetimes.append(["..", ".."])
+                datetimes.append("..")
             continue
 
         if not isinstance(item, dict):
@@ -1490,27 +1600,101 @@ def _normalize_temporal_territory(value: Any) -> Optional[Dict[str, Any]]:
         if not territory or _is_unknown_token(territory):
             continue
 
-        interval = _time_interval(item.get("beginPosition"), item.get("endPosition"))
         territories.append(territory)
-        datetimes.append(interval["interval"] if interval else ["..", ".."])
+        datetimes.append(_temporal_begin_datetime(item))
 
     if not territories:
         return None
 
-    # Preserve the order and alignment between territory and datetimes.
+    # Preserve order and alignment. Each datetime is the begin date for the
+    # territory at the same index; the value holds until the next entry.
     return _clean_none({"territory": territories, "datetimes": datetimes})
 
 
+def _normalize_temporal_facility_values(
+    value: Any,
+    *,
+    output_key: str,
+    value_keys: Sequence[str],
+) -> Optional[Dict[str, Any]]:
+    """Normalize time-varying facility descriptors into value/begin-date arrays.
+
+    WMDR1 JSON can contain structures such as ``climateZone`` or
+    ``surfaceCover`` with ``beginPosition`` / ``endPosition`` fields. WMDR2
+    exposes these as explicit temporal facility properties, for example::
+
+        {
+          "climateZone": ["..."],
+          "datetimes": ["2016-04-28T00:00:00Z"]
+        }
+
+    Each datetime is interpreted as the begin date for the value at the same
+    index. The value remains valid until the next datetime entry. This avoids
+    carrying WMDR1/XML validity fields directly inside the value.
+    """
+    values: List[Any] = []
+    datetimes: List[str] = []
+
+    for item in _as_list(value):
+        if isinstance(item, str):
+            normalized = _normalize_code_value(item)
+            if normalized and not _is_unknown_token(normalized):
+                values.append(normalized)
+                datetimes.append("..")
+            continue
+
+        if not isinstance(item, dict):
+            continue
+
+        cleaned = _drop_source_metadata(item)
+        if not isinstance(cleaned, dict):
+            continue
+
+        raw_value = _first_non_empty(*(cleaned.get(key) for key in value_keys))
+        normalized_value = _normalize_code_value(raw_value)
+        if not normalized_value or _is_unknown_token(normalized_value):
+            continue
+
+        values.append(normalized_value)
+        datetimes.append(_temporal_begin_datetime(item))
+
+    if not values:
+        return None
+
+    return _clean_none({output_key: values, "datetimes": datetimes})
+
+
+def _normalize_temporal_climate_zone(value: Any) -> Optional[Dict[str, Any]]:
+    """Normalize climate-zone history into the WMDR2 temporal structure."""
+    return _normalize_temporal_facility_values(
+        value,
+        output_key="climateZone",
+        value_keys=("climateZone", "value", "href"),
+    )
+
+
+def _normalize_temporal_surface_cover(value: Any) -> Optional[Dict[str, Any]]:
+    """Normalize surface-cover history into the WMDR2 temporal structure."""
+    return _normalize_temporal_facility_values(
+        value,
+        output_key="surfaceCover",
+        value_keys=("surfaceCover", "value", "href"),
+    )
+
+
 def _copy_known_facility_properties(facility: Dict[str, Any]) -> Dict[str, Any]:
-    """Copy known WMDR2 core facility properties directly into properties."""
+    """Copy and normalize known WMDR2 core facility properties.
+
+    Time-varying facility descriptors are exposed as explicit ``temporal*``
+    properties instead of carrying WMDR1/XML ``beginPosition`` / ``endPosition``
+    fields inside the raw value.
+    """
     out: Dict[str, Any] = {}
+
     scalar_or_structured_keys = [
         "facilitySet",
         "facilityType",
         "wmoRegion",
-        "territoryName",
-        "climateZone",
-        "surfaceCover",
         "surfaceCoverClassification",
         "localTopography",
         "relativeElevation",
@@ -1518,8 +1702,8 @@ def _copy_known_facility_properties(facility: Dict[str, Any]) -> Dict[str, Any]:
         "altitudeOrDepth",
         "timeZone",
         "regionOfOrigin",
-        "dateEstablished",
-        "dateClosed",
+        # dateEstablished/dateClosed are consumed by the root Feature ``time``
+        # member and are intentionally not repeated under properties.
     ]
     for key in scalar_or_structured_keys:
         if _non_empty(facility.get(key)):
@@ -1530,6 +1714,15 @@ def _copy_known_facility_properties(facility: Dict[str, Any]) -> Dict[str, Any]:
     )
     if temporal_territory:
         out["temporalTerritory"] = temporal_territory
+
+    temporal_climate_zone = _normalize_temporal_climate_zone(facility.get("climateZone"))
+    if temporal_climate_zone:
+        out["temporalClimateZone"] = temporal_climate_zone
+
+    temporal_surface_cover = _normalize_temporal_surface_cover(facility.get("surfaceCover"))
+    if temporal_surface_cover:
+        out["temporalSurfaceCover"] = temporal_surface_cover
+
     return out
 
 
@@ -1543,11 +1736,10 @@ def _normalize_deployment(raw: Dict[str, Any], *, index: int, facility_id: str) 
     """
     record_id = _deployment_record_id(raw, index=index, facility_id=facility_id)
 
-    title_parts = _compact_display_values(
-        [raw.get("manufacturer"), raw.get("model"), raw.get("serialNumber"), raw.get("observingMethod")]
-    )
-    title = " ".join(title_parts) if title_parts and title_parts != ["unknown"] else None
-
+    # Deployments are referenceable WMDR2 entities and therefore keep an ``id``.
+    # They intentionally do not carry a generic discovery ``title``; display
+    # labels can be derived by clients from manufacturer/model/serialNumber
+    # where those values are available.
     start, end = _extract_interval(raw)
     time = _time_interval(start, end)
 
@@ -1556,7 +1748,6 @@ def _normalize_deployment(raw: Dict[str, Any], *, index: int, facility_id: str) 
 
     payload: Dict[str, Any] = {
         "id": record_id,
-        "title": title,
         "time": time,
         "description": _normalize_description_value(raw.get("description")),
         "sourceOfObservation": raw.get("sourceOfObservation"),
@@ -1571,7 +1762,6 @@ def _normalize_deployment(raw: Dict[str, Any], *, index: int, facility_id: str) 
         "contacts": contacts,
         "temporalObservingSchedule": observing_schedule,
         "keywords": _keywords_from_values(_collect_discovery_values("deployment", raw, "keywords")),
-        "themes": _themes_from_uris(_collect_discovery_values("deployment", raw, "themes")),
         "links": _extract_links(raw, "deployment"),
     }
     return _clean_none(payload)
@@ -1586,15 +1776,15 @@ def _normalize_international_reporting_schedule(*sources: Any) -> List[Dict[str,
     structures. In the WMDR2 facility-centric model, the international
     reporting schedule belongs to the observation, so the converter lifts those
     values to ``observation.internationalReportingSchedule``.
+
+    The generic schedule ``interval`` and source schedule ``id`` are deliberately
+    not carried over here. For this WMDR2 object, the substantive reporting
+    cadence is represented by ``temporalReportingInterval`` when present.
     """
     out: List[Dict[str, Any]] = []
     for source in sources:
         for item in _normalize_temporal_reporting_schedule(source):
             record: Dict[str, Any] = {}
-            if _non_empty(item.get("id")):
-                record["id"] = item["id"]
-            if _non_empty(item.get("interval")):
-                record["interval"] = item["interval"]
 
             reporting = _as_dict(item.get("reporting"))
             for key, value in reporting.items():
@@ -1603,11 +1793,7 @@ def _normalize_international_reporting_schedule(*sources: Any) -> List[Dict[str,
                 if _non_empty(value) or isinstance(value, bool):
                     record[key] = value
 
-            # Keep only substantive schedules. An id-only or interval-only object
-            # without reporting details is not useful as an international
-            # reporting schedule.
-            substantive = set(record) - {"id", "interval"}
-            if substantive:
+            if record:
                 out.append(record)
     return _uniq_dicts(_clean_none(out))
 
@@ -1693,7 +1879,6 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
         "temporalDataPolicy": _normalize_temporal_data_policy(raw.get("temporalDataPolicy") or raw.get("dataPolicy") or raw.get("dataPolicyHistory")),
         "deployments": deployment_refs,
         "keywords": _keywords_from_values(_collect_discovery_values("observation", raw, "keywords")),
-        "themes": _themes_from_uris(_collect_discovery_values("observation", raw, "themes")),
         "links": _extract_links(raw, "observation"),
     }
     return _clean_none(payload)
@@ -1718,8 +1903,6 @@ def _facility_properties(
     keywords = _keywords_from_values(
         [facility_id, facility.get("name")] + _collect_discovery_values("facility", facility, "keywords")
     )
-    themes = _themes_from_uris(_collect_discovery_values("facility", facility, "themes"))
-
     normalized_observations = [
         _normalize_observation(obs, index=index, facility_id=facility_id)
         for index, obs in enumerate(observations, start=1)
@@ -1765,13 +1948,12 @@ def _facility_properties(
             if item
         ),
         "contacts": contacts,
-        "themes": themes,
         "keywords": keywords,
         "links": _extract_links(facility, "facility"),
         **known_facility_properties,
         "temporalGeometry": temporal_geometry,
-        "temporalProgramAffiliation": _normalize_program_affiliation(facility.get("programAffiliation")),
-        "temporalReportingStatus": _normalize_reporting_status(facility.get("reportingStatus")),
+        "temporalProgramAffiliation": _normalize_temporal_program_affiliation(facility.get("programAffiliation")),
+        "temporalReportingStatus": _normalize_reporting_status_timeline(facility.get("reportingStatus")),
         "observations": normalized_observations,
         "deployments": normalized_deployments,
     }
