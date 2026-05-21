@@ -1941,7 +1941,7 @@ def convert_file(
         discovery_policy=discovery_policy,
         code_list_labels=code_list_labels,
     )
-    rel_name = inp.with_suffix(".geojson").name
+    rel_name = inp.with_suffix(".json").name
     out_path = out_dir / rel_name
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(collection, indent=2, ensure_ascii=False), encoding="utf-8")
