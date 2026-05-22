@@ -145,11 +145,11 @@
         "type": "text/html"
       }
     ],
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
+    "facilityType": "landFixed",
+    "wmoRegion": "europe",
     "temporalTerritory": {
       "territory": [
-        "http://codes.wmo.int/wmdr/TerritoryName/GRC"
+        "GRC"
       ],
       "datetimes": [
         "2011-02-16T00:00:00Z"
@@ -157,7 +157,7 @@
     },
     "temporalClimateZone": {
       "climateZone": [
-        "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidHotSummer"
+        "warmTemperateFullyHumidHotSummer"
       ],
       "datetimes": [
         "1982-03-13T00:00:00Z"
@@ -165,7 +165,7 @@
     },
     "temporalSurfaceCover": {
       "surfaceCover": [
-        "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/urbanBuiltup"
+        "urbanBuiltup"
       ],
       "datetimes": [
         "1982-03-13T00:00:00Z"
@@ -192,9 +192,9 @@
     },
     "temporalProgramAffiliation": {
       "programAffiliation": [
-        "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-        "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET",
-        "http://codes.wmo.int/wmdr/ProgramAffiliation/GALION"
+        "GAWregional",
+        "AERONET",
+        "GALION"
       ],
       "datetimes": [
         "1982-03-13T00:00:00Z",
@@ -202,29 +202,28 @@
         "2008-01-01T00:00:00Z"
       ],
       "reportingStatus": [
-        "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+        "operational",
+        "operational",
+        "operational"
       ]
     },
     "observations": [
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "title": "variable 263; domain: Atmosphere",
-        "description": "Observed variable 263; geometry type http://codes.wmo.int/wmdr/Geometry/totalColumn; deployment procedure 78",
+        "id": "observation:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
         "time": {
           "interval": [
             "1982-03-13T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 263,
+        "observedGeometryType": "totalColumn",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "GAWregional"
             ]
           }
         ],
@@ -239,89 +238,89 @@
             "P1M"
           ],
           "uom": [
-            "http://codes.wmo.int/wmdr/unit/DU"
+            "DU"
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "dataPolicy": "noLimitation"
             }
           ],
           "levelOfData": [
-            "http://codes.wmo.int/wmdr/LevelOfData/level1"
+            "level1"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/314",
-        "title": "variable 314: Aerosol Absorption Optical Depth; domain: Atmosphere",
-        "description": "Observed variable 314; geometry type http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/314",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "id": "observation:314",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 314 Aerosol Absorption Optical Depth",
+        "observedVariable": 314,
+        "observedGeometryType": "totalColumn",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "AERONET"
             ]
           }
-        ]
+        ],
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/325",
-        "title": "variable 325: Aerosol optical depth, TSP; domain: Atmosphere",
-        "description": "Observed variable 325; geometry type http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/325",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "id": "observation:325",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 325 Aerosol optical depth, TSP",
+        "observedVariable": 325,
+        "observedGeometryType": "totalColumn",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "AERONET"
             ]
           }
-        ]
+        ],
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/359",
-        "title": "variable 359: UV Spectral radiation; domain: Atmosphere",
-        "description": "Observed variable 359; geometry type http://codes.wmo.int/wmdr/Geometry/area; deployment procedure 268",
+        "id": "observation:359",
+        "title": "domain: atmosphere; geometry: area; variable: 359 UV Spectral radiation",
         "time": {
           "interval": [
             "1993-08-26T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/359",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/area",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 359,
+        "observedGeometryType": "area",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "GAWregional"
             ]
           }
         ],
         "deployments": [
           "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197"
-        ]
+        ],
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/572",
-        "title": "variable 572: Direct downward short-wave irradiance; domain: Atmosphere",
-        "description": "Observed variable 572; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure 264 / kipp&zonen / chp 1",
+        "id": "observation:572",
+        "title": "domain: atmosphere; geometry: point; variable: 572 Direct downward short-wave irradiance",
         "time": {
           "interval": [
             "2016-04-01T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/572",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 572,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "GAWregional"
             ]
           }
         ],
@@ -333,27 +332,27 @@
             false
           ],
           "uom": [
-            "http://codes.wmo.int/wmdr/unit/W.m-2"
+            "W.m-2"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573",
-        "title": "variable 573: Downward short-wave irradiance; domain: Atmosphere",
-        "description": "Observed variable 573; geometry type http://codes.wmo.int/wmdr/Geometry/area; deployment procedure 266 / kipp&zonen / cm21",
+        "id": "observation:573",
+        "title": "domain: atmosphere; geometry: area; variable: 573 Downward short-wave irradiance",
         "time": {
           "interval": [
             "1992-05-27T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/area",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 573,
+        "observedGeometryType": "area",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "GAWregional"
             ]
           }
         ],
@@ -368,83 +367,84 @@
             "PT1H"
           ],
           "uom": [
-            "http://codes.wmo.int/wmdr/unit/W.m-2"
+            "W.m-2"
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "dataPolicy": "noLimitation"
             }
           ],
           "numberOfObservationsInReportingInterval": [
             "60"
           ],
           "referenceTimeSource": [
-            "http://codes.wmo.int/wmdr/ReferenceTime/timeServer"
+            "timeServer"
           ],
           "timeliness": [
             "P1Y"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12150",
-        "title": "variable 12150: Ångström exponent for aerosol optical depth; domain: Atmosphere",
-        "description": "Observed variable 12150; geometry type http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12150",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "id": "observation:12150",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 12150 Ångström exponent for aerosol optical depth",
+        "observedVariable": 12150,
+        "observedGeometryType": "totalColumn",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "AERONET"
             ]
           }
-        ]
+        ],
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12151",
-        "title": "variable 12151: Ångström exponent  for aerosol absorption optical depth; domain: Atmosphere",
-        "description": "Observed variable 12151; geometry type http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12151",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "id": "observation:12151",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 12151 Ångström exponent  for aerosol absorption optical depth",
+        "observedVariable": 12151,
+        "observedGeometryType": "totalColumn",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "AERONET"
             ]
           }
-        ]
+        ],
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12153",
-        "title": "variable 12153: Particle volume size distribution; domain: Atmosphere",
-        "description": "Observed variable 12153; geometry type http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12153",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "id": "observation:12153",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 12153 Particle volume size distribution",
+        "observedVariable": 12153,
+        "observedGeometryType": "totalColumn",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "AERONET"
             ]
           }
-        ]
+        ],
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12159",
-        "title": "variable 12159: Particle light backscatter coefficient; domain: Atmosphere",
-        "description": "Observed variable 12159; geometry type http://codes.wmo.int/wmdr/Geometry/verticalProfile",
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12159",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "id": "observation:12159",
+        "title": "domain: atmosphere; geometry: verticalProfile; variable: 12159 Particle light backscatter coefficient",
+        "observedVariable": 12159,
+        "observedGeometryType": "verticalProfile",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GALION"
+              "GALION"
             ]
           }
-        ]
+        ],
+        "description": null
       }
     ],
     "deployments": [
@@ -456,13 +456,9 @@
             ".."
           ]
         },
-        "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-        "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ],
+        "sourceOfObservation": "automaticReading",
+        "observingMethod": 78,
+        "temporalObservingSchedule": null,
         "keywords": [
           "automaticReading",
           "78"
@@ -476,7 +472,7 @@
             ".."
           ]
         },
-        "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/268",
+        "observingMethod": 268,
         "keywords": [
           "268"
         ]
@@ -489,18 +485,15 @@
             ".."
           ]
         },
-        "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-        "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/264",
-        "manufacturer": "Kipp&Zonen",
-        "model": "CHP 1",
-        "exposure": "http://codes.wmo.int/wmdr/Exposure/class1",
-        "representativeness": "http://codes.wmo.int/wmdr/Representativeness/toposcale",
-        "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
+        "sourceOfObservation": "automaticReading",
+        "observingMethod": 264,
+        "instrument": [
+          "instrument:0aad71fddee0"
         ],
+        "exposure": "class1",
+        "representativeness": "toposcale",
+        "localReferenceSurface": "localGround",
+        "temporalObservingSchedule": null,
         "keywords": [
           "Kipp&Zonen",
           "CHP 1",
@@ -516,16 +509,17 @@
             ".."
           ]
         },
-        "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-        "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
-        "manufacturer": "Kipp&Zonen",
-        "model": "CM21",
-        "exposure": "http://codes.wmo.int/wmdr/Exposure/class1",
-        "representativeness": "http://codes.wmo.int/wmdr/Representativeness/toposcale",
-        "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+        "sourceOfObservation": "automaticReading",
+        "observingMethod": 266,
+        "instrument": [
+          "instrument:a411ef5c36ff"
+        ],
+        "exposure": "class1",
+        "representativeness": "toposcale",
+        "localReferenceSurface": "localGround",
         "instrumentOperatingStatus": [
           {
-            "value": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
+            "value": "operational",
             "id": "id_b074e827-5347-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
@@ -535,17 +529,25 @@
             }
           }
         ],
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ],
+        "temporalObservingSchedule": null,
         "keywords": [
           "Kipp&Zonen",
           "CM21",
           "automaticReading",
           "266"
         ]
+      }
+    ],
+    "instruments": [
+      {
+        "id": "instrument:0aad71fddee0",
+        "manufacturer": "Kipp&Zonen",
+        "model": "CHP 1"
+      },
+      {
+        "id": "instrument:a411ef5c36ff",
+        "manufacturer": "Kipp&Zonen",
+        "model": "CM21"
       }
     ]
   }

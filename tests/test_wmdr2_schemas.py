@@ -73,9 +73,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             "type": "Point",
             "coordinates": [6.0733333333, 50.5108333333, 671],
         },
-        "time": {
-            "interval": ["..", ".."],
-        },
+        "time": None,
         "conformsTo": [
             "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core",
             "https://schemas.wmo.int/wmdr/2.0/core/facility-record",
@@ -103,18 +101,18 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                 "0-20000-0-06494",
                 "MONT-RIGI",
             ],
-            "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-            "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
+            "facilityType": "landFixed",
+            "wmoRegion": "europe",
             "temporalTerritory": {
-                "territory": ["http://codes.wmo.int/wmdr/TerritoryName/BEL"],
+                "territory": ["BEL"],
                 "datetimes": ["2016-04-28T00:00:00Z"],
             },
             "temporalClimateZone": {
-                "climateZone": ["http://codes.wmo.int/wmdr/ClimateZone/Cfb"],
+                "climateZone": ["Cfb"],
                 "datetimes": [".."],
             },
             "temporalSurfaceCover": {
-                "surfaceCover": ["http://codes.wmo.int/wmdr/SurfaceCover/grassland"],
+                "surfaceCover": ["grassland"],
                 "datetimes": [".."],
             },
             "temporalGeometry": {
@@ -130,14 +128,14 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             },
             "temporalProgramAffiliation": {
                 "programAffiliation": [
-                    "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
-                    "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
-                    "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+                    "GOSGeneral",
+                    "GOSGeneral",
+                    "GBON",
                 ],
                 "reportingStatus": [
-                    "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-                    "http://codes.wmo.int/wmdr/ReportingStatus/closed",
-                    "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+                    "operational",
+                    "closed",
+                    "operational",
                 ],
                 "datetimes": [
                     "2000-08-17T00:00:00Z",
@@ -147,19 +145,19 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             },
             "observations": [
                 {
-                    "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
-                    "title": "variable 179: Cloud amount; domain: Atmosphere",
-                    "description": "Observed variable 179; geometry type point",
+                    "id": "observation:179",
+                    "title": "domain: atmosphere; geometry: point; variable: 179 Cloud amount",
+                    "description": None,
                     "time": {
                         "interval": ["2016-04-29T00:00:00Z", ".."],
                     },
-                    "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
-                    "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-                    "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+                    "observedVariable": 179,
+                    "observedGeometryType": "point",
+                    "observedDomain": "atmosphere",
                     "reporting": {
                         "internationalExchange": [True, False],
                         "temporalReportingInterval": ["PT1H", "PT10M"],
-                        "uom": [None, "http://codes.wmo.int/wmdr/unit/mm"],
+                        "uom": [None, "mm"],
                     },
                     "deployments": [
                         "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06"
@@ -172,14 +170,25 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "time": {
                         "interval": ["2016-04-29T00:00:00Z", ".."],
                     },
-                    "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/automatic",
-                    "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+                    "observingMethod": "automatic",
+                    "localReferenceSurface": "localGround",
+                    "instrument": ["instrument:example"],
+                    "serialNumbers": {
+                        "serialNumber": ["ABC123"],
+                        "datetimes": [".."],
+                    },
                     "temporalObservingSchedule": [
                         {
-                            "interval": "unknown",
                             "diurnalBaseTime": "06:00:00Z",
                         }
                     ],
+                }
+            ],
+            "instruments": [
+                {
+                    "id": "instrument:example",
+                    "manufacturer": "Vaisala",
+                    "model": "ExampleModel",
                 }
             ],
         },
@@ -192,9 +201,9 @@ def test_facility_centric_record_feature_is_valid() -> None:
     assert _validate(RECORD_SCHEMA, instance) == []
 
 
-def test_record_time_allows_unknown_interval() -> None:
+def test_record_time_allows_null_when_unknown() -> None:
     instance = _valid_facility_record_feature()
-    instance["time"] = {"interval": ["..", ".."]}
+    instance["time"] = None
 
     assert _validate(RECORD_SCHEMA, instance) == []
 
@@ -292,3 +301,42 @@ def test_deployment_title_is_invalid() -> None:
     instance["properties"]["deployments"][0]["title"] = "Deployment title"
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_deployment_manufacturer_model_are_invalid_but_serial_numbers_are_valid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["manufacturer"] = "Vaisala"
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["model"] = "ExampleModel"
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["serialNumber"] = "ABC123"
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    instance = _valid_facility_record_feature()
+
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_instrument_serial_numbers_are_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["serialNumbers"] = {
+        "serialNumber": ["ABC123"],
+        "datetimes": [".."],
+    }
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_observation_observed_variable_can_be_numeric_code() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observations"][0]["observedVariable"] = 12006
+    instance["properties"]["observations"][0]["observedDomain"] = "atmosphere"
+
+    assert _validate(RECORD_SCHEMA, instance) == []

@@ -9,12 +9,7 @@
       671
     ]
   },
-  "time": {
-    "interval": [
-      "..",
-      ".."
-    ]
-  },
+  "time": null,
   "conformsTo": [
     "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core",
     "https://schemas.wmo.int/wmdr/2.0/core/facility-record"
@@ -59,11 +54,11 @@
       "MONT-RIGI",
       "landFixed"
     ],
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
+    "facilityType": "landFixed",
+    "wmoRegion": "europe",
     "temporalTerritory": {
       "territory": [
-        "http://codes.wmo.int/wmdr/TerritoryName/BEL"
+        "BEL"
       ],
       "datetimes": [
         "2016-04-28T00:00:00Z"
@@ -71,36 +66,35 @@
     },
     "temporalProgramAffiliation": {
       "programAffiliation": [
-        "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
-        "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+        "GOSGeneral",
+        "GBON"
       ],
       "datetimes": [
         "2016-04-28T00:00:00Z",
         "2022-09-08T00:00:00Z"
       ],
       "reportingStatus": [
-        "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+        "operational",
+        "operational"
       ]
     },
     "observations": [
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
-        "title": "variable 179: Cloud amount; domain: Atmosphere",
-        "description": "Observed variable 179; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:179",
+        "title": "domain: atmosphere; geometry: point; variable: 179 Cloud amount",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 179,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -114,25 +108,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
-        "title": "variable 216: Atmospheric pressure; domain: Atmosphere",
-        "description": "Observed variable 216; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:216",
+        "title": "domain: atmosphere; geometry: point; variable: 216 Atmospheric pressure",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 216,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              "GBON"
             ]
           }
         ],
@@ -154,25 +148,25 @@
               }
             }
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-        "title": "variable 224; domain: Atmosphere",
-        "description": "Observed variable 224; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 224,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              "GBON"
             ]
           }
         ],
@@ -186,25 +180,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/230",
-        "title": "variable 230: Visibility; domain: Atmosphere",
-        "description": "Observed variable 230; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:230",
+        "title": "domain: atmosphere; geometry: point; variable: 230 Visibility",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/230",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 230,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -218,25 +212,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
-        "title": "variable 12249: Relative humidity (with respect to water); domain: Atmosphere",
-        "description": "Observed variable 12249; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:12249",
+        "title": "domain: atmosphere; geometry: point; variable: 12249 Relative humidity (with respect to water)",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 12249,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              "GBON"
             ]
           }
         ],
@@ -250,25 +244,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/265",
-        "title": "variable 265: Past weather; domain: Atmosphere",
-        "description": "Observed variable 265; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:265",
+        "title": "domain: atmosphere; geometry: point; variable: 265 Past weather",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/265",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 265,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -282,25 +276,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/266",
-        "title": "variable 266: Present weather; domain: Atmosphere",
-        "description": "Observed variable 266; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:266",
+        "title": "domain: atmosphere; geometry: point; variable: 266 Present weather",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/266",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 266,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -314,19 +308,19 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/270",
-        "title": "variable 270: Sunshine duration; domain: Atmosphere",
-        "description": "Observed variable 270; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/270",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "id": "observation:270",
+        "title": "domain: atmosphere; geometry: point; variable: 270 Sunshine duration",
+        "observedVariable": 270,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -340,25 +334,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/531",
-        "title": "variable 531: Cloud base height; domain: Atmosphere",
-        "description": "Observed variable 531; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:531",
+        "title": "domain: atmosphere; geometry: point; variable: 531 Cloud base height",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/531",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 531,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -372,25 +366,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/550",
-        "title": "variable 550: Type of cloud; domain: Atmosphere",
-        "description": "Observed variable 550; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:550",
+        "title": "domain: atmosphere; geometry: point; variable: 550 Type of cloud",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/550",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 550,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -404,19 +398,19 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/596",
-        "title": "variable 596: Soil temperature; domain: Terrestrial",
-        "description": "Observed variable 596; geometry type unknown; deployment procedure unknown",
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/596",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/unknown",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/terrestrial",
+        "id": "observation:596",
+        "title": "domain: terrestrial; geometry: unknown; variable: 596 Soil temperature",
+        "observedVariable": 596,
+        "observedGeometryType": "unknown",
+        "observedDomain": "terrestrial",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -430,25 +424,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-        "title": "variable 12005: Horizontal wind direction at specified distance from reference surface; domain: Atmosphere",
-        "description": "Observed variable 12005; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:12005",
+        "title": "domain: atmosphere; geometry: point; variable: 12005 Horizontal wind direction at specified distance from reference surface",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 12005,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              "GBON"
             ]
           }
         ],
@@ -462,25 +456,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
-        "title": "variable 12006: Horizontal wind speed at specified distance from reference surface; domain: Atmosphere",
-        "description": "Observed variable 12006; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure unknown",
+        "id": "observation:12006",
+        "title": "domain: atmosphere; geometry: point; variable: 12006 Horizontal wind speed at specified distance from reference surface",
         "time": {
           "interval": [
             "2016-04-29T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 12006,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              "GBON"
             ]
           }
         ],
@@ -494,7 +488,8 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       }
     ],
     "deployments": [
@@ -506,33 +501,19 @@
             ".."
           ]
         },
-        "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-        "manufacturer": "unknown",
-        "model": "unknown",
-        "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ]
+        "observingMethod": "unknown",
+        "localReferenceSurface": "localGround",
+        "temporalObservingSchedule": null
       },
       {
         "id": "deployment:id_e255ce45-4880-4534-890b-fe13020f1ba9",
-        "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ]
+        "observingMethod": "unknown",
+        "temporalObservingSchedule": null
       },
       {
         "id": "deployment:id_8aba1fb3-7eab-4ee9-bc01-3b9fe58f54d2",
-        "observingMethod": "http://codes.wmo.int/wmdr/unknown",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ]
+        "observingMethod": "unknown",
+        "temporalObservingSchedule": null
       }
     ]
   }

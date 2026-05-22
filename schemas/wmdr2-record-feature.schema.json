@@ -4,81 +4,193 @@
   "title": "WMDR2 core facility-centric record Feature",
   "description": "Facility-centric WMDR2 core JSON representation using a GeoJSON/OGC Records Feature envelope.",
   "type": "object",
-  "required": ["type", "id", "geometry", "time", "conformsTo", "properties"],
+  "required": [
+    "type",
+    "id",
+    "geometry",
+    "time",
+    "conformsTo",
+    "properties"
+  ],
   "additionalProperties": true,
   "properties": {
-    "type": { "const": "Feature" },
-    "id": { "type": "string", "pattern": "^facility:" },
-    "geometry": { "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry" },
-    "time": { "$ref": "wmdr2-common.schema.json#/$defs/timeInterval" },
+    "type": {
+      "const": "Feature"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^facility:"
+    },
+    "geometry": {
+      "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry"
+    },
+    "time": {
+      "$ref": "wmdr2-common.schema.json#/$defs/nullableTimeInterval"
+    },
     "conformsTo": {
       "type": "array",
       "minItems": 1,
-      "items": { "type": "string" },
+      "items": {
+        "type": "string"
+      },
       "contains": {
         "const": "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
       }
     },
     "links": {
       "type": "array",
-      "items": { "$ref": "wmdr2-common.schema.json#/$defs/link" }
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/link"
+      }
     },
     "properties": {
       "type": "object",
-      "required": ["type", "title"],
+      "required": [
+        "type",
+        "title"
+      ],
       "additionalProperties": true,
       "allOf": [
-        { "not": { "required": ["wmdr2"] } },
-        { "not": { "required": ["themes"] } },
-        { "not": { "required": ["temporalContacts"] } },
-        { "not": { "required": ["dateEstablished"] } },
-        { "not": { "required": ["dateClosed"] } }
+        {
+          "not": {
+            "required": [
+              "wmdr2"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "themes"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalContacts"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "dateEstablished"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "dateClosed"
+            ]
+          }
+        }
       ],
       "properties": {
-        "type": { "const": "facility" },
-        "title": { "type": "string", "minLength": 1 },
-        "created": { "type": "string" },
-        "updated": { "type": "string" },
-        "description": { "type": "string" },
+        "type": {
+          "const": "facility"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created": {
+          "type": "string"
+        },
+        "updated": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
         "externalIds": {
           "type": "array",
-          "items": { "$ref": "wmdr2-common.schema.json#/$defs/externalId" }
+          "items": {
+            "$ref": "wmdr2-common.schema.json#/$defs/externalId"
+          }
         },
         "contacts": {
           "type": "array",
-          "items": { "$ref": "wmdr2-common.schema.json#/$defs/contact" }
+          "items": {
+            "$ref": "wmdr2-common.schema.json#/$defs/contact"
+          }
         },
         "keywords": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "links": {
           "type": "array",
-          "items": { "$ref": "wmdr2-common.schema.json#/$defs/link" }
+          "items": {
+            "$ref": "wmdr2-common.schema.json#/$defs/link"
+          }
         },
-        "facilitySet": {},
-        "facilityType": { "type": "string" },
-        "wmoRegion": { "type": "string" },
-        "surfaceCoverClassification": {},
-        "localTopography": {},
-        "relativeElevation": {},
-        "topographicContext": {},
-        "altitudeOrDepth": {},
+        "facilitySet": {
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+        },
+        "facilityType": {
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+        },
+        "wmoRegion": {
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+        },
+        "surfaceCoverClassification": {
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+        },
+        "localTopography": {
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+        },
+        "relativeElevation": {
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+        },
+        "topographicContext": {
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+        },
+        "altitudeOrDepth": {
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+        },
         "timeZone": {},
-        "regionOfOrigin": {},
-        "temporalTerritory": { "$ref": "wmdr2-common.schema.json#/$defs/temporalTerritory" },
-        "temporalClimateZone": { "$ref": "wmdr2-common.schema.json#/$defs/temporalClimateZone" },
-        "temporalSurfaceCover": { "$ref": "wmdr2-common.schema.json#/$defs/temporalSurfaceCover" },
-        "temporalGeometry": { "$ref": "wmdr2-common.schema.json#/$defs/temporalGeometry" },
-        "temporalProgramAffiliation": { "$ref": "wmdr2-common.schema.json#/$defs/temporalProgramAffiliation" },
-        "temporalReportingStatus": { "$ref": "wmdr2-common.schema.json#/$defs/reportingStatusTimeline" },
+        "regionOfOrigin": {
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+        },
+        "temporalTerritory": {
+          "$ref": "wmdr2-common.schema.json#/$defs/temporalTerritory"
+        },
+        "temporalClimateZone": {
+          "$ref": "wmdr2-common.schema.json#/$defs/temporalClimateZone"
+        },
+        "temporalSurfaceCover": {
+          "$ref": "wmdr2-common.schema.json#/$defs/temporalSurfaceCover"
+        },
+        "temporalGeometry": {
+          "$ref": "wmdr2-common.schema.json#/$defs/temporalGeometry"
+        },
+        "temporalProgramAffiliation": {
+          "$ref": "wmdr2-common.schema.json#/$defs/temporalProgramAffiliation"
+        },
+        "temporalReportingStatus": {
+          "$ref": "wmdr2-common.schema.json#/$defs/reportingStatusTimeline"
+        },
         "observations": {
           "type": "array",
-          "items": { "$ref": "wmdr2-common.schema.json#/$defs/observation" }
+          "items": {
+            "$ref": "wmdr2-common.schema.json#/$defs/observation"
+          }
         },
         "deployments": {
           "type": "array",
-          "items": { "$ref": "wmdr2-common.schema.json#/$defs/deployment" }
+          "items": {
+            "$ref": "wmdr2-common.schema.json#/$defs/deployment"
+          }
+        },
+        "instruments": {
+          "type": "array",
+          "items": {
+            "$ref": "wmdr2-common.schema.json#/$defs/instrument"
+          }
         }
       }
     }

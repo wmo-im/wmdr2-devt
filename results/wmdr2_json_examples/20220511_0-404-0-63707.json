@@ -84,11 +84,11 @@
       "BOMET",
       "landFixed"
     ],
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/africa",
+    "facilityType": "landFixed",
+    "wmoRegion": "africa",
     "temporalTerritory": {
       "territory": [
-        "http://codes.wmo.int/wmdr/TerritoryName/KEN"
+        "KEN"
       ],
       "datetimes": [
         "2020-09-21T00:00:00Z"
@@ -96,7 +96,7 @@
     },
     "temporalClimateZone": {
       "climateZone": [
-        "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer"
+        "warmTemperateFullyHumidWarmSummer"
       ],
       "datetimes": [
         "2020-09-21T00:00:00Z"
@@ -104,7 +104,7 @@
     },
     "temporalSurfaceCover": {
       "surfaceCover": [
-        "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/rainfedCroplands"
+        "rainfedCroplands"
       ],
       "datetimes": [
         "2020-09-21T00:00:00Z"
@@ -112,33 +112,32 @@
     },
     "temporalProgramAffiliation": {
       "programAffiliation": [
-        "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+        "GOSGeneral"
       ],
       "datetimes": [
         "2022-05-11T00:00:00Z"
       ],
       "reportingStatus": [
-        "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+        "preOperational"
       ]
     },
     "observations": [
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
-        "title": "variable 12249: Relative humidity (with respect to water); domain: Atmosphere",
-        "description": "Observed variable 12249; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure inapplicable",
+        "id": "observation:12249",
+        "title": "domain: atmosphere; geometry: point; variable: 12249 Relative humidity (with respect to water)",
         "time": {
           "interval": [
             "2020-12-15T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 12249,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -152,25 +151,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
-        "title": "variable 210: Amount of precipitation; domain: Atmosphere",
-        "description": "Observed variable 210; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure inapplicable",
+        "id": "observation:210",
+        "title": "domain: atmosphere; geometry: point; variable: 210 Amount of precipitation",
         "time": {
           "interval": [
             "2020-09-22T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 210,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -185,56 +184,56 @@
             "PT1H"
           ],
           "uom": [
-            "http://codes.wmo.int/wmdr/unit/inapplicable"
+            "inapplicable"
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+              "dataPolicy": "inapplicable"
             }
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
-        "title": "variable 210: Amount of precipitation; domain: Atmosphere",
-        "description": "Observed variable 210; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure inapplicable",
+        "id": "observation:210",
+        "title": "domain: atmosphere; geometry: point; variable: 210 Amount of precipitation",
         "time": {
           "interval": [
             "2020-09-22T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 210,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
         "deployments": [
           "deployment:id_b074e829-f429-7937-e053-148ef98d6de4"
-        ]
+        ],
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
-        "title": "variable 216: Atmospheric pressure; domain: Atmosphere",
-        "description": "Observed variable 216; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure inapplicable",
+        "id": "observation:216",
+        "title": "domain: atmosphere; geometry: point; variable: 216 Atmospheric pressure",
         "time": {
           "interval": [
             "2020-12-15T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 216,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -248,25 +247,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-        "title": "variable 224; domain: Atmosphere",
-        "description": "Observed variable 224; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure inapplicable",
+        "id": "observation:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
             "2020-12-15T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 224,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -280,73 +279,73 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225",
-        "title": "variable 225: Dew-point temperature (at specified distance from reference surface); domain: Atmosphere",
-        "description": "Observed variable 225; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure inapplicable",
+        "id": "observation:225",
+        "title": "domain: atmosphere; geometry: point; variable: 225 Dew-point temperature (at specified distance from reference surface)",
         "time": {
           "interval": [
             "2020-09-22T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 225,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
         "deployments": [
           "deployment:id_b074e829-f42d-7937-e053-148ef98d6de4"
-        ]
+        ],
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/230",
-        "title": "variable 230: Visibility; domain: Atmosphere",
-        "description": "Observed variable 230; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure inapplicable",
+        "id": "observation:230",
+        "title": "domain: atmosphere; geometry: point; variable: 230 Visibility",
         "time": {
           "interval": [
             "2020-09-22T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/230",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 230,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
         "deployments": [
           "deployment:id_b074e829-f42e-7937-e053-148ef98d6de4"
-        ]
+        ],
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-        "title": "variable 12005: Horizontal wind direction at specified distance from reference surface; domain: Atmosphere",
-        "description": "Observed variable 12005; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure inapplicable",
+        "id": "observation:12005",
+        "title": "domain: atmosphere; geometry: point; variable: 12005 Horizontal wind direction at specified distance from reference surface",
         "time": {
           "interval": [
             "2020-12-15T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 12005,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -360,25 +359,25 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       },
       {
-        "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
-        "title": "variable 12006: Horizontal wind speed at specified distance from reference surface; domain: Atmosphere",
-        "description": "Observed variable 12006; geometry type http://codes.wmo.int/wmdr/Geometry/point; deployment procedure inapplicable",
+        "id": "observation:12006",
+        "title": "domain: atmosphere; geometry: point; variable: 12006 Horizontal wind speed at specified distance from reference surface",
         "time": {
           "interval": [
             "2020-12-15T00:00:00Z",
             ".."
           ]
         },
-        "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
-        "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
-        "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
+        "observedVariable": 12006,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
         "programAffiliation": [
           {
             "programAffiliation": [
-              "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "GOSGeneral"
             ]
           }
         ],
@@ -392,7 +391,8 @@
           "temporalReportingInterval": [
             "PT1H"
           ]
-        }
+        },
+        "description": null
       }
     ],
     "deployments": [
@@ -404,12 +404,8 @@
             ".."
           ]
         },
-        "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ],
+        "observingMethod": "inapplicable",
+        "temporalObservingSchedule": null,
         "keywords": [
           "inapplicable"
         ]
@@ -422,16 +418,10 @@
             ".."
           ]
         },
-        "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-        "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-        "manufacturer": "unknown",
-        "model": "unknown",
-        "localReferenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ],
+        "sourceOfObservation": "automaticReading",
+        "observingMethod": "inapplicable",
+        "localReferenceSurface": "localGround",
+        "temporalObservingSchedule": null,
         "keywords": [
           "automaticReading",
           "inapplicable"
@@ -445,7 +435,7 @@
             ".."
           ]
         },
-        "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
+        "observingMethod": "inapplicable",
         "keywords": [
           "inapplicable"
         ]
@@ -458,12 +448,8 @@
             ".."
           ]
         },
-        "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ],
+        "observingMethod": "inapplicable",
+        "temporalObservingSchedule": null,
         "keywords": [
           "inapplicable"
         ]
@@ -476,12 +462,8 @@
             ".."
           ]
         },
-        "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ],
+        "observingMethod": "inapplicable",
+        "temporalObservingSchedule": null,
         "keywords": [
           "inapplicable"
         ]
@@ -494,7 +476,7 @@
             ".."
           ]
         },
-        "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
+        "observingMethod": "inapplicable",
         "keywords": [
           "inapplicable"
         ]
@@ -507,7 +489,7 @@
             ".."
           ]
         },
-        "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
+        "observingMethod": "inapplicable",
         "keywords": [
           "inapplicable"
         ]
@@ -520,12 +502,8 @@
             ".."
           ]
         },
-        "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ],
+        "observingMethod": "inapplicable",
+        "temporalObservingSchedule": null,
         "keywords": [
           "inapplicable"
         ]
@@ -538,12 +516,8 @@
             ".."
           ]
         },
-        "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-        "temporalObservingSchedule": [
-          {
-            "interval": "unknown"
-          }
-        ],
+        "observingMethod": "inapplicable",
+        "temporalObservingSchedule": null,
         "keywords": [
           "inapplicable"
         ]

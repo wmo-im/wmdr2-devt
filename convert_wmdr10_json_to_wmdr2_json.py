@@ -19,10 +19,11 @@ Design choices
 - WMDR2 core elements are first-class members of ``Feature.properties``.
   There is deliberately no ``properties.wmdr2`` wrapper.
 - Observations and deployments are embedded under the facility record as
-  ``properties.observations`` and ``properties.deployments``.
+  ``properties.observations`` and ``properties.deployments``; instruments are
+  represented once under ``properties.instruments`` and referenced by deployments.
 - ``keywords`` are retained as lightweight discovery text. Controlled-vocabulary
-  WMDR concepts are emitted as explicit properties, not as OGC Records
-  ``themes``.
+  WMDR concepts are emitted as explicit compact code values, not as full
+  code-list URLs and not as OGC Records ``themes``.
 - The converter remains defensive because the simplified WMDR1 JSON shape has
   varied across iterations of the XML-to-JSON simplifier.
 
@@ -51,6 +52,7 @@ from __future__ import annotations
 import argparse
 import copy
 import csv
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -734,16 +736,16 @@ def _extract_code_list_ref(value: Any) -> Tuple[Optional[str], Optional[str], Op
 
 
 def _observed_domain_from_observed_variable(value: Any) -> Optional[str]:
-    """Derive a WMDR Domain URI from an ObservedVariable code-list URI.
+    """Derive the compact WMDR observed-domain code from an observed variable.
 
     Legacy WMDR1 XML encodes the observed domain in the observed-variable
     code-list name, for example::
 
         http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179
 
-    WMDR2 exposes this as an explicit domain reference::
+    WMDR2 exposes this as the compact domain code::
 
-        https://codes.wmo.int/wmdr/Domain/atmosphere
+        atmosphere
     """
     _, domain, _ = _extract_code_list_ref(value)
     if not domain or not domain.startswith("ObservedVariable"):
@@ -751,8 +753,7 @@ def _observed_domain_from_observed_variable(value: Any) -> Optional[str]:
     domain_name = domain.removeprefix("ObservedVariable").strip()
     if not domain_name:
         return None
-    domain_code = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "-", domain_name).lower()
-    return f"https://codes.wmo.int/wmdr/Domain/{domain_code}"
+    return re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "-", domain_name).lower()
 
 
 def _deployment_source_identifier(raw: Dict[str, Any], *, index: int, facility_id: str) -> str:
@@ -771,6 +772,176 @@ def _deployment_source_identifier(raw: Dict[str, Any], *, index: int, facility_i
 def _deployment_record_id(raw: Dict[str, Any], *, index: int, facility_id: str) -> str:
     """Return the WMDR2 deployment id used by observations for references."""
     return f"deployment:{_deployment_source_identifier(raw, index=index, facility_id=facility_id)}"
+
+
+def _compact_wmdr_code_value(value: Any) -> Any:
+    """Return a compact WMDR code-list value.
+
+    Full WMO code-list URLs are an interchange convenience in WMDR1. WMDR2 core
+    keeps only the actual code value and relies on schemas/validators to know
+    the applicable code list from the property context.
+
+    Examples:
+        http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006 -> 12006
+        https://codes.wmo.int/wmdr/Domain/atmosphere -> "atmosphere"
+    """
+    if not isinstance(value, str):
+        return value
+
+    text = value.strip()
+    if not text.startswith(("http://codes.wmo.int/wmdr/", "https://codes.wmo.int/wmdr/")):
+        return value
+
+    code = text.rstrip("/#").rsplit("/", 1)[-1].lstrip("_")
+    if not code:
+        return value
+    if re.fullmatch(r"[+-]?\d+", code):
+        try:
+            return int(code)
+        except Exception:
+            return code
+    return code
+
+
+def _finalize_wmdr2_value(value: Any, *, key: Optional[str] = None) -> Any:
+    """Finalize WMDR2 output values.
+
+    This pass is intentionally applied only at the final output boundary. It
+    keeps converter internals close to the legacy WMDR1 input while enforcing
+    the current WMDR2 core output conventions:
+
+    - compact WMO code-list URLs to their actual code values;
+    - preserve real links such as ``href`` values;
+    - collapse unknown-only interval structures to JSON null;
+    - collapse singleton unknown schedule lists to JSON null.
+    """
+    if isinstance(value, dict):
+        if set(value.keys()) == {"interval"}:
+            interval = value.get("interval")
+            if interval == ["..", ".."] or interval == "unknown":
+                return None
+
+        out: Dict[str, Any] = {}
+        for child_key, child_value in value.items():
+            if child_key in {"href", "url"}:
+                out[child_key] = child_value
+            else:
+                out[child_key] = _finalize_wmdr2_value(child_value, key=child_key)
+        return out
+
+    if isinstance(value, list):
+        if len(value) == 1:
+            first = value[0]
+            if isinstance(first, dict) and set(first.keys()) == {"interval"} and first.get("interval") == "unknown":
+                return None
+        return [_finalize_wmdr2_value(item, key=key) for item in value]
+
+    if isinstance(value, str) and key not in {"href", "url"}:
+        return _compact_wmdr_code_value(value)
+    return value
+
+
+def _is_substantive_instrument_value(value: Any) -> bool:
+    """Return true when a manufacturer/model value identifies equipment."""
+    if value in (None, "", [], {}):
+        return False
+    if isinstance(value, str) and _is_unknown_token(value):
+        return False
+    return True
+
+
+def _instrument_source_values(raw: Dict[str, Any]) -> Tuple[Any, Any]:
+    """Return manufacturer and model values from a deployment."""
+    return raw.get("manufacturer"), raw.get("model")
+
+
+def _deployment_serial_number(raw: Dict[str, Any]) -> Any:
+    """Return the deployment-level serial-number value, if available."""
+    return raw.get("serialNumber")
+
+
+def _deployment_has_instrument(raw: Dict[str, Any]) -> bool:
+    manufacturer, model = _instrument_source_values(raw)
+    return any(_is_substantive_instrument_value(value) for value in (manufacturer, model))
+
+
+def _instrument_record_id(raw: Dict[str, Any], *, facility_id: str) -> Optional[str]:
+    """Return the stable WMDR2 instrument id referenced by deployments.
+
+    Instruments are reusable catalog entries. Serial-number histories remain on
+    deployments because serial numbers can change with deployment context and
+    should not make two otherwise identical manufacturer/model catalog entries
+    become separate instruments.
+    """
+    if not _deployment_has_instrument(raw):
+        return None
+
+    manufacturer, model = _instrument_source_values(raw)
+    seed_parts = [
+        facility_id,
+        str(manufacturer or ""),
+        str(model or ""),
+    ]
+    digest = hashlib.sha1("|".join(seed_parts).encode("utf-8")).hexdigest()[:12]
+    return f"instrument:{digest}"
+
+
+def _instrument_refs_for_deployment(raw: Dict[str, Any], *, facility_id: str) -> List[str]:
+    instrument_id = _instrument_record_id(raw, facility_id=facility_id)
+    return [instrument_id] if instrument_id else []
+
+
+def _deployment_serial_numbers(raw: Dict[str, Any]) -> Optional[Dict[str, List[Any]]]:
+    """Return deployment-level serial-number history.
+
+    The WMDR2 instrument object is a reusable catalog entry. The serial number
+    remains on the deployment, represented as aligned arrays so later changes
+    can be added without changing the structure.
+    """
+    serial_number = _deployment_serial_number(raw)
+    if not _is_substantive_instrument_value(serial_number):
+        return None
+
+    start, _ = _extract_interval(raw)
+    begin = _normalize_time_value(start) or ".."
+    return {
+        "serialNumber": [serial_number],
+        "datetimes": [begin],
+    }
+
+
+def _normalize_instrument(raw: Dict[str, Any], *, facility_id: str) -> Optional[Dict[str, Any]]:
+    """Normalize deployment manufacturer/model data into an instrument catalog entry."""
+    instrument_id = _instrument_record_id(raw, facility_id=facility_id)
+    if not instrument_id:
+        return None
+
+    manufacturer, model = _instrument_source_values(raw)
+    payload: Dict[str, Any] = {
+        "id": instrument_id,
+        "manufacturer": manufacturer if _is_substantive_instrument_value(manufacturer) else None,
+        "model": model if _is_substantive_instrument_value(model) else None,
+    }
+    return _clean_none(payload)
+
+
+def _normalize_instruments(deployments: Sequence[Dict[str, Any]], *, facility_id: str) -> List[Dict[str, Any]]:
+    """Return de-duplicated reusable instruments derived from deployment equipment fields."""
+    by_id: Dict[str, Dict[str, Any]] = {}
+    for dep in deployments:
+        if not isinstance(dep, dict):
+            continue
+        instrument = _normalize_instrument(dep, facility_id=facility_id)
+        if not instrument:
+            continue
+        instrument_id = instrument.get("id")
+        if not isinstance(instrument_id, str):
+            continue
+        if instrument_id not in by_id:
+            by_id[instrument_id] = instrument
+
+    return list(by_id.values())
+
 
 def _load_code_list_labels(section: Dict[str, Any], *, base_dir: Optional[Path] = None) -> Dict[str, Dict[str, str]]:
     """Load optional code-list labels used for human-readable titles."""
@@ -847,19 +1018,35 @@ def _display_domain_name(domain: Optional[str]) -> Optional[str]:
     return text or domain
 
 
-def _format_observation_title(value: Any) -> Optional[str]:
-    """Build a discovery title from an observed-property code-list URI."""
+def _format_observation_title(value: Any, geometry_type: Any = None) -> Optional[str]:
+    """Build an observation title from compact domain, geometry and variable info.
+
+    Target form::
+
+        domain: atmosphere; geometry: point; variable: 12006 Horizontal wind speed ...
+    """
     _, domain, code = _extract_code_list_ref(value)
     if not code:
+        compact_value = _compact_wmdr_code_value(value)
+        code = str(compact_value) if compact_value not in (None, "") else None
+    if not code:
         return None
+
     label = _lookup_code_list_label(domain, code)
-    domain_label = _display_domain_name(domain)
-    prefix = f"variable {code}"
+    domain_value = _observed_domain_from_observed_variable(value)
+    geometry_value = _compact_wmdr_code_value(geometry_type)
+
+    parts: List[str] = []
+    if isinstance(domain_value, str) and domain_value:
+        parts.append(f"domain: {domain_value}")
+    if geometry_value not in (None, "", [], {}):
+        parts.append(f"geometry: {geometry_value}")
+
+    variable_text = f"variable: {code}"
     if label:
-        prefix = f"{prefix}: {label}"
-    if domain_label:
-        return f"{prefix}; domain: {domain_label}"
-    return prefix
+        variable_text = f"{variable_text} {label}"
+    parts.append(variable_text)
+    return "; ".join(parts)
 
 
 def _keywords_from_values(values: Iterable[Any]) -> List[str]:
@@ -1846,9 +2033,8 @@ def _normalize_deployment(raw: Dict[str, Any], *, index: int, facility_id: str) 
         "description": _normalize_description_value(raw.get("description")),
         "sourceOfObservation": raw.get("sourceOfObservation"),
         "observingMethod": raw.get("observingMethod"),
-        "manufacturer": raw.get("manufacturer"),
-        "model": raw.get("model"),
-        "serialNumber": raw.get("serialNumber"),
+        "instrument": _instrument_refs_for_deployment(raw, facility_id=facility_id),
+        "serialNumbers": _deployment_serial_numbers(raw),
         "exposure": raw.get("exposure"),
         "representativeness": raw.get("representativeness"),
         "localReferenceSurface": raw.get("localReferenceSurface"),
@@ -1958,20 +2144,24 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
     """Normalize one observation embedded in a facility-centric record."""
     embedded_deployments = [item for item in _as_list(raw.get("deployments")) if isinstance(item, dict)]
     observed_variable = raw.get("observedVariable") or raw.get("observedProperty")
-    obs_id = _first_non_empty(
+    explicit_obs_id = _first_non_empty(
         raw.get("identifier"),
         raw.get("@gml:id"),
         raw.get("@id"),
         raw.get("id"),
-        observed_variable,
+    )
+    obs_id = _first_non_empty(
+        explicit_obs_id,
+        _compact_wmdr_code_value(observed_variable),
         f"{facility_id}:observation:{index}",
     )
     source_id = _sanitize_id(str(obs_id))
 
+    observed_geometry_type = raw.get("observedGeometryType") or raw.get("geometryType") or raw.get("type")
     title = _first_non_empty(
+        _format_observation_title(observed_variable, observed_geometry_type),
         raw.get("title"),
         raw.get("name"),
-        _format_observation_title(observed_variable),
         f"Observation {index}",
     )
     time = _derive_observation_time(raw, embedded_deployments)
@@ -1990,10 +2180,10 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
     payload: Dict[str, Any] = {
         "id": f"observation:{source_id}",
         "title": title,
-        "description": _first_non_empty(_normalize_description_value(raw.get("description")), _observation_description(raw, embedded_deployments)),
+        "description": None,
         "time": time,
         "observedVariable": observed_variable,
-        "observedGeometryType": raw.get("observedGeometryType") or raw.get("geometryType") or raw.get("type"),
+        "observedGeometryType": observed_geometry_type,
         "observedDomain": _observed_domain_from_observed_variable(observed_variable),
         "programAffiliation": _normalize_program_affiliation(raw.get("programAffiliation")),
         "contacts": contacts,
@@ -2005,6 +2195,7 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
     }
 
     cleaned = _clean_none(payload)
+    cleaned["description"] = None
     reporting = _normalize_observation_reporting(*reporting_sources)
     if reporting:
         cleaned["reporting"] = reporting
@@ -2046,6 +2237,7 @@ def _facility_properties(
         if isinstance(dep_id, str) and dep_id not in normalized_deployments_by_id:
             normalized_deployments_by_id[dep_id] = normalized
     normalized_deployments = list(normalized_deployments_by_id.values())
+    normalized_instruments = _normalize_instruments(all_deployments, facility_id=facility_id)
 
     temporal_geometry_entries = _normalize_temporal_geometry(
         facility.get("geospatialLocation") or facility.get("geometry"),
@@ -2083,6 +2275,7 @@ def _facility_properties(
         "temporalReportingStatus": _normalize_reporting_status_timeline(facility.get("reportingStatus")),
         "observations": normalized_observations,
         "deployments": normalized_deployments,
+        "instruments": normalized_instruments,
     }
     return _clean_none(props)
 
@@ -2148,7 +2341,14 @@ def build_facility_feature(
         "conformsTo": [OGC_RECORD_CORE_CONF, WMDR2_CORE_CONF],
         "properties": _facility_properties(facility, observations, deployments, header, source_name=source_name),
     }
-    return _clean_none(feature)
+    record = _finalize_wmdr2_value(_clean_none(feature))
+    properties = record.get("properties") if isinstance(record, dict) else None
+    observations_out = properties.get("observations") if isinstance(properties, dict) else None
+    if isinstance(observations_out, list):
+        for observation in observations_out:
+            if isinstance(observation, dict):
+                observation["description"] = None
+    return record
 
 
 def convert_payload(payload: Any, *, source_name: str = "record") -> Dict[str, Any]:

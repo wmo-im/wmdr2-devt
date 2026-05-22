@@ -20,37 +20,59 @@
     "timeInterval": {
       "type": "object",
       "additionalProperties": true,
-      "required": ["interval"],
+      "required": [
+        "interval"
+      ],
       "properties": {
         "interval": {
           "type": "array",
           "minItems": 2,
           "maxItems": 2,
-          "items": { "$ref": "#/$defs/dateTimeOrOpen" }
+          "items": {
+            "$ref": "#/$defs/dateTimeOrOpen"
+          }
         },
-        "resolution": { "type": "string" }
+        "resolution": {
+          "type": "string"
+        }
       }
     },
     "pointGeometry": {
-      "type": ["object", "null"],
-      "required": ["type", "coordinates"],
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "type",
+        "coordinates"
+      ],
       "additionalProperties": true,
       "properties": {
-        "type": { "const": "Point" },
+        "type": {
+          "const": "Point"
+        },
         "coordinates": {
           "type": "array",
           "minItems": 2,
           "maxItems": 3,
-          "items": { "type": "number" }
+          "items": {
+            "type": "number"
+          }
         }
       }
     },
     "temporalGeometry": {
       "type": "object",
-      "required": ["type", "coordinates", "datetimes"],
+      "required": [
+        "type",
+        "coordinates",
+        "datetimes"
+      ],
       "additionalProperties": false,
       "properties": {
-        "type": { "const": "MovingPoint" },
+        "type": {
+          "const": "MovingPoint"
+        },
         "coordinates": {
           "type": "array",
           "minItems": 2,
@@ -58,94 +80,167 @@
             "type": "array",
             "minItems": 2,
             "maxItems": 3,
-            "items": { "type": "number" }
+            "items": {
+              "type": "number"
+            }
           }
         },
         "datetimes": {
           "type": "array",
           "minItems": 2,
-          "items": { "$ref": "#/$defs/dateTimeOrOpen" }
+          "items": {
+            "$ref": "#/$defs/dateTimeOrOpen"
+          }
         }
       }
     },
     "externalId": {
       "type": "object",
-      "required": ["scheme", "value"],
+      "required": [
+        "scheme",
+        "value"
+      ],
       "additionalProperties": true,
       "properties": {
-        "scheme": { "type": "string", "minLength": 1 },
-        "value": { "type": "string", "minLength": 1 }
+        "scheme": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "link": {
       "type": "object",
-      "required": ["href", "rel"],
+      "required": [
+        "href",
+        "rel"
+      ],
       "additionalProperties": true,
       "properties": {
-        "href": { "type": "string", "minLength": 1 },
-        "rel": { "type": "string", "minLength": 1 },
-        "type": { "type": "string" },
-        "title": { "type": "string" }
+        "href": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rel": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
       }
     },
     "contact": {
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "id": { "$ref": "#/$defs/identifier" },
-        "identifier": { "$ref": "#/$defs/identifier" },
-        "name": { "type": "string" },
-        "position": { "type": "string" },
-        "organization": { "type": "string" },
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "identifier": {
+          "$ref": "#/$defs/identifier"
+        },
+        "name": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
         "roles": {
           "type": "array",
-          "items": { "type": "string", "minLength": 1 }
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "emails": {
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["value"],
+            "required": [
+              "value"
+            ],
             "additionalProperties": true,
-            "properties": { "value": { "type": "string", "minLength": 1 } }
+            "properties": {
+              "value": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
           }
         },
         "phones": {
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["value"],
+            "required": [
+              "value"
+            ],
             "additionalProperties": true,
-            "properties": { "value": { "type": "string", "minLength": 1 } }
+            "properties": {
+              "value": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
           }
         },
-        "addresses": { "type": "array", "items": { "type": "object" } },
-        "links": { "type": "array", "items": { "$ref": "#/$defs/link" } }
+        "addresses": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        }
       }
     },
     "simpleTemporalHistory": {
       "type": "object",
-      "required": ["datetimes"],
+      "required": [
+        "datetimes"
+      ],
       "additionalProperties": true,
       "properties": {
         "datetimes": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/dateTimeOrOpen" }
+          "items": {
+            "$ref": "#/$defs/dateTimeOrOpen"
+          }
         }
       }
     },
     "temporalTerritory": {
       "allOf": [
-        { "$ref": "#/$defs/simpleTemporalHistory" },
+        {
+          "$ref": "#/$defs/simpleTemporalHistory"
+        },
         {
           "type": "object",
-          "required": ["territory"],
+          "required": [
+            "territory"
+          ],
           "properties": {
             "territory": {
               "type": "array",
               "minItems": 1,
-              "items": { "$ref": "#/$defs/uri" }
+              "items": {
+                "$ref": "#/$defs/codeValue"
+              }
             }
           }
         }
@@ -153,15 +248,21 @@
     },
     "temporalClimateZone": {
       "allOf": [
-        { "$ref": "#/$defs/simpleTemporalHistory" },
+        {
+          "$ref": "#/$defs/simpleTemporalHistory"
+        },
         {
           "type": "object",
-          "required": ["climateZone"],
+          "required": [
+            "climateZone"
+          ],
           "properties": {
             "climateZone": {
               "type": "array",
               "minItems": 1,
-              "items": { "$ref": "#/$defs/uri" }
+              "items": {
+                "$ref": "#/$defs/codeValue"
+              }
             }
           }
         }
@@ -169,15 +270,21 @@
     },
     "temporalSurfaceCover": {
       "allOf": [
-        { "$ref": "#/$defs/simpleTemporalHistory" },
+        {
+          "$ref": "#/$defs/simpleTemporalHistory"
+        },
         {
           "type": "object",
-          "required": ["surfaceCover"],
+          "required": [
+            "surfaceCover"
+          ],
           "properties": {
             "surfaceCover": {
               "type": "array",
               "minItems": 1,
-              "items": { "$ref": "#/$defs/uri" }
+              "items": {
+                "$ref": "#/$defs/codeValue"
+              }
             }
           }
         }
@@ -185,58 +292,84 @@
     },
     "reportingStatusTimeline": {
       "type": "object",
-      "required": ["reportingStatus", "datetimes"],
+      "required": [
+        "reportingStatus",
+        "datetimes"
+      ],
       "additionalProperties": true,
       "properties": {
         "reportingStatus": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/uri" }
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
         },
         "datetimes": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/dateTimeOrOpen" }
+          "items": {
+            "$ref": "#/$defs/dateTimeOrOpen"
+          }
         }
       }
     },
     "programAffiliationTimeline": {
       "type": "object",
-      "required": ["programAffiliation"],
+      "required": [
+        "programAffiliation"
+      ],
       "additionalProperties": true,
       "properties": {
         "programAffiliation": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/uri" }
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
         },
-        "programSpecificFacilityId": { "type": "string" },
+        "programSpecificFacilityId": {
+          "type": "string"
+        },
         "reportingStatus": {
           "type": "array",
-          "items": { "$ref": "#/$defs/uri" }
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
         },
         "datetimes": {
           "type": "array",
-          "items": { "$ref": "#/$defs/dateTimeOrOpen" }
+          "items": {
+            "$ref": "#/$defs/dateTimeOrOpen"
+          }
         }
       }
     },
     "temporalProgramAffiliation": {
       "type": "object",
-      "required": ["programAffiliation", "datetimes"],
+      "required": [
+        "programAffiliation",
+        "datetimes"
+      ],
       "additionalProperties": false,
       "properties": {
         "programAffiliation": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/uri" }
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
         },
         "reportingStatus": {
           "type": "array",
           "items": {
             "anyOf": [
-              { "$ref": "#/$defs/uri" },
-              { "type": "null" }
+              {
+                "$ref": "#/$defs/codeValue"
+              },
+              {
+                "type": "null"
+              }
             ]
           }
         },
@@ -244,33 +377,95 @@
           "type": "array",
           "items": {
             "anyOf": [
-              { "type": "string" },
-              { "type": "null" }
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
             ]
           }
         },
         "datetimes": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/$defs/dateTimeOrOpen" }
+          "items": {
+            "$ref": "#/$defs/dateTimeOrOpen"
+          }
         }
       }
     },
     "temporalObservingSchedule": {
       "type": "object",
       "additionalProperties": true,
-      "not": { "required": ["id"] },
+      "not": {
+        "required": [
+          "id"
+        ]
+      },
       "properties": {
-        "interval": { "type": "string" },
-        "startMonth": { "type": ["integer", "number", "string"] },
-        "endMonth": { "type": ["integer", "number", "string"] },
-        "startWeekday": { "type": ["integer", "number", "string"] },
-        "endWeekday": { "type": ["integer", "number", "string"] },
-        "startHour": { "type": ["integer", "number", "string"] },
-        "endHour": { "type": ["integer", "number", "string"] },
-        "startMinute": { "type": ["integer", "number", "string"] },
-        "endMinute": { "type": ["integer", "number", "string"] },
-        "diurnalBaseTime": { "type": "string" }
+        "interval": {
+          "type": "string"
+        },
+        "startMonth": {
+          "type": [
+            "integer",
+            "number",
+            "string"
+          ]
+        },
+        "endMonth": {
+          "type": [
+            "integer",
+            "number",
+            "string"
+          ]
+        },
+        "startWeekday": {
+          "type": [
+            "integer",
+            "number",
+            "string"
+          ]
+        },
+        "endWeekday": {
+          "type": [
+            "integer",
+            "number",
+            "string"
+          ]
+        },
+        "startHour": {
+          "type": [
+            "integer",
+            "number",
+            "string"
+          ]
+        },
+        "endHour": {
+          "type": [
+            "integer",
+            "number",
+            "string"
+          ]
+        },
+        "startMinute": {
+          "type": [
+            "integer",
+            "number",
+            "string"
+          ]
+        },
+        "endMinute": {
+          "type": [
+            "integer",
+            "number",
+            "string"
+          ]
+        },
+        "diurnalBaseTime": {
+          "type": "string"
+        }
       }
     },
     "reporting": {
@@ -279,25 +474,61 @@
         "type": "array"
       },
       "allOf": [
-        { "not": { "required": ["id"] } },
-        { "not": { "required": ["interval"] } }
+        {
+          "not": {
+            "required": [
+              "id"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "interval"
+            ]
+          }
+        }
       ],
       "properties": {
         "internationalExchange": {
           "type": "array",
-          "items": { "type": ["boolean", "null"] }
+          "items": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
         },
         "temporalReportingInterval": {
           "type": "array",
-          "items": { "type": ["string", "null"] }
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
         },
         "uom": {
           "type": "array",
-          "items": { "type": ["string", "null"] }
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/codeValue"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
         },
         "referenceDatum": {
           "type": "array",
-          "items": { "type": ["object", "null"] }
+          "items": {
+            "type": [
+              "object",
+              "null"
+            ]
+          }
         }
       }
     },
@@ -305,84 +536,325 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "dataPolicy": { "type": "string" },
-        "time": { "$ref": "#/$defs/timeInterval" }
+        "dataPolicy": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "time": {
+          "$ref": "#/$defs/timeInterval"
+        }
       }
     },
     "observation": {
       "type": "object",
-      "required": ["id", "observedVariable"],
+      "required": [
+        "id",
+        "observedVariable"
+      ],
       "additionalProperties": true,
       "allOf": [
-        { "not": { "required": ["themes"] } },
-        { "not": { "required": ["wmdr2"] } },
-        { "not": { "required": ["type"] } },
-        { "not": { "required": ["internationalReportingSchedule"] } }
+        {
+          "not": {
+            "required": [
+              "themes"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "wmdr2"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "type"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "internationalReportingSchedule"
+            ]
+          }
+        }
       ],
       "properties": {
-        "id": { "type": "string", "pattern": "^observation:" },
-        "title": { "type": "string" },
-        "description": { "type": "string" },
-        "time": { "$ref": "#/$defs/timeInterval" },
-        "observedVariable": { "$ref": "#/$defs/uri" },
-        "observedGeometryType": { "$ref": "#/$defs/uri" },
-        "observedDomain": { "$ref": "#/$defs/uri" },
+        "id": {
+          "type": "string",
+          "pattern": "^observation:"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "time": {
+          "$ref": "#/$defs/nullableTimeInterval"
+        },
+        "observedVariable": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "observedGeometryType": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "observedDomain": {
+          "$ref": "#/$defs/codeValue"
+        },
         "programAffiliation": {
           "type": "array",
-          "items": { "$ref": "#/$defs/programAffiliationTimeline" }
+          "items": {
+            "$ref": "#/$defs/programAffiliationTimeline"
+          }
         },
-        "contacts": { "type": "array", "items": { "$ref": "#/$defs/contact" } },
-        "temporalObservingSchedule": {
+        "contacts": {
           "type": "array",
-          "items": { "$ref": "#/$defs/temporalObservingSchedule" }
+          "items": {
+            "$ref": "#/$defs/contact"
+          }
         },
-        "reporting": { "$ref": "#/$defs/reporting" },
+        "temporalObservingSchedule": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/temporalObservingSchedule"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reporting": {
+          "$ref": "#/$defs/reporting"
+        },
         "temporalDataPolicy": {
           "type": "array",
-          "items": { "$ref": "#/$defs/temporalDataPolicy" }
+          "items": {
+            "$ref": "#/$defs/temporalDataPolicy"
+          }
         },
         "deployments": {
           "type": "array",
-          "items": { "type": "string", "pattern": "^deployment:" }
+          "items": {
+            "type": "string",
+            "pattern": "^deployment:"
+          }
         },
-        "keywords": { "type": "array", "items": { "type": "string" } },
-        "links": { "type": "array", "items": { "$ref": "#/$defs/link" } }
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        }
       }
     },
     "deployment": {
       "type": "object",
-      "required": ["id"],
+      "required": [
+        "id"
+      ],
       "additionalProperties": true,
       "allOf": [
-        { "not": { "required": ["themes"] } },
-        { "not": { "required": ["wmdr2"] } },
-        { "not": { "required": ["type"] } },
-        { "not": { "required": ["title"] } }
+        {
+          "not": {
+            "required": [
+              "themes"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "wmdr2"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "type"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "title"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "manufacturer"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "model"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "serialNumber"
+            ]
+          }
+        }
       ],
       "properties": {
-        "id": { "type": "string", "pattern": "^deployment:" },
-        "time": { "$ref": "#/$defs/timeInterval" },
-        "description": { "type": "string" },
-        "sourceOfObservation": { "type": "string" },
-        "observingMethod": { "type": "string" },
-        "manufacturer": { "type": "string" },
-        "model": { "type": "string" },
-        "serialNumber": { "type": "string" },
+        "id": {
+          "type": "string",
+          "pattern": "^deployment:"
+        },
+        "time": {
+          "$ref": "#/$defs/nullableTimeInterval"
+        },
+        "description": {
+          "type": "string"
+        },
+        "sourceOfObservation": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "observingMethod": {
+          "$ref": "#/$defs/codeValue"
+        },
         "exposure": {},
         "representativeness": {},
-        "localReferenceSurface": { "type": "string" },
+        "localReferenceSurface": {
+          "$ref": "#/$defs/codeValue"
+        },
         "instrumentOperatingStatus": {
           "type": "array",
-          "items": { "type": "object" }
+          "items": {
+            "type": "object"
+          }
         },
-        "contacts": { "type": "array", "items": { "$ref": "#/$defs/contact" } },
-        "temporalObservingSchedule": {
+        "contacts": {
           "type": "array",
-          "items": { "$ref": "#/$defs/temporalObservingSchedule" }
+          "items": {
+            "$ref": "#/$defs/contact"
+          }
         },
-        "keywords": { "type": "array", "items": { "type": "string" } },
-        "links": { "type": "array", "items": { "$ref": "#/$defs/link" } }
+        "temporalObservingSchedule": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/temporalObservingSchedule"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "instrument": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^instrument:"
+          }
+        },
+        "serialNumbers": {
+          "type": "object",
+          "required": [
+            "serialNumber",
+            "datetimes"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "serialNumber": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            },
+            "datetimes": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/dateTimeOrOpen"
+              }
+            }
+          }
+        }
       }
+    },
+    "codeValue": {
+      "description": "Compact code-list value. The applicable code list is defined by the property context and checked by a WMDR2 validator.",
+      "type": [
+        "string",
+        "integer"
+      ]
+    },
+    "nullableTimeInterval": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/timeInterval"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "instrument": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^instrument:"
+        },
+        "manufacturer": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "serialNumbers"
+            ]
+          }
+        }
+      ]
     }
   }
 }
