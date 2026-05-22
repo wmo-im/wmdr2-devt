@@ -87,30 +87,20 @@
         "2025-07-01T00:00:00Z"
       ]
     },
-    "temporalProgramAffiliation": [
-      {
-        "programAffiliation": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "reportingStatus": [
-          "http://codes.wmo.int/wmdr/ReportingStatus/operational"
-        ],
-        "datetimes": [
-          "1864-01-01T00:00:00Z"
-        ]
-      },
-      {
-        "programAffiliation": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
-        ],
-        "reportingStatus": [
-          "http://codes.wmo.int/wmdr/ReportingStatus/operational"
-        ],
-        "datetimes": [
-          "2022-09-08T00:00:00Z"
-        ]
-      }
-    ],
+    "temporalProgramAffiliation": {
+      "programAffiliation": [
+        "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+        "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+      ],
+      "datetimes": [
+        "1864-01-01T00:00:00Z",
+        "2022-09-08T00:00:00Z"
+      ],
+      "reportingStatus": [
+        "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+        "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+      ]
+    },
     "observations": [
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
@@ -132,16 +122,20 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/percent",
-            "temporalReportingInterval": "PT6H"
-          }
-        ],
         "deployments": [
           "deployment:id-metch-68-179-dg3-inc5-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT6H"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/percent"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
@@ -163,16 +157,20 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/percent",
-            "temporalReportingInterval": "PT6H"
-          }
-        ],
         "deployments": [
           "deployment:id-metch-68-179-dg3-inc4-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT6H"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/percent"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
@@ -192,18 +190,22 @@
             "programAffiliation": [
               "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
             ]
-          }
-        ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/percent",
-            "temporalReportingInterval": "PT6H"
           }
         ],
         "deployments": [
           "deployment:id-metch-68-179-dg3-inc3-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT6H"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/percent"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
@@ -225,16 +227,20 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/percent",
-            "temporalReportingInterval": "PT6H"
-          }
-        ],
         "deployments": [
           "deployment:id-metch-68-179-dg3-inc2-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT6H"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/percent"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
@@ -256,16 +262,20 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/percent",
-            "temporalReportingInterval": "PT6H"
-          }
-        ],
         "deployments": [
           "deployment:id-metch-68-179-dg3-inc1-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT6H"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/percent"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
@@ -285,22 +295,25 @@
             "programAffiliation": [
               "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
             ]
-          }
-        ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": true,
-            "temporalReportingInterval": "PT1H"
-          },
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
-            "temporalReportingInterval": "PT10M"
           }
         ],
         "deployments": [
           "deployment:id-metch-68-224-dg5-inc2-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            true,
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT1H",
+            "PT10M"
+          ],
+          "uom": [
+            null,
+            "http://codes.wmo.int/wmdr/unit/degC"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
@@ -322,20 +335,23 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": true,
-            "temporalReportingInterval": "PT1H"
-          },
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
-            "temporalReportingInterval": "PT10M"
-          }
-        ],
         "deployments": [
           "deployment:id-metch-68-224-dg5-inc7-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            true,
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT1H",
+            "PT10M"
+          ],
+          "uom": [
+            null,
+            "http://codes.wmo.int/wmdr/unit/degC"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
@@ -355,18 +371,22 @@
             "programAffiliation": [
               "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
             ]
-          }
-        ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
-            "temporalReportingInterval": "PT10M"
           }
         ],
         "deployments": [
           "deployment:id-metch-68-224-dg5-inc1-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT10M"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/degC"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
@@ -388,16 +408,20 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
-            "temporalReportingInterval": "PT10M"
-          }
-        ],
         "deployments": [
           "deployment:id-metch-68-224-dg5-inc6-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT10M"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/degC"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
@@ -419,16 +443,20 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
-            "temporalReportingInterval": "PT6H"
-          }
-        ],
         "deployments": [
           "deployment:id-metch-68-224-dg3-inc5-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT6H"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/degC"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
@@ -450,16 +478,20 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
-            "temporalReportingInterval": "PT6H"
-          }
-        ],
         "deployments": [
           "deployment:id-metch-68-224-dg3-inc4-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT6H"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/degC"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
@@ -481,16 +513,20 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
-            "temporalReportingInterval": "PT6H"
-          }
-        ],
         "deployments": [
           "deployment:id-metch-68-224-dg3-inc3-depl"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT6H"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/degC"
+          ]
+        }
       }
     ],
     "deployments": [

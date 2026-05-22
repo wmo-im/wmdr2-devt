@@ -128,21 +128,23 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "2024-01-17T00:00:00Z",
                 ],
             },
-            "temporalProgramAffiliation": [
-                {
-                    "programAffiliation": [
-                        "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-                    ],
-                    "reportingStatus": [
-                        "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-                        "http://codes.wmo.int/wmdr/ReportingStatus/closed",
-                    ],
-                    "datetimes": [
-                        "2000-08-17T00:00:00Z",
-                        "2025-05-28T00:00:00Z",
-                    ],
-                }
-            ],
+            "temporalProgramAffiliation": {
+                "programAffiliation": [
+                    "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+                    "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+                    "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+                ],
+                "reportingStatus": [
+                    "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+                    "http://codes.wmo.int/wmdr/ReportingStatus/closed",
+                    "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+                ],
+                "datetimes": [
+                    "2000-08-17T00:00:00Z",
+                    "2025-05-28T00:00:00Z",
+                    "2022-09-08T00:00:00Z",
+                ],
+            },
             "observations": [
                 {
                     "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
@@ -154,12 +156,11 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179",
                     "observedGeometryType": "http://codes.wmo.int/wmdr/Geometry/point",
                     "observedDomain": "https://codes.wmo.int/wmdr/Domain/atmosphere",
-                    "internationalReportingSchedule": [
-                        {
-                            "internationalExchange": True,
-                            "temporalReportingInterval": "PT1H",
-                        }
-                    ],
+                    "reporting": {
+                        "internationalExchange": [True, False],
+                        "temporalReportingInterval": ["PT1H", "PT10M"],
+                        "uom": [None, "http://codes.wmo.int/wmdr/unit/mm"],
+                    },
                     "deployments": [
                         "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06"
                     ],
@@ -260,9 +261,21 @@ def test_observation_deployments_are_id_references_not_objects() -> None:
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_international_reporting_schedule_has_no_id_or_interval() -> None:
+def test_old_international_reporting_schedule_is_invalid() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observations"][0]["internationalReportingSchedule"][0]["interval"] = "unknown"
+    instance["properties"]["observations"][0]["internationalReportingSchedule"] = [
+        {
+            "internationalExchange": True,
+            "temporalReportingInterval": "PT1H",
+        }
+    ]
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_reporting_has_no_id_or_interval() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observations"][0]["reporting"]["interval"] = ["unknown"]
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 

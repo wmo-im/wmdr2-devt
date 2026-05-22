@@ -221,6 +221,41 @@
         }
       }
     },
+    "temporalProgramAffiliation": {
+      "type": "object",
+      "required": ["programAffiliation", "datetimes"],
+      "additionalProperties": false,
+      "properties": {
+        "programAffiliation": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/uri" }
+        },
+        "reportingStatus": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "$ref": "#/$defs/uri" },
+              { "type": "null" }
+            ]
+          }
+        },
+        "programSpecificFacilityId": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              { "type": "string" },
+              { "type": "null" }
+            ]
+          }
+        },
+        "datetimes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/dateTimeOrOpen" }
+        }
+      }
+    },
     "temporalObservingSchedule": {
       "type": "object",
       "additionalProperties": true,
@@ -238,18 +273,32 @@
         "diurnalBaseTime": { "type": "string" }
       }
     },
-    "internationalReportingSchedule": {
+    "reporting": {
       "type": "object",
-      "additionalProperties": true,
+      "additionalProperties": {
+        "type": "array"
+      },
       "allOf": [
         { "not": { "required": ["id"] } },
         { "not": { "required": ["interval"] } }
       ],
       "properties": {
-        "internationalExchange": { "type": "boolean" },
-        "temporalReportingInterval": { "type": "string" },
-        "uom": { "type": "string" },
-        "referenceDatum": { "type": "object" }
+        "internationalExchange": {
+          "type": "array",
+          "items": { "type": ["boolean", "null"] }
+        },
+        "temporalReportingInterval": {
+          "type": "array",
+          "items": { "type": ["string", "null"] }
+        },
+        "uom": {
+          "type": "array",
+          "items": { "type": ["string", "null"] }
+        },
+        "referenceDatum": {
+          "type": "array",
+          "items": { "type": ["object", "null"] }
+        }
       }
     },
     "temporalDataPolicy": {
@@ -267,7 +316,8 @@
       "allOf": [
         { "not": { "required": ["themes"] } },
         { "not": { "required": ["wmdr2"] } },
-        { "not": { "required": ["type"] } }
+        { "not": { "required": ["type"] } },
+        { "not": { "required": ["internationalReportingSchedule"] } }
       ],
       "properties": {
         "id": { "type": "string", "pattern": "^observation:" },
@@ -286,10 +336,7 @@
           "type": "array",
           "items": { "$ref": "#/$defs/temporalObservingSchedule" }
         },
-        "internationalReportingSchedule": {
-          "type": "array",
-          "items": { "$ref": "#/$defs/internationalReportingSchedule" }
-        },
+        "reporting": { "$ref": "#/$defs/reporting" },
         "temporalDataPolicy": {
           "type": "array",
           "items": { "$ref": "#/$defs/temporalDataPolicy" }

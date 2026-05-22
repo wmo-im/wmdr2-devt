@@ -70,10 +70,7 @@
         "temporalClimateZone": { "$ref": "wmdr2-common.schema.json#/$defs/temporalClimateZone" },
         "temporalSurfaceCover": { "$ref": "wmdr2-common.schema.json#/$defs/temporalSurfaceCover" },
         "temporalGeometry": { "$ref": "wmdr2-common.schema.json#/$defs/temporalGeometry" },
-        "temporalProgramAffiliation": {
-          "type": "array",
-          "items": { "$ref": "wmdr2-common.schema.json#/$defs/programAffiliationTimeline" }
-        },
+        "temporalProgramAffiliation": { "$ref": "wmdr2-common.schema.json#/$defs/temporalProgramAffiliation" },
         "temporalReportingStatus": { "$ref": "wmdr2-common.schema.json#/$defs/reportingStatusTimeline" },
         "observations": {
           "type": "array",

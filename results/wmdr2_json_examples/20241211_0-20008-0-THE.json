@@ -190,44 +190,23 @@
         "2001-05-05T00:00:00Z"
       ]
     },
-    "temporalProgramAffiliation": [
-      {
-        "programAffiliation": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
-        ],
-        "programSpecificFacilityId": "THE",
-        "reportingStatus": [
-          "http://codes.wmo.int/wmdr/ReportingStatus/operational"
-        ],
-        "datetimes": [
-          "1982-03-13T00:00:00Z"
-        ]
-      },
-      {
-        "programAffiliation": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GALION"
-        ],
-        "programSpecificFacilityId": "THE",
-        "reportingStatus": [
-          "http://codes.wmo.int/wmdr/ReportingStatus/operational"
-        ],
-        "datetimes": [
-          "2008-01-01T00:00:00Z"
-        ]
-      },
-      {
-        "programAffiliation": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
-        ],
-        "programSpecificFacilityId": "Thessaloniki",
-        "reportingStatus": [
-          "http://codes.wmo.int/wmdr/ReportingStatus/operational"
-        ],
-        "datetimes": [
-          "2003-06-01T00:00:00Z"
-        ]
-      }
-    ],
+    "temporalProgramAffiliation": {
+      "programAffiliation": [
+        "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
+        "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET",
+        "http://codes.wmo.int/wmdr/ProgramAffiliation/GALION"
+      ],
+      "datetimes": [
+        "1982-03-13T00:00:00Z",
+        "2003-06-01T00:00:00Z",
+        "2008-01-01T00:00:00Z"
+      ],
+      "reportingStatus": [
+        "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+        "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+        "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+      ]
+    },
     "observations": [
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
@@ -249,20 +228,28 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/DU",
-            "temporalReportingInterval": "P1M",
-            "dataPolicy": {
-              "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
-            },
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1"
-          }
-        ],
         "deployments": [
           "deployment:id_dbac206e-0e1e-4e50-baa5-42ec0909a02b"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "P1M"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/DU"
+          ],
+          "dataPolicy": [
+            {
+              "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            }
+          ],
+          "levelOfData": [
+            "http://codes.wmo.int/wmdr/LevelOfData/level1"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/314",
@@ -338,15 +325,17 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/W.m-2"
-          }
-        ],
         "deployments": [
           "deployment:id_f5f50866-9c93-4e3a-9c0e-c13d32c342e6"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/W.m-2"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573",
@@ -368,22 +357,34 @@
             ]
           }
         ],
-        "internationalReportingSchedule": [
-          {
-            "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/W.m-2",
-            "temporalReportingInterval": "PT1H",
-            "dataPolicy": {
-              "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
-            },
-            "numberOfObservationsInReportingInterval": "60",
-            "referenceTimeSource": "http://codes.wmo.int/wmdr/ReferenceTime/timeServer",
-            "timeliness": "P1Y"
-          }
-        ],
         "deployments": [
           "deployment:id_cca5e647-05b3-4d9c-bb5a-cbd300e3ae4c"
-        ]
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalReportingInterval": [
+            "PT1H"
+          ],
+          "uom": [
+            "http://codes.wmo.int/wmdr/unit/W.m-2"
+          ],
+          "dataPolicy": [
+            {
+              "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            }
+          ],
+          "numberOfObservationsInReportingInterval": [
+            "60"
+          ],
+          "referenceTimeSource": [
+            "http://codes.wmo.int/wmdr/ReferenceTime/timeServer"
+          ],
+          "timeliness": [
+            "P1Y"
+          ]
+        }
       },
       {
         "id": "observation:http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12150",

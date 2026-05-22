@@ -307,13 +307,18 @@ def _first_non_empty(*values: Any) -> Any:
 
 
 def _clean_none(obj: Any) -> Any:
-    """Recursively remove null/empty values from dicts and lists."""
+    """Recursively remove empty values while preserving list nulls.
+
+    JSON null values are removed from object properties, but retained inside
+    arrays because several WMDR2 compact structures use aligned arrays where
+    ``null`` is a meaningful placeholder for a missing value at that index.
+    """
     if isinstance(obj, dict):
         cleaned = {k: _clean_none(v) for k, v in obj.items()}
         return {k: v for k, v in cleaned.items() if v not in (None, "", [], {})}
     if isinstance(obj, list):
         cleaned = [_clean_none(v) for v in obj]
-        return [v for v in cleaned if v not in (None, "", [], {})]
+        return [v for v in cleaned if v not in ("", [], {})]
     return obj
 
 
@@ -1183,49 +1188,138 @@ def _normalize_reporting_status_timeline(value: Any) -> Optional[Dict[str, Any]]
     return _clean_none({"reportingStatus": statuses, "datetimes": datetimes})
 
 
-def _normalize_temporal_program_affiliation(value: Any) -> List[Dict[str, Any]]:
-    """Normalize temporal program affiliations with simple status timelines.
+def _program_affiliation_values(item: Any) -> List[str]:
+    """Return normalized program-affiliation URI values for one source item."""
+    if isinstance(item, str):
+        value = _normalize_code_value(item)
+        return [value] if isinstance(value, str) and value and not _is_unknown_token(value) else []
 
-    A facility can participate in multiple programs. Each item in the returned
-    list represents one program-affiliation timeline. Within that timeline,
-    ``reportingStatus`` and ``datetimes`` are aligned arrays: a status becomes
-    valid at the datetime in the same position and remains valid until the next
-    entry.
+    if not isinstance(item, dict):
+        return []
+
+    values = [
+        _normalize_code_value(raw)
+        for raw in _as_list(item.get("programAffiliation") or item.get("href") or item.get("value"))
+        if isinstance(raw, str) and raw.strip() and not _is_unknown_token(raw)
+    ]
+    return [value for value in values if isinstance(value, str) and value]
+
+
+def _reporting_status_events(value: Any, *, fallback_datetime: str = "..") -> List[Tuple[str, str]]:
+    """Return ``(begin_datetime, reporting_status)`` events.
+
+    These rows are used to build aligned WMDR2 arrays. Repeated reporting
+    statuses are allowed when they occur at different begin datetimes.
     """
-    out: List[Dict[str, Any]] = []
+    rows: List[Tuple[str, str]] = []
 
     for item in _as_list(value):
         if isinstance(item, str):
-            affiliation = _normalize_code_value(item)
-            if isinstance(affiliation, str) and affiliation and not _is_unknown_token(affiliation):
-                out.append({"programAffiliation": [affiliation]})
+            status = _normalize_code_value(item)
+            if isinstance(status, str) and status and not _is_unknown_token(status):
+                rows.append((fallback_datetime, status))
             continue
 
         if not isinstance(item, dict):
             continue
 
-        affiliations = [
-            _normalize_code_value(raw)
-            for raw in _as_list(item.get("programAffiliation") or item.get("href") or item.get("value"))
-            if isinstance(raw, str) and raw.strip() and not _is_unknown_token(raw)
-        ]
-        affiliations = [aff for aff in affiliations if isinstance(aff, str) and aff]
+        status = _normalize_code_value(
+            _first_non_empty(
+                item.get("reportingStatus"),
+                item.get("instrumentOperatingStatus"),
+                item.get("value"),
+                item.get("href"),
+            )
+        )
+        if not isinstance(status, str) or not status or _is_unknown_token(status):
+            continue
+
+        rows.append((_temporal_begin_datetime(item) or fallback_datetime, status))
+
+    return rows
+
+
+def _normalize_temporal_program_affiliation(value: Any) -> Optional[Dict[str, List[Any]]]:
+    """Normalize temporal program affiliations as aligned arrays.
+
+    Each array index represents one temporal program-affiliation state:
+    ``programAffiliation[i]``, ``reportingStatus[i]`` and ``datetimes[i]``
+    belong together. A history of reporting status for the same program is
+    represented by repeating the same ``programAffiliation`` value at another
+    index with a different reporting status and datetime.
+
+    Example:
+        {
+          "programAffiliation": [
+            "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
+            "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+          ],
+          "reportingStatus": [
+            "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+            "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+          ],
+          "datetimes": [
+            "2000-08-17T00:00:00Z",
+            "2025-05-28T00:00:00Z"
+          ]
+        }
+    """
+    rows: List[Tuple[str, str, Optional[str]]] = []
+
+    for item in _as_list(value):
+        affiliations = _program_affiliation_values(item)
         if not affiliations:
             continue
 
-        record: Dict[str, Any] = {"programAffiliation": affiliations}
+        item_begin = _temporal_begin_datetime(item) if isinstance(item, dict) else ".."
+        status_events = (
+            _reporting_status_events(item.get("reportingStatus"), fallback_datetime=item_begin)
+            if isinstance(item, dict)
+            else []
+        )
 
-        psfi = item.get("programSpecificFacilityId")
-        if isinstance(psfi, str) and psfi.strip():
-            record["programSpecificFacilityId"] = psfi.strip()
+        for affiliation in affiliations:
+            if status_events:
+                for begin, status in status_events:
+                    rows.append((begin, affiliation, status))
+            else:
+                rows.append((item_begin, affiliation, None))
 
-        status_timeline = _normalize_reporting_status_timeline(item.get("reportingStatus"))
-        if status_timeline:
-            record.update(status_timeline)
+    if not rows:
+        return None
 
-        out.append(record)
+    # Sort known begin dates chronologically. Unknown begin dates are retained
+    # after known dates. Do not group by program: repeated program values are
+    # intentional and represent reporting-status history for that program.
+    rows = sorted(rows, key=lambda row: (row[0] == "..", row[0], row[1], row[2] or ""))
 
-    return _uniq_dicts(_clean_none(out))
+    program_affiliation: List[str] = []
+    reporting_status: List[Any] = []
+    datetimes: List[str] = []
+    seen: set[Tuple[str, str, Optional[str]]] = set()
+    has_reporting_status = any(status is not None for _, _, status in rows)
+
+    for begin, affiliation, status in rows:
+        marker = (begin, affiliation, status)
+        if marker in seen:
+            continue
+        seen.add(marker)
+        program_affiliation.append(affiliation)
+        datetimes.append(begin)
+        if has_reporting_status:
+            # Preserve array alignment when a rare entry lacks status.
+            # ``null`` means no reporting status was present in the source for
+            # this program-affiliation event.
+            reporting_status.append(status)
+
+    out: Dict[str, List[Any]] = {
+        "programAffiliation": program_affiliation,
+        "datetimes": datetimes,
+    }
+    if has_reporting_status:
+        out["reportingStatus"] = reporting_status
+
+    return out
 
 
 def _normalize_simple_timed_value(value: Any, *, value_key: str) -> Optional[Dict[str, Any]]:
@@ -1415,9 +1509,9 @@ def _normalize_temporal_reporting_schedule(value: Any) -> List[Dict[str, Any]]:
                 for key, val in reporting.items()
                 if _non_empty(val)
             }
-            # Keep only substantive reporting payloads; tests expect id+interval
-            # only for the minimal internationalExchange=true case.
-            if parsed_reporting and set(parsed_reporting) != {"internationalExchange"}:
+            # For the WMDR2 observation-level reporting object, even a single
+            # internationalExchange flag is substantive and must be retained.
+            if parsed_reporting:
                 record["reporting"] = parsed_reporting
 
         if record:
@@ -1769,24 +1863,29 @@ def _normalize_deployment(raw: Dict[str, Any], *, index: int, facility_id: str) 
 
 
 
-def _normalize_international_reporting_schedule(*sources: Any) -> List[Dict[str, Any]]:
-    """Normalize observation-level international reporting schedules.
+def _normalize_observation_reporting(*sources: Any) -> Optional[Dict[str, List[Any]]]:
+    """Normalize observation-level reporting into aligned property arrays.
 
     WMDR1 often nests reporting information inside deployment/data-generation
-    structures. In the WMDR2 facility-centric model, the international
-    reporting schedule belongs to the observation, so the converter lifts those
-    values to ``observation.internationalReportingSchedule``.
+    structures. In the WMDR2 facility-centric model, reporting belongs to the
+    observation. The output uses parallel arrays; values at the same index
+    describe the same reporting configuration. Missing values are represented
+    as JSON null to preserve array alignment.
 
-    The generic schedule ``interval`` and source schedule ``id`` are deliberately
-    not carried over here. For this WMDR2 object, the substantive reporting
-    cadence is represented by ``temporalReportingInterval`` when present.
+    Example:
+        {
+          "internationalExchange": [true, false],
+          "temporalReportingInterval": ["PT1H", "PT10M"],
+          "uom": [null, "http://codes.wmo.int/wmdr/unit/mm"]
+        }
     """
-    out: List[Dict[str, Any]] = []
+    records: List[Dict[str, Any]] = []
+
     for source in sources:
         for item in _normalize_temporal_reporting_schedule(source):
+            reporting = _as_dict(item.get("reporting"))
             record: Dict[str, Any] = {}
 
-            reporting = _as_dict(item.get("reporting"))
             for key, value in reporting.items():
                 if key == "uom" and _is_unknown_token(value):
                     continue
@@ -1794,8 +1893,32 @@ def _normalize_international_reporting_schedule(*sources: Any) -> List[Dict[str,
                     record[key] = value
 
             if record:
-                out.append(record)
-    return _uniq_dicts(_clean_none(out))
+                records.append(record)
+
+    records = _uniq_dicts(records)
+    if not records:
+        return None
+
+    preferred_order = [
+        "internationalExchange",
+        "temporalReportingInterval",
+        "uom",
+        "referenceDatum",
+    ]
+    extra_keys = sorted(
+        key
+        for record in records
+        for key in record
+        if key not in preferred_order
+    )
+
+    reporting: Dict[str, List[Any]] = {}
+    for key in preferred_order + extra_keys:
+        if not any(key in record for record in records):
+            continue
+        reporting[key] = [record.get(key) for record in records]
+
+    return reporting or None
 
 
 def _normalize_temporal_data_policy(value: Any) -> List[Dict[str, Any]]:
@@ -1875,13 +1998,17 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
         "programAffiliation": _normalize_program_affiliation(raw.get("programAffiliation")),
         "contacts": contacts,
         "temporalObservingSchedule": observing_schedule,
-        "internationalReportingSchedule": _normalize_international_reporting_schedule(*reporting_sources),
         "temporalDataPolicy": _normalize_temporal_data_policy(raw.get("temporalDataPolicy") or raw.get("dataPolicy") or raw.get("dataPolicyHistory")),
         "deployments": deployment_refs,
         "keywords": _keywords_from_values(_collect_discovery_values("observation", raw, "keywords")),
         "links": _extract_links(raw, "observation"),
     }
-    return _clean_none(payload)
+
+    cleaned = _clean_none(payload)
+    reporting = _normalize_observation_reporting(*reporting_sources)
+    if reporting:
+        cleaned["reporting"] = reporting
+    return cleaned
 
 
 def _facility_properties(
