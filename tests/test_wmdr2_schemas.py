@@ -80,14 +80,14 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                 [6.0733333333, 50.5108333333, 671],
                 [6.0734, 50.5109, 671],
             ],
-            "datetimes": [
-                "2016-04-28T00:00:00Z",
-                "2024-01-17T00:00:00Z",
+            "dates": [
+                "2016-04-28",
+                "2024-01-17",
             ],
         },
         "conformsTo": [
             "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core",
-            "https://schemas.wmo.int/wmdr/2.0/core/facility-record",
+            "https://schemas.wmo.int/wmdr/2.0/core/full-record",
         ],
         "properties": {
             "type": "facility",
@@ -116,15 +116,15 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             "wmoRegion": "europe",
             "temporalTerritory": {
                 "territory": ["BEL"],
-                "datetimes": ["2016-04-28T00:00:00Z"],
+                "dates": ["2016-04-28"],
             },
             "temporalClimateZone": {
                 "climateZone": ["Cfb"],
-                "datetimes": [".."],
+                "dates": [".."],
             },
             "temporalSurfaceCover": {
                 "surfaceCover": ["grassland"],
-                "datetimes": [".."],
+                "dates": [".."],
             },
             "temporalProgramAffiliation": {
                 "programAffiliation": [
@@ -137,10 +137,10 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "closed",
                     "operational",
                 ],
-                "datetimes": [
-                    "2000-08-17T00:00:00Z",
-                    "2025-05-28T00:00:00Z",
-                    "2022-09-08T00:00:00Z",
+                "dates": [
+                    "2000-08-17",
+                    "2025-05-28",
+                    "2022-09-08",
                 ],
             },
             "observations": [
@@ -149,7 +149,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "title": "domain: atmosphere; geometry: point; variable: 179 Cloud amount",
                     "description": None,
                     "time": {
-                        "interval": ["2016-04-29T00:00:00Z", ".."],
+                        "interval": ["2016-04-29", ".."],
                     },
                     "observedVariable": 179,
                     "observedGeometryType": "point",
@@ -168,14 +168,14 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                 {
                     "id": "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
                     "time": {
-                        "interval": ["2016-04-29T00:00:00Z", ".."],
+                        "interval": ["2016-04-29", ".."],
                     },
                     "observingMethod": "automatic",
                     "localReferenceSurface": "localGround",
                     "instrument": ["instrument:example"],
                     "serialNumbers": {
                         "serialNumber": ["ABC123"],
-                        "datetimes": [".."],
+                        "dates": [".."],
                     },
                     "temporalObservingSchedule": [
                         {
@@ -208,6 +208,26 @@ def test_record_time_allows_null_when_unknown() -> None:
     assert _validate(RECORD_SCHEMA, instance) == []
 
 
+
+
+
+
+def test_time_intervals_use_date_resolution_only() -> None:
+    instance = _valid_facility_record_feature()
+    instance["time"] = {"interval": ["2000-08-17", "2025-05-28"]}
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    instance["time"] = {"interval": ["2000-08-17T00:00:00Z", "2025-05-28T00:00:00Z"]}
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_nested_time_intervals_use_date_resolution_only() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observations"][0]["time"] = {"interval": ["2016-04-29", ".."]}
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    instance["properties"]["observations"][0]["time"] = {"interval": ["2016-04-29T00:00:00Z", ".."]}
+    assert not _is_valid(RECORD_SCHEMA, instance)
 
 
 def test_temporal_geometry_belongs_at_root_not_properties() -> None:
@@ -340,7 +360,7 @@ def test_instrument_serial_numbers_are_invalid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["instruments"][0]["serialNumbers"] = {
         "serialNumber": ["ABC123"],
-        "datetimes": [".."],
+        "dates": [".."],
     }
 
     assert not _is_valid(RECORD_SCHEMA, instance)
@@ -352,3 +372,20 @@ def test_observation_observed_variable_can_be_numeric_code() -> None:
     instance["properties"]["observations"][0]["observedDomain"] = "atmosphere"
 
     assert _validate(RECORD_SCHEMA, instance) == []
+
+def test_contact_instructions_are_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["contacts"][0]["contactInstructions"] = "RA VI"
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_wmdr2_full_record_conformance_is_required() -> None:
+    instance = _valid_facility_record_feature()
+
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    instance["conformsTo"].remove("https://schemas.wmo.int/wmdr/2.0/core/full-record")
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+

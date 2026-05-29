@@ -33,9 +33,18 @@
       "items": {
         "type": "string"
       },
-      "contains": {
-        "const": "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
-      }
+      "allOf": [
+        {
+          "contains": {
+            "const": "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
+          }
+        },
+        {
+          "contains": {
+            "const": "https://schemas.wmo.int/wmdr/2.0/core/full-record"
+          }
+        }
+      ]
     },
     "links": {
       "type": "array",

@@ -66,7 +66,7 @@ except Exception:  # pragma: no cover - optional dependency
 
 
 OGC_RECORD_CORE_CONF = "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
-WMDR2_CORE_CONF = "https://schemas.wmo.int/wmdr/2.0/core/facility-record"
+WMDR2_CORE_CONF = "https://schemas.wmo.int/wmdr/2.0/core/full-record"
 DEFAULT_PATTERN = "*.json"
 OUTPUT_SUFFIX = ".json"
 
@@ -516,6 +516,38 @@ def _normalize_time_value(value: Any) -> Optional[str]:
     return text
 
 
+def _normalize_date_value(value: Any) -> Optional[str]:
+    """Normalize a WMDR temporal-history value to date resolution.
+
+    WMDR2 temporal history arrays use ``dates`` at date resolution.
+    Values such as ``2000-08-17T00:00:00Z`` or ``2000-08-17Z`` therefore
+    become ``2000-08-17``. Unknown dates are represented as ``".."``.
+    """
+    if value in (None, "", "None"):
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    if text == "..":
+        return ".."
+
+    # Filename/source-name pattern used by legacy examples.
+    match = re.match(r"^(\d{4})(\d{2})(\d{2})(?:_|$)", text)
+    if match:
+        y, m, d = match.groups()
+        return f"{y}-{m}-{d}"
+
+    if re.fullmatch(r"\d{8}", text):
+        return f"{text[0:4]}-{text[4:6]}-{text[6:8]}"
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}Z", text):
+        return text[:-1]
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
+        return text
+    if re.match(r"^\d{4}-\d{2}-\d{2}T", text):
+        return text[:10]
+    return text
+
+
 def _normalize_record_datetime(value: Any) -> Optional[str]:
     """Normalize record created/updated timestamps to an ISO-like UTC string."""
     if value in (None, "", "None"):
@@ -572,8 +604,15 @@ def _record_timestamps(header: Dict[str, Any], *, source_name: Optional[str] = N
 
 
 def _time_interval(start: Any, end: Any, *, resolution: Optional[str] = None) -> Optional[Dict[str, Any]]:
-    s = _normalize_time_value(start)
-    e = _normalize_open_end(end)
+    """Return a date-resolution OGC Records interval.
+
+    WMDR2 core records use homogeneous daily resolution for all ``time.interval``
+    members. Inputs may contain full datetimes from WMDR1/XML, but the WMDR2
+    output intentionally keeps only the date component. Unknown bounds are
+    represented with the OGC open-interval marker ``..``.
+    """
+    s = _normalize_date_value(start)
+    e = _normalize_date_value(end) or ".."
     if s is None and e == "..":
         return None
     out: Dict[str, Any] = {"interval": [s or "..", e]}
@@ -904,10 +943,10 @@ def _deployment_serial_numbers(raw: Dict[str, Any]) -> Optional[Dict[str, List[A
         return None
 
     start, _ = _extract_interval(raw)
-    begin = _normalize_time_value(start) or ".."
+    begin = _normalize_date_value(start) or ".."
     return {
         "serialNumber": [serial_number],
-        "datetimes": [begin],
+        "dates": [begin],
     }
 
 
@@ -1222,10 +1261,6 @@ def _normalize_contact(raw: Any) -> Tuple[Optional[Dict[str, Any]], Optional[Dic
     if links:
         contact["links"] = links
 
-    instructions = info.get("contactInstructions")
-    if isinstance(instructions, str) and instructions.strip():
-        contact["contactInstructions"] = instructions.strip()
-
     roles = _normalize_roles(_first_non_empty(payload.get("role"), raw.get("role")))
     if roles:
         contact["roles"] = roles
@@ -1326,8 +1361,8 @@ def _normalize_program_affiliation(value: Any) -> List[Dict[str, Any]]:
 def _normalize_reporting_status_timeline(value: Any) -> Optional[Dict[str, Any]]:
     """Normalize reporting-status history into aligned value/begin-date arrays.
 
-    Each reporting status becomes valid at the datetime in the same position
-    and remains valid until the next datetime entry. End dates from WMDR1 are
+    Each reporting status becomes valid at the date in the same position
+    and remains valid until the next date entry. End dates from WMDR1 are
     therefore not carried into WMDR2.
     """
     rows: List[Tuple[str, str]] = []
@@ -1353,7 +1388,7 @@ def _normalize_reporting_status_timeline(value: Any) -> Optional[Dict[str, Any]]
         if not isinstance(status, str) or not status or _is_unknown_token(status):
             continue
 
-        rows.append((_temporal_begin_datetime(item), status))
+        rows.append((_temporal_begin_date(item), status))
 
     if not rows:
         return None
@@ -1363,17 +1398,17 @@ def _normalize_reporting_status_timeline(value: Any) -> Optional[Dict[str, Any]]
     rows = sorted(rows, key=lambda row: (row[0] == "..", row[0]))
 
     statuses: List[str] = []
-    datetimes: List[str] = []
+    dates: List[str] = []
     seen: set[Tuple[str, str]] = set()
     for begin, status in rows:
         marker = (begin, status)
         if marker in seen:
             continue
         seen.add(marker)
-        datetimes.append(begin)
+        dates.append(begin)
         statuses.append(status)
 
-    return _clean_none({"reportingStatus": statuses, "datetimes": datetimes})
+    return _clean_none({"reportingStatus": statuses, "dates": dates})
 
 
 def _program_affiliation_values(item: Any) -> List[str]:
@@ -1393,11 +1428,11 @@ def _program_affiliation_values(item: Any) -> List[str]:
     return [value for value in values if isinstance(value, str) and value]
 
 
-def _reporting_status_events(value: Any, *, fallback_datetime: str = "..") -> List[Tuple[str, str]]:
-    """Return ``(begin_datetime, reporting_status)`` events.
+def _reporting_status_events(value: Any, *, fallback_date: str = "..") -> List[Tuple[str, str]]:
+    """Return ``(begin_date, reporting_status)`` events.
 
     These rows are used to build aligned WMDR2 arrays. Repeated reporting
-    statuses are allowed when they occur at different begin datetimes.
+    statuses are allowed when they occur at different begin dates.
     """
     rows: List[Tuple[str, str]] = []
 
@@ -1405,7 +1440,7 @@ def _reporting_status_events(value: Any, *, fallback_datetime: str = "..") -> Li
         if isinstance(item, str):
             status = _normalize_code_value(item)
             if isinstance(status, str) and status and not _is_unknown_token(status):
-                rows.append((fallback_datetime, status))
+                rows.append((fallback_date, status))
             continue
 
         if not isinstance(item, dict):
@@ -1422,7 +1457,7 @@ def _reporting_status_events(value: Any, *, fallback_datetime: str = "..") -> Li
         if not isinstance(status, str) or not status or _is_unknown_token(status):
             continue
 
-        rows.append((_temporal_begin_datetime(item) or fallback_datetime, status))
+        rows.append((_temporal_begin_date(item) or fallback_date, status))
 
     return rows
 
@@ -1431,10 +1466,10 @@ def _normalize_temporal_program_affiliation(value: Any) -> Optional[Dict[str, Li
     """Normalize temporal program affiliations as aligned arrays.
 
     Each array index represents one temporal program-affiliation state:
-    ``programAffiliation[i]``, ``reportingStatus[i]`` and ``datetimes[i]``
+    ``programAffiliation[i]``, ``reportingStatus[i]`` and ``dates[i]``
     belong together. A history of reporting status for the same program is
     represented by repeating the same ``programAffiliation`` value at another
-    index with a different reporting status and datetime.
+    index with a different reporting status and date.
 
     Example:
         {
@@ -1446,7 +1481,7 @@ def _normalize_temporal_program_affiliation(value: Any) -> Optional[Dict[str, Li
             "http://codes.wmo.int/wmdr/ReportingStatus/operational",
             "http://codes.wmo.int/wmdr/ReportingStatus/closed"
           ],
-          "datetimes": [
+          "dates": [
             "2000-08-17T00:00:00Z",
             "2025-05-28T00:00:00Z"
           ]
@@ -1459,9 +1494,9 @@ def _normalize_temporal_program_affiliation(value: Any) -> Optional[Dict[str, Li
         if not affiliations:
             continue
 
-        item_begin = _temporal_begin_datetime(item) if isinstance(item, dict) else ".."
+        item_begin = _temporal_begin_date(item) if isinstance(item, dict) else ".."
         status_events = (
-            _reporting_status_events(item.get("reportingStatus"), fallback_datetime=item_begin)
+            _reporting_status_events(item.get("reportingStatus"), fallback_date=item_begin)
             if isinstance(item, dict)
             else []
         )
@@ -1483,7 +1518,7 @@ def _normalize_temporal_program_affiliation(value: Any) -> Optional[Dict[str, Li
 
     program_affiliation: List[str] = []
     reporting_status: List[Any] = []
-    datetimes: List[str] = []
+    dates: List[str] = []
     seen: set[Tuple[str, str, Optional[str]]] = set()
     has_reporting_status = any(status is not None for _, _, status in rows)
 
@@ -1493,7 +1528,7 @@ def _normalize_temporal_program_affiliation(value: Any) -> Optional[Dict[str, Li
             continue
         seen.add(marker)
         program_affiliation.append(affiliation)
-        datetimes.append(begin)
+        dates.append(begin)
         if has_reporting_status:
             # Preserve array alignment when a rare entry lacks status.
             # ``null`` means no reporting status was present in the source for
@@ -1502,7 +1537,7 @@ def _normalize_temporal_program_affiliation(value: Any) -> Optional[Dict[str, Li
 
     out: Dict[str, List[Any]] = {
         "programAffiliation": program_affiliation,
-        "datetimes": datetimes,
+        "dates": dates,
     }
     if has_reporting_status:
         out["reportingStatus"] = reporting_status
@@ -1549,7 +1584,7 @@ def _normalize_temporal_geometry(current: Any, history: Any = None) -> List[Dict
     """Collect geospatial history entries in chronological order.
 
     WMDR2 temporal geometry uses aligned ``coordinates`` and begin-date
-    ``datetimes`` arrays. Each coordinate becomes valid at the datetime in the
+    ``dates`` arrays. Each coordinate becomes valid at the date in the
     same position and remains valid until the next entry. End dates from WMDR1
     are not carried into WMDR2.
     """
@@ -1560,7 +1595,7 @@ def _normalize_temporal_geometry(current: Any, history: Any = None) -> List[Dict
             coords = _parse_pos_lon_lat_z(item)
             if coords is None:
                 return
-            entries.append((None, json.dumps(coords, sort_keys=True), {"coordinates": coords, "datetime": ".."}))
+            entries.append((None, json.dumps(coords, sort_keys=True), {"coordinates": coords, "date": ".."}))
             return
 
         if not isinstance(item, dict):
@@ -1576,12 +1611,12 @@ def _normalize_temporal_geometry(current: Any, history: Any = None) -> List[Dict
         if coords is None:
             return
 
-        begin = _temporal_begin_datetime(item)
+        begin = _temporal_begin_date(item)
         entries.append(
             (
                 None if begin == ".." else begin,
                 json.dumps(coords, sort_keys=True),
-                {"coordinates": coords, "datetime": begin},
+                {"coordinates": coords, "date": begin},
             )
         )
 
@@ -1607,18 +1642,18 @@ def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[
         return None
 
     coordinates: List[Any] = []
-    datetimes: List[str] = []
+    dates: List[str] = []
     for entry in entries:
         if "coordinates" not in entry:
             continue
         coordinates.append(entry["coordinates"])
-        dt = entry.get("datetime")
-        datetimes.append(dt if isinstance(dt, str) and dt else "..")
+        dt = entry.get("date")
+        dates.append(dt if isinstance(dt, str) and dt else "..")
 
     if len(coordinates) <= 1:
         return None
 
-    return {"type": "MovingPoint", "coordinates": coordinates, "datetimes": datetimes}
+    return {"type": "MovingPoint", "coordinates": coordinates, "dates": dates}
 
 
 def _normalize_temporal_observing_schedule(value: Any) -> List[Dict[str, Any]]:
@@ -1835,16 +1870,16 @@ def _extract_links(source: Dict[str, Any], entity_type: str) -> List[Dict[str, A
     return _uniq_dicts(links)
 
 
-def _temporal_begin_datetime(item: Any) -> str:
-    """Return the begin datetime for a temporal facility value.
+def _temporal_begin_date(item: Any) -> str:
+    """Return the begin date for a temporal facility value.
 
     WMDR2 temporal facility descriptors use two aligned arrays, for example
-    ``climateZone`` and ``datetimes``. Each datetime is interpreted as the
+    ``climateZone`` and ``dates``. Each date is interpreted as the
     begin date for the corresponding value; the value remains valid until the
-    next datetime entry. Unknown begin dates are represented as ``".."``.
+    next date entry. Unknown begin dates are represented as ``".."``.
     """
     if isinstance(item, dict):
-        return _normalize_time_value(
+        return _normalize_date_value(
             _first_non_empty(
                 item.get("beginPosition"),
                 item.get("begin"),
@@ -1858,14 +1893,14 @@ def _temporal_begin_datetime(item: Any) -> str:
 def _normalize_temporal_territory(value: Any) -> Optional[Dict[str, Any]]:
     """Normalize WMDR1 territory history into aligned value/begin-date arrays."""
     territories: List[Any] = []
-    datetimes: List[str] = []
+    dates: List[str] = []
 
     for item in _as_list(value):
         if isinstance(item, str):
             territory = _normalize_code_value(item)
             if territory and not _is_unknown_token(territory):
                 territories.append(territory)
-                datetimes.append("..")
+                dates.append("..")
             continue
 
         if not isinstance(item, dict):
@@ -1883,14 +1918,14 @@ def _normalize_temporal_territory(value: Any) -> Optional[Dict[str, Any]]:
             continue
 
         territories.append(territory)
-        datetimes.append(_temporal_begin_datetime(item))
+        dates.append(_temporal_begin_date(item))
 
     if not territories:
         return None
 
-    # Preserve order and alignment. Each datetime is the begin date for the
+    # Preserve order and alignment. Each date is the begin date for the
     # territory at the same index; the value holds until the next entry.
-    return _clean_none({"territory": territories, "datetimes": datetimes})
+    return _clean_none({"territory": territories, "dates": dates})
 
 
 def _normalize_temporal_facility_values(
@@ -1907,22 +1942,22 @@ def _normalize_temporal_facility_values(
 
         {
           "climateZone": ["..."],
-          "datetimes": ["2016-04-28T00:00:00Z"]
+          "dates": ["2016-04-28"]
         }
 
-    Each datetime is interpreted as the begin date for the value at the same
-    index. The value remains valid until the next datetime entry. This avoids
+    Each date is interpreted as the begin date for the value at the same
+    index. The value remains valid until the next date entry. This avoids
     carrying WMDR1/XML validity fields directly inside the value.
     """
     values: List[Any] = []
-    datetimes: List[str] = []
+    dates: List[str] = []
 
     for item in _as_list(value):
         if isinstance(item, str):
             normalized = _normalize_code_value(item)
             if normalized and not _is_unknown_token(normalized):
                 values.append(normalized)
-                datetimes.append("..")
+                dates.append("..")
             continue
 
         if not isinstance(item, dict):
@@ -1938,12 +1973,12 @@ def _normalize_temporal_facility_values(
             continue
 
         values.append(normalized_value)
-        datetimes.append(_temporal_begin_datetime(item))
+        dates.append(_temporal_begin_date(item))
 
     if not values:
         return None
 
-    return _clean_none({output_key: values, "datetimes": datetimes})
+    return _clean_none({output_key: values, "dates": dates})
 
 
 def _normalize_temporal_climate_zone(value: Any) -> Optional[Dict[str, Any]]:
@@ -2277,7 +2312,7 @@ def _facility_properties(
 def _facility_temporal_geometry_entries(facility: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Return normalized facility geometry history entries.
 
-    The entries are sorted chronologically by their begin datetime where known.
+    The entries are sorted chronologically by their begin date where known.
     They are used for both the root GeoJSON ``geometry`` and the root
     ``temporalGeometry`` history member so both remain consistent.
     """
