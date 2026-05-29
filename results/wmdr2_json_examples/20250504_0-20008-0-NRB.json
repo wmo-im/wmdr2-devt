@@ -301,6 +301,64 @@
         "operational"
       ]
     },
+    "schedules": [
+      {
+        "@type": "Event",
+        "uid": "schedule_51ace24ef23b",
+        "start": "0001-01-01T09:00:00",
+        "timeZone": "UTC",
+        "duration": "PT0S",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily",
+            "byDay": [
+              "mo",
+              "tu",
+              "we",
+              "th",
+              "fr"
+            ],
+            "byHour": [
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_df3ec3dc94b9",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT0S",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ]
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_9ce72ceae467",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT0S",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "hourly",
+            "interval": 12
+          }
+        ]
+      }
+    ],
     "observations": [
       {
         "id": "observation:263",
@@ -776,8 +834,15 @@
             "2005-05-01"
           ]
         },
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_51ace24ef23b"
+          ],
+          "dates": [
+            "2005-05-01"
+          ]
+        },
         "exposure": "class1",
-        "temporalObservingSchedule": null,
         "keywords": [
           "R&J Beck London",
           "Dobson",
@@ -796,7 +861,14 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 106,
-        "temporalObservingSchedule": null,
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_51ace24ef23b"
+          ],
+          "dates": [
+            "1984-04-19"
+          ]
+        },
         "keywords": [
           "106"
         ]
@@ -811,7 +883,14 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 107,
-        "temporalObservingSchedule": null,
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            "2010-06-09"
+          ]
+        },
         "keywords": [
           "107"
         ]
@@ -826,7 +905,14 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 107,
-        "temporalObservingSchedule": null,
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            "1998-09-23"
+          ]
+        },
         "keywords": [
           "107"
         ]
@@ -841,7 +927,14 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 107,
-        "temporalObservingSchedule": null,
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            "1998-01-07"
+          ]
+        },
         "keywords": [
           "107"
         ]
@@ -856,8 +949,15 @@
         },
         "sourceOfObservation": "manualReading",
         "observingMethod": 106,
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_9ce72ceae467"
+          ],
+          "dates": [
+            "1984-05-10"
+          ]
+        },
         "representativeness": "mesoscale",
-        "temporalObservingSchedule": null,
         "keywords": [
           "manualReading",
           "106"
@@ -890,7 +990,6 @@
             }
           }
         ],
-        "temporalObservingSchedule": null,
         "keywords": [
           "CIMEL",
           "CE318TS9 (Sun Photometer)",
@@ -916,6 +1015,14 @@
             "2025-05-03"
           ]
         },
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            "2025-05-03"
+          ]
+        },
         "exposure": "class3",
         "representativeness": "toposcale",
         "localReferenceSurface": "roofTerrace",
@@ -931,7 +1038,6 @@
             }
           }
         ],
-        "temporalObservingSchedule": null,
         "keywords": [
           "Fidas 6111",
           "automaticReading",
@@ -948,7 +1054,14 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": "unknown",
-        "temporalObservingSchedule": null
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            "1969-08-01"
+          ]
+        }
       }
     ],
     "instruments": [

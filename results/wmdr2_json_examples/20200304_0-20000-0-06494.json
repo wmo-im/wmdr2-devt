@@ -78,6 +78,21 @@
         "operational"
       ]
     },
+    "schedules": [
+      {
+        "@type": "Event",
+        "uid": "schedule_df3ec3dc94b9",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT0S",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ]
+      }
+    ],
     "observations": [
       {
         "id": "observation:179",
@@ -489,18 +504,39 @@
           ]
         },
         "observingMethod": "unknown",
-        "localReferenceSurface": "localGround",
-        "temporalObservingSchedule": null
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            "2016-04-29"
+          ]
+        },
+        "localReferenceSurface": "localGround"
       },
       {
         "id": "deployment:id_e255ce45-4880-4534-890b-fe13020f1ba9",
         "observingMethod": "unknown",
-        "temporalObservingSchedule": null
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            ".."
+          ]
+        }
       },
       {
         "id": "deployment:id_8aba1fb3-7eab-4ee9-bc01-3b9fe58f54d2",
         "observingMethod": "unknown",
-        "temporalObservingSchedule": null
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            ".."
+          ]
+        }
       }
     ]
   }

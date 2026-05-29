@@ -120,6 +120,21 @@
         "preOperational"
       ]
     },
+    "schedules": [
+      {
+        "@type": "Event",
+        "uid": "schedule_df3ec3dc94b9",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT0S",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ]
+      }
+    ],
     "observations": [
       {
         "id": "observation:12249",
@@ -395,7 +410,6 @@
           ]
         },
         "observingMethod": "inapplicable",
-        "temporalObservingSchedule": null,
         "keywords": [
           "inapplicable"
         ]
@@ -410,8 +424,15 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "inapplicable",
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            "2020-09-22"
+          ]
+        },
         "localReferenceSurface": "localGround",
-        "temporalObservingSchedule": null,
         "keywords": [
           "automaticReading",
           "inapplicable"
@@ -439,7 +460,6 @@
           ]
         },
         "observingMethod": "inapplicable",
-        "temporalObservingSchedule": null,
         "keywords": [
           "inapplicable"
         ]
@@ -453,7 +473,6 @@
           ]
         },
         "observingMethod": "inapplicable",
-        "temporalObservingSchedule": null,
         "keywords": [
           "inapplicable"
         ]
@@ -493,7 +512,6 @@
           ]
         },
         "observingMethod": "inapplicable",
-        "temporalObservingSchedule": null,
         "keywords": [
           "inapplicable"
         ]
@@ -507,7 +525,6 @@
           ]
         },
         "observingMethod": "inapplicable",
-        "temporalObservingSchedule": null,
         "keywords": [
           "inapplicable"
         ]

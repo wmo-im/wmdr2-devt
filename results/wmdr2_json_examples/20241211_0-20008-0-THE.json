@@ -211,6 +211,21 @@
         "operational"
       ]
     },
+    "schedules": [
+      {
+        "@type": "Event",
+        "uid": "schedule_df3ec3dc94b9",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT0S",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ]
+      }
+    ],
     "observations": [
       {
         "id": "observation:263",
@@ -452,7 +467,14 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": 78,
-        "temporalObservingSchedule": null,
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            "1982-03-13"
+          ]
+        },
         "keywords": [
           "automaticReading",
           "78"
@@ -487,7 +509,6 @@
         "exposure": "class1",
         "representativeness": "toposcale",
         "localReferenceSurface": "localGround",
-        "temporalObservingSchedule": null,
         "keywords": [
           "Kipp&Zonen",
           "CHP 1",
@@ -508,6 +529,16 @@
         "instrument": [
           "instrument:a411ef5c36ff"
         ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_df3ec3dc94b9",
+            "schedule_df3ec3dc94b9"
+          ],
+          "dates": [
+            "1993-01-19",
+            "1993-01-19"
+          ]
+        },
         "exposure": "class1",
         "representativeness": "toposcale",
         "localReferenceSurface": "localGround",
@@ -523,7 +554,6 @@
             }
           }
         ],
-        "temporalObservingSchedule": null,
         "keywords": [
           "Kipp&Zonen",
           "CM21",

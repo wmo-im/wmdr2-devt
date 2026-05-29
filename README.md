@@ -154,7 +154,6 @@ Observations contain observation-specific metadata and references to deployments
 }
 ```
 
-
 Observation reporting uses aligned arrays:
 
 ```json
@@ -166,6 +165,116 @@ Observation reporting uses aligned arrays:
 ```
 
 Values at the same array index describe the same reporting configuration.
+
+In the current conversion, `reporting.temporalReportingInterval` is copied from the legacy WMDR1 reporting block, not derived from observation or deployment validity periods. The effective source path is:
+
+```text
+WMDR1 XML
+  observation / deployment / dataGeneration
+    reporting
+      internationalExchange
+      temporalReportingInterval
+
+WMDR10 JSON
+  dataGeneration.reporting.temporalReportingInterval
+
+WMDR2 JSON
+  observations[].reporting.temporalReportingInterval[]
+```
+
+This is distinct from the observing schedule. WMDR1 did not clearly separate observing schedule and reporting schedule in all cases, so WMDR2 should make the observing schedule explicit.
+
+For legacy WMDR1 inputs, the converter derives the observing schedule primarily from the `sampling` branch, not from the `reporting` branch. In the WMDR10 JSON this is typically found as:
+
+```text
+WMDR1 XML
+  observation / deployment / dataGeneration
+    sampling
+      beginPosition
+      startMonth / endMonth
+      startWeekday / endWeekday
+      startHour / endHour
+      startMinute / endMinute
+      samplingDuration / samplingInterval-like ISO durations
+
+WMDR10 JSON
+  dataGeneration.sampling
+
+WMDR2 JSON
+  properties.schedules[]
+  properties.deployments[].temporalObservingSchedule
+```
+
+When two ISO 8601 durations are present in a sampling fragment and their semantic names are ambiguous, the converter interprets the shorter duration as the sampling duration (`Event.duration`) and the longer duration as the recurrence interval (`recurrenceRules`). For example, `PT5S` plus `PT1M` becomes a five-second sampling occurrence repeated every minute.
+
+### Observing schedules
+
+Schedules are first-class reusable objects in the WMDR2 full-record model. They are stored under `properties.schedules` as JSCalendar / RFC 8984 `Event` objects. Observations do not embed schedule objects directly. The schedule applicability history belongs under `deployments[].temporalObservingSchedule`, because the deployment is the atomic data-collection unit. Each deployment can use a different schedule, or several deployments can reuse the same schedule `uid`.
+
+```json
+"schedules": [
+  {
+    "@type": "Event",
+    "uid": "schedule_daily_12",
+    "start": "0001-01-01T12:00:00",
+    "timeZone": "UTC",
+    "duration": "PT0S",
+    "recurrenceRules": [
+      {
+        "@type": "RecurrenceRule",
+        "frequency": "daily"
+      }
+    ],
+    "recurrenceOverrides": {
+      "2025-07-14T12:00:00": {
+        "excluded": true
+      }
+    }
+  }
+],
+"deployments": [
+  {
+    "id": "deployment:abc123",
+    "temporalObservingSchedule": {
+      "observingSchedule": ["schedule_daily_12"],
+      "dates": ["2025-01-01"]
+    }
+  }
+]
+```
+
+Values at the same index in `temporalObservingSchedule.observingSchedule` and `temporalObservingSchedule.dates` belong together. A repeated schedule reference with a later date can express the history of schedule applicability for that deployment, while a single schedule object can be shared by several deployments.
+
+This separation is important. The JSCalendar `Event.start` is required and anchors recurrence expansion, but it is not used as WMDR2 schedule-validity metadata. WMDR2 uses a documented canonical anchor date, `0001-01-01`, for reusable schedule patterns. Deployment-specific validity remains in the aligned `dates` array.
+
+Notes:
+
+- Schedule entries use JSCalendar / RFC 8984 objects, but WMDR2 currently allows only `@type: "Event"` in `properties.schedules[]`. Other JSCalendar top-level object types such as `Task` and `Group` are outside the WMDR2 observing-schedule profile.
+- Recurrence rules inside a schedule use `@type: "RecurrenceRule"`.
+- JSCalendar uses `recurrenceRules`, plural, as an array.
+- `start` is a local date-time and is mandatory for a JSCalendar `Event`. In WMDR2 schedule catalog entries, it is a canonical recurrence anchor, not the date on which the schedule became valid for a deployment.
+- The canonical date part of reusable schedule anchors is `0001-01-01`. The time part still carries the schedule's local time-of-day, for example `0001-01-01T12:00:00` for a daily schedule at 12:00.
+- The real applicability date of a schedule for a deployment is expressed only by `deployments[].temporalObservingSchedule.dates`.
+- Schedule `uid` values are generated from the normalized schedule pattern, excluding deployment-specific effective dates. This allows deployments with the same pattern but different validity dates to reuse one schedule object.
+- JSCalendar `uid` values should use RFC 8984-safe identifier characters. The converter therefore uses values such as `schedule_daily_12` or `schedule_<hash>`, not colon-separated identifiers.
+- `timeZone` should normally be an IANA time-zone identifier such as `UTC`, `Europe/Zurich`, or the station-local time zone. If omitted, JSCalendar treats the event as floating time.
+- `duration` describes the duration of one scheduled observation occurrence. In WMDR2 this can be interpreted as the sampling duration, for example `PT10M` for a 10-minute integrated observation. Use `PT0S` for an instantaneous observation.
+- A recurring schedule is open-ended when the recurrence rule has neither `until` nor `count`; the WMDR2 `dates` array describes when that schedule definition became applicable.
+- Recurrence exceptions are represented with `recurrenceOverrides`; an excluded occurrence uses `{ "excluded": true }`. Null override values are not used.
+- Recurrence override keys should match the occurrence local date-time, for example `2025-07-14T12:00:00`, not only the date.
+
+#### Schedule profile constraints
+
+The schema intentionally validates a small WMDR2 observing-schedule profile of JSCalendar rather than every possible JSCalendar object. In the current profile:
+
+```text
+properties.schedules[].@type = "Event"
+properties.schedules[].recurrenceRules[].@type = "RecurrenceRule"
+properties.schedules[].uid uses letters, digits, `_`, or `-`
+properties.schedules[].recurrenceOverrides values are patch objects, not null
+```
+
+This keeps schedule objects reusable and predictable while remaining compatible with JSCalendar's event and recurrence-rule model.
 
 ### Deployments
 
@@ -179,11 +288,15 @@ Deployments are referenceable objects. Their `id` is preserved from the WMDR1 XM
   "serialNumbers": {
     "serialNumber": ["S123"],
     "dates": ["2020-01-01"]
+  },
+  "temporalObservingSchedule": {
+    "observingSchedule": ["schedule_daily_12"],
+    "dates": ["2025-01-01"]
   }
 }
 ```
 
-Deployment records do not carry `title` or `type` properties.
+Deployment records do not carry `title`, `type` and `description` properties.
 
 ### Instruments
 
@@ -231,7 +344,7 @@ The current role handling follows this policy:
 
 ## Schemas and tests
 
-The active schema files should live under `schemas/`:
+The active schema files live under `schemas/`:
 
 ```text
 schemas/
@@ -251,16 +364,3 @@ Run all tests with:
 ```bash
 pytest -q
 ```
-
-## Repository cleanup notes
-
-The current WMDR2 workflow no longer uses the previous Records Part 1 GeoJSON conversion path. The following root-level files can be removed if they are not referenced by local branches or pending work:
-
-- `convert_wmdr10_json_to_records_part1.py`
-- `settings.geojson`
-- `version.geojson`
-- root-level `wmdr2-common.schema.json`
-- root-level `wmdr2-feature-collection.schema.json`
-- root-level `wmdr2-record-feature.schema.json`
-
-Do not remove the active schema files under `schemas/`.

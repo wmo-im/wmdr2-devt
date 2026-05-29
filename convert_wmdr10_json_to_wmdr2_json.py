@@ -69,6 +69,7 @@ OGC_RECORD_CORE_CONF = "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/re
 WMDR2_CORE_CONF = "https://schemas.wmo.int/wmdr/2.0/core/full-record"
 DEFAULT_PATTERN = "*.json"
 OUTPUT_SUFFIX = ".json"
+CANONICAL_SCHEDULE_START_DATE = "0001-01-01"
 
 DEFAULT_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
     "facility": {
@@ -1660,13 +1661,64 @@ def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[
     return {"coordinates": coordinates, "dates": dates}
 
 
-def _normalize_temporal_observing_schedule(value: Any) -> List[Dict[str, Any]]:
-    """Normalize temporal observing schedules.
+_OBSERVING_SCHEDULE_NESTED_KEYS = (
+    "observingSchedule",
+    "sampling",
+    "Sampling",
+)
 
-    Observing-schedule entries are not referenceable WMDR2 entities, so source
-    XML ids are deliberately not carried over. A generic ``interval`` fallback
-    is retained for now because observing schedules may otherwise consist only
-    of time-window fields or a schedule placeholder.
+_OBSERVING_SCHEDULE_KEYS = {
+    "interval",
+    "temporalResolution",
+    "period",
+    "samplingInterval",
+    "temporalSamplingInterval",
+    "samplingPeriod",
+    "sampleInterval",
+    "samplePeriod",
+    "duration",
+    "samplingDuration",
+    "sampleDuration",
+    "periodOfSampling",
+    "exposureDuration",
+    "startMonth",
+    "endMonth",
+    "startWeekday",
+    "endWeekday",
+    "startHour",
+    "endHour",
+    "startMinute",
+    "endMinute",
+    "diurnalBaseTime",
+}
+
+_OBSERVING_DURATION_KEYS = (
+    "samplingDuration",
+    "sampleDuration",
+    "duration",
+    "periodOfSampling",
+    "exposureDuration",
+)
+
+_OBSERVING_RECURRENCE_INTERVAL_KEYS = (
+    "samplingInterval",
+    "temporalSamplingInterval",
+    "sampleInterval",
+    "interval",
+    "temporalResolution",
+    "period",
+    "samplePeriod",
+    "samplingPeriod",
+)
+
+
+def _normalize_temporal_observing_schedule(value: Any) -> List[Dict[str, Any]]:
+    """Normalize legacy observing-schedule fragments.
+
+    WMDR1 uses ``sampling`` to describe the actual data-collection cadence.
+    In WMDR2 this is mapped to reusable JSCalendar schedule entities.  This
+    helper remains useful for tests and for deciding whether a legacy fragment
+    is substantive enough to create a JSCalendar Event.
     """
     out: List[Dict[str, Any]] = []
     for item in _as_list(value):
@@ -1674,15 +1726,10 @@ def _normalize_temporal_observing_schedule(value: Any) -> List[Dict[str, Any]]:
             continue
         record: Dict[str, Any] = {}
 
-        interval = _first_non_empty(
-            item.get("interval"),
-            item.get("reportingInterval"),
-            item.get("temporalResolution"),
-            item.get("period"),
-        )
-        if isinstance(interval, dict):
-            interval = _first_non_empty(interval.get("value"), interval.get("#text"), interval.get("href"))
-        record["interval"] = str(interval).strip() if _non_empty(interval) else "unknown"
+        recurrence_interval = _observing_recurrence_interval(item)
+        duration = _observing_sampling_duration(item)
+        interval = recurrence_interval or duration
+        record["interval"] = interval if interval else "unknown"
 
         for key in (
             "startMonth",
@@ -1701,6 +1748,441 @@ def _normalize_temporal_observing_schedule(value: Any) -> List[Dict[str, Any]]:
         if record:
             out.append(record)
     return _uniq_dicts(_clean_none(out))
+
+
+_OBSERVING_SCHEDULE_CONTEXT_KEYS = (
+    "beginPosition",
+    "endPosition",
+    "begin",
+    "end",
+    "start",
+    "date",
+    "timeZone",
+    "startMonth",
+    "endMonth",
+    "startWeekday",
+    "endWeekday",
+    "startHour",
+    "endHour",
+    "startMinute",
+    "endMinute",
+    "diurnalBaseTime",
+)
+
+_OBSERVING_SCHEDULE_WRAPPER_KEYS = (
+    "dataGeneration",
+    "DataGeneration",
+    "observingSchedule",
+    "ObservingSchedule",
+    "sampling",
+    "Sampling",
+)
+
+
+def _schedule_context(item: Dict[str, Any]) -> Dict[str, Any]:
+    """Return parent fields that provide context for nested schedule objects."""
+    return {key: item[key] for key in _OBSERVING_SCHEDULE_CONTEXT_KEYS if _non_empty(item.get(key))}
+
+
+def _merge_schedule_context(context: Dict[str, Any], item: Dict[str, Any]) -> Dict[str, Any]:
+    """Merge inherited schedule context into a schedule candidate.
+
+    WMDR1/WMDR10 JSON often stores validity dates and seasonal windows on a
+    parent ``dataGeneration`` object while the actual sampling duration and
+    sampling interval are nested below ``sampling``.  WMDR2 schedules need both
+    pieces.  Child values win if both parent and child provide the same key.
+    """
+    merged = dict(context)
+    merged.update(item)
+    return merged
+
+
+def _has_observing_schedule_payload(item: Dict[str, Any]) -> bool:
+    """Return true if ``item`` contains actual observing cadence information."""
+    if _duration_from_keys(item, _OBSERVING_DURATION_KEYS):
+        return True
+    if _duration_from_keys(item, _OBSERVING_RECURRENCE_INTERVAL_KEYS):
+        return True
+
+    # A specific daily time can define a simple daily schedule even without an
+    # explicit interval.  Full-window values such as 0..23 and 0..59 are not
+    # enough by themselves and are treated as context only.
+    start_hour = _int_or_none(item.get("startHour"))
+    end_hour = _int_or_none(item.get("endHour"))
+    start_minute = _int_or_none(item.get("startMinute"))
+    end_minute = _int_or_none(item.get("endMinute"))
+    if start_hour is not None and end_hour is not None and start_hour == end_hour:
+        return True
+    if start_minute is not None and end_minute is not None and start_minute == end_minute:
+        return True
+    if _non_empty(item.get("diurnalBaseTime")):
+        return True
+    return False
+
+
+def _iter_observing_schedule_candidates(value: Any) -> List[Dict[str, Any]]:
+    """Return legacy observing-schedule candidate dictionaries.
+
+    WMDR1 often stores the data-collection schedule under ``sampling`` rather
+    than under an explicit ``observingSchedule`` element.  The effective dates
+    and seasonal/time windows may be on a parent ``dataGeneration`` object,
+    while the sampling duration/interval is nested below ``sampling``.  This
+    walker therefore carries parent context into nested sampling candidates.
+    Reporting-only branches are deliberately not used as observing schedules.
+    """
+    candidates: List[Dict[str, Any]] = []
+    seen: set[str] = set()
+
+    def add_candidate(candidate: Dict[str, Any]) -> None:
+        marker = json.dumps(candidate, sort_keys=True, ensure_ascii=False, default=str)
+        if marker in seen:
+            return
+        seen.add(marker)
+        candidates.append(candidate)
+
+    def walk(obj: Any, context: Dict[str, Any]) -> None:
+        for item in _as_list(obj):
+            if not isinstance(item, dict):
+                continue
+
+            local_context = dict(context)
+            local_context.update(_schedule_context(item))
+
+            if _has_observing_schedule_payload(item):
+                add_candidate(_merge_schedule_context(context, item))
+
+            for key, nested in item.items():
+                if key in {"reporting", "Reporting", "internationalReportingSchedule"}:
+                    continue
+                if key in _OBSERVING_SCHEDULE_WRAPPER_KEYS or isinstance(nested, (dict, list)):
+                    walk(nested, local_context)
+
+    walk(value, {})
+    return candidates
+
+
+def _iso_duration(value: Any) -> Optional[str]:
+    """Return an ISO 8601 duration string when ``value`` looks like one."""
+    if isinstance(value, dict):
+        value = _first_non_empty(value.get("value"), value.get("#text"), value.get("href"))
+    if not isinstance(value, str):
+        return None
+    text = value.strip()
+    if re.fullmatch(r"P(?=\d|T)(?:\d+Y)?(?:\d+M)?(?:\d+W)?(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+(?:\.\d+)?S)?)?", text):
+        return text
+    return None
+
+
+
+def _duration_from_keys(raw: Dict[str, Any], keys: Sequence[str]) -> Optional[str]:
+    """Return the first ISO 8601 duration found under any of ``keys``."""
+    for key in keys:
+        value = raw.get(key)
+        duration = _iso_duration(value)
+        if duration:
+            return duration
+    return None
+
+
+def _all_iso_durations_from_schedule(raw: Dict[str, Any]) -> List[str]:
+    """Return ISO durations from likely sampling/schedule fields in source order."""
+    durations: List[str] = []
+    seen: set[str] = set()
+    for key in list(_OBSERVING_DURATION_KEYS) + list(_OBSERVING_RECURRENCE_INTERVAL_KEYS):
+        duration = _iso_duration(raw.get(key))
+        if duration and duration not in seen:
+            seen.add(duration)
+            durations.append(duration)
+    return durations
+
+
+def _duration_seconds(duration: str) -> Optional[float]:
+    """Return approximate seconds for simple ISO 8601 durations."""
+    match = re.fullmatch(
+        r"P(?:(?P<days>\d+)D)?(?:T(?:(?P<hours>\d+)H)?(?:(?P<minutes>\d+)M)?(?:(?P<seconds>\d+(?:\.\d+)?)S)?)?",
+        duration,
+    )
+    if not match:
+        # Month/year durations are not constant in seconds. They are still valid
+        # recurrence hints, but they are not used to compare sampling duration
+        # and recurrence interval.
+        return None
+    days = float(match.group("days") or 0)
+    hours = float(match.group("hours") or 0)
+    minutes = float(match.group("minutes") or 0)
+    seconds = float(match.group("seconds") or 0)
+    return days * 86400 + hours * 3600 + minutes * 60 + seconds
+
+
+def _observing_sampling_duration(raw: Dict[str, Any]) -> Optional[str]:
+    """Return the duration of one sampling/observation occurrence.
+
+    When WMDR1 exposes two durations in ``sampling`` without clear names, the
+    shorter duration is interpreted as the sampling duration and the longer one
+    as the recurrence interval.  For example, ``PT5S`` + ``PT1M`` becomes a
+    five-second sample repeated every minute.
+    """
+    explicit = _duration_from_keys(raw, _OBSERVING_DURATION_KEYS)
+    if explicit:
+        return explicit
+
+    durations = _all_iso_durations_from_schedule(raw)
+    comparable = [(duration, _duration_seconds(duration)) for duration in durations]
+    comparable = [(duration, seconds) for duration, seconds in comparable if seconds is not None]
+    if len(comparable) >= 2:
+        return min(comparable, key=lambda item: item[1])[0]
+    return None
+
+
+def _observing_recurrence_interval(raw: Dict[str, Any]) -> Optional[str]:
+    """Return the recurrence interval for a sampling/observing schedule."""
+    explicit = _duration_from_keys(raw, _OBSERVING_RECURRENCE_INTERVAL_KEYS)
+    if explicit:
+        duration = _observing_sampling_duration(raw)
+        if duration and explicit == duration:
+            # If the same duration was selected as the sample duration, look for
+            # a second, longer duration to use as recurrence interval.
+            comparable = [
+                (candidate, _duration_seconds(candidate))
+                for candidate in _all_iso_durations_from_schedule(raw)
+                if candidate != duration
+            ]
+            comparable = [item for item in comparable if item[1] is not None]
+            if comparable:
+                return max(comparable, key=lambda item: item[1])[0]
+        return explicit
+
+    durations = _all_iso_durations_from_schedule(raw)
+    comparable = [(duration, _duration_seconds(duration)) for duration in durations]
+    comparable = [(duration, seconds) for duration, seconds in comparable if seconds is not None]
+    if len(comparable) >= 2:
+        return max(comparable, key=lambda item: item[1])[0]
+    return None
+
+
+def _int_or_none(value: Any) -> Optional[int]:
+    try:
+        if value in (None, "", "None"):
+            return None
+        return int(value)
+    except Exception:
+        return None
+
+
+def _bounded_range(start: Any, end: Any, *, minimum: int, maximum: int) -> List[int]:
+    start_i = _int_or_none(start)
+    end_i = _int_or_none(end)
+    if start_i is None and end_i is None:
+        return []
+    if start_i is None:
+        start_i = minimum
+    if end_i is None:
+        end_i = start_i
+    start_i = max(minimum, min(maximum, start_i))
+    end_i = max(minimum, min(maximum, end_i))
+    if start_i <= end_i:
+        return list(range(start_i, end_i + 1))
+    # Wrap-around ranges are uncommon here, but valid for hour/month-like
+    # windows. Keep the intent rather than dropping the constraint.
+    return list(range(start_i, maximum + 1)) + list(range(minimum, end_i + 1))
+
+
+def _apply_schedule_windows_to_rule(rule: Dict[str, Any], raw: Dict[str, Any]) -> Dict[str, Any]:
+    """Add JSCalendar BYxxx constraints from WMDR1 schedule windows."""
+    rule = dict(rule)
+
+    months = _bounded_range(raw.get("startMonth"), raw.get("endMonth"), minimum=1, maximum=12)
+    if months and months != list(range(1, 13)):
+        rule["byMonth"] = months
+
+    weekdays = _bounded_range(raw.get("startWeekday"), raw.get("endWeekday"), minimum=1, maximum=7)
+    if weekdays and weekdays != list(range(1, 8)):
+        # WMDR1 uses ISO weekday numbering: 1=Monday, ..., 7=Sunday.
+        day_names = {1: "mo", 2: "tu", 3: "we", 4: "th", 5: "fr", 6: "sa", 7: "su"}
+        rule["byDay"] = [day_names[item] for item in weekdays]
+
+    hours = _bounded_range(raw.get("startHour"), raw.get("endHour"), minimum=0, maximum=23)
+    if hours and hours != list(range(0, 24)):
+        rule["byHour"] = hours
+
+    minutes = _bounded_range(raw.get("startMinute"), raw.get("endMinute"), minimum=0, maximum=59)
+    if minutes and minutes != list(range(0, 60)):
+        rule["byMinute"] = minutes
+
+    return rule
+
+
+def _recurrence_rule_from_duration(duration: Optional[str], *, has_daily_time_hint: bool = False) -> Dict[str, Any]:
+    """Build a simple JSCalendar recurrence rule from a duration hint."""
+    if duration:
+        match = re.fullmatch(r"PT(\d+)H", duration)
+        if match:
+            interval = int(match.group(1))
+            rule: Dict[str, Any] = {"@type": "RecurrenceRule", "frequency": "hourly"}
+            if interval != 1:
+                rule["interval"] = interval
+            return rule
+
+        match = re.fullmatch(r"PT(\d+)M", duration)
+        if match:
+            interval = int(match.group(1))
+            rule = {"@type": "RecurrenceRule", "frequency": "minutely"}
+            if interval != 1:
+                rule["interval"] = interval
+            return rule
+
+        match = re.fullmatch(r"P(\d+)D", duration)
+        if match:
+            interval = int(match.group(1))
+            rule = {"@type": "RecurrenceRule", "frequency": "daily"}
+            if interval != 1:
+                rule["interval"] = interval
+            return rule
+
+        match = re.fullmatch(r"P(\d+)W", duration)
+        if match:
+            interval = int(match.group(1))
+            rule = {"@type": "RecurrenceRule", "frequency": "weekly"}
+            if interval != 1:
+                rule["interval"] = interval
+            return rule
+
+    if has_daily_time_hint:
+        return {"@type": "RecurrenceRule", "frequency": "daily"}
+
+    return {"@type": "RecurrenceRule", "frequency": "daily"}
+
+
+def _schedule_effective_date(raw: Dict[str, Any]) -> str:
+    """Return the date on which a schedule definition becomes valid."""
+    return (
+        _normalize_date_value(
+            _first_non_empty(
+                raw.get("beginPosition"),
+                raw.get("begin"),
+                raw.get("start"),
+                raw.get("date"),
+            )
+        )
+        or ".."
+    )
+
+
+def _schedule_start_datetime(raw: Dict[str, Any]) -> str:
+    """Return the canonical JSCalendar LocalDateTime start value.
+
+    The JSCalendar ``Event.start`` member is mandatory and anchors recurrence
+    expansion.  In WMDR2, reusable schedule objects describe a pattern, while
+    deployment-specific validity is represented by
+    ``deployment.temporalObservingSchedule.dates``.  To make otherwise identical
+    schedules reusable across deployments that began on different dates, the
+    date part is a documented canonical anchor.  The time-of-day still comes
+    from the source schedule, when available.
+    """
+    hour_raw = _first_non_empty(raw.get("startHour"), raw.get("hour"))
+    minute_raw = _first_non_empty(raw.get("startMinute"), raw.get("minute"))
+
+    def as_int(value: Any, default: int = 0) -> int:
+        try:
+            return int(value)
+        except Exception:
+            return default
+
+    hour = max(0, min(23, as_int(hour_raw, 0)))
+    minute = max(0, min(59, as_int(minute_raw, 0)))
+    return f"{CANONICAL_SCHEDULE_START_DATE}T{hour:02d}:{minute:02d}:00"
+
+
+def _schedule_uid_from_event(event_without_uid: Dict[str, Any]) -> str:
+    """Return a reusable JSCalendar UID derived only from the schedule pattern."""
+    seed = json.dumps(
+        event_without_uid,
+        sort_keys=True,
+        ensure_ascii=False,
+        default=str,
+    )
+    digest = hashlib.sha1(seed.encode("utf-8")).hexdigest()[:12]
+    return f"schedule_{digest}"
+
+
+def _jscalendar_observing_schedule(
+    raw: Dict[str, Any],
+    *,
+    facility_id: str,
+    context: str,
+    index: int,
+    time_zone: str,
+) -> Optional[Dict[str, Any]]:
+    """Convert one legacy observing-schedule fragment into a JSCalendar Event."""
+    del facility_id, context, index
+    normalized = _normalize_temporal_observing_schedule(raw)
+    if normalized == [{"interval": "unknown"}]:
+        return None
+
+    start = _schedule_start_datetime(raw)
+
+    duration = _observing_sampling_duration(raw) or "PT0S"
+    recurrence_interval = _observing_recurrence_interval(raw)
+    has_daily_time_hint = _non_empty(raw.get("startHour")) or _non_empty(raw.get("startMinute"))
+    recurrence_rule = _recurrence_rule_from_duration(
+        recurrence_interval,
+        has_daily_time_hint=has_daily_time_hint,
+    )
+    recurrence_rule = _apply_schedule_windows_to_rule(recurrence_rule, raw)
+
+    event_without_uid: Dict[str, Any] = {
+        "@type": "Event",
+        "start": start,
+        "timeZone": time_zone,
+        "duration": duration,
+        "recurrenceRules": [recurrence_rule],
+    }
+    event: Dict[str, Any] = {
+        "@type": "Event",
+        "uid": _schedule_uid_from_event(_clean_none(event_without_uid)),
+        "start": start,
+        "timeZone": time_zone,
+        "duration": duration,
+        "recurrenceRules": [recurrence_rule],
+    }
+    return _clean_none(event)
+
+
+def _register_observing_schedule_refs(
+    sources: Sequence[Any],
+    *,
+    schedule_registry: Dict[str, Dict[str, Any]],
+    facility_id: str,
+    context: str,
+    time_zone: str = "UTC",
+) -> Optional[Dict[str, List[str]]]:
+    """Register JSCalendar schedules and return a temporal reference object."""
+    refs: List[str] = []
+    dates: List[str] = []
+    event_index = 0
+
+    for source in sources:
+        for raw in _iter_observing_schedule_candidates(source):
+            event_index += 1
+            event = _jscalendar_observing_schedule(
+                raw,
+                facility_id=facility_id,
+                context=context,
+                index=event_index,
+                time_zone=time_zone,
+            )
+            if not event:
+                continue
+            uid = event.get("uid")
+            if not isinstance(uid, str) or not uid:
+                continue
+            schedule_registry.setdefault(uid, event)
+            refs.append(uid)
+            dates.append(_schedule_effective_date(raw))
+
+    if not refs:
+        return None
+    return {"observingSchedule": refs, "dates": dates}
 
 
 def _normalize_temporal_reporting_schedule(value: Any) -> List[Dict[str, Any]]:
@@ -2047,13 +2529,20 @@ def _copy_known_facility_properties(facility: Dict[str, Any]) -> Dict[str, Any]:
     return out
 
 
-def _normalize_deployment(raw: Dict[str, Any], *, index: int, facility_id: str) -> Dict[str, Any]:
+def _normalize_deployment(
+    raw: Dict[str, Any],
+    *,
+    index: int,
+    facility_id: str,
+    schedule_registry: Dict[str, Dict[str, Any]],
+    time_zone: str = "UTC",
+) -> Dict[str, Any]:
     """Normalize a deployment for the facility-level deployments collection.
 
-    Deployments are now represented once under ``properties.deployments`` and
-    observations only reference them by id. Reporting schedules are not stored
-    here because international reporting belongs to the observation in the
-    WMDR2 core model.
+    Deployments are the atomic data-collection units in WMDR2. They are
+    represented once under ``properties.deployments`` and observations reference
+    them by id. Each deployment may reference one or more reusable JSCalendar
+    schedule entities via ``temporalObservingSchedule``.
     """
     record_id = _deployment_record_id(raw, index=index, facility_id=facility_id)
 
@@ -2064,8 +2553,15 @@ def _normalize_deployment(raw: Dict[str, Any], *, index: int, facility_id: str) 
     start, end = _extract_interval(raw)
     time = _time_interval(start, end)
 
-    observing_schedule = _normalize_temporal_observing_schedule(raw.get("dataGeneration") or raw.get("observingSchedule"))
     contacts, _ = _collect_contacts(raw.get("contact"), raw.get("contacts"), raw.get("responsibleParty"))
+
+    observing_schedule = _register_observing_schedule_refs(
+        [raw.get("dataGeneration"), raw.get("sampling"), raw.get("observingSchedule")],
+        schedule_registry=schedule_registry,
+        facility_id=facility_id,
+        context=record_id,
+        time_zone=time_zone,
+    )
 
     payload: Dict[str, Any] = {
         "id": record_id,
@@ -2075,12 +2571,12 @@ def _normalize_deployment(raw: Dict[str, Any], *, index: int, facility_id: str) 
         "observingMethod": raw.get("observingMethod"),
         "instrument": _instrument_refs_for_deployment(raw, facility_id=facility_id),
         "serialNumbers": _deployment_serial_numbers(raw),
+        "temporalObservingSchedule": observing_schedule,
         "exposure": raw.get("exposure"),
         "representativeness": raw.get("representativeness"),
         "localReferenceSurface": raw.get("localReferenceSurface"),
         "instrumentOperatingStatus": _normalize_reporting_status(raw.get("instrumentOperatingStatus")),
         "contacts": contacts,
-        "temporalObservingSchedule": observing_schedule,
         "keywords": _keywords_from_values(_collect_discovery_values("deployment", raw, "keywords")),
         "links": _extract_links(raw, "deployment"),
     }
@@ -2180,7 +2676,12 @@ def _normalize_temporal_data_policy(value: Any) -> List[Dict[str, Any]]:
             out.append(record)
     return _uniq_dicts(_clean_none(out))
 
-def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str) -> Dict[str, Any]:
+def _normalize_observation(
+    raw: Dict[str, Any],
+    *,
+    index: int,
+    facility_id: str,
+) -> Dict[str, Any]:
     """Normalize one observation embedded in a facility-centric record."""
     embedded_deployments = [item for item in _as_list(raw.get("deployments")) if isinstance(item, dict)]
     observed_variable = raw.get("observedVariable") or raw.get("observedProperty")
@@ -2207,7 +2708,6 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
     time = _derive_observation_time(raw, embedded_deployments)
 
     contacts, _ = _collect_contacts(raw.get("contact"), raw.get("contacts"), raw.get("responsibleParty"))
-    observing_schedule = _normalize_temporal_observing_schedule(raw.get("dataGeneration") or raw.get("observingSchedule"))
 
     reporting_sources: List[Any] = [raw.get("dataGeneration"), raw.get("reportingSchedule")]
     reporting_sources.extend(dep.get("dataGeneration") or dep.get("reportingSchedule") for dep in embedded_deployments)
@@ -2226,7 +2726,6 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
         "observedDomain": _observed_domain_from_observed_variable(observed_variable),
         "programAffiliation": _normalize_program_affiliation(raw.get("programAffiliation")),
         "contacts": contacts,
-        "temporalObservingSchedule": observing_schedule,
         "temporalDataPolicy": _normalize_temporal_data_policy(raw.get("temporalDataPolicy") or raw.get("dataPolicy") or raw.get("dataPolicyHistory")),
         "deployments": deployment_refs,
         "keywords": _keywords_from_values(_collect_discovery_values("observation", raw, "keywords")),
@@ -2259,23 +2758,36 @@ def _facility_properties(
     keywords = _keywords_from_values(
         [facility_id, facility.get("name")] + _collect_discovery_values("facility", facility, "keywords")
     )
-    normalized_observations = [
-        _normalize_observation(obs, index=index, facility_id=facility_id)
-        for index, obs in enumerate(observations, start=1)
-        if isinstance(obs, dict)
-    ]
+    schedule_registry: Dict[str, Dict[str, Any]] = {}
+    facility_time_zone = "UTC"
 
     all_deployments: List[Dict[str, Any]] = [dep for dep in deployments if isinstance(dep, dict)]
     all_deployments.extend(_flatten_deployments_from_observations([obs for obs in observations if isinstance(obs, dict)]))
 
     normalized_deployments_by_id: Dict[str, Dict[str, Any]] = {}
     for index, dep in enumerate(all_deployments, start=1):
-        normalized = _normalize_deployment(dep, index=index, facility_id=facility_id)
+        normalized = _normalize_deployment(
+            dep,
+            index=index,
+            facility_id=facility_id,
+            schedule_registry=schedule_registry,
+            time_zone=facility_time_zone,
+        )
         dep_id = normalized.get("id")
         if isinstance(dep_id, str) and dep_id not in normalized_deployments_by_id:
             normalized_deployments_by_id[dep_id] = normalized
     normalized_deployments = list(normalized_deployments_by_id.values())
     normalized_instruments = _normalize_instruments(all_deployments, facility_id=facility_id)
+
+    normalized_observations = [
+        _normalize_observation(
+            obs,
+            index=index,
+            facility_id=facility_id,
+        )
+        for index, obs in enumerate(observations, start=1)
+        if isinstance(obs, dict)
+    ]
 
     known_facility_properties = _copy_known_facility_properties(facility)
 
@@ -2304,6 +2816,7 @@ def _facility_properties(
         **known_facility_properties,
         "temporalProgramAffiliation": _normalize_temporal_program_affiliation(facility.get("programAffiliation")),
         "temporalReportingStatus": _normalize_reporting_status_timeline(facility.get("reportingStatus")),
+        "schedules": list(schedule_registry.values()),
         "observations": normalized_observations,
         "deployments": normalized_deployments,
         "instruments": normalized_instruments,

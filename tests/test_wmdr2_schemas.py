@@ -142,6 +142,21 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "2022-09-08",
                 ],
             },
+            "schedules": [
+                {
+                    "@type": "Event",
+                    "uid": "schedule_daily_12",
+                    "start": "0001-01-01T12:00:00",
+                    "timeZone": "UTC",
+                    "duration": "PT0S",
+                    "recurrenceRules": [
+                        {
+                            "@type": "RecurrenceRule",
+                            "frequency": "daily",
+                        }
+                    ],
+                }
+            ],
             "observations": [
                 {
                     "id": "observation:179",
@@ -175,11 +190,10 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                         "serialNumber": ["ABC123"],
                         "dates": [".."],
                     },
-                    "temporalObservingSchedule": [
-                        {
-                            "diurnalBaseTime": "06:00:00Z",
-                        }
-                    ],
+                    "temporalObservingSchedule": {
+                        "observingSchedule": ["schedule_daily_12"],
+                        "dates": ["2025-01-01"],
+                    },
                 }
             ],
             "instruments": [
@@ -331,9 +345,61 @@ def test_reporting_has_no_id_or_interval() -> None:
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_temporal_observing_schedule_has_no_id() -> None:
+def test_deployment_temporal_observing_schedule_references_schedules() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["deployments"][0]["temporalObservingSchedule"][0]["id"] = "schedule-1"
+    schedule_ref = instance["properties"]["deployments"][0]["temporalObservingSchedule"]
+
+    assert schedule_ref == {
+        "observingSchedule": ["schedule_daily_12"],
+        "dates": ["2025-01-01"],
+    }
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_observation_temporal_observing_schedule_is_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observations"][0]["temporalObservingSchedule"] = {
+        "observingSchedule": ["schedule_daily_12"],
+        "dates": ["2025-01-01"],
+    }
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+
+
+def test_temporal_observing_schedule_has_no_id() -> None:
+    """Legacy test name kept so cached VS Code node IDs still resolve.
+
+    The current model keeps temporalObservingSchedule on deployments, but the
+    object is only a dated reference to first-class schedule UIDs. It must not
+    carry a source XML id.
+    """
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["temporalObservingSchedule"]["id"] = "schedule-source-id"
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_schedule_uid_uses_jscalendar_safe_id() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["schedules"][0]["uid"] = "schedule:daily-12"
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_schedule_recurrence_rule_requires_jscalendar_type() -> None:
+    instance = _valid_facility_record_feature()
+    del instance["properties"]["schedules"][0]["recurrenceRules"][0]["@type"]
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_schedule_recurrence_override_null_is_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["schedules"][0]["recurrenceOverrides"] = {
+        "2025-07-14T12:00:00": None
+    }
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
@@ -404,5 +470,21 @@ def test_wmdr2_full_record_conformance_is_required() -> None:
 def test_observation_description_is_not_part_of_current_core_model() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observations"][0]["description"] = None
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_inline_observing_schedule_object_is_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["temporalObservingSchedule"] = [
+        {"interval": "unknown"}
+    ]
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_schedule_event_requires_jscalendar_event_type() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["schedules"][0]["@type"] = "Task"
 
     assert not _is_valid(RECORD_SCHEMA, instance)
