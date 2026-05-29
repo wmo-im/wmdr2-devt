@@ -64,15 +64,11 @@
     "temporalGeometry": {
       "type": "object",
       "required": [
-        "type",
         "coordinates",
         "dates"
       ],
       "additionalProperties": false,
       "properties": {
-        "type": {
-          "const": "MovingPoint"
-        },
         "coordinates": {
           "type": "array",
           "minItems": 2,
@@ -588,6 +584,13 @@
               "internationalReportingSchedule"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "description"
+            ]
+          }
         }
       ],
       "properties": {
@@ -597,12 +600,6 @@
         },
         "title": {
           "type": "string"
-        },
-        "description": {
-          "type": [
-            "string",
-            "null"
-          ]
         },
         "time": {
           "$ref": "#/$defs/nullableTimeInterval"

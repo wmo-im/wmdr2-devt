@@ -1637,7 +1637,11 @@ def _normalize_temporal_geometry(current: Any, history: Any = None) -> List[Dict
 
 
 def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
-    """Return a MovingPoint-style temporal geometry if a history exists."""
+    """Return a WMDR2 temporal facility-location history if available.
+
+    This is deliberately not encoded as an OGC Moving Features object. It is a
+    WMDR2-specific history with aligned ``coordinates`` and ``dates`` arrays.
+    """
     if len(entries) <= 1:
         return None
 
@@ -1653,7 +1657,7 @@ def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[
     if len(coordinates) <= 1:
         return None
 
-    return {"type": "MovingPoint", "coordinates": coordinates, "dates": dates}
+    return {"coordinates": coordinates, "dates": dates}
 
 
 def _normalize_temporal_observing_schedule(value: Any) -> List[Dict[str, Any]]:
@@ -2216,7 +2220,6 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
     payload: Dict[str, Any] = {
         "id": f"observation:{source_id}",
         "title": title,
-        "description": None,
         "time": time,
         "observedVariable": observed_variable,
         "observedGeometryType": observed_geometry_type,
@@ -2231,7 +2234,6 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
     }
 
     cleaned = _clean_none(payload)
-    cleaned["description"] = None
     reporting = _normalize_observation_reporting(*reporting_sources)
     if reporting:
         cleaned["reporting"] = reporting
@@ -2404,12 +2406,6 @@ def build_facility_feature(
         "properties": _facility_properties(facility, observations, deployments, header, source_name=source_name),
     }
     record = _finalize_wmdr2_value(_clean_none(feature))
-    properties = record.get("properties") if isinstance(record, dict) else None
-    observations_out = properties.get("observations") if isinstance(properties, dict) else None
-    if isinstance(observations_out, list):
-        for observation in observations_out:
-            if isinstance(observation, dict):
-                observation["description"] = None
     return record
 
 

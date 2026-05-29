@@ -75,7 +75,6 @@ def _valid_facility_record_feature() -> dict[str, Any]:
         },
         "time": None,
         "temporalGeometry": {
-            "type": "MovingPoint",
             "coordinates": [
                 [6.0733333333, 50.5108333333, 671],
                 [6.0734, 50.5109, 671],
@@ -147,7 +146,6 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                 {
                     "id": "observation:179",
                     "title": "domain: atmosphere; geometry: point; variable: 179 Cloud amount",
-                    "description": None,
                     "time": {
                         "interval": ["2016-04-29", ".."],
                     },
@@ -236,6 +234,18 @@ def test_temporal_geometry_belongs_at_root_not_properties() -> None:
     assert _validate(RECORD_SCHEMA, instance) == []
 
     instance["properties"]["temporalGeometry"] = deepcopy(instance["temporalGeometry"])
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+
+
+def test_temporal_geometry_does_not_use_moving_point_type() -> None:
+    instance = _valid_facility_record_feature()
+
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    instance["temporalGeometry"]["type"] = "MovingPoint"
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
@@ -389,3 +399,10 @@ def test_wmdr2_full_record_conformance_is_required() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
+
+def test_observation_description_is_not_part_of_current_core_model() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observations"][0]["description"] = None
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
