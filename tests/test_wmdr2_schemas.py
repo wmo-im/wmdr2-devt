@@ -74,6 +74,17 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             "coordinates": [6.0733333333, 50.5108333333, 671],
         },
         "time": None,
+        "temporalGeometry": {
+            "type": "MovingPoint",
+            "coordinates": [
+                [6.0733333333, 50.5108333333, 671],
+                [6.0734, 50.5109, 671],
+            ],
+            "datetimes": [
+                "2016-04-28T00:00:00Z",
+                "2024-01-17T00:00:00Z",
+            ],
+        },
         "conformsTo": [
             "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core",
             "https://schemas.wmo.int/wmdr/2.0/core/facility-record",
@@ -114,17 +125,6 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             "temporalSurfaceCover": {
                 "surfaceCover": ["grassland"],
                 "datetimes": [".."],
-            },
-            "temporalGeometry": {
-                "type": "MovingPoint",
-                "coordinates": [
-                    [6.0733333333, 50.5108333333, 671],
-                    [6.0734, 50.5109, 671],
-                ],
-                "datetimes": [
-                    "2016-04-28T00:00:00Z",
-                    "2024-01-17T00:00:00Z",
-                ],
             },
             "temporalProgramAffiliation": {
                 "programAffiliation": [
@@ -206,6 +206,18 @@ def test_record_time_allows_null_when_unknown() -> None:
     instance["time"] = None
 
     assert _validate(RECORD_SCHEMA, instance) == []
+
+
+
+
+def test_temporal_geometry_belongs_at_root_not_properties() -> None:
+    instance = _valid_facility_record_feature()
+
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    instance["properties"]["temporalGeometry"] = deepcopy(instance["temporalGeometry"])
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
 
 
 def test_record_schema_rejects_feature_collection() -> None:

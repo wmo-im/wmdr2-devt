@@ -14,8 +14,9 @@ Design choices
 - Output is a single facility-centric GeoJSON-like JSON Feature per WMDR1
   input record.
 - The Feature root remains compatible with the OGC API - Records / GeoJSON
-  envelope: ``type``, ``id``, ``geometry``, ``time``, ``conformsTo`` and
-  ``properties``.
+  envelope: ``type``, ``id``, current ``geometry``, ``time``, ``conformsTo``
+  and ``properties``. The facility location history is represented as root
+  ``temporalGeometry``.
 - WMDR2 core elements are first-class members of ``Feature.properties``.
   There is deliberately no ``properties.wmdr2`` wrapper.
 - Observations and deployments are embedded under the facility record as
@@ -2239,12 +2240,6 @@ def _facility_properties(
     normalized_deployments = list(normalized_deployments_by_id.values())
     normalized_instruments = _normalize_instruments(all_deployments, facility_id=facility_id)
 
-    temporal_geometry_entries = _normalize_temporal_geometry(
-        facility.get("geospatialLocation") or facility.get("geometry"),
-        facility.get("geospatialLocationHistory") or facility.get("geometryHistory"),
-    )
-    temporal_geometry = _temporal_geometry_extension(temporal_geometry_entries)
-
     known_facility_properties = _copy_known_facility_properties(facility)
 
     props: Dict[str, Any] = {
@@ -2270,7 +2265,6 @@ def _facility_properties(
         "keywords": keywords,
         "links": _extract_links(facility, "facility"),
         **known_facility_properties,
-        "temporalGeometry": temporal_geometry,
         "temporalProgramAffiliation": _normalize_temporal_program_affiliation(facility.get("programAffiliation")),
         "temporalReportingStatus": _normalize_reporting_status_timeline(facility.get("reportingStatus")),
         "observations": normalized_observations,
@@ -2280,8 +2274,39 @@ def _facility_properties(
     return _clean_none(props)
 
 
+def _facility_temporal_geometry_entries(facility: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Return normalized facility geometry history entries.
+
+    The entries are sorted chronologically by their begin datetime where known.
+    They are used for both the root GeoJSON ``geometry`` and the root
+    ``temporalGeometry`` history member so both remain consistent.
+    """
+    return _normalize_temporal_geometry(
+        facility.get("geospatialLocation") or facility.get("geometry"),
+        facility.get("geospatialLocationHistory") or facility.get("geometryHistory"),
+    )
+
+
+def _facility_geometry_from_entries(entries: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Return the most recent facility geometry as a GeoJSON Point.
+
+    GeoJSON Features need a root ``geometry`` member. WMDR2 keeps the full
+    location history separately in root ``temporalGeometry``; the root
+    ``geometry`` is therefore the most recent coordinate set from that history.
+    """
+    for entry in reversed(list(entries)):
+        coordinates = entry.get("coordinates")
+        if isinstance(coordinates, list) and len(coordinates) >= 2:
+            return {"type": "Point", "coordinates": coordinates}
+    return None
+
+
 def _facility_geometry(facility: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-    # Prefer current geometry/geospatialLocation; fall back to first history item.
+    """Return the current root GeoJSON geometry for a facility."""
+    entries = _facility_temporal_geometry_entries(facility)
+    if entries:
+        return _facility_geometry_from_entries(entries)
+
     for candidate in (
         facility.get("geometry"),
         facility.get("geospatialLocation"),
@@ -2332,11 +2357,13 @@ def build_facility_feature(
     deployments = deployments or []
     header = header or {}
     facility_id = _facility_identifier(facility, header)
+    temporal_geometry_entries = _facility_temporal_geometry_entries(facility)
 
     feature: Dict[str, Any] = {
         "type": "Feature",
         "id": f"facility:{_sanitize_id(facility_id)}",
-        "geometry": _facility_geometry(facility),
+        "geometry": _facility_geometry_from_entries(temporal_geometry_entries),
+        "temporalGeometry": _temporal_geometry_extension(temporal_geometry_entries),
         "time": _facility_time(facility, observations, deployments),
         "conformsTo": [OGC_RECORD_CORE_CONF, WMDR2_CORE_CONF],
         "properties": _facility_properties(facility, observations, deployments, header, source_name=source_name),

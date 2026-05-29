@@ -85,6 +85,13 @@
               "dateClosed"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalGeometry"
+            ]
+          }
         }
       ],
       "properties": {
@@ -165,9 +172,6 @@
         "temporalSurfaceCover": {
           "$ref": "wmdr2-common.schema.json#/$defs/temporalSurfaceCover"
         },
-        "temporalGeometry": {
-          "$ref": "wmdr2-common.schema.json#/$defs/temporalGeometry"
-        },
         "temporalProgramAffiliation": {
           "$ref": "wmdr2-common.schema.json#/$defs/temporalProgramAffiliation"
         },
@@ -193,6 +197,9 @@
           }
         }
       }
+    },
+    "temporalGeometry": {
+      "$ref": "wmdr2-common.schema.json#/$defs/temporalGeometry"
     }
   }
 }
