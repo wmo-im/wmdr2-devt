@@ -70,6 +70,7 @@ WMDR2_CORE_CONF = "https://schemas.wmo.int/wmdr/2.0/core/full-record"
 DEFAULT_PATTERN = "*.json"
 OUTPUT_SUFFIX = ".json"
 CANONICAL_SCHEDULE_START_DATE = "0001-01-01"
+_NULL_SENTINEL = "__WMDR2_NULL__"
 
 DEFAULT_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
     "facility": {
@@ -325,6 +326,28 @@ def _clean_none(obj: Any) -> Any:
         return [v for v in cleaned if v not in ("", [], {})]
     return obj
 
+
+
+def _restore_null_sentinel(obj: Any) -> Any:
+    """Restore explicit JSON null placeholders preserved through cleanup."""
+    if obj == _NULL_SENTINEL:
+        return None
+    if isinstance(obj, dict):
+        return {key: _restore_null_sentinel(value) for key, value in obj.items()}
+    if isinstance(obj, list):
+        return [_restore_null_sentinel(value) for value in obj]
+    return obj
+
+
+def _preserve_nulls(obj: Any) -> Any:
+    """Replace null values by a sentinel before generic cleanup removes them."""
+    if obj is None:
+        return _NULL_SENTINEL
+    if isinstance(obj, dict):
+        return {key: _preserve_nulls(value) for key, value in obj.items()}
+    if isinstance(obj, list):
+        return [_preserve_nulls(value) for value in obj]
+    return obj
 
 def _slug(text: str) -> str:
     text = text.strip().lower()
@@ -1665,6 +1688,8 @@ _OBSERVING_SCHEDULE_NESTED_KEYS = (
     "observingSchedule",
     "sampling",
     "Sampling",
+    "coverage",
+    "Coverage",
 )
 
 _OBSERVING_SCHEDULE_KEYS = {
@@ -1698,6 +1723,7 @@ _OBSERVING_DURATION_KEYS = (
     "duration",
     "periodOfSampling",
     "exposureDuration",
+    "samplingTimePeriod",
 )
 
 _OBSERVING_RECURRENCE_INTERVAL_KEYS = (
@@ -1767,6 +1793,8 @@ _OBSERVING_SCHEDULE_CONTEXT_KEYS = (
     "startMinute",
     "endMinute",
     "diurnalBaseTime",
+    "reporting",
+    "sampling",
 )
 
 _OBSERVING_SCHEDULE_WRAPPER_KEYS = (
@@ -1776,6 +1804,8 @@ _OBSERVING_SCHEDULE_WRAPPER_KEYS = (
     "ObservingSchedule",
     "sampling",
     "Sampling",
+    "coverage",
+    "Coverage",
 )
 
 
@@ -1797,28 +1827,61 @@ def _merge_schedule_context(context: Dict[str, Any], item: Dict[str, Any]) -> Di
     return merged
 
 
-def _has_observing_schedule_payload(item: Dict[str, Any]) -> bool:
-    """Return true if ``item`` contains actual observing cadence information."""
-    if _duration_from_keys(item, _OBSERVING_DURATION_KEYS):
-        return True
-    if _duration_from_keys(item, _OBSERVING_RECURRENCE_INTERVAL_KEYS):
-        return True
+_COVERAGE_KEYS = {
+    "startMonth",
+    "endMonth",
+    "startWeekday",
+    "endWeekday",
+    "startHour",
+    "endHour",
+    "startMinute",
+    "endMinute",
+    "diurnalBaseTime",
+}
 
-    # A specific daily time can define a simple daily schedule even without an
-    # explicit interval.  Full-window values such as 0..23 and 0..59 are not
-    # enough by themselves and are treated as context only.
-    start_hour = _int_or_none(item.get("startHour"))
-    end_hour = _int_or_none(item.get("endHour"))
-    start_minute = _int_or_none(item.get("startMinute"))
-    end_minute = _int_or_none(item.get("endMinute"))
-    if start_hour is not None and end_hour is not None and start_hour == end_hour:
-        return True
-    if start_minute is not None and end_minute is not None and start_minute == end_minute:
-        return True
-    if _non_empty(item.get("diurnalBaseTime")):
-        return True
+
+def _direct_duration_from_keys(raw: Dict[str, Any], keys: Sequence[str]) -> Optional[str]:
+    """Return the first ISO duration found directly on ``raw``.
+
+    Unlike ``_duration_from_keys()``, this deliberately does not look below a
+    nested ``sampling`` object.  That prevents a parent ``dataGeneration``
+    object with both ``coverage`` and ``sampling`` from being registered as a
+    second sampling-only schedule in addition to the intended coverage schedule.
+    """
+    for key in keys:
+        duration = _iso_duration(raw.get(key))
+        if duration:
+            return duration
+    return None
+
+
+def _has_direct_coverage_payload(item: Dict[str, Any]) -> bool:
+    """Return true if ``item`` itself carries coverage-window fields."""
+    return any(_non_empty(item.get(key)) for key in _COVERAGE_KEYS)
+
+
+def _has_nested_coverage_payload(item: Dict[str, Any]) -> bool:
+    """Return true if ``item`` has a nested coverage object with coverage fields."""
+    for key in ("coverage", "Coverage"):
+        nested = item.get(key)
+        if isinstance(nested, dict) and _has_direct_coverage_payload(nested):
+            return True
     return False
 
+
+def _has_observing_schedule_payload(item: Dict[str, Any]) -> bool:
+    """Return true if ``item`` contains direct schedule information."""
+    if _direct_duration_from_keys(item, _OBSERVING_DURATION_KEYS):
+        return True
+    if _direct_duration_from_keys(item, _OBSERVING_RECURRENCE_INTERVAL_KEYS):
+        return True
+
+    # WMDR1 ``coverage`` describes when data are available. Even a full window
+    # (months 1..12, weekdays 1..7, hours 0..23, minutes 0..59) is substantive
+    # because it means continuous daily availability.
+    if _has_direct_coverage_payload(item):
+        return True
+    return False
 
 def _iter_observing_schedule_candidates(value: Any) -> List[Dict[str, Any]]:
     """Return legacy observing-schedule candidate dictionaries.
@@ -1854,6 +1917,12 @@ def _iter_observing_schedule_candidates(value: Any) -> List[Dict[str, Any]]:
             for key, nested in item.items():
                 if key in {"reporting", "Reporting", "internationalReportingSchedule"}:
                     continue
+                if key in {"sampling", "Sampling"} and _has_nested_coverage_payload(item):
+                    # The nested coverage branch will inherit the sampling
+                    # object from the parent context and produce one combined
+                    # availability schedule.  Recursing into sampling as well
+                    # would create a duplicate sampling-only schedule.
+                    continue
                 if key in _OBSERVING_SCHEDULE_WRAPPER_KEYS or isinstance(nested, (dict, list)):
                     walk(nested, local_context)
 
@@ -1875,12 +1944,27 @@ def _iso_duration(value: Any) -> Optional[str]:
 
 
 def _duration_from_keys(raw: Dict[str, Any], keys: Sequence[str]) -> Optional[str]:
-    """Return the first ISO 8601 duration found under any of ``keys``."""
-    for key in keys:
-        value = raw.get(key)
-        duration = _iso_duration(value)
-        if duration:
-            return duration
+    """Return the first ISO 8601 duration found under any of ``keys``.
+
+    The value may be present directly on the candidate object or nested below
+    WMDR1/WMDR10 ``sampling``.  The nested lookup is needed because
+    ``dataGeneration`` often carries the validity/coverage context while the
+    sampling cadence is represented one level deeper.
+    """
+    search_objects: List[Dict[str, Any]] = [raw]
+    sampling = raw.get("sampling")
+    if isinstance(sampling, dict):
+        search_objects.append(sampling)
+    nested_sampling = raw.get("Sampling")
+    if isinstance(nested_sampling, dict):
+        search_objects.append(nested_sampling)
+
+    for obj in search_objects:
+        for key in keys:
+            value = obj.get(key)
+            duration = _iso_duration(value)
+            if duration:
+                return duration
     return None
 
 
@@ -1888,11 +1972,20 @@ def _all_iso_durations_from_schedule(raw: Dict[str, Any]) -> List[str]:
     """Return ISO durations from likely sampling/schedule fields in source order."""
     durations: List[str] = []
     seen: set[str] = set()
-    for key in list(_OBSERVING_DURATION_KEYS) + list(_OBSERVING_RECURRENCE_INTERVAL_KEYS):
-        duration = _iso_duration(raw.get(key))
-        if duration and duration not in seen:
-            seen.add(duration)
-            durations.append(duration)
+    search_objects: List[Dict[str, Any]] = [raw]
+    sampling = raw.get("sampling")
+    if isinstance(sampling, dict):
+        search_objects.append(sampling)
+    nested_sampling = raw.get("Sampling")
+    if isinstance(nested_sampling, dict):
+        search_objects.append(nested_sampling)
+
+    for obj in search_objects:
+        for key in list(_OBSERVING_DURATION_KEYS) + list(_OBSERVING_RECURRENCE_INTERVAL_KEYS):
+            duration = _iso_duration(obj.get(key))
+            if duration and duration not in seen:
+                seen.add(duration)
+                durations.append(duration)
     return durations
 
 
@@ -1914,6 +2007,22 @@ def _duration_seconds(duration: str) -> Optional[float]:
     return days * 86400 + hours * 3600 + minutes * 60 + seconds
 
 
+def _comparable_duration_pairs(durations: Iterable[str]) -> List[Tuple[str, float]]:
+    """Return duration/seconds pairs for durations that can be compared.
+
+    Month and year durations are valid ISO 8601 durations, but they are not
+    constant in seconds.  They are therefore excluded from min/max comparisons.
+    Keeping this narrowing in a small helper also makes the type checker see
+    that the second tuple item is always ``float``, never ``None``.
+    """
+    pairs: List[Tuple[str, float]] = []
+    for duration in durations:
+        seconds = _duration_seconds(duration)
+        if seconds is not None:
+            pairs.append((duration, seconds))
+    return pairs
+
+
 def _observing_sampling_duration(raw: Dict[str, Any]) -> Optional[str]:
     """Return the duration of one sampling/observation occurrence.
 
@@ -1926,9 +2035,7 @@ def _observing_sampling_duration(raw: Dict[str, Any]) -> Optional[str]:
     if explicit:
         return explicit
 
-    durations = _all_iso_durations_from_schedule(raw)
-    comparable = [(duration, _duration_seconds(duration)) for duration in durations]
-    comparable = [(duration, seconds) for duration, seconds in comparable if seconds is not None]
+    comparable = _comparable_duration_pairs(_all_iso_durations_from_schedule(raw))
     if len(comparable) >= 2:
         return min(comparable, key=lambda item: item[1])[0]
     return None
@@ -1942,19 +2049,16 @@ def _observing_recurrence_interval(raw: Dict[str, Any]) -> Optional[str]:
         if duration and explicit == duration:
             # If the same duration was selected as the sample duration, look for
             # a second, longer duration to use as recurrence interval.
-            comparable = [
-                (candidate, _duration_seconds(candidate))
+            comparable = _comparable_duration_pairs(
+                candidate
                 for candidate in _all_iso_durations_from_schedule(raw)
                 if candidate != duration
-            ]
-            comparable = [item for item in comparable if item[1] is not None]
+            )
             if comparable:
                 return max(comparable, key=lambda item: item[1])[0]
         return explicit
 
-    durations = _all_iso_durations_from_schedule(raw)
-    comparable = [(duration, _duration_seconds(duration)) for duration in durations]
-    comparable = [(duration, seconds) for duration, seconds in comparable if seconds is not None]
+    comparable = _comparable_duration_pairs(_all_iso_durations_from_schedule(raw))
     if len(comparable) >= 2:
         return max(comparable, key=lambda item: item[1])[0]
     return None
@@ -1988,7 +2092,13 @@ def _bounded_range(start: Any, end: Any, *, minimum: int, maximum: int) -> List[
 
 
 def _apply_schedule_windows_to_rule(rule: Dict[str, Any], raw: Dict[str, Any]) -> Dict[str, Any]:
-    """Add JSCalendar BYxxx constraints from WMDR1 schedule windows."""
+    """Add JSCalendar BYxxx constraints from WMDR1 coverage windows.
+
+    Month and weekday windows constrain recurrence. Hour/minute windows are
+    represented by the Event ``start`` and ``duration`` because the coverage
+    describes the daily data-availability window, not a set of instantaneous
+    BYHOUR/BYMINUTE occurrences.
+    """
     rule = dict(rule)
 
     months = _bounded_range(raw.get("startMonth"), raw.get("endMonth"), minimum=1, maximum=12)
@@ -2001,20 +2111,23 @@ def _apply_schedule_windows_to_rule(rule: Dict[str, Any], raw: Dict[str, Any]) -
         day_names = {1: "mo", 2: "tu", 3: "we", 4: "th", 5: "fr", 6: "sa", 7: "su"}
         rule["byDay"] = [day_names[item] for item in weekdays]
 
-    hours = _bounded_range(raw.get("startHour"), raw.get("endHour"), minimum=0, maximum=23)
-    if hours and hours != list(range(0, 24)):
-        rule["byHour"] = hours
-
-    minutes = _bounded_range(raw.get("startMinute"), raw.get("endMinute"), minimum=0, maximum=59)
-    if minutes and minutes != list(range(0, 60)):
-        rule["byMinute"] = minutes
-
     return rule
-
 
 def _recurrence_rule_from_duration(duration: Optional[str], *, has_daily_time_hint: bool = False) -> Dict[str, Any]:
     """Build a simple JSCalendar recurrence rule from a duration hint."""
     if duration:
+        match = re.fullmatch(r"PT(\d+(?:\.\d+)?)S", duration)
+        if match:
+            seconds_raw = float(match.group(1))
+            # JSCalendar recurrence intervals are integers.  Keep sub-second
+            # sampling as a secondly recurrence and carry the exact sampling
+            # duration in the Event duration / WMDR extension payload.
+            interval = max(1, int(round(seconds_raw)))
+            rule: Dict[str, Any] = {"@type": "RecurrenceRule", "frequency": "secondly"}
+            if interval != 1:
+                rule["interval"] = interval
+            return rule
+
         match = re.fullmatch(r"PT(\d+)H", duration)
         if match:
             interval = int(match.group(1))
@@ -2068,17 +2181,112 @@ def _schedule_effective_date(raw: Dict[str, Any]) -> str:
     )
 
 
+def _normalize_diurnal_time(value: Any) -> Optional[str]:
+    """Normalize a WMDR diurnalBaseTime to HH:MM:SS without timezone suffix."""
+    if isinstance(value, dict):
+        value = _first_non_empty(value.get("value"), value.get("#text"), value.get("href"))
+    if value in (None, "", [], {}):
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    text = text.rstrip("Z")
+    match = re.fullmatch(r"(?P<h>\d{1,2})(?::(?P<m>\d{1,2}))?(?::(?P<s>\d{1,2}))?", text)
+    if not match:
+        return text
+    h = max(0, min(23, int(match.group("h"))))
+    m = max(0, min(59, int(match.group("m") or 0)))
+    sec = max(0, min(59, int(match.group("s") or 0)))
+    return f"{h:02d}:{m:02d}:{sec:02d}"
+
+
+def _format_minutes_as_duration(minutes: int) -> str:
+    """Format a positive minute count as an ISO 8601 duration."""
+    minutes = max(1, minutes)
+    if minutes % 1440 == 0:
+        days = minutes // 1440
+        return f"P{days}D"
+    hours, mins = divmod(minutes, 60)
+    if hours and mins:
+        return f"PT{hours}H{mins}M"
+    if hours:
+        return f"PT{hours}H"
+    return f"PT{mins}M"
+
+
+def _coverage_duration(raw: Dict[str, Any]) -> Optional[str]:
+    """Return the Event duration implied by a WMDR1 coverage window."""
+    start_hour = _int_or_none(raw.get("startHour"))
+    end_hour = _int_or_none(raw.get("endHour"))
+    start_minute = _int_or_none(raw.get("startMinute"))
+    end_minute = _int_or_none(raw.get("endMinute"))
+    if start_hour is None and end_hour is None and start_minute is None and end_minute is None:
+        return None
+
+    start_hour = 0 if start_hour is None else max(0, min(23, start_hour))
+    end_hour = start_hour if end_hour is None else max(0, min(23, end_hour))
+    start_minute = 0 if start_minute is None else max(0, min(59, start_minute))
+    end_minute = start_minute if end_minute is None else max(0, min(59, end_minute))
+
+    start_total = start_hour * 60 + start_minute
+    end_total = end_hour * 60 + end_minute
+    if end_total < start_total:
+        duration_minutes = (24 * 60 - start_total) + end_total + 1
+    else:
+        duration_minutes = end_total - start_total + 1
+    return _format_minutes_as_duration(duration_minutes)
+
+
+def _reporting_temporal_interval(raw: Dict[str, Any]) -> Optional[str]:
+    """Return the reporting interval from inherited reporting context."""
+    reporting = raw.get("reporting")
+    if isinstance(reporting, dict):
+        duration = _iso_duration(reporting.get("temporalReportingInterval"))
+        if duration:
+            return duration
+    return None
+
+
+def _sampling_value(raw: Dict[str, Any]) -> Any:
+    """Return the WMDR1 sampling value for the WMDR2 schedule extension."""
+    sampling = raw.get("sampling")
+    if sampling in (None, "", [], {}):
+        return _NULL_SENTINEL
+    if isinstance(sampling, dict):
+        return _preserve_nulls(sampling)
+    return sampling
+
+
+def _archiving_extension(raw: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Return WMDR2 archiving metadata derived from reporting context.
+
+    WMDR1 does not always provide a dedicated archive aggregation object.  When
+    it is absent, the reporting temporal interval is the best available default
+    for the archived aggregate temporal resolution.
+    """
+    temporal_resolution = _reporting_temporal_interval(raw)
+    if not temporal_resolution:
+        return None
+    return {"temporalResolution": temporal_resolution}
+
+
+def _schedule_diurnal_base_time(raw: Dict[str, Any]) -> Optional[str]:
+    """Return the normalized WMDR diurnal base time, if present."""
+    return _normalize_diurnal_time(raw.get("diurnalBaseTime"))
+
+
+
 def _schedule_start_datetime(raw: Dict[str, Any]) -> str:
     """Return the canonical JSCalendar LocalDateTime start value.
 
-    The JSCalendar ``Event.start`` member is mandatory and anchors recurrence
-    expansion.  In WMDR2, reusable schedule objects describe a pattern, while
-    deployment-specific validity is represented by
-    ``deployment.temporalObservingSchedule.dates``.  To make otherwise identical
-    schedules reusable across deployments that began on different dates, the
-    date part is a documented canonical anchor.  The time-of-day still comes
-    from the source schedule, when available.
+    The date component is the WMDR2 canonical schedule anchor.  The time
+    component comes from ``coverage.diurnalBaseTime`` when available, otherwise
+    from the coverage start hour/minute, otherwise midnight UTC.
     """
+    diurnal = _normalize_diurnal_time(raw.get("diurnalBaseTime"))
+    if diurnal:
+        return f"{CANONICAL_SCHEDULE_START_DATE}T{diurnal}"
+
     hour_raw = _first_non_empty(raw.get("startHour"), raw.get("hour"))
     minute_raw = _first_non_empty(raw.get("startMinute"), raw.get("minute"))
 
@@ -2091,7 +2299,6 @@ def _schedule_start_datetime(raw: Dict[str, Any]) -> str:
     hour = max(0, min(23, as_int(hour_raw, 0)))
     minute = max(0, min(59, as_int(minute_raw, 0)))
     return f"{CANONICAL_SCHEDULE_START_DATE}T{hour:02d}:{minute:02d}:00"
-
 
 def _schedule_uid_from_event(event_without_uid: Dict[str, Any]) -> str:
     """Return a reusable JSCalendar UID derived only from the schedule pattern."""
@@ -2113,40 +2320,71 @@ def _jscalendar_observing_schedule(
     index: int,
     time_zone: str,
 ) -> Optional[Dict[str, Any]]:
-    """Convert one legacy observing-schedule fragment into a JSCalendar Event."""
+    """Convert one WMDR1 data-generation coverage fragment into JSCalendar.
+
+    WMDR1 ``dataGeneration/coverage`` describes *data availability*, not the
+    exact sampling cadence.  If a coverage window is available, the JSCalendar
+    Event represents that availability window: the Event duration comes from the
+    coverage window and the recurrence is daily, optionally constrained by
+    month/weekday/hour/minute coverage fields.  Sampling cadence remains WMDR2
+    extension metadata under ``wmo.int:sampling``.
+
+    If no coverage window is available, the fallback Event represents the
+    sampling occurrence itself and may use the sampling interval as recurrence.
+    """
     del facility_id, context, index
     normalized = _normalize_temporal_observing_schedule(raw)
     if normalized == [{"interval": "unknown"}]:
         return None
 
     start = _schedule_start_datetime(raw)
+    coverage_duration = _coverage_duration(raw)
+    sampling_duration = _observing_sampling_duration(raw)
 
-    duration = _observing_sampling_duration(raw) or "PT0S"
-    recurrence_interval = _observing_recurrence_interval(raw)
-    has_daily_time_hint = _non_empty(raw.get("startHour")) or _non_empty(raw.get("startMinute"))
-    recurrence_rule = _recurrence_rule_from_duration(
-        recurrence_interval,
-        has_daily_time_hint=has_daily_time_hint,
-    )
+    if coverage_duration is not None:
+        duration = coverage_duration
+        # Coverage describes an availability window that recurs by day.  Do not
+        # let a nested sampling interval such as PT2S turn the availability
+        # window into a secondly recurring Event; keep that cadence in
+        # ``wmo.int:sampling`` instead.
+        recurrence_rule: Dict[str, Any] = {"@type": "RecurrenceRule", "frequency": "daily"}
+    else:
+        duration = sampling_duration or "PT0S"
+        recurrence_rule = _recurrence_rule_from_duration(
+            _observing_recurrence_interval(raw),
+            has_daily_time_hint=(
+                _non_empty(raw.get("diurnalBaseTime"))
+                or _non_empty(raw.get("startHour"))
+                or _non_empty(raw.get("startMinute"))
+            ),
+        )
+
     recurrence_rule = _apply_schedule_windows_to_rule(recurrence_rule, raw)
 
+    diurnal = _schedule_diurnal_base_time(raw) or "00:00:00"
     event_without_uid: Dict[str, Any] = {
         "@type": "Event",
         "start": start,
-        "timeZone": time_zone,
+        "timeZone": time_zone or "UTC",
         "duration": duration,
         "recurrenceRules": [recurrence_rule],
+        "wmo.int:diurnalBaseTime": diurnal,
+        "wmo.int:sampling": _sampling_value(raw),
+        "wmo.int:archiving": _archiving_extension(raw),
     }
+    event_without_uid = _preserve_nulls(event_without_uid)
     event: Dict[str, Any] = {
         "@type": "Event",
         "uid": _schedule_uid_from_event(_clean_none(event_without_uid)),
         "start": start,
-        "timeZone": time_zone,
+        "timeZone": time_zone or "UTC",
         "duration": duration,
         "recurrenceRules": [recurrence_rule],
+        "wmo.int:diurnalBaseTime": diurnal,
+        "wmo.int:sampling": _sampling_value(raw),
+        "wmo.int:archiving": _archiving_extension(raw),
     }
-    return _clean_none(event)
-
+    return _clean_none(_preserve_nulls(event))
 
 def _register_observing_schedule_refs(
     sources: Sequence[Any],
@@ -2155,10 +2393,17 @@ def _register_observing_schedule_refs(
     facility_id: str,
     context: str,
     time_zone: str = "UTC",
-) -> Optional[Dict[str, List[str]]]:
-    """Register JSCalendar schedules and return a temporal reference object."""
+) -> Optional[Dict[str, Any]]:
+    """Register reusable schedule entities and return dated deployment refs.
+
+    The returned arrays are aligned.  Exact duplicate ``(schedule uid, date)``
+    pairs are suppressed while preserving source order; repeated use of the
+    same schedule on a later date is still allowed so a real history can be
+    represented.
+    """
     refs: List[str] = []
     dates: List[str] = []
+    seen_refs: set[Tuple[str, str]] = set()
     event_index = 0
 
     for source in sources:
@@ -2176,13 +2421,20 @@ def _register_observing_schedule_refs(
             uid = event.get("uid")
             if not isinstance(uid, str) or not uid:
                 continue
+            effective_date = _schedule_effective_date(raw)
+            ref_key = (uid, effective_date)
+            if ref_key in seen_refs:
+                continue
+            seen_refs.add(ref_key)
             schedule_registry.setdefault(uid, event)
             refs.append(uid)
-            dates.append(_schedule_effective_date(raw))
+            dates.append(effective_date)
 
     if not refs:
         return None
+
     return {"observingSchedule": refs, "dates": dates}
+
 
 
 def _normalize_temporal_reporting_schedule(value: Any) -> List[Dict[str, Any]]:
@@ -2225,7 +2477,7 @@ def _normalize_temporal_reporting_schedule(value: Any) -> List[Dict[str, Any]]:
 
         if record:
             out.append(record)
-    return _uniq_dicts(_clean_none(out))
+    return _uniq_dicts(out)
 
 
 def _derive_observation_time(observation: Dict[str, Any], deployments: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
@@ -2556,7 +2808,7 @@ def _normalize_deployment(
     contacts, _ = _collect_contacts(raw.get("contact"), raw.get("contacts"), raw.get("responsibleParty"))
 
     observing_schedule = _register_observing_schedule_refs(
-        [raw.get("dataGeneration"), raw.get("sampling"), raw.get("observingSchedule")],
+        [raw.get("dataGeneration"), raw.get("coverage"), raw.get("sampling"), raw.get("observingSchedule")],
         schedule_registry=schedule_registry,
         facility_id=facility_id,
         context=record_id,
@@ -2571,7 +2823,6 @@ def _normalize_deployment(
         "observingMethod": raw.get("observingMethod"),
         "instrument": _instrument_refs_for_deployment(raw, facility_id=facility_id),
         "serialNumbers": _deployment_serial_numbers(raw),
-        "temporalObservingSchedule": observing_schedule,
         "exposure": raw.get("exposure"),
         "representativeness": raw.get("representativeness"),
         "localReferenceSurface": raw.get("localReferenceSurface"),
@@ -2580,7 +2831,13 @@ def _normalize_deployment(
         "keywords": _keywords_from_values(_collect_discovery_values("deployment", raw, "keywords")),
         "links": _extract_links(raw, "deployment"),
     }
-    return _clean_none(payload)
+    cleaned = _clean_none(payload)
+    if observing_schedule:
+        # Preserve None placeholders in aligned arrays such as
+        # temporalObservingSchedule.diurnalBaseTime.  _clean_none() removes
+        # nulls from lists, so this object is attached after generic cleanup.
+        cleaned["temporalObservingSchedule"] = observing_schedule
+    return cleaned
 
 
 
@@ -2612,7 +2869,7 @@ def _normalize_observation_reporting(*sources: Any) -> Optional[Dict[str, List[A
                 if key == "uom" and _is_unknown_token(value):
                     continue
                 if _non_empty(value) or isinstance(value, bool):
-                    record[key] = value
+                    record[key] = _preserve_nulls(value)
 
             if record:
                 records.append(record)
@@ -2625,6 +2882,8 @@ def _normalize_observation_reporting(*sources: Any) -> Optional[Dict[str, List[A
         "internationalExchange",
         "temporalReportingInterval",
         "uom",
+        "dataPolicy",
+        "levelOfData",
         "referenceDatum",
     ]
     extra_keys = sorted(
@@ -2918,7 +3177,7 @@ def build_facility_feature(
         "conformsTo": [OGC_RECORD_CORE_CONF, WMDR2_CORE_CONF],
         "properties": _facility_properties(facility, observations, deployments, header, source_name=source_name),
     }
-    record = _finalize_wmdr2_value(_clean_none(feature))
+    record = _restore_null_sentinel(_finalize_wmdr2_value(_clean_none(feature)))
     return record
 
 

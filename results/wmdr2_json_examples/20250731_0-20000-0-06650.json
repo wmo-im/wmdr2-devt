@@ -111,16 +111,57 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_df3ec3dc94b9",
-        "start": "0001-01-01T00:00:00",
+        "uid": "schedule_188cc2a2d212",
+        "start": "0001-01-01T06:00:00",
         "timeZone": "UTC",
-        "duration": "PT0S",
+        "duration": "P1D",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
             "frequency": "daily"
           }
-        ]
+        ],
+        "wmo.int:diurnalBaseTime": "06:00:00",
+        "wmo.int:sampling": null,
+        "wmo.int:archiving": {
+          "temporalResolution": "PT6H"
+        }
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_4db7d1806c57",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": null,
+        "wmo.int:archiving": {
+          "temporalResolution": "PT1H"
+        }
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_823731804938",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": null,
+        "wmo.int:archiving": {
+          "temporalResolution": "PT10M"
+        }
       }
     ],
     "observations": [
@@ -155,6 +196,15 @@
           ],
           "uom": [
             "percent"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -189,6 +239,15 @@
           ],
           "uom": [
             "percent"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -223,6 +282,15 @@
           ],
           "uom": [
             "percent"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -257,6 +325,15 @@
           ],
           "uom": [
             "percent"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -291,6 +368,15 @@
           ],
           "uom": [
             "percent"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -328,6 +414,22 @@
           "uom": [
             null,
             "degC"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            },
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -365,6 +467,22 @@
           "uom": [
             null,
             "degC"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            },
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -399,6 +517,15 @@
           ],
           "uom": [
             "degC"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -433,6 +560,15 @@
           ],
           "uom": [
             "degC"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -467,6 +603,15 @@
           ],
           "uom": [
             "degC"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -501,6 +646,15 @@
           ],
           "uom": [
             "degC"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -535,6 +689,15 @@
           ],
           "uom": [
             "degC"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       }
@@ -558,19 +721,19 @@
             "1998-03-10"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1998-03-10"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00004992",
           "humanObservation"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_188cc2a2d212"
+          ],
+          "dates": [
+            "1998-03-10"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-179-dg3-inc4-depl",
@@ -590,19 +753,19 @@
             "1981-01-01"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1981-01-01"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00004991",
           "humanObservation"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_188cc2a2d212"
+          ],
+          "dates": [
+            "1981-01-01"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-179-dg3-inc3-depl",
@@ -622,19 +785,19 @@
             "1970-09-25"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1970-09-25"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00004990",
           "humanObservation"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_188cc2a2d212"
+          ],
+          "dates": [
+            "1970-09-25"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-179-dg3-inc2-depl",
@@ -654,19 +817,19 @@
             "1919-05-01"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1919-05-01"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00004989",
           "humanObservation"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_188cc2a2d212"
+          ],
+          "dates": [
+            "1919-05-01"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-179-dg3-inc1-depl",
@@ -686,19 +849,19 @@
             "1864-01-01"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1864-01-01"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00004988",
           "humanObservation"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_188cc2a2d212"
+          ],
+          "dates": [
+            "1864-01-01"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-224-dg5-inc2-depl",
@@ -718,19 +881,21 @@
             "2006-06-12"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "2006-06-12"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00005010",
           "automaticReading"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_4db7d1806c57",
+            "schedule_823731804938"
+          ],
+          "dates": [
+            "2006-06-12",
+            "2006-06-12"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-224-dg5-inc7-depl",
@@ -750,19 +915,21 @@
             "2006-06-12"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "2006-06-12"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00005015",
           "automaticReading"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_4db7d1806c57",
+            "schedule_823731804938"
+          ],
+          "dates": [
+            "2006-06-12",
+            "2006-06-12"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-224-dg5-inc1-depl",
@@ -782,19 +949,19 @@
             "1981-01-01"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1981-01-01"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00005009",
           "automaticReading"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_823731804938"
+          ],
+          "dates": [
+            "1981-01-01"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-224-dg5-inc6-depl",
@@ -814,19 +981,19 @@
             "1981-01-01"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1981-01-01"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00005014",
           "automaticReading"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_823731804938"
+          ],
+          "dates": [
+            "1981-01-01"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-224-dg3-inc5-depl",
@@ -846,19 +1013,19 @@
             "1970-09-25"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1970-09-25"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00005013",
           "manualReading"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_188cc2a2d212"
+          ],
+          "dates": [
+            "1970-09-25"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-224-dg3-inc4-depl",
@@ -878,19 +1045,19 @@
             "1919-05-01"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1919-05-01"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00005012",
           "manualReading"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_188cc2a2d212"
+          ],
+          "dates": [
+            "1919-05-01"
+          ]
+        }
       },
       {
         "id": "deployment:id-metch-68-224-dg3-inc3-depl",
@@ -910,19 +1077,19 @@
             "1864-01-01"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1864-01-01"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "id-metch-sn-00005011",
           "manualReading"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_188cc2a2d212"
+          ],
+          "dates": [
+            "1864-01-01"
+          ]
+        }
       }
     ]
   }

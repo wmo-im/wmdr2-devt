@@ -214,16 +214,43 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_df3ec3dc94b9",
+        "uid": "schedule_7fac2083fdcb",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "PT0S",
+        "duration": "P1D",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
             "frequency": "daily"
           }
-        ]
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": null,
+        "wmo.int:archiving": {
+          "temporalResolution": "P1M"
+        }
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_c559aaa5a7ba",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": {
+          "samplingStrategy": "continuous",
+          "temporalSamplingInterval": "PT2S",
+          "samplingTimePeriod": "PT2S"
+        },
+        "wmo.int:archiving": {
+          "temporalResolution": "PT1H"
+        }
       }
     ],
     "observations": [
@@ -261,7 +288,12 @@
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "noLimitation"
+              "dataPolicy": "noLimitation",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ],
           "levelOfData": [
@@ -348,6 +380,15 @@
           ],
           "uom": [
             "W.m-2"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -385,7 +426,12 @@
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "noLimitation"
+              "dataPolicy": "noLimitation",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ],
           "numberOfObservationsInReportingInterval": [
@@ -467,18 +513,18 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": 78,
+        "keywords": [
+          "automaticReading",
+          "78"
+        ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_df3ec3dc94b9"
+            "schedule_7fac2083fdcb"
           ],
           "dates": [
             "1982-03-13"
           ]
-        },
-        "keywords": [
-          "automaticReading",
-          "78"
-        ]
+        }
       },
       {
         "id": "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197",
@@ -529,16 +575,6 @@
         "instrument": [
           "instrument:a411ef5c36ff"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9",
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "1993-01-19",
-            "1993-01-19"
-          ]
-        },
         "exposure": "class1",
         "representativeness": "toposcale",
         "localReferenceSurface": "localGround",
@@ -559,7 +595,15 @@
           "CM21",
           "automaticReading",
           "266"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_c559aaa5a7ba"
+          ],
+          "dates": [
+            "1993-01-19"
+          ]
+        }
       }
     ],
     "instruments": [

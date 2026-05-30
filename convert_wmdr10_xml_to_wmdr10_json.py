@@ -3,8 +3,8 @@
 Convert WMDR 1.0 XML files into a lean WMDR10 JSON representation.
 
 The heavy XML -> simplified JSON conversion is still done by ``WMDR10``.  This
-script applies a conservative stage-1 normalization pass before exporting the
-JSON files used by the downstream WMDR10 -> WMDR2 converter.
+script applies a conservative stage-1 normalization pass before exporting one
+full-record JSON file per XML file for the downstream WMDR10 -> WMDR2 converter.
 
 Stage-1 normalization currently does the following:
 
@@ -28,7 +28,7 @@ Stage-1 normalization currently does the following:
 
 This lets XML-producing systems keep stable deployment/contact/equipment IDs
 into WMDR2 without carrying arbitrary ``@gml:id`` fields through the whole JSON
-pipeline.
+pipeline. Partial/debug exports are intentionally not produced.
 """
 
 from __future__ import annotations
@@ -401,15 +401,9 @@ def main(argv: Sequence[str] | None = None) -> None:
         wmdr10 = WMDR10(xml_file)
         wmdr10.data = normalize_stage1_payload(wmdr10.data)
 
-        wmdr10.export(path=target_path / xml_file.name.replace(".xml", ""))
-        print(f"{wmdr10.export(parts='header', path=target_path / xml_file.name)} created.")
-        print(f"{wmdr10.export(parts='facility', path=target_path / xml_file.name)} created.")
-        print(f"{wmdr10.export(parts='observations', path=target_path / xml_file.name)} created.")
-        print(f"{wmdr10.export(parts='deployments', path=target_path / xml_file.name)} created.")
-        print(f"{wmdr10.export(parts='observations', index=1, path=target_path / xml_file.name)} created.")
-        print(f"{wmdr10.export(parts='observations', index=5, path=target_path / xml_file.name)} created.")
-        print(f"{wmdr10.export(parts='deployments', index=1, path=target_path / xml_file.name)} created.")
-        print(f"{wmdr10.export(parts='deployments', index=3, path=target_path / xml_file.name)} created.")
+        output_base = target_path / xml_file.with_suffix("").name
+        output_path = wmdr10.export(path=output_base)
+        print(f"{output_path} created.")
         print(f"Finished processing '{xml_file.name}'.")
 
 

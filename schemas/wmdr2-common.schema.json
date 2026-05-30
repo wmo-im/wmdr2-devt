@@ -534,6 +534,29 @@
               "null"
             ]
           }
+        },
+        "dataPolicy": {
+          "type": "array",
+          "items": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "levelOfData": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/codeValue"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
         }
       }
     },
@@ -896,6 +919,47 @@
             "type": "object",
             "additionalProperties": true
           }
+        },
+        "wmo.int:diurnalBaseTime": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "wmo.int:sampling": {
+          "type": [
+            "string",
+            "number",
+            "object",
+            "null"
+          ]
+        },
+        "wmo.int:archiving": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "temporalResolution": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^(P|$)"
+            },
+            "spatialResolution": {
+              "description": "Optional spatial resolution. Prefer numeric metres when available, following the dcat:spatialResolutionInMeters convention.",
+              "type": [
+                "number",
+                "string",
+                "object",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "propertyNames": {
+        "not": {
+          "pattern": "^wmdr2\\.wmo\\.int:"
         }
       }
     },

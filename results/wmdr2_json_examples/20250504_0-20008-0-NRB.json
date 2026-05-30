@@ -304,10 +304,10 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_51ace24ef23b",
-        "start": "0001-01-01T09:00:00",
+        "uid": "schedule_f524bc0ede45",
+        "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "PT0S",
+        "duration": "PT7H",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
@@ -318,45 +318,139 @@
               "we",
               "th",
               "fr"
-            ],
-            "byHour": [
-              9,
-              10,
-              11,
-              12,
-              13,
-              14,
-              15
             ]
           }
-        ]
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": null,
+        "wmo.int:archiving": {
+          "temporalResolution": "P11M25DT10H"
+        }
       },
       {
         "@type": "Event",
-        "uid": "schedule_df3ec3dc94b9",
+        "uid": "schedule_6aeea094e8f2",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "PT0S",
+        "duration": "PT7H",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily",
+            "byDay": [
+              "mo",
+              "tu",
+              "we",
+              "th",
+              "fr"
+            ]
+          }
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": null,
+        "wmo.int:archiving": {
+          "temporalResolution": "PT1H"
+        }
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_65cc30f4a1e3",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
             "frequency": "daily"
           }
-        ]
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": null,
+        "wmo.int:archiving": {
+          "temporalResolution": "P1D"
+        }
       },
       {
         "@type": "Event",
-        "uid": "schedule_9ce72ceae467",
+        "uid": "schedule_4db7d1806c57",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "PT0S",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": null,
+        "wmo.int:archiving": {
+          "temporalResolution": "PT1H"
+        }
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_7cdbb9047e2a",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT10M",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
             "frequency": "hourly",
             "interval": 12
           }
-        ]
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": {
+          "samplingProcedure": "inapplicable",
+          "temporalSamplingInterval": "PT12H",
+          "samplingTimePeriod": "PT10M"
+        },
+        "wmo.int:archiving": {
+          "temporalResolution": "P12D"
+        }
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_d76876cb49f8",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": {
+          "samplingStrategy": "continuous",
+          "temporalSamplingInterval": "PT5S"
+        },
+        "wmo.int:archiving": {
+          "temporalResolution": "PT1H"
+        }
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_d47c362c67b6",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": {
+          "samplingStrategy": "continuous"
+        },
+        "wmo.int:archiving": {
+          "temporalResolution": "P1D"
+        }
       }
     ],
     "observations": [
@@ -424,7 +518,12 @@
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "noLimitation"
+              "dataPolicy": "noLimitation",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ],
           "levelOfData": [
@@ -469,16 +568,21 @@
           "uom": [
             "DU"
           ],
-          "dataFormat": [
-            "ascii"
-          ],
           "dataPolicy": [
             {
-              "dataPolicy": "WMOEssential"
+              "dataPolicy": "WMOEssential",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ],
           "levelOfData": [
             "level1"
+          ],
+          "dataFormat": [
+            "ascii"
           ],
           "officialStatus": [
             true
@@ -524,7 +628,12 @@
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "noLimitation"
+              "dataPolicy": "noLimitation",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ],
           "levelOfData": [
@@ -568,7 +677,12 @@
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "noLimitation"
+              "dataPolicy": "noLimitation",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ],
           "levelOfData": [
@@ -612,7 +726,12 @@
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "noLimitation"
+              "dataPolicy": "noLimitation",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ],
           "levelOfData": [
@@ -659,7 +778,12 @@
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "WMOAdditional"
+              "dataPolicy": "WMOAdditional",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ],
           "levelOfData": [
@@ -703,6 +827,15 @@
         "reporting": {
           "internationalExchange": [
             false
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -740,7 +873,12 @@
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "WMOEssential"
+              "dataPolicy": "WMOEssential",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ]
         }
@@ -776,7 +914,12 @@
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "noLimitation"
+              "dataPolicy": "noLimitation",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ]
         }
@@ -834,14 +977,6 @@
             "2005-05-01"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_51ace24ef23b"
-          ],
-          "dates": [
-            "2005-05-01"
-          ]
-        },
         "exposure": "class1",
         "keywords": [
           "R&J Beck London",
@@ -849,7 +984,15 @@
           "18",
           "manualReading",
           "106"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_f524bc0ede45"
+          ],
+          "dates": [
+            "2005-05-01"
+          ]
+        }
       },
       {
         "id": "deployment:id_c1094afe-39a2-4156-b2ac-3544fb9ae211",
@@ -861,17 +1004,17 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 106,
+        "keywords": [
+          "106"
+        ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_51ace24ef23b"
+            "schedule_6aeea094e8f2"
           ],
           "dates": [
             "1984-04-19"
           ]
-        },
-        "keywords": [
-          "106"
-        ]
+        }
       },
       {
         "id": "deployment:id_e3db3fbf-3ec2-45f3-ad5a-50667fa0a8d9",
@@ -883,17 +1026,17 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 107,
+        "keywords": [
+          "107"
+        ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_df3ec3dc94b9"
+            "schedule_65cc30f4a1e3"
           ],
           "dates": [
             "2010-06-09"
           ]
-        },
-        "keywords": [
-          "107"
-        ]
+        }
       },
       {
         "id": "deployment:id_9eb29f52-8033-4951-85bc-211f84d36894",
@@ -905,17 +1048,17 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 107,
+        "keywords": [
+          "107"
+        ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_df3ec3dc94b9"
+            "schedule_65cc30f4a1e3"
           ],
           "dates": [
             "1998-09-23"
           ]
-        },
-        "keywords": [
-          "107"
-        ]
+        }
       },
       {
         "id": "deployment:id_1f189462-8091-48cf-b052-e09fb3dc829b",
@@ -927,17 +1070,17 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 107,
+        "keywords": [
+          "107"
+        ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_df3ec3dc94b9"
+            "schedule_4db7d1806c57"
           ],
           "dates": [
             "1998-01-07"
           ]
-        },
-        "keywords": [
-          "107"
-        ]
+        }
       },
       {
         "id": "deployment:id_7fac1804-438a-4ccf-b215-1148ddf23207",
@@ -949,19 +1092,19 @@
         },
         "sourceOfObservation": "manualReading",
         "observingMethod": 106,
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_9ce72ceae467"
-          ],
-          "dates": [
-            "1984-05-10"
-          ]
-        },
         "representativeness": "mesoscale",
         "keywords": [
           "manualReading",
           "106"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_7cdbb9047e2a"
+          ],
+          "dates": [
+            "1984-05-10"
+          ]
+        }
       },
       {
         "id": "deployment:id_96ed967a-b01b-4769-8983-54b3655039e7",
@@ -1015,14 +1158,6 @@
             "2025-05-03"
           ]
         },
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "2025-05-03"
-          ]
-        },
         "exposure": "class3",
         "representativeness": "toposcale",
         "localReferenceSurface": "roofTerrace",
@@ -1042,7 +1177,15 @@
           "Fidas 6111",
           "automaticReading",
           "240"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_d76876cb49f8"
+          ],
+          "dates": [
+            "2025-05-03"
+          ]
+        }
       },
       {
         "id": "deployment:id_99c1c0c5-0006-4b3d-9c64-a946e1a07aab",
@@ -1056,7 +1199,7 @@
         "observingMethod": "unknown",
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_df3ec3dc94b9"
+            "schedule_d47c362c67b6"
           ],
           "dates": [
             "1969-08-01"

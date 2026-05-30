@@ -1,112 +1,272 @@
-from importlib.util import module_from_spec, spec_from_file_location
+from __future__ import annotations
+
+import importlib.util
 from pathlib import Path
-
-import pytest
-
-MODULE_PATH = Path('convert_wmdr10_json_to_wmdr2_geojson.py')
-spec = spec_from_file_location('conv_v7', MODULE_PATH)
-module = module_from_spec(spec)
-assert spec and spec.loader
-spec.loader.exec_module(module)
+from types import ModuleType
+from typing import Any
 
 
-@pytest.fixture(autouse=True)
-def reset_module_state():
-    """Reset mutable module globals between tests."""
-    old_labels = dict(module.CODE_LIST_LABELS)
-    old_policy = {
-        key: {bucket: list(values) for bucket, values in buckets.items()}
-        for key, buckets in module.DISCOVERY_POLICY.items()
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = ROOT / "convert_wmdr10_json_to_wmdr2_json.py"
+
+OBSERVED_179 = "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179"
+OBSERVED_12006 = "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
+GEOMETRY_POINT = "http://codes.wmo.int/wmdr/Geometry/point"
+
+
+def _load_converter() -> ModuleType:
+    spec = importlib.util.spec_from_file_location("convert_wmdr10_json_to_wmdr2_json", SCRIPT)
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+module = _load_converter()
+
+
+def _minimal_facility() -> dict[str, Any]:
+    return {
+        "identifier": "0-TEST",
+        "name": "TEST",
+        "geospatialLocation": "46 7 100",
     }
-    try:
-        module.CODE_LIST_LABELS.clear()
-        module.DISCOVERY_POLICY.clear()
-        module.DISCOVERY_POLICY.update({
-            key: {bucket: list(values) for bucket, values in buckets.items()}
-            for key, buckets in module.DEFAULT_DISCOVERY_POLICY.items()
-        })
-        yield
-    finally:
-        module.CODE_LIST_LABELS.clear()
-        module.CODE_LIST_LABELS.update(old_labels)
-        module.DISCOVERY_POLICY.clear()
-        module.DISCOVERY_POLICY.update(old_policy)
 
 
-OBSERVED_179 = 'http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179'
+def _data_generation_with_coverage_and_reporting() -> dict[str, Any]:
+    return {
+        "beginPosition": "2020-01-01T00:00:00Z",
+        "sampling": {
+            "samplingStrategy": "continuous",
+            "temporalSamplingInterval": "PT2S",
+            "samplingTimePeriod": "PT2S",
+        },
+        "reporting": {
+            "internationalExchange": "true",
+            "temporalReportingInterval": "PT1H",
+            "uom": "http://codes.wmo.int/wmdr/unit/mm",
+            "dataPolicy": {
+                "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
+                "attribution": {"originator": {"role": None}},
+            },
+            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1",
+        },
+        "coverage": {
+            "startMonth": "1",
+            "endMonth": "12",
+            "startWeekday": "1",
+            "endWeekday": "7",
+            "startHour": "0",
+            "endHour": "23",
+            "startMinute": "0",
+            "endMinute": "59",
+            "diurnalBaseTime": "00:00:00Z",
+        },
+    }
 
 
-def test_observation_title_uses_label_and_domain_when_labels_available():
-    module.CODE_LIST_LABELS.update({'ObservedVariableAtmosphere': {'179': 'Cloud amount'}})
+def _observation_with_deployment(*, duplicate_data_generation: bool = False) -> dict[str, Any]:
+    data_generation = [_data_generation_with_coverage_and_reporting()]
+    if duplicate_data_generation:
+        data_generation.append(_data_generation_with_coverage_and_reporting())
+
+    return {
+        "observedProperty": OBSERVED_12006,
+        "type": GEOMETRY_POINT,
+        "deployments": [
+            {
+                "id": "dep1",
+                "beginPosition": "2020-01-01T00:00:00Z",
+                "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+                "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+                "manufacturer": "Maker",
+                "model": "Model",
+                "serialNumber": "SN1",
+                "dataGeneration": data_generation,
+            }
+        ],
+    }
+
+
+def test_observation_title_uses_label_and_domain_when_labels_available() -> None:
+    module.CODE_LIST_LABELS.clear()
+    module.CODE_LIST_LABELS.update({"ObservedVariableAtmosphere": {"179": "Cloud amount"}})
 
     title = module._format_observation_title(OBSERVED_179)
 
-    assert title == 'variable 179: Cloud amount; domain: Atmosphere'
+    assert title == "domain: atmosphere; variable: 179 Cloud amount"
 
 
-def test_observation_title_falls_back_to_code_and_domain_without_label():
+def test_observation_title_includes_geometry_when_available() -> None:
+    module.CODE_LIST_LABELS.clear()
+    module.CODE_LIST_LABELS.update({"ObservedVariableAtmosphere": {"179": "Cloud amount"}})
+
+    title = module._format_observation_title(OBSERVED_179, GEOMETRY_POINT)
+
+    assert title == "domain: atmosphere; geometry: point; variable: 179 Cloud amount"
+
+
+def test_observation_title_falls_back_to_code_and_domain_without_label() -> None:
+    module.CODE_LIST_LABELS.clear()
+
     title = module._format_observation_title(OBSERVED_179)
 
-    assert title == 'variable 179; domain: Atmosphere'
+    assert title == "domain: atmosphere; variable: 179"
 
 
-def test_observation_description_collapses_unknown_unknown():
+def test_observation_description_collapses_unknown_unknown() -> None:
     obs = {
-        'observedProperty': OBSERVED_179,
-        'type': 'point',
+        "observedProperty": OBSERVED_179,
+        "type": "point",
     }
     deployments = [
-        {'manufacturer': '(unknown)', 'model': 'unknown', 'observingMethod': None},
+        {"manufacturer": "(unknown)", "model": "unknown", "observingMethod": None},
     ]
 
     desc = module._observation_description(obs, deployments)
 
-    assert desc == 'Observed property 179; geometry type point; deployment procedure unknown'
+    assert desc == "Observed variable 179; geometry type point; deployment procedure unknown"
 
 
-def test_observation_description_humanizes_observing_method():
+def test_observation_description_humanizes_observing_method() -> None:
     obs = {
-        'observedProperty': OBSERVED_179,
-        'type': 'point',
+        "observedProperty": OBSERVED_179,
+        "type": "point",
     }
     deployments = [
-        {'observingMethod': 'instrumentAutomaticReading'},
+        {"observingMethod": "instrumentAutomaticReading"},
     ]
 
     desc = module._observation_description(obs, deployments)
 
     assert desc == (
-        'Observed property 179; geometry type point; '
-        'deployment procedure instrument automatic reading'
+        "Observed variable 179; geometry type point; "
+        "deployment procedure instrument automatic reading"
     )
 
 
-def test_temporal_observing_schedule_defaults_interval_unknown_when_only_id_present():
+def test_temporal_observing_schedule_defaults_interval_unknown_when_only_id_present() -> None:
     data_generation = [
-        {'@gml:id': 'dg-1'},
+        {"@gml:id": "dg-1"},
     ]
 
     schedule = module._normalize_temporal_observing_schedule(data_generation)
 
-    assert schedule == [{'id': 'dg-1', 'interval': 'unknown'}]
+    assert schedule == [{"interval": "unknown"}]
 
 
-def test_temporal_reporting_schedule_defaults_interval_unknown_when_only_id_and_reporting_present():
+def test_temporal_reporting_schedule_retains_substantive_reporting_payload() -> None:
     data_generation = [
         {
-            '@gml:id': 'dg-1',
-            'reporting': {'internationalExchange': 'true'},
+            "@gml:id": "dg-1",
+            "reporting": {"internationalExchange": "true"},
         },
     ]
 
     schedule = module._normalize_temporal_reporting_schedule(data_generation)
 
-    assert schedule == [{'id': 'dg-1', 'interval': 'unknown'}]
-
-
-def test_default_discovery_policy_matches_current_agreement():
-    assert module.DEFAULT_DISCOVERY_POLICY['facility']['themes'][-2:] == [
-        'programAffiliation',
-        'reportingStatus',
+    assert schedule == [
+        {
+            "id": "dg-1",
+            "interval": "unknown",
+            "reporting": {"internationalExchange": True},
+        }
     ]
-    assert module.DEFAULT_DISCOVERY_POLICY['observation']['themes'] == ['programAffiliation']
+
+
+def test_default_discovery_policy_has_no_themes() -> None:
+    assert "themes" not in module.DEFAULT_DISCOVERY_POLICY["facility"]
+    assert "themes" not in module.DEFAULT_DISCOVERY_POLICY["observation"]
+    assert "themes" not in module.DEFAULT_DISCOVERY_POLICY["deployment"]
+    assert module.DEFAULT_DISCOVERY_POLICY["facility"]["keywords"] == ["identifier", "name"]
+
+
+def test_build_facility_feature_uses_current_core_model() -> None:
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [_observation_with_deployment()],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+
+    props = record["properties"]
+
+    assert record["type"] == "Feature"
+    assert record["geometry"] == {"type": "Point", "coordinates": [7.0, 46.0, 100]}
+    assert "wmdr2" not in props
+    assert "themes" not in props
+    assert props["observations"][0]["observedVariable"] == 12006
+    assert props["observations"][0]["observedGeometryType"] == "point"
+    assert props["observations"][0]["observedDomain"] == "atmosphere"
+    assert "description" not in props["observations"][0]
+
+
+def test_reporting_arrays_preserve_policy_attribution_and_level_of_data() -> None:
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [_observation_with_deployment()],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+
+    reporting = record["properties"]["observations"][0]["reporting"]
+
+    assert reporting["internationalExchange"] == [True]
+    assert reporting["temporalReportingInterval"] == ["PT1H"]
+    assert reporting["uom"] == ["mm"]
+    assert reporting["levelOfData"] == ["level1"]
+    assert reporting["dataPolicy"] == [
+        {
+            "dataPolicy": "noLimitation",
+            "attribution": {"originator": {"role": None}},
+        }
+    ]
+
+
+def test_schedule_extensions_use_wmo_int_namespace_and_archiving_object() -> None:
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [_observation_with_deployment()],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+
+    schedule = record["properties"]["schedules"][0]
+
+    assert schedule["@type"] == "Event"
+    assert schedule["uid"].startswith("schedule_")
+    assert schedule["start"] == "0001-01-01T00:00:00"
+    assert schedule["timeZone"] == "UTC"
+    assert schedule["duration"] == "P1D"
+    assert schedule["recurrenceRules"] == [{"@type": "RecurrenceRule", "frequency": "daily"}]
+    assert schedule["wmo.int:diurnalBaseTime"] == "00:00:00"
+    assert schedule["wmo.int:sampling"] == {
+        "samplingStrategy": "continuous",
+        "temporalSamplingInterval": "PT2S",
+        "samplingTimePeriod": "PT2S",
+    }
+    assert schedule["wmo.int:archiving"] == {"temporalResolution": "PT1H"}
+    assert not any(key.startswith("wmdr2.wmo.int:") for key in schedule)
+
+
+def test_duplicate_temporal_observing_schedule_references_are_removed() -> None:
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [_observation_with_deployment(duplicate_data_generation=True)],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+
+    schedules = record["properties"]["schedules"]
+    temporal_schedule = record["properties"]["deployments"][0]["temporalObservingSchedule"]
+
+    assert len(schedules) == 1
+    assert temporal_schedule == {
+        "observingSchedule": [schedules[0]["uid"]],
+        "dates": ["2020-01-01"],
+    }

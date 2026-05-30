@@ -81,16 +81,21 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_df3ec3dc94b9",
+        "uid": "schedule_4db7d1806c57",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "PT0S",
+        "duration": "P1D",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
             "frequency": "daily"
           }
-        ]
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": null,
+        "wmo.int:archiving": {
+          "temporalResolution": "PT1H"
+        }
       }
     ],
     "observations": [
@@ -122,6 +127,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -154,11 +168,21 @@
           "temporalReportingInterval": [
             "PT1H"
           ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
+          ],
           "referenceDatum": [
             {
               "VerticalDatum": {
                 "id": "id_19ef1523-8782-4c08-b4c9-7143ebe5d075",
-                "remarks": "mean sea level"
+                "remarks": "mean sea level",
+                "scope": null
               }
             }
           ]
@@ -192,6 +216,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -223,6 +256,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -254,6 +296,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -285,6 +336,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -316,6 +376,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -341,6 +410,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -372,6 +450,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -403,6 +490,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -428,6 +524,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -459,6 +564,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -490,6 +604,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       }
@@ -504,22 +627,22 @@
           ]
         },
         "observingMethod": "unknown",
+        "localReferenceSurface": "localGround",
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_df3ec3dc94b9"
+            "schedule_4db7d1806c57"
           ],
           "dates": [
             "2016-04-29"
           ]
-        },
-        "localReferenceSurface": "localGround"
+        }
       },
       {
         "id": "deployment:id_e255ce45-4880-4534-890b-fe13020f1ba9",
         "observingMethod": "unknown",
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_df3ec3dc94b9"
+            "schedule_4db7d1806c57"
           ],
           "dates": [
             ".."
@@ -531,7 +654,7 @@
         "observingMethod": "unknown",
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_df3ec3dc94b9"
+            "schedule_4db7d1806c57"
           ],
           "dates": [
             ".."

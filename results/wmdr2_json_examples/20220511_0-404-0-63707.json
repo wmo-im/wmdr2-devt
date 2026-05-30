@@ -123,16 +123,21 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_df3ec3dc94b9",
+        "uid": "schedule_4db7d1806c57",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "PT0S",
+        "duration": "P1D",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
             "frequency": "daily"
           }
-        ]
+        ],
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "wmo.int:sampling": null,
+        "wmo.int:archiving": {
+          "temporalResolution": "PT1H"
+        }
       }
     ],
     "observations": [
@@ -164,6 +169,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -201,7 +215,12 @@
           ],
           "dataPolicy": [
             {
-              "dataPolicy": "inapplicable"
+              "dataPolicy": "inapplicable",
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
             }
           ]
         }
@@ -257,6 +276,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -288,6 +316,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -365,6 +402,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       },
@@ -396,6 +442,15 @@
           ],
           "temporalReportingInterval": [
             "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
           ]
         }
       }
@@ -412,7 +467,15 @@
         "observingMethod": "inapplicable",
         "keywords": [
           "inapplicable"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_4db7d1806c57"
+          ],
+          "dates": [
+            "2020-12-15"
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e829-f3a1-7937-e053-148ef98d6de4",
@@ -424,19 +487,19 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "inapplicable",
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_df3ec3dc94b9"
-          ],
-          "dates": [
-            "2020-09-22"
-          ]
-        },
         "localReferenceSurface": "localGround",
         "keywords": [
           "automaticReading",
           "inapplicable"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_4db7d1806c57"
+          ],
+          "dates": [
+            "2020-09-22"
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e829-f429-7937-e053-148ef98d6de4",
@@ -462,7 +525,15 @@
         "observingMethod": "inapplicable",
         "keywords": [
           "inapplicable"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_4db7d1806c57"
+          ],
+          "dates": [
+            "2020-12-15"
+          ]
+        }
       },
       {
         "id": "deployment:id_497d5aff-c0d6-4002-ab1c-6c661c36a566",
@@ -475,7 +546,15 @@
         "observingMethod": "inapplicable",
         "keywords": [
           "inapplicable"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_4db7d1806c57"
+          ],
+          "dates": [
+            "2020-12-15"
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e829-f42d-7937-e053-148ef98d6de4",
@@ -514,7 +593,15 @@
         "observingMethod": "inapplicable",
         "keywords": [
           "inapplicable"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_4db7d1806c57"
+          ],
+          "dates": [
+            "2020-12-15"
+          ]
+        }
       },
       {
         "id": "deployment:cca8c9b3-9ca8-23ea-e053-148ef98d1a71",
@@ -527,7 +614,15 @@
         "observingMethod": "inapplicable",
         "keywords": [
           "inapplicable"
-        ]
+        ],
+        "temporalObservingSchedule": {
+          "observingSchedule": [
+            "schedule_4db7d1806c57"
+          ],
+          "dates": [
+            "2020-12-15"
+          ]
+        }
       }
     ]
   }
