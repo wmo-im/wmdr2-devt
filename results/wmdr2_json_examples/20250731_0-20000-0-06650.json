@@ -111,25 +111,7 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_188cc2a2d212",
-        "start": "0001-01-01T06:00:00",
-        "timeZone": "UTC",
-        "duration": "P1D",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "daily"
-          }
-        ],
-        "wmo.int:diurnalBaseTime": "06:00:00",
-        "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT6H"
-        }
-      },
-      {
-        "@type": "Event",
-        "uid": "schedule_4db7d1806c57",
+        "uid": "schedule_b145e5c7e91b",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -139,15 +121,15 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT1H"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT6H",
+          "diurnalBaseTime": "06:00:00"
         }
       },
       {
         "@type": "Event",
-        "uid": "schedule_823731804938",
+        "uid": "schedule_74eceaf97c31",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -157,10 +139,28 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT10M"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H",
+          "diurnalBaseTime": "00:00:00"
+        }
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_9821755d796e",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:sampling": null,
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT10M",
+          "diurnalBaseTime": "00:00:00"
         }
       }
     ],
@@ -728,7 +728,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "1998-03-10"
@@ -760,7 +760,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "1981-01-01"
@@ -792,7 +792,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "1970-09-25"
@@ -824,7 +824,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "1919-05-01"
@@ -856,7 +856,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "1864-01-01"
@@ -888,8 +888,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2006-06-12",
@@ -922,8 +922,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2006-06-12",
@@ -956,7 +956,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_823731804938"
+            "schedule_9821755d796e"
           ],
           "dates": [
             "1981-01-01"
@@ -988,7 +988,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_823731804938"
+            "schedule_9821755d796e"
           ],
           "dates": [
             "1981-01-01"
@@ -1020,7 +1020,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "1970-09-25"
@@ -1052,7 +1052,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "1919-05-01"
@@ -1084,7 +1084,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "1864-01-01"

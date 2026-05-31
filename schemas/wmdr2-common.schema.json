@@ -920,12 +920,6 @@
             "additionalProperties": true
           }
         },
-        "wmo.int:diurnalBaseTime": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
         "wmo.int:sampling": {
           "type": [
             "string",
@@ -934,11 +928,11 @@
             "null"
           ]
         },
-        "wmo.int:archiving": {
+        "wmo.int:aggregation": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "temporalResolution": {
+            "temporalAggregate": {
               "type": [
                 "string",
                 "null"
@@ -953,14 +947,69 @@
                 "object",
                 "null"
               ]
+            },
+            "diurnalBaseTime": {
+              "description": "Optional WMDR diurnal base time used for aggregate alignment, normalized to HH:MM:SS.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^(\\d{2}:\\d{2}:\\d{2})?$"
+            },
+            "statistics": {
+              "description": "Optional aggregate statistic(s) represented by this schedule aggregation.",
+              "oneOf": [
+                {
+                  "enum": [
+                    "mean",
+                    "median",
+                    "min",
+                    "max",
+                    "sum",
+                    null
+                  ]
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "mean",
+                      "median",
+                      "min",
+                      "max",
+                      "sum"
+                    ]
+                  },
+                  "uniqueItems": true
+                }
+              ]
             }
           }
         }
       },
       "propertyNames": {
-        "not": {
-          "pattern": "^wmdr2\\.wmo\\.int:"
-        }
+        "allOf": [
+          {
+            "not": {
+              "pattern": "^wmdr2\\.wmo\\.int:"
+            }
+          },
+          {
+            "not": {
+              "pattern": "^wmo\\.int:diurnalBaseTime$"
+            }
+          },
+          {
+            "not": {
+              "pattern": "^wmo\\.int:aggregating$"
+            }
+          },
+          {
+            "not": {
+              "pattern": "^wmo\\.int:archiving$"
+            }
+          }
+        ]
       }
     },
     "temporalObservingScheduleRefs": {

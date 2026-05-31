@@ -226,7 +226,7 @@ def test_reporting_arrays_preserve_policy_attribution_and_level_of_data() -> Non
     ]
 
 
-def test_schedule_extensions_use_wmo_int_namespace_and_archiving_object() -> None:
+def test_schedule_extensions_use_wmo_int_namespace_and_aggregation_object() -> None:
     record = module.build_facility_feature(
         _minimal_facility(),
         [_observation_with_deployment()],
@@ -243,13 +243,18 @@ def test_schedule_extensions_use_wmo_int_namespace_and_archiving_object() -> Non
     assert schedule["timeZone"] == "UTC"
     assert schedule["duration"] == "P1D"
     assert schedule["recurrenceRules"] == [{"@type": "RecurrenceRule", "frequency": "daily"}]
-    assert schedule["wmo.int:diurnalBaseTime"] == "00:00:00"
+    assert "wmo.int:diurnalBaseTime" not in schedule
     assert schedule["wmo.int:sampling"] == {
         "samplingStrategy": "continuous",
         "temporalSamplingInterval": "PT2S",
         "samplingTimePeriod": "PT2S",
     }
-    assert schedule["wmo.int:archiving"] == {"temporalResolution": "PT1H"}
+    assert schedule["wmo.int:aggregation"] == {
+        "temporalAggregate": "PT1H",
+        "diurnalBaseTime": "00:00:00",
+    }
+    assert "wmo.int:archiving" not in schedule
+    assert "wmo.int:aggregating" not in schedule
     assert not any(key.startswith("wmdr2.wmo.int:") for key in schedule)
 
 

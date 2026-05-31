@@ -1694,7 +1694,7 @@ _OBSERVING_SCHEDULE_NESTED_KEYS = (
 
 _OBSERVING_SCHEDULE_KEYS = {
     "interval",
-    "temporalResolution",
+    "temporalAggregate",
     "period",
     "samplingInterval",
     "temporalSamplingInterval",
@@ -1731,7 +1731,7 @@ _OBSERVING_RECURRENCE_INTERVAL_KEYS = (
     "temporalSamplingInterval",
     "sampleInterval",
     "interval",
-    "temporalResolution",
+    "temporalAggregate",
     "period",
     "samplePeriod",
     "samplingPeriod",
@@ -2237,6 +2237,45 @@ def _coverage_duration(raw: Dict[str, Any]) -> Optional[str]:
     return _format_minutes_as_duration(duration_minutes)
 
 
+
+VALID_AGGREGATION_STATISTICS = {"mean", "median", "min", "max", "sum"}
+
+
+def _normalize_aggregation_statistics(raw: Dict[str, Any]) -> Optional[Any]:
+    """Return optional aggregate statistic(s) from data-generation context.
+
+    WMDR1 examples do not always provide this value explicitly, but WMDR2
+    allows it when known.  The converter accepts a few likely source keys and
+    only preserves recognized statistic names.
+    """
+    values: List[str] = []
+    for key in (
+        "statistics",
+        "statistic",
+        "aggregationStatistics",
+        "aggregationStatistic",
+    ):
+        raw_value = raw.get(key)
+        if raw_value in (None, "", [], {}):
+            continue
+        for item in _as_list(raw_value):
+            candidate: Any = item
+            if isinstance(item, dict):
+                candidate = _first_non_empty(
+                    item.get("statistics"),
+                    item.get("statistic"),
+                    item.get("value"),
+                    item.get("href"),
+                )
+            if candidate is None:
+                continue
+            text = str(_compact_wmo_code_value(candidate)).strip().lower()
+            if text in VALID_AGGREGATION_STATISTICS and text not in values:
+                values.append(text)
+    if not values:
+        return None
+    return values[0] if len(values) == 1 else values
+
 def _reporting_temporal_interval(raw: Dict[str, Any]) -> Optional[str]:
     """Return the reporting interval from inherited reporting context."""
     reporting = raw.get("reporting")
@@ -2257,17 +2296,30 @@ def _sampling_value(raw: Dict[str, Any]) -> Any:
     return sampling
 
 
-def _archiving_extension(raw: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-    """Return WMDR2 archiving metadata derived from reporting context.
+def _aggregation_extension(raw: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Return WMDR2 aggregation metadata derived from data-generation context.
 
     WMDR1 does not always provide a dedicated archive aggregation object.  When
     it is absent, the reporting temporal interval is the best available default
-    for the archived aggregate temporal resolution.
+    for the archived aggregate temporal resolution.  The WMDR diurnal base time
+    is relevant for aggregate alignment and therefore belongs under aggregation,
+    not as a top-level JSCalendar extension property.
     """
+    out: Dict[str, Any] = {}
+
     temporal_resolution = _reporting_temporal_interval(raw)
-    if not temporal_resolution:
-        return None
-    return {"temporalResolution": temporal_resolution}
+    if temporal_resolution:
+        out["temporalAggregate"] = temporal_resolution
+
+    diurnal = _schedule_diurnal_base_time(raw)
+    if diurnal:
+        out["diurnalBaseTime"] = diurnal
+
+    statistics = _normalize_aggregation_statistics(raw)
+    if statistics is not None:
+        out["statistics"] = statistics
+
+    return out or None
 
 
 def _schedule_diurnal_base_time(raw: Dict[str, Any]) -> Optional[str]:
@@ -2280,13 +2332,12 @@ def _schedule_start_datetime(raw: Dict[str, Any]) -> str:
     """Return the canonical JSCalendar LocalDateTime start value.
 
     The date component is the WMDR2 canonical schedule anchor.  The time
-    component comes from ``coverage.diurnalBaseTime`` when available, otherwise
-    from the coverage start hour/minute, otherwise midnight UTC.
+    component describes the start of one coverage/availability occurrence and
+    is derived from ``coverage.startHour`` / ``coverage.startMinute`` when
+    available.  ``diurnalBaseTime`` is preserved separately under
+    ``wmo.int:aggregation`` because it is relevant for aggregate alignment, not
+    for the occurrence start itself.
     """
-    diurnal = _normalize_diurnal_time(raw.get("diurnalBaseTime"))
-    if diurnal:
-        return f"{CANONICAL_SCHEDULE_START_DATE}T{diurnal}"
-
     hour_raw = _first_non_empty(raw.get("startHour"), raw.get("hour"))
     minute_raw = _first_non_empty(raw.get("startMinute"), raw.get("minute"))
 
@@ -2361,16 +2412,14 @@ def _jscalendar_observing_schedule(
 
     recurrence_rule = _apply_schedule_windows_to_rule(recurrence_rule, raw)
 
-    diurnal = _schedule_diurnal_base_time(raw) or "00:00:00"
     event_without_uid: Dict[str, Any] = {
         "@type": "Event",
         "start": start,
         "timeZone": time_zone or "UTC",
         "duration": duration,
         "recurrenceRules": [recurrence_rule],
-        "wmo.int:diurnalBaseTime": diurnal,
         "wmo.int:sampling": _sampling_value(raw),
-        "wmo.int:archiving": _archiving_extension(raw),
+        "wmo.int:aggregation": _aggregation_extension(raw),
     }
     event_without_uid = _preserve_nulls(event_without_uid)
     event: Dict[str, Any] = {
@@ -2380,9 +2429,8 @@ def _jscalendar_observing_schedule(
         "timeZone": time_zone or "UTC",
         "duration": duration,
         "recurrenceRules": [recurrence_rule],
-        "wmo.int:diurnalBaseTime": diurnal,
         "wmo.int:sampling": _sampling_value(raw),
-        "wmo.int:archiving": _archiving_extension(raw),
+        "wmo.int:aggregation": _aggregation_extension(raw),
     }
     return _clean_none(_preserve_nulls(event))
 
@@ -2456,7 +2504,7 @@ def _normalize_temporal_reporting_schedule(value: Any) -> List[Dict[str, Any]]:
         interval = _first_non_empty(
             item.get("reportingInterval"),
             item.get("interval"),
-            item.get("temporalResolution"),
+            item.get("temporalAggregate"),
             item.get("period"),
         )
         if isinstance(interval, dict):
@@ -2833,9 +2881,8 @@ def _normalize_deployment(
     }
     cleaned = _clean_none(payload)
     if observing_schedule:
-        # Preserve None placeholders in aligned arrays such as
-        # temporalObservingSchedule.diurnalBaseTime.  _clean_none() removes
-        # nulls from lists, so this object is attached after generic cleanup.
+        # Attach after generic cleanup so the aligned schedule-reference object
+        # is not modified by broad recursive cleanup rules.
         cleaned["temporalObservingSchedule"] = observing_schedule
     return cleaned
 

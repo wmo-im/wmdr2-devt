@@ -214,7 +214,7 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_7fac2083fdcb",
+        "uid": "schedule_6b3ad561061e",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -224,15 +224,15 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "P1M"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "P1M",
+          "diurnalBaseTime": "00:00:00"
         }
       },
       {
         "@type": "Event",
-        "uid": "schedule_c559aaa5a7ba",
+        "uid": "schedule_3bfead571d61",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -242,14 +242,14 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": {
           "samplingStrategy": "continuous",
           "temporalSamplingInterval": "PT2S",
           "samplingTimePeriod": "PT2S"
         },
-        "wmo.int:archiving": {
-          "temporalResolution": "PT1H"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H",
+          "diurnalBaseTime": "00:00:00"
         }
       }
     ],
@@ -519,7 +519,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_7fac2083fdcb"
+            "schedule_6b3ad561061e"
           ],
           "dates": [
             "1982-03-13"
@@ -598,7 +598,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_c559aaa5a7ba"
+            "schedule_3bfead571d61"
           ],
           "dates": [
             "1993-01-19"

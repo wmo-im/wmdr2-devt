@@ -154,7 +154,6 @@ Observations contain observation-specific metadata and references to deployments
 }
 ```
 
-
 Observation reporting uses aligned arrays. Reporting information is sourced from the WMDR1 `dataGeneration.reporting` block and belongs to the observation, not to the deployment schedule:
 
 ```json
@@ -216,7 +215,7 @@ WMDR2 JSON
   properties.deployments[].temporalObservingSchedule
 ```
 
-`coverage.diurnalBaseTime` becomes a WMDR2 extension on the reusable schedule object. The deployment-specific effective date remains under `deployments[].temporalObservingSchedule.dates`.
+`coverage.diurnalBaseTime` is preserved under `wmo.int:aggregation.diurnalBaseTime` because it is relevant for aggregate alignment, especially for 24-hour aggregates. The deployment-specific effective date remains under `deployments[].temporalObservingSchedule.dates`.
 
 ### Observing schedules
 
@@ -263,10 +262,10 @@ the WMDR2 schedule representation is:
         "frequency": "daily"
       }
     ],
-    "wmo.int:diurnalBaseTime": "00:00:00",
     "wmo.int:sampling": null,
-    "wmo.int:archiving": {
-      "temporalResolution": "P1M"
+    "wmo.int:aggregation": {
+      "temporalAggregate": "P1M",
+      "diurnalBaseTime": "00:00:00"
     }
   }
 ],
@@ -291,12 +290,13 @@ Notes:
 - Recurrence rules inside a schedule use `@type: "RecurrenceRule"`.
 - JSCalendar uses `recurrenceRules`, plural, as an array.
 - `start` is a local date-time and is mandatory for a JSCalendar `Event`. In WMDR2 schedule catalog entries, it is a canonical recurrence anchor, not the date on which the schedule became valid for a deployment.
-- The canonical date part of reusable schedule anchors is `0001-01-01`. The time part comes from `coverage.diurnalBaseTime` when available, otherwise from the coverage start hour/minute, otherwise midnight.
+- The canonical date part of reusable schedule anchors is `0001-01-01`. The time part comes from the coverage start hour/minute when available, otherwise midnight. It does not come from `diurnalBaseTime`.
 - The real applicability date of a schedule for a deployment is expressed only by `deployments[].temporalObservingSchedule.dates`.
-- `coverage.diurnalBaseTime` is stored as `wmo.int:diurnalBaseTime` on the reusable schedule object, not under the deployment schedule reference.
+- `coverage.diurnalBaseTime` is stored as `wmo.int:aggregation.diurnalBaseTime` on the reusable schedule object, not under the deployment schedule reference. It is used for aggregate alignment, not for the JSCalendar occurrence start.
 - `wmo.int:sampling` is derived from `dataGeneration.sampling`; when the source value is absent, it is represented as `null`.
-- `wmo.int:archiving.temporalResolution` is derived from explicit aggregate metadata when available. For legacy WMDR1 records, the converter uses `reporting.temporalReportingInterval` as the default.
-- `wmo.int:archiving.spatialResolution` is optional and omitted when unavailable. When spatial resolution is known, prefer a numeric value in metres, following the DCAT `spatialResolutionInMeters` convention.
+- `wmo.int:aggregation.temporalAggregate` is derived from explicit aggregate metadata when available. For legacy WMDR1 records, the converter uses `reporting.temporalReportingInterval` as the default. `wmo.int:aggregation.diurnalBaseTime` may be present when the source provides a diurnal base time.
+- `wmo.int:aggregation.spatialResolution` is optional and omitted when unavailable. When spatial resolution is known, prefer a numeric value in metres, following the DCAT `spatialResolutionInMeters` convention.
+- `wmo.int:aggregation.statistics` is optional and currently schema-only; the XML/WMDR10 examples do not provide this information. Allowed values are `mean`, `median`, `min`, `max`, and `sum`.
 - A full coverage window such as months 1..12, weekdays 1..7, hours 0..23, and minutes 0..59 is represented as a daily event with duration `P1D`. Restricted weekday/month coverage is represented using JSCalendar recurrence-rule constraints such as `byDay` or `byMonth`.
 - Schedule `uid` values are generated from the normalized schedule pattern, excluding deployment-specific effective dates. This allows deployments with the same pattern but different validity dates to reuse one schedule object.
 - JSCalendar `uid` values should use RFC 8984-safe identifier characters. The converter therefore uses values such as `schedule_<hash>`, not colon-separated identifiers.
@@ -340,6 +340,9 @@ Schedules are first-class reusable objects in the WMDR2 full-record model. They 
       "2025-07-14T12:00:00": {
         "excluded": true
       }
+    },
+    "wmo.int:aggregation": {
+      "diurnalBaseTime": "12:00:00"
     }
   }
 ],
@@ -348,14 +351,13 @@ Schedules are first-class reusable objects in the WMDR2 full-record model. They 
     "id": "deployment:abc123",
     "temporalObservingSchedule": {
       "observingSchedule": ["schedule_daily_12"],
-      "dates": ["2025-01-01"],
-      "diurnalBaseTime": ["12:00"]
+      "dates": ["2025-01-01"]
     }
   }
 ]
 ```
 
-Values at the same index in `temporalObservingSchedule.observingSchedule` and `temporalObservingSchedule.dates` belong together. If present, `temporalObservingSchedule.diurnalBaseTime` is an aligned optional array as well. Missing `diurnalBaseTime` values are represented with `null` only when some history entries provide the value and others do not. A repeated schedule reference with a later date can express the history of schedule applicability for that deployment, while a single schedule object can be shared by several deployments.
+Values at the same index in `temporalObservingSchedule.observingSchedule` and `temporalObservingSchedule.dates` belong together. `diurnalBaseTime` is not part of the deployment schedule reference; when present, it belongs under the reusable schedule object at `wmo.int:aggregation.diurnalBaseTime`. A repeated schedule reference with a later date can express the history of schedule applicability for that deployment, while a single schedule object can be shared by several deployments.
 
 This separation is important. The JSCalendar `Event.start` is required and anchors recurrence expansion, but it is not used as WMDR2 schedule-validity metadata. WMDR2 uses a documented canonical anchor date, `0001-01-01`, for reusable schedule patterns. Deployment-specific validity remains in the aligned `dates` array.
 
@@ -365,9 +367,9 @@ Notes:
 - Recurrence rules inside a schedule use `@type: "RecurrenceRule"`.
 - JSCalendar uses `recurrenceRules`, plural, as an array.
 - `start` is a local date-time and is mandatory for a JSCalendar `Event`. In WMDR2 schedule catalog entries, it is a canonical recurrence anchor, not the date on which the schedule became valid for a deployment.
-- The canonical date part of reusable schedule anchors is `0001-01-01`. The time part still carries the schedule's local time-of-day, for example `0001-01-01T12:00:00` for a daily schedule at 12:00.
+- The canonical date part of reusable schedule anchors is `0001-01-01`. The time part carries the start of one coverage/availability occurrence, for example `0001-01-01T09:00:00` for a window beginning at 09:00.
 - The real applicability date of a schedule for a deployment is expressed only by `deployments[].temporalObservingSchedule.dates`.
-- `coverage.diurnalBaseTime` is stored as `wmo.int:diurnalBaseTime` on the reusable schedule object, not under the deployment schedule reference.
+- `coverage.diurnalBaseTime` is stored as `wmo.int:aggregation.diurnalBaseTime` on the reusable schedule object, not under the deployment schedule reference. It is used for aggregate alignment, not for the JSCalendar occurrence start.
 - Schedule `uid` values are generated from the normalized schedule pattern, excluding deployment-specific effective dates. This allows deployments with the same pattern but different validity dates to reuse one schedule object.
 - JSCalendar `uid` values should use RFC 8984-safe identifier characters. The converter therefore uses values such as `schedule_daily_12` or `schedule_<hash>`, not colon-separated identifiers.
 - `timeZone` should normally be an IANA time-zone identifier such as `UTC`, `Europe/Zurich`, or the station-local time zone. If omitted, JSCalendar treats the event as floating time.
@@ -375,7 +377,6 @@ Notes:
 - A recurring schedule is open-ended when the recurrence rule has neither `until` nor `count`; the WMDR2 `dates` array describes when that schedule definition became applicable.
 - Recurrence exceptions are represented with `recurrenceOverrides`; an excluded occurrence uses `{ "excluded": true }`. Null override values are not used.
 - Recurrence override keys should match the occurrence local date-time, for example `2025-07-14T12:00:00`, not only the date.
-
 
 #### Schedule profile constraints
 
@@ -389,7 +390,6 @@ properties.schedules[].recurrenceOverrides values are patch objects, not null
 ```
 
 This keeps schedule objects reusable and predictable while remaining compatible with JSCalendar's event and recurrence-rule model.
-
 
 ### Deployments
 

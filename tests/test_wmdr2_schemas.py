@@ -10,11 +10,13 @@ from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 from referencing.jsonschema import DRAFT202012
 
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_DIR = PROJECT_ROOT / "schemas"
 
 COMMON_SCHEMA_FILE = "wmdr2-common.schema.json"
 RECORD_SCHEMA_FILE = "wmdr2-record-feature.schema.json"
+
 
 def _load_schema(filename: str) -> dict[str, Any]:
     path = SCHEMA_DIR / filename
@@ -24,6 +26,7 @@ def _load_schema(filename: str) -> dict[str, Any]:
             f"Expected schema files to be committed under: {SCHEMA_DIR}"
         )
     return json.loads(path.read_text(encoding="utf-8"))
+
 
 COMMON_SCHEMA = _load_schema(COMMON_SCHEMA_FILE)
 RECORD_SCHEMA = _load_schema(RECORD_SCHEMA_FILE)
@@ -40,14 +43,18 @@ REGISTRY = (
     )
 )
 
+
 def _validator(schema: dict[str, Any]) -> Draft202012Validator:
     return Draft202012Validator(schema, registry=REGISTRY)
+
 
 def _validate(schema: dict[str, Any], instance: dict[str, Any]) -> list[str]:
     return sorted(err.message for err in _validator(schema).iter_errors(instance))
 
+
 def _is_valid(schema: dict[str, Any], instance: dict[str, Any]) -> bool:
     return _validator(schema).is_valid(instance)
+
 
 def _valid_facility_record_feature() -> dict[str, Any]:
     return {
@@ -190,16 +197,23 @@ def _valid_facility_record_feature() -> dict[str, Any]:
         },
     }
 
+
 def test_facility_centric_record_feature_is_valid() -> None:
     instance = _valid_facility_record_feature()
 
     assert _validate(RECORD_SCHEMA, instance) == []
+
 
 def test_record_time_allows_null_when_unknown() -> None:
     instance = _valid_facility_record_feature()
     instance["time"] = None
 
     assert _validate(RECORD_SCHEMA, instance) == []
+
+
+
+
+
 
 def test_time_intervals_use_date_resolution_only() -> None:
     instance = _valid_facility_record_feature()
@@ -209,6 +223,7 @@ def test_time_intervals_use_date_resolution_only() -> None:
     instance["time"] = {"interval": ["2000-08-17T00:00:00Z", "2025-05-28T00:00:00Z"]}
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
 def test_nested_time_intervals_use_date_resolution_only() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observations"][0]["time"] = {"interval": ["2016-04-29", ".."]}
@@ -216,6 +231,7 @@ def test_nested_time_intervals_use_date_resolution_only() -> None:
 
     instance["properties"]["observations"][0]["time"] = {"interval": ["2016-04-29T00:00:00Z", ".."]}
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_temporal_geometry_belongs_at_root_not_properties() -> None:
     instance = _valid_facility_record_feature()
@@ -226,6 +242,9 @@ def test_temporal_geometry_belongs_at_root_not_properties() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
+
+
 def test_temporal_geometry_does_not_use_moving_point_type() -> None:
     instance = _valid_facility_record_feature()
 
@@ -235,6 +254,7 @@ def test_temporal_geometry_does_not_use_moving_point_type() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
 def test_record_schema_rejects_feature_collection() -> None:
     instance = {
         "type": "FeatureCollection",
@@ -243,11 +263,14 @@ def test_record_schema_rejects_feature_collection() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
+
 def test_properties_wmdr2_wrapper_is_invalid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["wmdr2"] = {}
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_themes_are_invalid_in_core_record() -> None:
     instance = _valid_facility_record_feature()
@@ -255,11 +278,13 @@ def test_themes_are_invalid_in_core_record() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
 def test_lifecycle_dates_are_not_repeated_in_properties() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["dateEstablished"] = "2000-08-17Z"
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_observation_deployments_are_id_references_not_objects() -> None:
     instance = _valid_facility_record_feature()
@@ -268,6 +293,7 @@ def test_observation_deployments_are_id_references_not_objects() -> None:
     ]
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_old_international_reporting_schedule_is_invalid() -> None:
     instance = _valid_facility_record_feature()
@@ -280,11 +306,13 @@ def test_old_international_reporting_schedule_is_invalid() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
 def test_reporting_has_no_id_or_interval() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observations"][0]["reporting"]["interval"] = ["unknown"]
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_deployment_temporal_observing_schedule_references_schedules() -> None:
     instance = _valid_facility_record_feature()
@@ -295,6 +323,9 @@ def test_deployment_temporal_observing_schedule_references_schedules() -> None:
         "dates": ["2025-01-01"],
     }
     assert _validate(RECORD_SCHEMA, instance) == []
+
+
+
 
 def test_deployment_temporal_observing_schedule_rejects_diurnal_base_time() -> None:
     instance = _valid_facility_record_feature()
@@ -313,6 +344,7 @@ def test_deployment_temporal_observing_schedule_diurnal_base_time_rejects_object
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
 def test_observation_temporal_observing_schedule_is_invalid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observations"][0]["temporalObservingSchedule"] = {
@@ -321,6 +353,9 @@ def test_observation_temporal_observing_schedule_is_invalid() -> None:
     }
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+
 
 def test_temporal_observing_schedule_has_no_id() -> None:
     """Legacy test name kept so cached VS Code node IDs still resolve.
@@ -334,17 +369,20 @@ def test_temporal_observing_schedule_has_no_id() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
 def test_schedule_uid_uses_jscalendar_safe_id() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["schedules"][0]["uid"] = "schedule:daily-12"
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
 def test_schedule_recurrence_rule_requires_jscalendar_type() -> None:
     instance = _valid_facility_record_feature()
     del instance["properties"]["schedules"][0]["recurrenceRules"][0]["@type"]
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_schedule_recurrence_override_null_is_invalid() -> None:
     instance = _valid_facility_record_feature()
@@ -354,11 +392,13 @@ def test_schedule_recurrence_override_null_is_invalid() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
 def test_deployment_title_is_invalid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["deployments"][0]["title"] = "Deployment title"
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_deployment_manufacturer_model_are_invalid_but_serial_numbers_are_valid() -> None:
     instance = _valid_facility_record_feature()
@@ -380,6 +420,7 @@ def test_deployment_manufacturer_model_are_invalid_but_serial_numbers_are_valid(
 
     assert _validate(RECORD_SCHEMA, instance) == []
 
+
 def test_instrument_serial_numbers_are_invalid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["instruments"][0]["serialNumbers"] = {
@@ -388,6 +429,7 @@ def test_instrument_serial_numbers_are_invalid() -> None:
     }
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_observation_observed_variable_can_be_numeric_code() -> None:
     instance = _valid_facility_record_feature()
@@ -402,6 +444,7 @@ def test_contact_instructions_are_invalid() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
 def test_wmdr2_full_record_conformance_is_required() -> None:
     instance = _valid_facility_record_feature()
 
@@ -411,11 +454,14 @@ def test_wmdr2_full_record_conformance_is_required() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
+
 def test_observation_description_is_not_part_of_current_core_model() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observations"][0]["description"] = None
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_inline_observing_schedule_object_is_invalid() -> None:
     instance = _valid_facility_record_feature()
@@ -425,11 +471,13 @@ def test_inline_observing_schedule_object_is_invalid() -> None:
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
+
 def test_schedule_event_requires_jscalendar_event_type() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["schedules"][0]["@type"] = "Task"
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_schedule_extensions_are_valid_on_reusable_schedule_events() -> None:
     instance = _valid_facility_record_feature()
@@ -441,9 +489,11 @@ def test_schedule_extensions_are_valid_on_reusable_schedule_events() -> None:
             "timeZone": "UTC",
             "duration": "P1D",
             "recurrenceRules": [{"@type": "RecurrenceRule", "frequency": "daily"}],
-            "wmo.int:diurnalBaseTime": "00:00:00",
             "wmo.int:sampling": None,
-            "wmo.int:archiving": {"temporalResolution": "P1M"},
+            "wmo.int:aggregation": {
+                "temporalAggregate": "P1M",
+                "diurnalBaseTime": "00:00:00",
+            },
         }
     ]
     instance["properties"]["deployments"][0]["temporalObservingSchedule"] = {
@@ -453,16 +503,35 @@ def test_schedule_extensions_are_valid_on_reusable_schedule_events() -> None:
 
     assert _validate(RECORD_SCHEMA, instance) == []
 
+
+
+
+def test_schedule_diurnal_base_time_belongs_under_aggregation() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["schedules"][0]["wmo.int:diurnalBaseTime"] = "00:00:00"
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    del instance["properties"]["schedules"][0]["wmo.int:diurnalBaseTime"]
+    instance["properties"]["schedules"][0]["wmo.int:aggregation"] = {
+        "temporalAggregate": "P1D",
+        "diurnalBaseTime": "00:00:00",
+    }
+
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+
 def test_old_wmdr2_schedule_extension_namespace_is_invalid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["schedules"][0]["wmdr2.wmo.int:samplingRate"] = None
 
     assert not _is_valid(RECORD_SCHEMA, instance)
 
-def test_schedule_archiving_spatial_resolution_is_optional() -> None:
+
+def test_schedule_aggregation_spatial_resolution_is_optional() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["schedules"][0]["wmo.int:archiving"] = {
-        "temporalResolution": "P1M"
+    instance["properties"]["schedules"][0]["wmo.int:aggregation"] = {
+        "temporalAggregate": "P1M"
     }
 
     assert _validate(RECORD_SCHEMA, instance) == []
@@ -476,6 +545,7 @@ def test_deployment_temporal_observing_schedule_diurnal_base_time_is_invalid() -
     }
 
     assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_reporting_allows_data_policy_and_level_of_data_arrays() -> None:
     instance = _valid_facility_record_feature()
@@ -493,3 +563,31 @@ def test_reporting_allows_data_policy_and_level_of_data_arrays() -> None:
     }
 
     assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_schedule_aggregation_statistics_is_validated() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["schedules"][0]["wmo.int:aggregation"] = {
+        "temporalAggregate": "PT1H",
+        "statistics": "mean",
+    }
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    instance["properties"]["schedules"][0]["wmo.int:aggregation"]["statistics"] = [
+        "min",
+        "max",
+        "mean",
+    ]
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    instance["properties"]["schedules"][0]["wmo.int:aggregation"]["statistics"] = "mode"
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_old_wmo_int_aggregating_schedule_extension_is_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["schedules"][0]["wmo.int:aggregating"] = {
+        "temporalAggregate": "PT1H"
+    }
+
+    assert not _is_valid(RECORD_SCHEMA, instance)

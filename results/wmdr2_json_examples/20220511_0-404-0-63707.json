@@ -123,7 +123,7 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_4db7d1806c57",
+        "uid": "schedule_ba21099dcafe",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -133,10 +133,27 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT1H"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H"
+        }
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_74eceaf97c31",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:sampling": null,
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H",
+          "diurnalBaseTime": "00:00:00"
         }
       }
     ],
@@ -470,7 +487,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57"
+            "schedule_ba21099dcafe"
           ],
           "dates": [
             "2020-12-15"
@@ -494,7 +511,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57"
+            "schedule_74eceaf97c31"
           ],
           "dates": [
             "2020-09-22"
@@ -528,7 +545,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57"
+            "schedule_ba21099dcafe"
           ],
           "dates": [
             "2020-12-15"
@@ -549,7 +566,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57"
+            "schedule_ba21099dcafe"
           ],
           "dates": [
             "2020-12-15"
@@ -596,7 +613,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57"
+            "schedule_ba21099dcafe"
           ],
           "dates": [
             "2020-12-15"
@@ -617,7 +634,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57"
+            "schedule_ba21099dcafe"
           ],
           "dates": [
             "2020-12-15"

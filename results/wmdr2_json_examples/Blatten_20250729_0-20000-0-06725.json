@@ -133,25 +133,7 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_188cc2a2d212",
-        "start": "0001-01-01T06:00:00",
-        "timeZone": "UTC",
-        "duration": "P1D",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "daily"
-          }
-        ],
-        "wmo.int:diurnalBaseTime": "06:00:00",
-        "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT6H"
-        }
-      },
-      {
-        "@type": "Event",
-        "uid": "schedule_4db7d1806c57",
+        "uid": "schedule_b145e5c7e91b",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -161,15 +143,15 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT1H"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT6H",
+          "diurnalBaseTime": "06:00:00"
         }
       },
       {
         "@type": "Event",
-        "uid": "schedule_823731804938",
+        "uid": "schedule_74eceaf97c31",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -179,16 +161,16 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT10M"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H",
+          "diurnalBaseTime": "00:00:00"
         }
       },
       {
         "@type": "Event",
-        "uid": "schedule_77fb894c155c",
-        "start": "0001-01-01T06:00:00",
+        "uid": "schedule_9821755d796e",
+        "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
         "recurrenceRules": [
@@ -197,10 +179,28 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "06:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT12H"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT10M",
+          "diurnalBaseTime": "00:00:00"
+        }
+      },
+      {
+        "@type": "Event",
+        "uid": "schedule_cbd5ca40748b",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:sampling": null,
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT12H",
+          "diurnalBaseTime": "06:00:00"
         }
       }
     ],
@@ -1392,7 +1392,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "2000-08-17"
@@ -1424,7 +1424,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "2000-08-17"
@@ -1456,8 +1456,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2013-05-31",
@@ -1490,7 +1490,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_77fb894c155c"
+            "schedule_cbd5ca40748b"
           ],
           "dates": [
             "2001-03-01"
@@ -1522,8 +1522,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2013-05-31",
@@ -1556,8 +1556,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2013-05-31",
@@ -1590,8 +1590,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2013-05-31",
@@ -1624,7 +1624,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "2001-03-01"
@@ -1656,8 +1656,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2013-05-31",
@@ -1690,7 +1690,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_77fb894c155c"
+            "schedule_cbd5ca40748b"
           ],
           "dates": [
             "2013-05-31"
@@ -1722,7 +1722,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_77fb894c155c"
+            "schedule_cbd5ca40748b"
           ],
           "dates": [
             "2000-08-17"
@@ -1754,7 +1754,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_77fb894c155c"
+            "schedule_cbd5ca40748b"
           ],
           "dates": [
             "2000-08-17"
@@ -1786,7 +1786,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "2000-08-17"
@@ -1818,8 +1818,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2013-05-31",
@@ -1852,7 +1852,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "2000-08-17"
@@ -1884,7 +1884,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "2000-08-17"
@@ -1916,8 +1916,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2013-05-31",
@@ -1950,7 +1950,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "2000-08-17"
@@ -1982,8 +1982,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2013-05-31",
@@ -2016,7 +2016,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_77fb894c155c"
+            "schedule_cbd5ca40748b"
           ],
           "dates": [
             "2000-08-17"
@@ -2048,7 +2048,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_77fb894c155c"
+            "schedule_cbd5ca40748b"
           ],
           "dates": [
             "2000-08-17"
@@ -2080,8 +2080,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2013-05-31",
@@ -2114,7 +2114,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "2000-08-17"
@@ -2146,8 +2146,8 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57",
-            "schedule_823731804938"
+            "schedule_74eceaf97c31",
+            "schedule_9821755d796e"
           ],
           "dates": [
             "2013-05-31",
@@ -2180,7 +2180,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_188cc2a2d212"
+            "schedule_b145e5c7e91b"
           ],
           "dates": [
             "2000-08-17"

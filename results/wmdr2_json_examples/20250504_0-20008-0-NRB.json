@@ -304,8 +304,8 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_f524bc0ede45",
-        "start": "0001-01-01T00:00:00",
+        "uid": "schedule_ec5258f4aed1",
+        "start": "0001-01-01T09:00:00",
         "timeZone": "UTC",
         "duration": "PT7H",
         "recurrenceRules": [
@@ -321,16 +321,16 @@
             ]
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "P11M25DT10H"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "P11M25DT10H",
+          "diurnalBaseTime": "00:00:00"
         }
       },
       {
         "@type": "Event",
-        "uid": "schedule_6aeea094e8f2",
-        "start": "0001-01-01T00:00:00",
+        "uid": "schedule_63a53b055fdb",
+        "start": "0001-01-01T09:00:00",
         "timeZone": "UTC",
         "duration": "PT7H",
         "recurrenceRules": [
@@ -346,15 +346,15 @@
             ]
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT1H"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H",
+          "diurnalBaseTime": "00:00:00"
         }
       },
       {
         "@type": "Event",
-        "uid": "schedule_65cc30f4a1e3",
+        "uid": "schedule_9c06d8333cb1",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -364,15 +364,15 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "P1D"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "P1D",
+          "diurnalBaseTime": "00:00:00"
         }
       },
       {
         "@type": "Event",
-        "uid": "schedule_4db7d1806c57",
+        "uid": "schedule_74eceaf97c31",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -382,15 +382,15 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT1H"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H",
+          "diurnalBaseTime": "00:00:00"
         }
       },
       {
         "@type": "Event",
-        "uid": "schedule_7cdbb9047e2a",
+        "uid": "schedule_73fdd6550f0e",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "PT10M",
@@ -401,19 +401,18 @@
             "interval": 12
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": {
           "samplingProcedure": "inapplicable",
           "temporalSamplingInterval": "PT12H",
           "samplingTimePeriod": "PT10M"
         },
-        "wmo.int:archiving": {
-          "temporalResolution": "P12D"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "P12D"
         }
       },
       {
         "@type": "Event",
-        "uid": "schedule_d76876cb49f8",
+        "uid": "schedule_26b52fca8ddb",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -423,18 +422,17 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": {
           "samplingStrategy": "continuous",
           "temporalSamplingInterval": "PT5S"
         },
-        "wmo.int:archiving": {
-          "temporalResolution": "PT1H"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H"
         }
       },
       {
         "@type": "Event",
-        "uid": "schedule_d47c362c67b6",
+        "uid": "schedule_c080b7aaa6ae",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -444,12 +442,12 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": {
           "samplingStrategy": "continuous"
         },
-        "wmo.int:archiving": {
-          "temporalResolution": "P1D"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "P1D",
+          "diurnalBaseTime": "00:00:00"
         }
       }
     ],
@@ -987,7 +985,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_f524bc0ede45"
+            "schedule_ec5258f4aed1"
           ],
           "dates": [
             "2005-05-01"
@@ -1009,7 +1007,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_6aeea094e8f2"
+            "schedule_63a53b055fdb"
           ],
           "dates": [
             "1984-04-19"
@@ -1031,7 +1029,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_65cc30f4a1e3"
+            "schedule_9c06d8333cb1"
           ],
           "dates": [
             "2010-06-09"
@@ -1053,7 +1051,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_65cc30f4a1e3"
+            "schedule_9c06d8333cb1"
           ],
           "dates": [
             "1998-09-23"
@@ -1075,7 +1073,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57"
+            "schedule_74eceaf97c31"
           ],
           "dates": [
             "1998-01-07"
@@ -1099,7 +1097,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_7cdbb9047e2a"
+            "schedule_73fdd6550f0e"
           ],
           "dates": [
             "1984-05-10"
@@ -1180,7 +1178,7 @@
         ],
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_d76876cb49f8"
+            "schedule_26b52fca8ddb"
           ],
           "dates": [
             "2025-05-03"
@@ -1199,7 +1197,7 @@
         "observingMethod": "unknown",
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_d47c362c67b6"
+            "schedule_c080b7aaa6ae"
           ],
           "dates": [
             "1969-08-01"

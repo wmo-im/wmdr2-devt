@@ -81,7 +81,7 @@
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_4db7d1806c57",
+        "uid": "schedule_74eceaf97c31",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -91,10 +91,10 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:diurnalBaseTime": "00:00:00",
         "wmo.int:sampling": null,
-        "wmo.int:archiving": {
-          "temporalResolution": "PT1H"
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H",
+          "diurnalBaseTime": "00:00:00"
         }
       }
     ],
@@ -630,7 +630,7 @@
         "localReferenceSurface": "localGround",
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57"
+            "schedule_74eceaf97c31"
           ],
           "dates": [
             "2016-04-29"
@@ -642,7 +642,7 @@
         "observingMethod": "unknown",
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57"
+            "schedule_74eceaf97c31"
           ],
           "dates": [
             ".."
@@ -654,7 +654,7 @@
         "observingMethod": "unknown",
         "temporalObservingSchedule": {
           "observingSchedule": [
-            "schedule_4db7d1806c57"
+            "schedule_74eceaf97c31"
           ],
           "dates": [
             ".."
