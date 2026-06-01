@@ -160,7 +160,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "observedDomain": "atmosphere",
                     "reporting": {
                         "internationalExchange": [True, False],
-                        "temporalReportingInterval": ["PT1H", "PT10M"],
+                        "temporalAggregate": ["PT1H", "PT10M"],
                         "uom": [None, "mm"],
                     },
                     "deployments": [
@@ -177,7 +177,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "observingMethod": "automatic",
                     "localReferenceSurface": "localGround",
                     "instrument": ["instrument:example"],
-                    "serialNumbers": {
+                    "temporalSerialNumbers": {
                         "serialNumber": ["ABC123"],
                         "dates": [".."],
                     },
@@ -400,7 +400,7 @@ def test_deployment_title_is_invalid() -> None:
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_deployment_manufacturer_model_are_invalid_but_serial_numbers_are_valid() -> None:
+def test_deployment_manufacturer_model_are_invalid_but_temporal_serial_numbers_are_valid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["deployments"][0]["manufacturer"] = "Vaisala"
 
@@ -423,7 +423,7 @@ def test_deployment_manufacturer_model_are_invalid_but_serial_numbers_are_valid(
 
 def test_instrument_serial_numbers_are_invalid() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["instruments"][0]["serialNumbers"] = {
+    instance["properties"]["instruments"][0]["temporalSerialNumbers"] = {
         "serialNumber": ["ABC123"],
         "dates": [".."],
     }
@@ -551,7 +551,7 @@ def test_reporting_allows_data_policy_and_level_of_data_arrays() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observations"][0]["reporting"] = {
         "internationalExchange": [False],
-        "temporalReportingInterval": ["P1M"],
+        "temporalAggregate": ["P1M"],
         "uom": ["DU"],
         "dataPolicy": [
             {
@@ -560,9 +560,24 @@ def test_reporting_allows_data_policy_and_level_of_data_arrays() -> None:
             }
         ],
         "levelOfData": ["level1"],
+        "temporalTimeliness": {
+            "timeliness": ["PT30M"],
+            "dates": ["2024-01-01"],
+        },
     }
 
     assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_reporting_temporal_timeliness_array_is_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observations"][0]["reporting"] = {
+        "internationalExchange": [False],
+        "temporalAggregate": ["P1M"],
+        "temporalTimeliness": ["PT30M"],
+    }
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
 
 
 def test_schedule_aggregation_statistics_is_validated() -> None:
@@ -589,5 +604,47 @@ def test_old_wmo_int_aggregating_schedule_extension_is_invalid() -> None:
     instance["properties"]["schedules"][0]["wmo.int:aggregating"] = {
         "temporalAggregate": "PT1H"
     }
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_reporting_temporal_reporting_interval_is_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observations"][0]["reporting"] = {
+        "internationalExchange": [True],
+        "temporalReportingInterval": ["PT1H"],
+    }
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_deployment_temporal_history_wrappers_are_valid() -> None:
+    instance = _valid_facility_record_feature()
+    deployment = instance["properties"]["deployments"][0]
+    deployment["temporalSerialNumbers"] = {
+        "serialNumber": ["ABC123", "DEF456"],
+        "dates": ["2020-01-01", "2021-01-01"],
+    }
+    deployment["temporalInstrumentOperatingStatus"] = {
+        "instrumentOperatingStatus": ["operational", "maintenance"],
+        "dates": ["2020-01-01", "2021-01-01"],
+    }
+
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_old_deployment_temporal_history_names_are_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["serialNumbers"] = {
+        "serialNumber": ["ABC123"],
+        "dates": ["2020-01-01"],
+    }
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["instrumentOperatingStatus"] = [
+        {"value": "operational"}
+    ]
 
     assert not _is_valid(RECORD_SCHEMA, instance)

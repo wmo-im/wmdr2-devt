@@ -492,6 +492,13 @@
               "interval"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalReportingInterval"
+            ]
+          }
         }
       ],
       "properties": {
@@ -504,13 +511,15 @@
             ]
           }
         },
-        "temporalReportingInterval": {
+        "temporalAggregate": {
+          "description": "Optional temporal aggregate period aligned with other reporting arrays.",
           "type": "array",
           "items": {
             "type": [
               "string",
               "null"
-            ]
+            ],
+            "pattern": "^(P|$)"
           }
         },
         "uom": {
@@ -556,6 +565,35 @@
                 "type": "null"
               }
             ]
+          }
+        },
+        "temporalTimeliness": {
+          "description": "Optional reporting latency/delay history aligned with the reporting entries. Each timeliness duration becomes valid on the corresponding date.",
+          "type": "object",
+          "required": [
+            "timeliness",
+            "dates"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "timeliness": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^(P|$)"
+              }
+            },
+            "dates": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/dateOrOpen"
+              }
+            }
           }
         }
       }
@@ -740,6 +778,20 @@
               "serialNumber"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "serialNumbers"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "instrumentOperatingStatus"
+            ]
+          }
         }
       ],
       "properties": {
@@ -764,10 +816,28 @@
         "localReferenceSurface": {
           "$ref": "#/$defs/codeValue"
         },
-        "instrumentOperatingStatus": {
-          "type": "array",
-          "items": {
-            "type": "object"
+        "temporalInstrumentOperatingStatus": {
+          "type": "object",
+          "required": [
+            "instrumentOperatingStatus",
+            "dates"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "instrumentOperatingStatus": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/codeValue"
+              }
+            },
+            "dates": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/dateOrOpen"
+              }
+            }
           }
         },
         "contacts": {
@@ -795,7 +865,7 @@
             "pattern": "^instrument:"
           }
         },
-        "serialNumbers": {
+        "temporalSerialNumbers": {
           "type": "object",
           "required": [
             "serialNumber",
@@ -863,7 +933,7 @@
         {
           "not": {
             "required": [
-              "serialNumbers"
+              "temporalSerialNumbers"
             ]
           }
         }

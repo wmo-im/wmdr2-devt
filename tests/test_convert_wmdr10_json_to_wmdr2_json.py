@@ -45,6 +45,7 @@ def _data_generation_with_coverage_and_reporting() -> dict[str, Any]:
         "reporting": {
             "internationalExchange": "true",
             "temporalReportingInterval": "PT1H",
+                "timeliness": "PT30M",
             "uom": "http://codes.wmo.int/wmdr/unit/mm",
             "dataPolicy": {
                 "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
@@ -215,7 +216,11 @@ def test_reporting_arrays_preserve_policy_attribution_and_level_of_data() -> Non
     reporting = record["properties"]["observations"][0]["reporting"]
 
     assert reporting["internationalExchange"] == [True]
-    assert reporting["temporalReportingInterval"] == ["PT1H"]
+    assert reporting["temporalAggregate"] == ["PT1H"]
+    assert reporting["temporalTimeliness"] == {
+        "timeliness": ["PT30M"],
+        "dates": ["2020-01-01"],
+    }
     assert reporting["uom"] == ["mm"]
     assert reporting["levelOfData"] == ["level1"]
     assert reporting["dataPolicy"] == [

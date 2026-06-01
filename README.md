@@ -118,7 +118,7 @@ The same convention is used for items such as:
 - `temporalTerritory.territory` / `temporalTerritory.dates`
 - `temporalClimateZone.climateZone` / `temporalClimateZone.dates`
 - `temporalSurfaceCover.surfaceCover` / `temporalSurfaceCover.dates`
-- `deployments[].serialNumbers.serialNumber` / `deployments[].serialNumbers.dates`
+- `deployments[].temporalSerialNumbers.serialNumber` / `deployments[].temporalSerialNumbers.dates`
 
 `temporalGeometry` is a WMDR2 history object, not an OGC Moving Features object. The current root `geometry` member remains the GeoJSON-compliant current point geometry.
 
@@ -159,7 +159,7 @@ Observation reporting uses aligned arrays. Reporting information is sourced from
 ```json
 "reporting": {
   "internationalExchange": [false],
-  "temporalReportingInterval": ["P1M"],
+  "temporalAggregate": ["P1M"],
   "uom": ["DU"],
   "dataPolicy": [
     {
@@ -184,7 +184,7 @@ WMDR1 XML
   observation / deployment / dataGeneration
     reporting
       internationalExchange
-      temporalReportingInterval
+      temporalAggregate
       uom
       dataPolicy
       levelOfData
@@ -203,12 +203,12 @@ WMDR1 XML
   observation / deployment / dataGeneration
     sampling
     coverage
-    reporting.temporalReportingInterval
+    reporting.temporalAggregate
 
 WMDR10 JSON
   dataGeneration.sampling
   dataGeneration.coverage
-  dataGeneration.reporting.temporalReportingInterval
+  dataGeneration.reporting.temporalAggregate
 
 WMDR2 JSON
   properties.schedules[]
@@ -229,7 +229,7 @@ For a WMDR10 JSON `dataGeneration` block like:
   "reporting": {
     "internationalExchange": "false",
     "uom": "http://codes.wmo.int/wmdr/unit/DU",
-    "temporalReportingInterval": "P1M"
+    "temporalAggregate": "P1M"
   },
   "beginPosition": "1982-03-13T00:00:00Z",
   "coverage": {
@@ -294,7 +294,7 @@ Notes:
 - The real applicability date of a schedule for a deployment is expressed only by `deployments[].temporalObservingSchedule.dates`.
 - `coverage.diurnalBaseTime` is stored as `wmo.int:aggregation.diurnalBaseTime` on the reusable schedule object, not under the deployment schedule reference. It is used for aggregate alignment, not for the JSCalendar occurrence start.
 - `wmo.int:sampling` is derived from `dataGeneration.sampling`; when the source value is absent, it is represented as `null`.
-- `wmo.int:aggregation.temporalAggregate` is derived from explicit aggregate metadata when available. For legacy WMDR1 records, the converter uses `reporting.temporalReportingInterval` as the default. `wmo.int:aggregation.diurnalBaseTime` may be present when the source provides a diurnal base time.
+- `wmo.int:aggregation.temporalAggregate` is derived from explicit aggregate metadata when available. For legacy WMDR1 records, the converter uses `reporting.temporalAggregate` as the default. `wmo.int:aggregation.diurnalBaseTime` may be present when the source provides a diurnal base time.
 - `wmo.int:aggregation.spatialResolution` is optional and omitted when unavailable. When spatial resolution is known, prefer a numeric value in metres, following the DCAT `spatialResolutionInMeters` convention.
 - `wmo.int:aggregation.statistics` is optional and currently schema-only; the XML/WMDR10 examples do not provide this information. Allowed values are `mean`, `median`, `min`, `max`, and `sum`.
 - A full coverage window such as months 1..12, weekdays 1..7, hours 0..23, and minutes 0..59 is represented as a daily event with duration `P1D`. Restricted weekday/month coverage is represented using JSCalendar recurrence-rule constraints such as `byDay` or `byMonth`.
@@ -400,7 +400,7 @@ Deployments are referenceable objects. Their `id` is preserved from the WMDR1 XM
   "id": "deployment:abc123",
   "observingMethod": "automaticWeatherStation",
   "instrument": ["instrument:def456"],
-  "serialNumbers": {
+  "temporalSerialNumbers": {
     "serialNumber": ["S123"],
     "dates": ["2020-01-01"]
   },
@@ -492,3 +492,48 @@ The current WMDR2 workflow no longer uses the previous Records Part 1 GeoJSON co
 - root-level `wmdr2-record-feature.schema.json`
 
 Do not remove the active schema files under `schemas/`.
+
+
+### Temporal deployment histories
+
+The deployment model uses explicit temporal wrappers for values that can change during the lifetime of a deployment:
+
+```json
+"temporalSerialNumbers": {
+  "serialNumber": ["ABC123", "DEF456"],
+  "dates": ["2020-01-01", "2021-01-01"]
+}
+```
+
+```json
+"temporalInstrumentOperatingStatus": {
+  "instrumentOperatingStatus": ["operational", "maintenance"],
+  "dates": ["2020-01-01", "2021-01-01"]
+}
+```
+
+Both wrappers are optional. Values at the same array index belong together; each value becomes valid on the corresponding date and remains valid until the next date entry.
+
+### Reporting latency
+
+`reporting.temporalTimeliness` is an optional temporal-history wrapper that documents the latency of data reporting. `timeliness` values are ISO 8601 durations, and values at the same array index as `dates` belong together.
+
+```json
+"reporting": {
+  "internationalExchange": [true],
+  "temporalAggregate": ["PT1H"],
+  "temporalTimeliness": {
+    "timeliness": ["PT30M"],
+    "dates": ["2024-01-01"]
+  }
+}
+```
+
+If a reporting history contains multiple entries and timeliness is not known for each entry, use `null` for the missing value while preserving array alignment.
+
+```json
+"temporalTimeliness": {
+  "timeliness": ["PT30M", null],
+  "dates": ["2024-01-01", "2025-01-01"]
+}
+```

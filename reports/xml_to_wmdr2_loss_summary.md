@@ -9,9 +9,9 @@ It is a review aid, not a formal proof of lossless conversion.
 |---|---:|
 | XML files | 6 |
 | XML semantic leaf entries scanned | 2587 |
-| Matched entries | 1521 |
+| Matched entries | 1519 |
 | Ignored intentional/non-semantic entries | 97 |
-| Potentially lost entries | 969 |
+| Potentially lost entries | 971 |
 
 ## How to interpret the files
 
@@ -30,7 +30,7 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 | `resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml` | 348 | 194 | 14 | 140 |
 | `resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml` | 187 | 113 | 11 | 63 |
 | `resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml` | 217 | 158 | 11 | 48 |
-| `resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml` | 422 | 288 | 22 | 112 |
+| `resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml` | 422 | 286 | 22 | 114 |
 | `resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml` | 419 | 236 | 13 | 170 |
 | `resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml` | 994 | 532 | 26 | 436 |
 
@@ -38,9 +38,9 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 
 | Section | Count |
 |---|---:|
-| deployment | 851 |
+| deployment | 852 |
+| facility | 51 |
 | observation | 50 |
-| facility | 50 |
 | contact | 18 |
 
 ## Most frequent unmatched XML paths

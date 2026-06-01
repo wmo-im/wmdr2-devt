@@ -1435,6 +1435,57 @@ def _normalize_reporting_status_timeline(value: Any) -> Optional[Dict[str, Any]]
     return _clean_none({"reportingStatus": statuses, "dates": dates})
 
 
+
+def _normalize_temporal_instrument_operating_status(value: Any) -> Optional[Dict[str, List[Any]]]:
+    """Normalize instrument operating-status history into aligned arrays.
+
+    ``temporalInstrumentOperatingStatus.instrumentOperatingStatus[i]`` becomes
+    valid on ``temporalInstrumentOperatingStatus.dates[i]``. End dates from
+    WMDR1 are intentionally not carried; the value remains valid until the next
+    history entry.
+    """
+    rows: List[Tuple[str, str]] = []
+
+    for item in _as_list(value):
+        if isinstance(item, str):
+            status = _normalize_code_value(item)
+            if isinstance(status, str) and status and not _is_unknown_token(status):
+                rows.append(("..", status))
+            continue
+
+        if not isinstance(item, dict):
+            continue
+
+        status = _normalize_code_value(
+            _first_non_empty(
+                item.get("instrumentOperatingStatus"),
+                item.get("status"),
+                item.get("value"),
+                item.get("href"),
+            )
+        )
+        if not isinstance(status, str) or not status or _is_unknown_token(status):
+            continue
+
+        rows.append((_temporal_begin_date(item), status))
+
+    if not rows:
+        return None
+
+    rows = sorted(rows, key=lambda row: (row[0] == "..", row[0], row[1]))
+    dates: List[str] = []
+    statuses: List[str] = []
+    seen: set[Tuple[str, str]] = set()
+    for begin, status in rows:
+        marker = (begin, status)
+        if marker in seen:
+            continue
+        seen.add(marker)
+        dates.append(begin)
+        statuses.append(status)
+
+    return _clean_none({"instrumentOperatingStatus": statuses, "dates": dates})
+
 def _program_affiliation_values(item: Any) -> List[str]:
     """Return normalized program-affiliation URI values for one source item."""
     if isinstance(item, str):
@@ -2513,15 +2564,30 @@ def _normalize_temporal_reporting_schedule(value: Any) -> List[Dict[str, Any]]:
 
         reporting = item.get("reporting")
         if isinstance(reporting, dict):
-            parsed_reporting = {
-                key: (_parse_bool(val) if _parse_bool(val) is not None else val)
-                for key, val in reporting.items()
-                if _non_empty(val)
-            }
+            parsed_reporting: Dict[str, Any] = {}
+            reporting_date = _normalize_date_value(item.get("beginPosition")) or ".."
+            for key, val in reporting.items():
+                if not _non_empty(val):
+                    continue
+                target_key = key
+                if key == "temporalReportingInterval":
+                    target_key = "temporalAggregate"
+                elif key == "timeliness":
+                    # Keep the raw reporting timeliness here; it is promoted
+                    # below to the temporalTimeliness wrapper with aligned
+                    # timeliness/dates arrays.
+                    target_key = "timeliness"
+                parsed = _parse_bool(val)
+                parsed_reporting[target_key] = parsed if parsed is not None else _preserve_nulls(val)
             # For the WMDR2 observation-level reporting object, even a single
             # internationalExchange flag is substantive and must be retained.
             if parsed_reporting:
                 record["reporting"] = parsed_reporting
+                if "timeliness" in parsed_reporting:
+                    # Internal helper metadata used to align temporalTimeliness
+                    # with the reporting history. It is removed before WMDR2
+                    # output is created.
+                    record["reportingDate"] = reporting_date
 
         if record:
             out.append(record)
@@ -2870,11 +2936,11 @@ def _normalize_deployment(
         "sourceOfObservation": raw.get("sourceOfObservation"),
         "observingMethod": raw.get("observingMethod"),
         "instrument": _instrument_refs_for_deployment(raw, facility_id=facility_id),
-        "serialNumbers": _deployment_serial_numbers(raw),
+        "temporalSerialNumbers": _deployment_serial_numbers(raw),
         "exposure": raw.get("exposure"),
         "representativeness": raw.get("representativeness"),
         "localReferenceSurface": raw.get("localReferenceSurface"),
-        "instrumentOperatingStatus": _normalize_reporting_status(raw.get("instrumentOperatingStatus")),
+        "temporalInstrumentOperatingStatus": _normalize_temporal_instrument_operating_status(raw.get("instrumentOperatingStatus")),
         "contacts": contacts,
         "keywords": _keywords_from_values(_collect_discovery_values("deployment", raw, "keywords")),
         "links": _extract_links(raw, "deployment"),
@@ -2901,16 +2967,20 @@ def _normalize_observation_reporting(*sources: Any) -> Optional[Dict[str, List[A
     Example:
         {
           "internationalExchange": [true, false],
-          "temporalReportingInterval": ["PT1H", "PT10M"],
+          "temporalAggregate": ["PT1H", "PT10M"],
           "uom": [null, "http://codes.wmo.int/wmdr/unit/mm"]
         }
     """
     records: List[Dict[str, Any]] = []
+    record_dates: List[str] = []
 
     for source in sources:
         for item in _normalize_temporal_reporting_schedule(source):
             reporting = _as_dict(item.get("reporting"))
             record: Dict[str, Any] = {}
+            reporting_date = item.get("reportingDate")
+            if not isinstance(reporting_date, str) or not reporting_date.strip():
+                reporting_date = ".."
 
             for key, value in reporting.items():
                 if key == "uom" and _is_unknown_token(value):
@@ -2920,14 +2990,27 @@ def _normalize_observation_reporting(*sources: Any) -> Optional[Dict[str, List[A
 
             if record:
                 records.append(record)
+                record_dates.append(reporting_date)
 
-    records = _uniq_dicts(records)
+    deduped_records: List[Dict[str, Any]] = []
+    deduped_dates: List[str] = []
+    seen_reporting: set[str] = set()
+    for record, reporting_date in zip(records, record_dates):
+        marker = json.dumps(record, sort_keys=True, ensure_ascii=False)
+        if marker in seen_reporting:
+            continue
+        seen_reporting.add(marker)
+        deduped_records.append(record)
+        deduped_dates.append(reporting_date)
+
+    records = deduped_records
+    record_dates = deduped_dates
     if not records:
         return None
 
     preferred_order = [
         "internationalExchange",
-        "temporalReportingInterval",
+        "temporalAggregate",
         "uom",
         "dataPolicy",
         "levelOfData",
@@ -2937,14 +3020,20 @@ def _normalize_observation_reporting(*sources: Any) -> Optional[Dict[str, List[A
         key
         for record in records
         for key in record
-        if key not in preferred_order
+        if key not in preferred_order and key != "timeliness"
     )
 
-    reporting: Dict[str, List[Any]] = {}
+    reporting: Dict[str, Any] = {}
     for key in preferred_order + extra_keys:
         if not any(key in record for record in records):
             continue
         reporting[key] = [record.get(key) for record in records]
+
+    if any("timeliness" in record for record in records):
+        reporting["temporalTimeliness"] = {
+            "timeliness": [record.get("timeliness") for record in records],
+            "dates": record_dates,
+        }
 
     return reporting or None
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-31T06:38:00.762717+00:00",
+  "generatedAt": "2026-06-01T14:33:32.728960+00:00",
   "description": "Semantic XML leaf values not found in the generated WMDR2 JSON, after applying intentional-loss and code-list-compaction rules.",
   "notes": [
     "This is a coverage heuristic: it checks whether XML leaf values survive somewhere in the WMDR2 JSON.",
@@ -10,14 +10,14 @@
   "summary": {
     "xml_files": 6,
     "xml_entries": 2587,
-    "matched_entries": 1521,
-    "lost_entries": 969,
+    "matched_entries": 1519,
+    "lost_entries": 971,
     "ignored_entries": 97
   },
   "files": [
     {
       "xml": "resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-14/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
       "summary": {
         "xmlEntries": 348,
         "matched": 194,
@@ -1294,7 +1294,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-14/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
       "summary": {
         "xmlEntries": 187,
         "matched": 113,
@@ -1887,7 +1887,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-14/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
       "summary": {
         "xmlEntries": 217,
         "matched": 158,
@@ -2351,11 +2351,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-14/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
       "summary": {
         "xmlEntries": 422,
-        "matched": 288,
-        "lost": 112,
+        "matched": 286,
+        "lost": 114,
         "ignored": 22
       },
       "lost": [
@@ -2481,6 +2481,16 @@
           "candidateValues": [
             "2010-06-11",
             "2010-06-11T00:00:00Z"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/programAffiliation[3]/ProgramAffiliation/reportingStatus[2]/ReportingStatus/validPeriod/TimePeriod/endPosition/text()",
+          "kind": "text",
+          "value": "2010-06-10T00:00:00Z",
+          "candidateValues": [
+            "2010-06-10",
+            "2010-06-10T00:00:00Z"
           ]
         },
         {
@@ -3183,6 +3193,16 @@
           ]
         },
         {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2010-06-10T00:00:00Z",
+          "candidateValues": [
+            "2010-06-10",
+            "2010-06-10T00:00:00Z"
+          ]
+        },
+        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL/text()",
           "kind": "text",
@@ -3405,7 +3425,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-14/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
       "summary": {
         "xmlEntries": 419,
         "matched": 236,
@@ -4965,7 +4985,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-14/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
       "summary": {
         "xmlEntries": 994,
         "matched": 532,

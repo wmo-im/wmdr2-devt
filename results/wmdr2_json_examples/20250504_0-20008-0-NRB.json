@@ -511,7 +511,7 @@
           "internationalExchange": [
             true
           ],
-          "temporalReportingInterval": [
+          "temporalAggregate": [
             "P11M25DT10H"
           ],
           "dataPolicy": [
@@ -560,7 +560,7 @@
           "internationalExchange": [
             true
           ],
-          "temporalReportingInterval": [
+          "temporalAggregate": [
             "PT1H"
           ],
           "uom": [
@@ -621,7 +621,7 @@
           "internationalExchange": [
             false
           ],
-          "temporalReportingInterval": [
+          "temporalAggregate": [
             "P1D"
           ],
           "dataPolicy": [
@@ -670,7 +670,7 @@
           "internationalExchange": [
             false
           ],
-          "temporalReportingInterval": [
+          "temporalAggregate": [
             "P1D"
           ],
           "dataPolicy": [
@@ -719,7 +719,7 @@
           "internationalExchange": [
             true
           ],
-          "temporalReportingInterval": [
+          "temporalAggregate": [
             "PT1H"
           ],
           "dataPolicy": [
@@ -768,7 +768,7 @@
           "internationalExchange": [
             false
           ],
-          "temporalReportingInterval": [
+          "temporalAggregate": [
             "P12D"
           ],
           "uom": [
@@ -863,7 +863,7 @@
           "internationalExchange": [
             true
           ],
-          "temporalReportingInterval": [
+          "temporalAggregate": [
             "PT1H"
           ],
           "uom": [
@@ -907,7 +907,7 @@
           "internationalExchange": [
             false
           ],
-          "temporalReportingInterval": [
+          "temporalAggregate": [
             "P1D"
           ],
           "dataPolicy": [
@@ -937,7 +937,7 @@
         "instrument": [
           "instrument:a88f8640075c"
         ],
-        "serialNumbers": {
+        "temporalSerialNumbers": {
           "serialNumber": [
             "71"
           ],
@@ -967,7 +967,7 @@
         "instrument": [
           "instrument:3dfbbc12411e"
         ],
-        "serialNumbers": {
+        "temporalSerialNumbers": {
           "serialNumber": [
             "18"
           ],
@@ -1119,18 +1119,6 @@
         ],
         "exposure": "class1",
         "localReferenceSurface": "naturalGround",
-        "instrumentOperatingStatus": [
-          {
-            "value": "unknown",
-            "id": "id_35e78801-364f-4ef0-8a9b-95622c3dce20",
-            "time": {
-              "interval": [
-                "2010-06-10",
-                ".."
-              ]
-            }
-          }
-        ],
         "keywords": [
           "CIMEL",
           "CE318TS9 (Sun Photometer)",
@@ -1148,7 +1136,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": 240,
-        "serialNumbers": {
+        "temporalSerialNumbers": {
           "serialNumber": [
             "Fidas 6111"
           ],
@@ -1159,18 +1147,14 @@
         "exposure": "class3",
         "representativeness": "toposcale",
         "localReferenceSurface": "roofTerrace",
-        "instrumentOperatingStatus": [
-          {
-            "value": "operational",
-            "id": "id_643b2414-1b5e-4bb2-a4fd-9ad7e676b6da",
-            "time": {
-              "interval": [
-                "2025-05-04",
-                ".."
-              ]
-            }
-          }
-        ],
+        "temporalInstrumentOperatingStatus": {
+          "instrumentOperatingStatus": [
+            "operational"
+          ],
+          "dates": [
+            "2025-05-04"
+          ]
+        },
         "keywords": [
           "Fidas 6111",
           "automaticReading",

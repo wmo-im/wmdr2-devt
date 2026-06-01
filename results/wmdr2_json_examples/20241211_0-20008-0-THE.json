@@ -280,7 +280,7 @@
           "internationalExchange": [
             false
           ],
-          "temporalReportingInterval": [
+          "temporalAggregate": [
             "P1M"
           ],
           "uom": [
@@ -418,7 +418,7 @@
           "internationalExchange": [
             false
           ],
-          "temporalReportingInterval": [
+          "temporalAggregate": [
             "PT1H"
           ],
           "uom": [
@@ -440,9 +440,14 @@
           "referenceTimeSource": [
             "timeServer"
           ],
-          "timeliness": [
-            "P1Y"
-          ]
+          "temporalTimeliness": {
+            "timeliness": [
+              "P1Y"
+            ],
+            "dates": [
+              "1993-01-19"
+            ]
+          }
         }
       },
       {
@@ -578,18 +583,14 @@
         "exposure": "class1",
         "representativeness": "toposcale",
         "localReferenceSurface": "localGround",
-        "instrumentOperatingStatus": [
-          {
-            "value": "operational",
-            "id": "id_b074e827-5347-7937-e053-148ef98d6de4",
-            "time": {
-              "interval": [
-                "1993-01-19",
-                ".."
-              ]
-            }
-          }
-        ],
+        "temporalInstrumentOperatingStatus": {
+          "instrumentOperatingStatus": [
+            "operational"
+          ],
+          "dates": [
+            "1993-01-19"
+          ]
+        },
         "keywords": [
           "Kipp&Zonen",
           "CM21",
