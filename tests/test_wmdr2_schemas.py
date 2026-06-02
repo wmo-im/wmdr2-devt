@@ -108,13 +108,25 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                 "territory": ["BEL"],
                 "dates": ["2016-04-28"],
             },
-            "temporalClimateZone": {
-                "climateZone": ["Cfb"],
-                "dates": [".."],
-            },
-            "temporalSurfaceCover": {
-                "surfaceCover": ["grassland"],
-                "dates": [".."],
+            "environment": {
+                "temporalClimateZone": {
+                    "climateZone": ["Cfb"],
+                    "dates": [".."],
+                },
+                "temporalSurfaceCover": {
+                    "surfaceCover": ["grassland"],
+                    "dates": [".."],
+                },
+                "temporalPopulation": {
+                    "populationDensity": [[100, 200]],
+                    "dates": ["2020-01-01"],
+                },
+                "temporalTopographyBathymetry": {
+                    "topographyBathymetry": [
+                        {"localTopography": "flat"}
+                    ],
+                    "dates": ["2020-01-01"],
+                },
             },
             "temporalProgramAffiliation": {
                 "programAffiliation": [
@@ -646,5 +658,41 @@ def test_old_deployment_temporal_history_names_are_invalid() -> None:
     instance["properties"]["deployments"][0]["instrumentOperatingStatus"] = [
         {"value": "operational"}
     ]
+
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_environment_wrapper_is_valid() -> None:
+    instance = _valid_facility_record_feature()
+
+    instance["properties"]["environment"] = {
+        "temporalClimateZone": {
+            "climateZone": ["warmTemperateFullyHumidHotSummer"],
+            "dates": ["1982-03-13"],
+        },
+        "temporalSurfaceCover": {
+            "surfaceCover": ["urbanBuiltup"],
+            "dates": ["1982-03-13"],
+        },
+        "temporalPopulation": {
+            "populationDensity": [[100, 200]],
+            "dates": ["1982-03-13"],
+        },
+        "temporalTopographyBathymetry": {
+            "topographyBathymetry": [{"localTopography": "flat"}],
+            "dates": ["1982-03-13"],
+        },
+    }
+
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_environmental_histories_are_invalid_as_direct_facility_properties() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"].pop("environment", None)
+    instance["properties"]["temporalClimateZone"] = {
+        "climateZone": ["warmTemperateFullyHumidHotSummer"],
+        "dates": ["1982-03-13"],
+    }
 
     assert not _is_valid(RECORD_SCHEMA, instance)

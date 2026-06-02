@@ -2851,6 +2851,139 @@ def _normalize_temporal_surface_cover(value: Any) -> Optional[Dict[str, Any]]:
     )
 
 
+def _normalize_temporal_population(value: Any) -> Optional[Dict[str, Any]]:
+    """Normalize population-density history into aligned value/date arrays.
+
+    WMDR1 source records do not always expose population density in a
+    consistent shape. Preserve numeric/list/dict values with source metadata
+    stripped, and align each entry with its begin date.
+    """
+    densities: List[Any] = []
+    dates: List[str] = []
+
+    for item in _as_list(value):
+        if isinstance(item, dict):
+            cleaned = _drop_source_metadata(item)
+            if not isinstance(cleaned, dict):
+                continue
+
+            raw_value = _first_non_empty(
+                cleaned.get("populationDensity"),
+                cleaned.get("density"),
+                cleaned.get("value"),
+            )
+            if raw_value is None:
+                # Preserve the structured population object if no canonical
+                # populationDensity member is available.
+                raw_value = {
+                    key: val
+                    for key, val in cleaned.items()
+                    if key not in {"beginPosition", "endPosition", "begin", "end", "start", "date"}
+                }
+            if not _non_empty(raw_value):
+                continue
+            densities.append(raw_value)
+            dates.append(_temporal_begin_date(item))
+            continue
+
+        if _non_empty(item):
+            densities.append(item)
+            dates.append("..")
+
+    if not densities:
+        return None
+
+    return _clean_none({"populationDensity": densities, "dates": dates})
+
+
+def _normalize_temporal_topography_bathymetry(facility: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Normalize topography/bathymetry-related facility context.
+
+    The WMDR1 shape is still heterogeneous for these elements. Keep the
+    source-like element names inside each history value, while removing XML/GML
+    bookkeeping and aligning entries with begin dates.
+    """
+    source_keys = (
+        "topographyBathymetry",
+        "topography",
+        "bathymetry",
+        "localTopography",
+        "relativeElevation",
+        "topographicContext",
+        "altitudeOrDepth",
+    )
+    entries: List[Any] = []
+    dates: List[str] = []
+
+    for key in source_keys:
+        for item in _as_list(facility.get(key)):
+            if not _non_empty(item):
+                continue
+
+            if isinstance(item, dict):
+                cleaned = _drop_source_metadata(item)
+                if not isinstance(cleaned, dict) or not _non_empty(cleaned):
+                    continue
+                value = {
+                    key: {
+                        sub_key: sub_value
+                        for sub_key, sub_value in cleaned.items()
+                        if sub_key not in {
+                            "beginPosition",
+                            "endPosition",
+                            "begin",
+                            "end",
+                            "start",
+                            "date",
+                        }
+                    }
+                }
+                date = _temporal_begin_date(item)
+            else:
+                value = {key: _normalize_code_value(item) if isinstance(item, str) else item}
+                date = ".."
+
+            entries.append(value)
+            dates.append(date)
+
+    if not entries:
+        return None
+
+    return _clean_none({"topographyBathymetry": entries, "dates": dates})
+
+
+def _normalize_environment(facility: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Normalize optional facility environmental context."""
+    environment: Dict[str, Any] = {}
+
+    temporal_climate_zone = _normalize_temporal_climate_zone(facility.get("climateZone"))
+    if temporal_climate_zone:
+        environment["temporalClimateZone"] = temporal_climate_zone
+
+    temporal_surface_cover = _normalize_temporal_surface_cover(facility.get("surfaceCover"))
+    if temporal_surface_cover:
+        environment["temporalSurfaceCover"] = temporal_surface_cover
+
+    temporal_population = _normalize_temporal_population(
+        _first_non_empty(
+            facility.get("populationDensity"),
+            facility.get("population"),
+            facility.get("demography"),
+        )
+    )
+    if temporal_population:
+        environment["temporalPopulation"] = temporal_population
+
+    temporal_topography_bathymetry = _normalize_temporal_topography_bathymetry(facility)
+    if temporal_topography_bathymetry:
+        environment["temporalTopographyBathymetry"] = temporal_topography_bathymetry
+
+    if not environment:
+        return None
+
+    return _clean_none(environment)
+
+
 def _copy_known_facility_properties(facility: Dict[str, Any]) -> Dict[str, Any]:
     """Copy and normalize known WMDR2 core facility properties.
 
@@ -2865,12 +2998,10 @@ def _copy_known_facility_properties(facility: Dict[str, Any]) -> Dict[str, Any]:
         "facilityType",
         "wmoRegion",
         "surfaceCoverClassification",
-        "localTopography",
-        "relativeElevation",
-        "topographicContext",
-        "altitudeOrDepth",
         "timeZone",
         "regionOfOrigin",
+        # Environmental context such as climateZone, surfaceCover, population,
+        # and topography/bathymetry is exposed under properties.environment.
         # dateEstablished/dateClosed are consumed by the root Feature ``time``
         # member and are intentionally not repeated under properties.
     ]
@@ -2884,13 +3015,9 @@ def _copy_known_facility_properties(facility: Dict[str, Any]) -> Dict[str, Any]:
     if temporal_territory:
         out["temporalTerritory"] = temporal_territory
 
-    temporal_climate_zone = _normalize_temporal_climate_zone(facility.get("climateZone"))
-    if temporal_climate_zone:
-        out["temporalClimateZone"] = temporal_climate_zone
-
-    temporal_surface_cover = _normalize_temporal_surface_cover(facility.get("surfaceCover"))
-    if temporal_surface_cover:
-        out["temporalSurfaceCover"] = temporal_surface_cover
+    environment = _normalize_environment(facility)
+    if environment:
+        out["environment"] = environment
 
     return out
 

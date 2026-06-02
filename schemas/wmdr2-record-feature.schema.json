@@ -101,6 +101,62 @@
               "temporalGeometry"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalClimateZone"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalSurfaceCover"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalPopulation"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalTopographyBathymetry"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "localTopography"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "relativeElevation"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "topographicContext"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "altitudeOrDepth"
+            ]
+          }
         }
       ],
       "properties": {
@@ -156,30 +212,12 @@
         "surfaceCoverClassification": {
           "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
         },
-        "localTopography": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
-        },
-        "relativeElevation": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
-        },
-        "topographicContext": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
-        },
-        "altitudeOrDepth": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
-        },
         "timeZone": {},
         "regionOfOrigin": {
           "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
         },
         "temporalTerritory": {
           "$ref": "wmdr2-common.schema.json#/$defs/temporalTerritory"
-        },
-        "temporalClimateZone": {
-          "$ref": "wmdr2-common.schema.json#/$defs/temporalClimateZone"
-        },
-        "temporalSurfaceCover": {
-          "$ref": "wmdr2-common.schema.json#/$defs/temporalSurfaceCover"
         },
         "temporalProgramAffiliation": {
           "$ref": "wmdr2-common.schema.json#/$defs/temporalProgramAffiliation"
@@ -210,6 +248,9 @@
           "items": {
             "$ref": "wmdr2-common.schema.json#/$defs/jscalendarEvent"
           }
+        },
+        "environment": {
+          "$ref": "wmdr2-common.schema.json#/$defs/environment"
         }
       }
     },

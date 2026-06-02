@@ -1106,6 +1106,82 @@
           }
         }
       }
+    },
+    "temporalPopulation": {
+      "type": "object",
+      "required": [
+        "populationDensity",
+        "dates"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "populationDensity": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": [
+              "array",
+              "object",
+              "number",
+              "string",
+              "null"
+            ],
+            "additionalProperties": true
+          }
+        },
+        "dates": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/dateOrOpen"
+          }
+        }
+      }
+    },
+    "temporalTopographyBathymetry": {
+      "type": "object",
+      "required": [
+        "topographyBathymetry",
+        "dates"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "topographyBathymetry": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "dates": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/dateOrOpen"
+          }
+        }
+      }
+    },
+    "environment": {
+      "description": "Optional environmental context for a facility, represented as temporal histories.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "temporalClimateZone": {
+          "$ref": "#/$defs/temporalClimateZone"
+        },
+        "temporalSurfaceCover": {
+          "$ref": "#/$defs/temporalSurfaceCover"
+        },
+        "temporalPopulation": {
+          "$ref": "#/$defs/temporalPopulation"
+        },
+        "temporalTopographyBathymetry": {
+          "$ref": "#/$defs/temporalTopographyBathymetry"
+        }
+      },
+      "minProperties": 1
     }
   }
 }

@@ -280,3 +280,56 @@ def test_duplicate_temporal_observing_schedule_references_are_removed() -> None:
         "observingSchedule": [schedules[0]["uid"]],
         "dates": ["2020-01-01"],
     }
+
+
+def test_facility_environment_wraps_environmental_histories() -> None:
+    facility = _minimal_facility() | {
+        "climateZone": {
+            "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/Cfb",
+            "beginPosition": "1980-01-01T00:00:00Z",
+        },
+        "surfaceCover": {
+            "surfaceCover": "http://codes.wmo.int/wmdr/SurfaceCover/urbanBuiltup",
+            "beginPosition": "1981-01-01T00:00:00Z",
+        },
+        "populationDensity": {
+            "populationDensity": [100, 200],
+            "beginPosition": "1990-01-01T00:00:00Z",
+        },
+        "localTopography": {
+            "value": "flat",
+            "beginPosition": "1970-01-01T00:00:00Z",
+        },
+    }
+
+    record = module.build_facility_feature(
+        facility,
+        [],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+
+    props = record["properties"]
+    environment = props["environment"]
+
+    assert "temporalClimateZone" not in props
+    assert "temporalSurfaceCover" not in props
+    assert "localTopography" not in props
+
+    assert environment["temporalClimateZone"] == {
+        "climateZone": ["Cfb"],
+        "dates": ["1980-01-01"],
+    }
+    assert environment["temporalSurfaceCover"] == {
+        "surfaceCover": ["urbanBuiltup"],
+        "dates": ["1981-01-01"],
+    }
+    assert environment["temporalPopulation"] == {
+        "populationDensity": [[100, 200]],
+        "dates": ["1990-01-01"],
+    }
+    assert environment["temporalTopographyBathymetry"] == {
+        "topographyBathymetry": [{"localTopography": {"value": "flat"}}],
+        "dates": ["1970-01-01"],
+    }
