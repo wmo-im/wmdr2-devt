@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.wmo.int/wmdr/2.0/schemas/wmdr2-facility-sets.schema.json",
+  "title": "WMDR2 facility set catalogue",
+  "description": "Catalogue of facilitySet entities referenced from facility records via properties.facilitySets.",
+  "type": "object",
+  "required": [
+    "facilitySets"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "facilitySets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^facilitySet:"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "uniqueItems": true
+    }
+  }
+}

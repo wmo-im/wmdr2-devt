@@ -105,6 +105,20 @@
         {
           "not": {
             "required": [
+              "externalIds"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "facilitySet"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
               "temporalClimateZone"
             ]
           }
@@ -126,35 +140,49 @@
         {
           "not": {
             "required": [
+              "temporalPopulationDensities"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalSurfaceRoughness"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalLocalTopography"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalRelativeElevation"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalTopographicContext"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalAltitudeOrDepth"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
               "temporalTopographyBathymetry"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "localTopography"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "relativeElevation"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "topographicContext"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "altitudeOrDepth"
             ]
           }
         }
@@ -176,12 +204,6 @@
         "description": {
           "type": "string"
         },
-        "externalIds": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/externalId"
-          }
-        },
         "contacts": {
           "type": "array",
           "items": {
@@ -200,8 +222,12 @@
             "$ref": "wmdr2-common.schema.json#/$defs/link"
           }
         },
-        "facilitySet": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+        "facilitySets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^facilitySet:"
+          }
         },
         "facilityType": {
           "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
@@ -218,6 +244,9 @@
         },
         "temporalTerritory": {
           "$ref": "wmdr2-common.schema.json#/$defs/temporalTerritory"
+        },
+        "environment": {
+          "$ref": "wmdr2-common.schema.json#/$defs/environment"
         },
         "temporalProgramAffiliation": {
           "$ref": "wmdr2-common.schema.json#/$defs/temporalProgramAffiliation"
@@ -248,9 +277,6 @@
           "items": {
             "$ref": "wmdr2-common.schema.json#/$defs/jscalendarEvent"
           }
-        },
-        "environment": {
-          "$ref": "wmdr2-common.schema.json#/$defs/environment"
         }
       }
     },

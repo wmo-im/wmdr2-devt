@@ -43,12 +43,6 @@
     "created": "2024-12-11T00:00:00Z",
     "updated": "2024-12-11T00:00:00Z",
     "description": "The Brewer spectrophotometers and all radaition instruments are located on the roof of the 4-storey building of the Physics Dept., of the Aristotle University of Thessaloniki. The Campus is located in the city center about 500 m east of the seashore. The highest elevation of about 1100 m is at a distance of about 15 km towards the east. Thessaloniki is the second largest city of Greece with about 1000000 inhabitants in the greater metropolitan area.",
-    "externalIds": [
-      {
-        "scheme": "WMO:WIGOS",
-        "value": "0-20008-0-THE"
-      }
-    ],
     "contacts": [
       {
         "organization": "Aristotle University of Thessaloniki",
@@ -170,53 +164,56 @@
     ],
     "facilityType": "landFixed",
     "wmoRegion": "europe",
-    "temporalTerritory": {
-      "territory": [
-        "GRC"
-      ],
-      "dates": [
-        "2011-02-16"
-      ]
-    },
-    "environment": {
-      "temporalClimateZone": {
-        "climateZone": [
-          "warmTemperateFullyHumidHotSummer"
-        ],
-        "dates": [
-          "1982-03-13"
-        ]
-      },
-      "temporalSurfaceCover": {
-        "surfaceCover": [
-          "urbanBuiltup"
-        ],
-        "dates": [
-          "1982-03-13"
-        ]
+    "temporalTerritory": [
+      {
+        "territory": "GRC",
+        "date": "2011-02-16"
       }
-    },
-    "temporalProgramAffiliation": {
-      "programAffiliation": [
-        "GAWregional",
-        "AERONET",
-        "GALION"
+    ],
+    "environment": {
+      "temporalClimateZone": [
+        {
+          "climateZone": "warmTemperateFullyHumidHotSummer",
+          "date": "1982-03-13"
+        }
       ],
-      "dates": [
-        "1982-03-13",
-        "2003-06-01",
-        "2008-01-01"
+      "temporalSurfaceCover": [
+        {
+          "surfaceCover": "urbanBuiltup",
+          "date": "1982-03-13",
+          "surfaceCoverClassification": "igbp"
+        }
       ],
-      "reportingStatus": [
-        "operational",
-        "operational",
-        "operational"
+      "temporalSurfaceRoughness": [
+        {
+          "surfaceRoughness": "chaotic",
+          "date": "1982-03-13"
+        }
       ]
     },
+    "temporalProgramAffiliation": [
+      {
+        "programAffiliation": "GAWregional",
+        "reportingStatus": "operational",
+        "date": "1982-03-13",
+        "programSpecificFacilityId": "THE"
+      },
+      {
+        "programAffiliation": "AERONET",
+        "reportingStatus": "operational",
+        "date": "2003-06-01",
+        "programSpecificFacilityId": "Thessaloniki"
+      },
+      {
+        "programAffiliation": "GALION",
+        "reportingStatus": "operational",
+        "date": "2008-01-01",
+        "programSpecificFacilityId": "THE"
+      }
+    ],
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_6b3ad561061e",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -226,15 +223,14 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": null,
         "wmo.int:aggregation": {
           "temporalAggregate": "P1M",
           "diurnalBaseTime": "00:00:00"
-        }
+        },
+        "uid": "schedule_1b005e873357"
       },
       {
         "@type": "Event",
-        "uid": "schedule_3bfead571d61",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -244,15 +240,28 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": {
-          "samplingStrategy": "continuous",
-          "temporalSamplingInterval": "PT2S",
-          "samplingTimePeriod": "PT2S"
-        },
         "wmo.int:aggregation": {
           "temporalAggregate": "PT1H",
           "diurnalBaseTime": "00:00:00"
-        }
+        },
+        "uid": "schedule_2bb1a98fc0c3"
+      },
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT2S",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "secondly",
+            "interval": 2
+          }
+        ],
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H"
+        },
+        "uid": "schedule_1c1e1a666619"
       }
     ],
     "observations": [
@@ -268,12 +277,8 @@
         "observedVariable": 263,
         "observedGeometryType": "totalColumn",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional"
         ],
         "deployments": [
           "deployment:id_dbac206e-0e1e-4e50-baa5-42ec0909a02b"
@@ -309,12 +314,8 @@
         "observedVariable": 314,
         "observedGeometryType": "totalColumn",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "AERONET"
-            ]
-          }
+        "programAffiliations": [
+          "AERONET"
         ]
       },
       {
@@ -323,12 +324,8 @@
         "observedVariable": 325,
         "observedGeometryType": "totalColumn",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "AERONET"
-            ]
-          }
+        "programAffiliations": [
+          "AERONET"
         ]
       },
       {
@@ -343,12 +340,8 @@
         "observedVariable": 359,
         "observedGeometryType": "area",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional"
         ],
         "deployments": [
           "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197"
@@ -366,33 +359,12 @@
         "observedVariable": 572,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional"
         ],
         "deployments": [
           "deployment:id_f5f50866-9c93-4e3a-9c0e-c13d32c342e6"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "uom": [
-            "W.m-2"
-          ],
-          "dataPolicy": [
-            {
-              "attribution": {
-                "originator": {
-                  "role": null
-                }
-              }
-            }
-          ]
-        }
+        ]
       },
       {
         "id": "observation:573",
@@ -406,12 +378,8 @@
         "observedVariable": 573,
         "observedGeometryType": "area",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional"
         ],
         "deployments": [
           "deployment:id_cca5e647-05b3-4d9c-bb5a-cbd300e3ae4c"
@@ -436,20 +404,12 @@
               }
             }
           ],
-          "numberOfObservationsInReportingInterval": [
-            "60"
-          ],
-          "referenceTimeSource": [
-            "timeServer"
-          ],
-          "temporalTimeliness": {
-            "timeliness": [
-              "P1Y"
-            ],
-            "dates": [
-              "1993-01-19"
-            ]
-          }
+          "temporalTimeliness": [
+            {
+              "timeliness": "P1Y",
+              "date": "1993-01-19"
+            }
+          ]
         }
       },
       {
@@ -458,12 +418,8 @@
         "observedVariable": 12150,
         "observedGeometryType": "totalColumn",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "AERONET"
-            ]
-          }
+        "programAffiliations": [
+          "AERONET"
         ]
       },
       {
@@ -472,12 +428,8 @@
         "observedVariable": 12151,
         "observedGeometryType": "totalColumn",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "AERONET"
-            ]
-          }
+        "programAffiliations": [
+          "AERONET"
         ]
       },
       {
@@ -486,12 +438,8 @@
         "observedVariable": 12153,
         "observedGeometryType": "totalColumn",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "AERONET"
-            ]
-          }
+        "programAffiliations": [
+          "AERONET"
         ]
       },
       {
@@ -500,12 +448,8 @@
         "observedVariable": 12159,
         "observedGeometryType": "verticalProfile",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GALION"
-            ]
-          }
+        "programAffiliations": [
+          "GALION"
         ]
       }
     ],
@@ -521,17 +465,14 @@
         "sourceOfObservation": "automaticReading",
         "observingMethod": 78,
         "keywords": [
-          "automaticReading",
-          "78"
+          "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_6b3ad561061e"
-          ],
-          "dates": [
-            "1982-03-13"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_1b005e873357",
+            "date": "1982-03-13"
+          }
+        ]
       },
       {
         "id": "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197",
@@ -541,10 +482,7 @@
             ".."
           ]
         },
-        "observingMethod": 268,
-        "keywords": [
-          "268"
-        ]
+        "observingMethod": 268
       },
       {
         "id": "deployment:id_f5f50866-9c93-4e3a-9c0e-c13d32c342e6",
@@ -557,7 +495,7 @@
         "sourceOfObservation": "automaticReading",
         "observingMethod": 264,
         "instrument": [
-          "instrument:0aad71fddee0"
+          "instrument:65c149b8d027"
         ],
         "exposure": "class1",
         "representativeness": "toposcale",
@@ -565,8 +503,7 @@
         "keywords": [
           "Kipp&Zonen",
           "CHP 1",
-          "automaticReading",
-          "264"
+          "automaticReading"
         ]
       },
       {
@@ -580,43 +517,42 @@
         "sourceOfObservation": "automaticReading",
         "observingMethod": 266,
         "instrument": [
-          "instrument:a411ef5c36ff"
+          "instrument:bb006caacb49"
         ],
         "exposure": "class1",
         "representativeness": "toposcale",
         "localReferenceSurface": "localGround",
-        "temporalInstrumentOperatingStatus": {
-          "instrumentOperatingStatus": [
-            "operational"
-          ],
-          "dates": [
-            "1993-01-19"
-          ]
-        },
+        "temporalInstrumentOperatingStatus": [
+          {
+            "instrumentOperatingStatus": "operational",
+            "date": "1993-01-19"
+          }
+        ],
         "keywords": [
           "Kipp&Zonen",
           "CM21",
-          "automaticReading",
-          "266"
+          "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_3bfead571d61"
-          ],
-          "dates": [
-            "1993-01-19"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "1993-01-19"
+          },
+          {
+            "observingSchedule": "schedule_1c1e1a666619",
+            "date": "1993-01-19"
+          }
+        ]
       }
     ],
     "instruments": [
       {
-        "id": "instrument:0aad71fddee0",
+        "id": "instrument:65c149b8d027",
         "manufacturer": "Kipp&Zonen",
         "model": "CHP 1"
       },
       {
-        "id": "instrument:a411ef5c36ff",
+        "id": "instrument:bb006caacb49",
         "manufacturer": "Kipp&Zonen",
         "model": "CM21"
       }

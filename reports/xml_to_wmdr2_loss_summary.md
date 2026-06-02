@@ -9,9 +9,9 @@ It is a review aid, not a formal proof of lossless conversion.
 |---|---:|
 | XML files | 6 |
 | XML semantic leaf entries scanned | 2587 |
-| Matched entries | 1519 |
+| Matched entries | 1529 |
 | Ignored intentional/non-semantic entries | 97 |
-| Potentially lost entries | 971 |
+| Potentially lost entries | 961 |
 
 ## How to interpret the files
 
@@ -28,19 +28,19 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 | XML | Scanned | Matched | Ignored | Potentially lost |
 |---|---:|---:|---:|---:|
 | `resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml` | 348 | 194 | 14 | 140 |
-| `resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml` | 187 | 113 | 11 | 63 |
-| `resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml` | 217 | 158 | 11 | 48 |
-| `resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml` | 422 | 286 | 22 | 114 |
+| `resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml` | 187 | 117 | 11 | 59 |
+| `resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml` | 217 | 160 | 11 | 46 |
+| `resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml` | 422 | 285 | 22 | 115 |
 | `resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml` | 419 | 236 | 13 | 170 |
-| `resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml` | 994 | 532 | 26 | 436 |
+| `resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml` | 994 | 537 | 26 | 431 |
 
 ## Potential losses by section
 
 | Section | Count |
 |---|---:|
-| deployment | 852 |
-| facility | 51 |
+| deployment | 858 |
 | observation | 50 |
+| facility | 35 |
 | contact | 18 |
 
 ## Most frequent unmatched XML paths
@@ -61,13 +61,13 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 | 24 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()` |
 | 23 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()` |
 | 23 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()` |
-| 23 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()` |
 | 23 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()` |
 | 23 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()` |
 | 23 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()` |
 | 23 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()` |
 | 23 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()` |
 | 21 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom` |
+| 21 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()` |
 | 21 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()` |
 | 18 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/facility/@href` |
 | 18 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()` |

@@ -171,6 +171,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "time": {"interval": ["2016-04-29", ".."]},
                     "observingMethod": "automatic",
                     "localReferenceSurface": "localGround",
+                    "verticalDistanceFromReferenceSurface": 2.0,
                     "instrument": ["instrument:example"],
                     "serialNumbers": {
                         "serialNumber": ["ABC123"],
@@ -184,8 +185,11 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             "instruments": [
                 {
                     "id": "instrument:example",
+                    "title": "Example instrument",
+                    "description": "Optional instrument description.",
                     "manufacturer": "Vaisala",
                     "model": "ExampleModel",
+                    "verticalRange": {"min": 0, "max": 30},
                 }
             ],
         },
@@ -311,6 +315,39 @@ def test_deployment_title_and_manufacturer_are_invalid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["deployments"][0]["manufacturer"] = "Vaisala"
     assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_deployment_vertical_distance_accepts_structured_quantity() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = {
+        "value": 2.0,
+        "uom": "m",
+    }
+    assert _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_instrument_title_and_description_are_schema_properties() -> None:
+    instance = _valid_facility_record_feature()
+    instrument = instance["properties"]["instruments"][0]
+    instrument["title"] = "Schema-visible instrument title"
+    instrument["description"] = "Schema-visible instrument description."
+    assert _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_instrument_vertical_range_requires_min_and_max() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["verticalRange"] = {"min": 0, "max": 30}
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    incomplete = _valid_facility_record_feature()
+    incomplete["properties"]["instruments"][0]["verticalRange"] = {"min": 0}
+    assert any("'max' is a required property" in message for message in _validate(RECORD_SCHEMA, incomplete))
+
+
+def test_instrument_vertical_range_min_and_max_are_numeric() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["verticalRange"] = {"min": "0", "max": 30}
+    assert any("'0' is not of type 'number'" in message for message in _validate(RECORD_SCHEMA, instance))
 
 
 def test_wmdr2_full_record_conformance_is_required() -> None:

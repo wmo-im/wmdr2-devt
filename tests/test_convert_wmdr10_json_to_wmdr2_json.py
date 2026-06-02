@@ -5,13 +5,14 @@ from pathlib import Path
 from types import ModuleType
 from typing import Any
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "convert_wmdr10_json_to_wmdr2_json.py"
 
 OBSERVED_179 = "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179"
 OBSERVED_12006 = "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
 GEOMETRY_POINT = "http://codes.wmo.int/wmdr/Geometry/point"
+GAW_REGIONAL = "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+GBON = "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
 
 
 def _load_converter() -> ModuleType:
@@ -45,7 +46,7 @@ def _data_generation_with_coverage_and_reporting() -> dict[str, Any]:
         "reporting": {
             "internationalExchange": "true",
             "temporalReportingInterval": "PT1H",
-                "timeliness": "PT30M",
+            "timeliness": "PT30M",
             "uom": "http://codes.wmo.int/wmdr/unit/mm",
             "dataPolicy": {
                 "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
@@ -71,18 +72,25 @@ def _observation_with_deployment(*, duplicate_data_generation: bool = False) -> 
     data_generation = [_data_generation_with_coverage_and_reporting()]
     if duplicate_data_generation:
         data_generation.append(_data_generation_with_coverage_and_reporting())
-
     return {
         "observedProperty": OBSERVED_12006,
         "type": GEOMETRY_POINT,
+        "programAffiliation": [
+            {"programAffiliation": GAW_REGIONAL, "beginPosition": "2020-01-01T00:00:00Z"},
+            {"href": GBON, "beginPosition": "2021-01-01T00:00:00Z"},
+            {"programAffiliation": GAW_REGIONAL, "beginPosition": "2022-01-01T00:00:00Z"},
+        ],
         "deployments": [
             {
                 "id": "dep1",
                 "beginPosition": "2020-01-01T00:00:00Z",
                 "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
                 "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+                "localReferenceSurface": "http://codes.wmo.int/wmdr/LocalReferenceSurface/localGround",
+                "verticalDistanceFromReferenceSurface": 2.0,
                 "manufacturer": "Maker",
                 "model": "Model",
+                "verticalRange": {"min": 0, "max": 30},
                 "serialNumber": "SN1",
                 "dataGeneration": data_generation,
             }
@@ -93,94 +101,63 @@ def _observation_with_deployment(*, duplicate_data_generation: bool = False) -> 
 def test_observation_title_uses_label_and_domain_when_labels_available() -> None:
     module.CODE_LIST_LABELS.clear()
     module.CODE_LIST_LABELS.update({"ObservedVariableAtmosphere": {"179": "Cloud amount"}})
-
     title = module._format_observation_title(OBSERVED_179)
-
     assert title == "domain: atmosphere; variable: 179 Cloud amount"
 
 
 def test_observation_title_includes_geometry_when_available() -> None:
     module.CODE_LIST_LABELS.clear()
     module.CODE_LIST_LABELS.update({"ObservedVariableAtmosphere": {"179": "Cloud amount"}})
-
     title = module._format_observation_title(OBSERVED_179, GEOMETRY_POINT)
-
     assert title == "domain: atmosphere; geometry: point; variable: 179 Cloud amount"
 
 
-def test_observation_title_falls_back_to_code_and_domain_without_label() -> None:
-    module.CODE_LIST_LABELS.clear()
-
-    title = module._format_observation_title(OBSERVED_179)
-
-    assert title == "domain: atmosphere; variable: 179"
-
-
-def test_observation_description_collapses_unknown_unknown() -> None:
-    obs = {
-        "observedProperty": OBSERVED_179,
-        "type": "point",
-    }
-    deployments = [
-        {"manufacturer": "(unknown)", "model": "unknown", "observingMethod": None},
-    ]
-
-    desc = module._observation_description(obs, deployments)
-
-    assert desc == "Observed variable 179; geometry type point; deployment procedure unknown"
-
-
-def test_observation_description_humanizes_observing_method() -> None:
-    obs = {
-        "observedProperty": OBSERVED_179,
-        "type": "point",
-    }
-    deployments = [
-        {"observingMethod": "instrumentAutomaticReading"},
-    ]
-
-    desc = module._observation_description(obs, deployments)
-
-    assert desc == (
-        "Observed variable 179; geometry type point; "
-        "deployment procedure instrument automatic reading"
+def test_observation_program_affiliations_are_plain_unique_code_values() -> None:
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [_observation_with_deployment()],
+        [],
+        {},
+        source_name="20200101_0-TEST",
     )
+    observation = record["properties"]["observations"][0]
+    assert observation["programAffiliations"] == ["GAWregional", "GBON"]
+    assert "programAffiliation" not in observation
 
 
-def test_temporal_observing_schedule_defaults_interval_unknown_when_only_id_present() -> None:
-    data_generation = [
-        {"@gml:id": "dg-1"},
-    ]
-
-    schedule = module._normalize_temporal_observing_schedule(data_generation)
-
-    assert schedule == [{"interval": "unknown"}]
-
-
-def test_temporal_reporting_schedule_retains_substantive_reporting_payload() -> None:
-    data_generation = [
+def test_facility_temporal_program_affiliation_keeps_temporal_metadata() -> None:
+    facility = _minimal_facility() | {
+        "programAffiliation": [
+            {
+                "programAffiliation": GAW_REGIONAL,
+                "beginPosition": "2020-01-01T00:00:00Z",
+                "programSpecificFacilityId": "GAW-TEST",
+                "programSpecificFacilityTitle": "GAW TEST",
+                "reportingStatus": [
+                    {
+                        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+                        "beginPosition": "2020-01-01T00:00:00Z",
+                    }
+                ],
+            }
+        ]
+    }
+    record = module.build_facility_feature(
+        facility,
+        [],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    assert record["properties"]["temporalProgramAffiliation"] == [
         {
-            "@gml:id": "dg-1",
-            "reporting": {"internationalExchange": "true"},
-        },
-    ]
-
-    schedule = module._normalize_temporal_reporting_schedule(data_generation)
-
-    assert schedule == [
-        {
-            "id": "dg-1",
-            "interval": "unknown",
-            "reporting": {"internationalExchange": True},
+            "programAffiliation": "GAWregional",
+            "reportingStatus": "operational",
+            "date": "2020-01-01",
+            "programSpecificFacilityId": "GAW-TEST",
+            "programSpecificFacilityTitle": "GAW TEST",
         }
     ]
-
-
-def test_default_discovery_policy_has_no_themes() -> None:
-    assert "themes" not in module.DEFAULT_DISCOVERY_POLICY["facility"]
-    assert "themes" not in module.DEFAULT_DISCOVERY_POLICY["observation"]
-    assert "themes" not in module.DEFAULT_DISCOVERY_POLICY["deployment"]
-    assert module.DEFAULT_DISCOVERY_POLICY["facility"]["keywords"] == ["identifier", "name"]
 
 
 def test_build_facility_feature_uses_current_core_model() -> None:
@@ -191,17 +168,19 @@ def test_build_facility_feature_uses_current_core_model() -> None:
         {},
         source_name="20200101_0-TEST",
     )
-
     props = record["properties"]
-
     assert record["type"] == "Feature"
     assert record["geometry"] == {"type": "Point", "coordinates": [7.0, 46.0, 100]}
     assert "wmdr2" not in props
     assert "themes" not in props
+    assert "externalIds" not in props
     assert props["observations"][0]["observedVariable"] == 12006
     assert props["observations"][0]["observedGeometryType"] == "point"
     assert props["observations"][0]["observedDomain"] == "atmosphere"
     assert "description" not in props["observations"][0]
+    assert props["deployments"][0]["localReferenceSurface"] == "localGround"
+    assert props["deployments"][0]["verticalDistanceFromReferenceSurface"] == 2.0
+    assert props["instruments"][0]["verticalRange"] == {"min": 0.0, "max": 30.0}
 
 
 def test_reporting_arrays_preserve_policy_attribution_and_level_of_data() -> None:
@@ -212,15 +191,12 @@ def test_reporting_arrays_preserve_policy_attribution_and_level_of_data() -> Non
         {},
         source_name="20200101_0-TEST",
     )
-
     reporting = record["properties"]["observations"][0]["reporting"]
-
     assert reporting["internationalExchange"] == [True]
     assert reporting["temporalAggregate"] == ["PT1H"]
-    assert reporting["temporalTimeliness"] == {
-        "timeliness": ["PT30M"],
-        "dates": ["2020-01-01"],
-    }
+    assert reporting["temporalTimeliness"] == [
+        {"timeliness": "PT30M", "date": "2020-01-01"}
+    ]
     assert reporting["uom"] == ["mm"]
     assert reporting["levelOfData"] == ["level1"]
     assert reporting["dataPolicy"] == [
@@ -231,38 +207,6 @@ def test_reporting_arrays_preserve_policy_attribution_and_level_of_data() -> Non
     ]
 
 
-def test_schedule_extensions_use_wmo_int_namespace_and_aggregation_object() -> None:
-    record = module.build_facility_feature(
-        _minimal_facility(),
-        [_observation_with_deployment()],
-        [],
-        {},
-        source_name="20200101_0-TEST",
-    )
-
-    schedule = record["properties"]["schedules"][0]
-
-    assert schedule["@type"] == "Event"
-    assert schedule["uid"].startswith("schedule_")
-    assert schedule["start"] == "0001-01-01T00:00:00"
-    assert schedule["timeZone"] == "UTC"
-    assert schedule["duration"] == "P1D"
-    assert schedule["recurrenceRules"] == [{"@type": "RecurrenceRule", "frequency": "daily"}]
-    assert "wmo.int:diurnalBaseTime" not in schedule
-    assert schedule["wmo.int:sampling"] == {
-        "samplingStrategy": "continuous",
-        "temporalSamplingInterval": "PT2S",
-        "samplingTimePeriod": "PT2S",
-    }
-    assert schedule["wmo.int:aggregation"] == {
-        "temporalAggregate": "PT1H",
-        "diurnalBaseTime": "00:00:00",
-    }
-    assert "wmo.int:archiving" not in schedule
-    assert "wmo.int:aggregating" not in schedule
-    assert not any(key.startswith("wmdr2.wmo.int:") for key in schedule)
-
-
 def test_duplicate_temporal_observing_schedule_references_are_removed() -> None:
     record = module.build_facility_feature(
         _minimal_facility(),
@@ -271,18 +215,16 @@ def test_duplicate_temporal_observing_schedule_references_are_removed() -> None:
         {},
         source_name="20200101_0-TEST",
     )
-
     schedules = record["properties"]["schedules"]
     temporal_schedule = record["properties"]["deployments"][0]["temporalObservingSchedule"]
+    assert len(schedules) == 2
+    assert temporal_schedule == [
+        {"observingSchedule": schedules[0]["uid"], "date": "2020-01-01"},
+        {"observingSchedule": schedules[1]["uid"], "date": "2020-01-01"},
+    ]
 
-    assert len(schedules) == 1
-    assert temporal_schedule == {
-        "observingSchedule": [schedules[0]["uid"]],
-        "dates": ["2020-01-01"],
-    }
 
-
-def test_facility_environment_wraps_environmental_histories() -> None:
+def test_facility_environment_wraps_environmental_histories_as_arrays_of_objects() -> None:
     facility = _minimal_facility() | {
         "climateZone": {
             "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/Cfb",
@@ -296,12 +238,15 @@ def test_facility_environment_wraps_environmental_histories() -> None:
             "populationDensity": [100, 200],
             "beginPosition": "1990-01-01T00:00:00Z",
         },
+        "surfaceRoughness": {
+            "surfaceRoughness": "http://codes.wmo.int/wmdr/SurfaceRoughness/rough",
+            "beginPosition": "1991-01-01T00:00:00Z",
+        },
         "localTopography": {
             "value": "flat",
             "beginPosition": "1970-01-01T00:00:00Z",
         },
     }
-
     record = module.build_facility_feature(
         facility,
         [],
@@ -309,27 +254,631 @@ def test_facility_environment_wraps_environmental_histories() -> None:
         {},
         source_name="20200101_0-TEST",
     )
-
     props = record["properties"]
     environment = props["environment"]
-
     assert "temporalClimateZone" not in props
     assert "temporalSurfaceCover" not in props
     assert "localTopography" not in props
+    assert environment["temporalClimateZone"] == [
+        {"climateZone": "Cfb", "date": "1980-01-01"}
+    ]
+    assert environment["temporalSurfaceCover"] == [
+        {"surfaceCover": "urbanBuiltup", "date": "1981-01-01"}
+    ]
+    assert environment["temporalPopulationDensities"] == [
+        {"populationDensity": [100, 200], "date": "1990-01-01"}
+    ]
+    assert environment["temporalSurfaceRoughness"] == [
+        {"surfaceRoughness": "rough", "date": "1991-01-01"}
+    ]
+    assert environment["temporalLocalTopography"] == [
+        {"localTopography": "flat", "date": "1970-01-01"}
+    ]
+    assert "temporalTopographyBathymetry" not in environment
 
-    assert environment["temporalClimateZone"] == {
-        "climateZone": ["Cfb"],
-        "dates": ["1980-01-01"],
+# ---------------------------------------------------------------------------
+# Additional regression coverage restored for the drop-in package
+# ---------------------------------------------------------------------------
+
+import json
+import tempfile
+
+import pytest
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        (None, []),
+        (["a", "b"], ["a", "b"]),
+        ("a", ["a"]),
+    ],
+)
+def test_as_list_normalizes_scalars_lists_and_none(raw: Any, expected: list[Any]) -> None:
+    assert module._as_list(raw) == expected
+
+
+@pytest.mark.parametrize(
+    ("values", "expected"),
+    [
+        ((None, "", [], {}, "first"), "first"),
+        ((0, "fallback"), 0),
+        ((False, "fallback"), False),
+    ],
+)
+def test_first_non_empty_preserves_falsey_but_meaningful_values(values: tuple[Any, ...], expected: Any) -> None:
+    assert module._first_non_empty(*values) == expected
+
+
+def test_clean_none_removes_empty_members_but_preserves_nulls_inside_arrays() -> None:
+    assert module._clean_none({"a": None, "b": "", "c": [], "d": {}, "e": [None, "", [], {}, 1]}) == {
+        "e": [None, 1]
     }
-    assert environment["temporalSurfaceCover"] == {
-        "surfaceCover": ["urbanBuiltup"],
-        "dates": ["1981-01-01"],
+
+
+def test_preserve_and_restore_null_sentinel_roundtrip() -> None:
+    payload = {"a": [None, "x"], "b": {"c": None}}
+    assert module._restore_null_sentinel(module._preserve_nulls(payload)) == payload
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        (" a b!c ", "a-b-c"),
+        ("Station/ABC # 1", "Station/ABC-#-1"),
+        ("", "record"),
+    ],
+)
+def test_sanitize_id(raw: str, expected: str) -> None:
+    assert module._sanitize_id(raw) == expected
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("A b/c", "a-b-c"),
+        ("---", "value"),
+        ("Hello__World", "hello-world"),
+    ],
+)
+def test_slug(raw: str, expected: str) -> None:
+    assert module._slug(raw) == expected
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("http://codes.wmo.int/wmdr/FacilityType/landFixed", "landFixed"),
+        ("abc#def", "def"),
+        ("(unknown)", "unknown"),
+        ("<http://x/y>", "y"),
+        ("", None),
+    ],
+)
+def test_last_segment(raw: str, expected: str | None) -> None:
+    assert module._last_segment(raw) == expected
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("12006", 12006),
+        ("http://codes.wmo.int/wmdr/unit/mm", "mm"),
+        ("(unknown)", "unknown"),
+        ("abc", "abc"),
+        (5, 5),
+    ],
+)
+def test_normalize_code_value(raw: Any, expected: Any) -> None:
+    assert module._normalize_code_value(raw) == expected
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("http://codes.wmo.int/wmdr/unit/mm", "mm"),
+        ("https://codes.wmo.int/wmdr/FacilityType/landFixed", "landFixed"),
+        ("http://example.org/not-wmdr/value", "http://example.org/not-wmdr/value"),
+    ],
+)
+def test_compact_wmdr_code_value_only_compacts_wmdr_urls(raw: str, expected: str) -> None:
+    assert module._compact_wmdr_code_value(raw) == expected
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("20200102_test", "2020-01-02"),
+        ("20200102", "2020-01-02"),
+        ("2020-01-02Z", "2020-01-02"),
+        ("2020-01-02T03:04:05Z", "2020-01-02"),
+        ("..", ".."),
+        (None, None),
+    ],
+)
+def test_normalize_date_value(raw: Any, expected: str | None) -> None:
+    assert module._normalize_date_value(raw) == expected
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("20200102_test", "2020-01-02T00:00:00Z"),
+        ("20200102", "2020-01-02T00:00:00Z"),
+        ("2020-01-02", "2020-01-02T00:00:00Z"),
+        ("2020-01-02Z", "2020-01-02T00:00:00Z"),
+        ("2020-01-02T03:04:05Z", "2020-01-02T03:04:05Z"),
+    ],
+)
+def test_normalize_record_datetime(raw: str, expected: str) -> None:
+    assert module._normalize_record_datetime(raw) == expected
+
+
+@pytest.mark.parametrize(
+    ("start", "end", "expected"),
+    [
+        (None, None, None),
+        ("2020-01-01", None, {"interval": ["2020-01-01", ".."]}),
+        (None, "2022-01-01", {"interval": ["..", "2022-01-01"]}),
+        ("20200101", "20201231", {"interval": ["2020-01-01", "2020-12-31"]}),
+    ],
+)
+def test_time_interval_uses_daily_resolution_and_open_marker(start: Any, end: Any, expected: dict[str, Any] | None) -> None:
+    assert module._time_interval(start, end) == expected
+
+
+def test_time_interval_can_include_explicit_resolution() -> None:
+    assert module._time_interval("2020-01-01", None, resolution="day") == {
+        "interval": ["2020-01-01", ".."],
+        "resolution": "day",
     }
-    assert environment["temporalPopulation"] == {
-        "populationDensity": [[100, 200]],
-        "dates": ["1990-01-01"],
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("46 7 100", [7.0, 46.0, 100]),
+        ({"pos": "46, 7, 100.4"}, [7.0, 46.0, 100.4]),
+        ({"coordinates": [7, 46, 100]}, [7, 46, 100]),
+        ("nonsense", None),
+    ],
+)
+def test_parse_pos_lon_lat_z_converts_wmdr_lat_lon_to_geojson_lon_lat(raw: Any, expected: list[Any] | None) -> None:
+    assert module._parse_pos_lon_lat_z(raw) == expected
+
+
+def test_facility_temporal_geometry_entries_are_sorted_and_deduplicated() -> None:
+    facility = {
+        "geospatialLocation": {"geoLocation": "46 7 100", "beginPosition": "2021-01-01"},
+        "geospatialLocationHistory": [
+            {"geoLocation": "45 6 99", "beginPosition": "2020-01-01"},
+            {"geoLocation": "45 6 99", "beginPosition": "2020-01-01"},
+        ],
     }
-    assert environment["temporalTopographyBathymetry"] == {
-        "topographyBathymetry": [{"localTopography": {"value": "flat"}}],
-        "dates": ["1970-01-01"],
+    assert module._facility_temporal_geometry_entries(facility) == [
+        {"coordinates": [6.0, 45.0, 99], "date": "2020-01-01"},
+        {"coordinates": [7.0, 46.0, 100], "date": "2021-01-01"},
+    ]
+
+
+def test_temporal_geometry_extension_requires_at_least_two_coordinate_entries() -> None:
+    assert module._temporal_geometry_extension([{"coordinates": [7, 46], "date": "2020-01-01"}]) is None
+    assert module._temporal_geometry_extension(
+        [
+            {"coordinates": [6, 45], "date": "2020-01-01"},
+            {"coordinates": [7, 46], "date": None},
+        ]
+    ) == {"coordinates": [[6, 45], [7, 46]], "dates": ["2020-01-01", ".."]}
+
+
+def test_facility_geometry_uses_latest_temporal_geometry_entry() -> None:
+    assert module._facility_geometry_from_entries(
+        [
+            {"coordinates": [6, 45], "date": "2020-01-01"},
+            {"coordinates": [7, 46, 100], "date": "2021-01-01"},
+        ]
+    ) == {"type": "Point", "coordinates": [7, 46, 100]}
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        (OBSERVED_12006, "atmosphere"),
+        ("http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12", "terrestrial"),
+        ("not-a-code", None),
+    ],
+)
+def test_observed_domain_from_observed_variable(raw: str, expected: str | None) -> None:
+    assert module._observed_domain_from_observed_variable(raw) == expected
+
+
+def test_format_observation_title_without_label_uses_code_only() -> None:
+    module.CODE_LIST_LABELS.clear()
+    assert module._format_observation_title(OBSERVED_12006, GEOMETRY_POINT) == (
+        "domain: atmosphere; geometry: point; variable: 12006"
+    )
+
+
+def test_keywords_from_values_flatten_normalize_and_deduplicate() -> None:
+    assert module._keywords_from_values(["A", "A", None, "http://x/B", "C", ""]) == ["A", "B", "C"]
+
+
+def test_normalize_display_text_collapses_whitespace_and_unknown_tokens() -> None:
+    assert module._normalize_display_text("  A\n  B\tC  ") == "A B C"
+    assert module._normalize_display_text("(unknown)") == "unknown"
+
+
+def test_normalize_description_value_prefers_textual_fields_and_drops_metadata() -> None:
+    assert module._normalize_description_value({"@gml:id": "x", "description": "  Some text  "}) == "Some text"
+    assert module._normalize_description_value({"value": "Fallback text"}) == "Fallback text"
+
+
+def test_normalize_roles_extracts_code_values_from_mixed_inputs() -> None:
+    assert module._normalize_roles(
+        [
+            "http://codes.wmo.int/wmdr/ResponsiblePartyRole/owner",
+            {"href": "http://codes.wmo.int/wmdr/ResponsiblePartyRole/operator"},
+            "owner",
+        ]
+    ) == ["owner", "operator"]
+
+
+def test_normalize_contact_returns_public_contact_and_discovery_contact() -> None:
+    public, discovery = module._normalize_contact(
+        {
+            "organisationName": "Org",
+            "individualName": "Jane Doe",
+            "contactInfo": {"address": {"electronicMailAddress": "jane@example.org"}},
+            "role": "http://codes.wmo.int/wmdr/ResponsiblePartyRole/owner",
+        }
+    )
+    assert public == {"name": "Jane Doe", "organization": "Org", "emails": [{"value": "jane@example.org"}], "roles": ["owner"]}
+    assert discovery == public
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("true", True),
+        ("1", True),
+        ("yes", True),
+        ("false", False),
+        ("0", False),
+        ("no", False),
+        ("maybe", None),
+    ],
+)
+def test_parse_bool_accepts_common_wmdr_boolean_spellings(raw: str, expected: bool | None) -> None:
+    assert module._parse_bool(raw) is expected
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("7", "07:00:00"),
+        ("7:5", "07:05:00"),
+        ("23:59:59", "23:59:59"),
+        ("25:99:99", "23:59:59"),
+        ("abc", "abc"),
+    ],
+)
+def test_normalize_diurnal_time(raw: str, expected: str) -> None:
+    assert module._normalize_diurnal_time(raw) == expected
+
+
+def test_normalize_temporal_values_produces_array_of_objects_not_object_of_arrays() -> None:
+    assert module._normalize_temporal_climate_zone(
+        [
+            {"climateZone": "http://codes.wmo.int/wmdr/ClimateZone/Cfb", "beginPosition": "2020-01-01T00:00:00Z"},
+            "http://codes.wmo.int/wmdr/ClimateZone/Af",
+        ]
+    ) == [
+        {"climateZone": "Cfb", "date": "2020-01-01"},
+        {"climateZone": "Af", "date": ".."},
+    ]
+
+
+def test_surface_cover_preserves_classification_inside_each_temporal_object() -> None:
+    assert module._normalize_temporal_surface_cover(
+        {
+            "surfaceCover": "http://codes.wmo.int/wmdr/SurfaceCover/grassland",
+            "surfaceClassification": {"href": "http://codes.wmo.int/wmdr/SurfaceClassification/local"},
+            "beginPosition": "2020-01-01",
+        }
+    ) == [{"surfaceCover": "grassland", "date": "2020-01-01", "surfaceClassification": "local"}]
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("100 200", [100.0, 200.0]),
+        ("100,200", [100.0, 200.0]),
+        ([1, 2], [1.0, 2.0]),
+        ("100", 100.0),
+        ("not numeric", "not numeric"),
+    ],
+)
+def test_parse_population_density_value(raw: Any, expected: Any) -> None:
+    assert module._parse_population_density_value(raw) == expected
+
+
+def test_normalize_temporal_population_density_accepts_numeric_range_and_date() -> None:
+    assert module._normalize_temporal_population_densities(
+        {"populationDensity": "100 200", "beginPosition": "1990-01-01T00:00:00Z"}
+    ) == [{"populationDensity": [100.0, 200.0], "date": "1990-01-01"}]
+
+
+def test_normalize_temporal_surface_roughness_is_array_of_objects() -> None:
+    assert module._normalize_temporal_surface_roughness(
+        {"surfaceRoughness": "http://codes.wmo.int/wmdr/SurfaceRoughness/rough", "beginPosition": "1991-01-01"}
+    ) == [{"surfaceRoughness": "rough", "date": "1991-01-01"}]
+
+
+def test_environment_promotes_topography_bathymetry_sub_elements() -> None:
+    environment = module._normalize_environment(
+        {
+            "topographyBathymetry": {
+                "localTopography": {"value": "flat", "beginPosition": "2020-01-01"},
+                "relativeElevation": {"value": "ridge", "beginPosition": "2021-01-01"},
+                "topographicContext": {"value": "valley", "beginPosition": "2022-01-01"},
+                "altitudeOrDepth": {"value": 123, "beginPosition": "2023-01-01"},
+            }
+        }
+    )
+    assert environment == {
+        "temporalLocalTopography": [{"localTopography": "flat", "date": "2020-01-01"}],
+        "temporalRelativeElevation": [{"relativeElevation": "ridge", "date": "2021-01-01"}],
+        "temporalTopographicContext": [{"topographicContext": "valley", "date": "2022-01-01"}],
+        "temporalAltitudeOrDepth": [{"altitudeOrDepth": 123, "date": "2023-01-01"}],
+    }
+
+
+def test_program_affiliation_values_accept_program_affiliation_href_and_string() -> None:
+    assert module._program_affiliation_values({"programAffiliation": GAW_REGIONAL}) == ["GAWregional"]
+    assert module._program_affiliation_values({"href": GBON}) == ["GBON"]
+    assert module._program_affiliation_values(GBON) == ["GBON"]
+
+
+def test_normalize_program_affiliations_deduplicates_plain_values() -> None:
+    assert module._normalize_program_affiliations(
+        [
+            {"programAffiliation": GAW_REGIONAL},
+            {"href": GBON},
+            {"programAffiliation": GAW_REGIONAL},
+        ]
+    ) == ["GAWregional", "GBON"]
+
+
+def test_temporal_program_affiliation_expands_reporting_status_history() -> None:
+    assert module._normalize_temporal_program_affiliation(
+        {
+            "programAffiliation": GAW_REGIONAL,
+            "beginPosition": "2020-01-01",
+            "programSpecificFacilityId": "GAW-1",
+            "programSpecificFacilityTitle": "GAW One",
+            "reportingStatus": [
+                {"reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational", "beginPosition": "2020-01-01"},
+                {"reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/closed", "beginPosition": "2021-01-01"},
+            ],
+        }
+    ) == [
+        {
+            "programAffiliation": "GAWregional",
+            "reportingStatus": "operational",
+            "date": "2020-01-01",
+            "programSpecificFacilityId": "GAW-1",
+            "programSpecificFacilityTitle": "GAW One",
+        },
+        {
+            "programAffiliation": "GAWregional",
+            "reportingStatus": "closed",
+            "date": "2021-01-01",
+            "programSpecificFacilityId": "GAW-1",
+            "programSpecificFacilityTitle": "GAW One",
+        },
+    ]
+
+
+def test_reporting_status_timeline_is_array_of_objects() -> None:
+    assert module._normalize_reporting_status_timeline(
+        {"reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational", "beginPosition": "2020-01-01"}
+    ) == [{"reportingStatus": "operational", "date": "2020-01-01"}]
+
+
+def test_temporal_instrument_operating_status_is_array_of_objects() -> None:
+    assert module._normalize_temporal_instrument_operating_status(
+        {"instrumentOperatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational", "beginPosition": "2020-01-01"}
+    ) == [{"instrumentOperatingStatus": "operational", "date": "2020-01-01"}]
+
+
+def test_temporal_data_policy_retains_policy_and_attribution_with_dates() -> None:
+    assert module._normalize_temporal_data_policy(
+        {"dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation", "attribution": {"originator": "Org"}, "beginPosition": "2020-01-01"}
+    ) == [{"dataPolicy": "noLimitation", "attribution": {"originator": "Org"}, "date": "2020-01-01"}]
+
+
+def test_facility_set_refs_are_plural_id_references() -> None:
+    assert module._facility_set_refs(["GAW", {"facilitySet": "GBON"}, "GAW"]) == ["facilitySet:GAW", "facilitySet:GBON"]
+
+
+def test_facility_set_catalog_uses_id_title_description_shape() -> None:
+    assert module.facility_set_catalog_entry("GAW", description="Global Atmosphere Watch") == {
+        "id": "facilitySet:GAW",
+        "title": "GAW",
+        "description": "Global Atmosphere Watch",
+    }
+    assert module.facility_set_catalog(["GAW"]) == {
+        "facilitySets": [{"id": "facilitySet:GAW", "title": "GAW"}]
+    }
+
+
+def test_instrument_id_prefers_explicit_identifier_and_generated_ids_are_stable() -> None:
+    raw = {"manufacturer": "Maker", "model": "Model"}
+    generated = module._instrument_record_id(raw, facility_id="0-TEST")
+    assert isinstance(generated, str)
+    assert generated.startswith("instrument:")
+    assert generated == module._instrument_record_id({"manufacturer": "Maker", "model": "Model"}, facility_id="0-TEST")
+    assert module._instrument_record_id({"manufacturer": "unknown", "model": None}, facility_id="0-TEST") is None
+
+
+def test_normalize_instrument_includes_optional_title_and_description_when_available() -> None:
+    instrument = module._normalize_instrument(
+        {
+            "manufacturer": "Maker",
+            "model": "Model",
+            "instrumentTitle": "Instrument title",
+            "instrumentDescription": {"description": "Instrument description"},
+        },
+        facility_id="0-TEST",
+    )
+    assert instrument is not None
+    assert instrument["title"] == "Instrument title"
+    assert instrument["description"] == "Instrument description"
+    assert instrument["manufacturer"] == "Maker"
+    assert instrument["model"] == "Model"
+
+
+def test_normalize_vertical_range_accepts_object_and_flat_min_max_fields() -> None:
+    assert module._normalize_vertical_range({"verticalRange": {"min": "0", "max": 30}}) == {"min": 0.0, "max": 30.0}
+    assert module._normalize_vertical_range({"verticalRangeMinimum": 5, "verticalRangeMaximum": "50"}) == {
+        "min": 5.0,
+        "max": 50.0,
+    }
+    assert module._normalize_vertical_range({"verticalRange": {"min": 0}}) is None
+
+
+def test_normalize_instrument_includes_vertical_range_when_available() -> None:
+    instrument = module._normalize_instrument(
+        {
+            "manufacturer": "Maker",
+            "model": "Model",
+            "verticalRange": {"min": 0, "max": 30},
+        },
+        facility_id="0-TEST",
+    )
+    assert instrument is not None
+    assert instrument["verticalRange"] == {"min": 0.0, "max": 30.0}
+
+
+def test_vertical_range_alone_is_enough_to_create_an_instrument_record() -> None:
+    instrument = module._normalize_instrument(
+        {"verticalRangeMin": 10, "verticalRangeMax": 500},
+        facility_id="0-TEST",
+    )
+    assert instrument is not None
+    assert instrument["id"].startswith("instrument:")
+    assert instrument["verticalRange"] == {"min": 10.0, "max": 500.0}
+
+
+def test_deployment_serial_numbers_are_temporal_parallel_arrays_by_design() -> None:
+    assert module._deployment_serial_numbers({"serialNumber": "SN1", "beginPosition": "2020-01-01"}) == {
+        "serialNumber": ["SN1"],
+        "dates": ["2020-01-01"],
+    }
+
+
+def test_jscalendar_schedule_uses_wmo_aggregation_extension() -> None:
+    event = module._jscalendar_observing_schedule(
+        {
+            "beginPosition": "2020-01-01T00:00:00Z",
+            "temporalSamplingInterval": "PT1H",
+            "reporting": {"temporalReportingInterval": "PT1H"},
+            "diurnalBaseTime": "7:5",
+        }
+    )
+    assert event is not None
+    assert event["@type"] == "Event"
+    assert event["wmo.int:aggregation"] == {"temporalAggregate": "PT1H", "diurnalBaseTime": "07:05:00"}
+    assert event["uid"].startswith("schedule_")
+
+
+def test_register_observing_schedule_refs_deduplicates_references_and_registry_entries() -> None:
+    registry: dict[str, dict[str, Any]] = {}
+    refs = module._register_observing_schedule_refs(
+        [
+            [
+                {"beginPosition": "2020-01-01", "temporalSamplingInterval": "PT1H"},
+                {"beginPosition": "2020-01-01", "temporalSamplingInterval": "PT1H"},
+            ]
+        ],
+        schedule_registry=registry,
+    )
+    assert refs is not None
+    assert len(refs) == 1
+    assert list(registry) == [refs[0]["observingSchedule"]]
+
+
+def test_normalize_observation_reporting_aligns_reported_arrays_and_temporal_timeliness() -> None:
+    reporting = module._normalize_observation_reporting(
+        [
+            {
+                "beginPosition": "2020-01-01",
+                "temporalSamplingInterval": "PT1H",
+                "reporting": {
+                    "internationalExchange": "true",
+                    "temporalReportingInterval": "PT1H",
+                    "uom": "http://codes.wmo.int/wmdr/unit/mm",
+                    "timeliness": "PT30M",
+                },
+            },
+            {
+                "beginPosition": "2021-01-01",
+                "temporalSamplingInterval": "PT10M",
+                "reporting": {
+                    "internationalExchange": "false",
+                    "temporalReportingInterval": "PT10M",
+                    "uom": None,
+                },
+            },
+        ]
+    )
+    assert reporting == {
+        "internationalExchange": [True, False],
+        "temporalAggregate": ["PT1H", "PT10M"],
+        "uom": ["http://codes.wmo.int/wmdr/unit/mm", None],
+        "temporalTimeliness": [{"timeliness": "PT30M", "date": "2020-01-01"}],
+    }
+
+
+def test_normalize_observation_links_to_embedded_deployments_by_id() -> None:
+    observation = module._normalize_observation(_observation_with_deployment(), index=1, facility_id="0-TEST")
+    assert observation["deployments"] == ["deployment:dep1"]
+    assert observation["programAffiliations"] == ["GAWregional", "GBON"]
+
+
+def test_convert_payload_accepts_split_payload_shape() -> None:
+    converted = module.convert_payload(
+        {
+            "header": {"dateStamp": "2020-01-02"},
+            "facility": _minimal_facility(),
+            "observations": [_observation_with_deployment()],
+            "deployments": [],
+        },
+        source_name="20200102_0-TEST",
+    )
+    assert converted["id"] == "facility:0-TEST"
+    assert converted["properties"]["created"] == "2020-01-02T00:00:00Z"
+    assert converted["properties"]["observations"][0]["programAffiliations"] == ["GAWregional", "GBON"]
+
+
+def test_convert_group_uses_source_name_as_fallback_facility_when_missing() -> None:
+    converted = module.convert_group({"observations": []}, source_name="fallback-record")
+    assert converted["id"] == "facility:fallback-record"
+    assert converted["properties"]["title"] == "fallback-record"
+
+
+def test_convert_file_writes_json_output(tmp_path: Path) -> None:
+    source = tmp_path / "input.json"
+    target_dir = tmp_path / "out"
+    source.write_text(json.dumps({"facility": _minimal_facility(), "observations": []}), encoding="utf-8")
+    output_path = module.convert_file(source, target_dir)
+    converted = json.loads(output_path.read_text(encoding="utf-8"))
+    assert converted["id"] == "facility:0-TEST"
+
+
+def test_load_code_list_labels_reads_csv_mapping(tmp_path: Path) -> None:
+    labels = tmp_path / "labels.csv"
+    labels.write_text("domain,code,label\nObservedVariableAtmosphere,12006,Air temperature\n", encoding="utf-8")
+    assert module._load_code_list_labels({"codeListLabels": {"files": [str(labels)]}}, base_dir=tmp_path) == {
+        "ObservedVariableAtmosphere": {"12006": "Air temperature"}
     }

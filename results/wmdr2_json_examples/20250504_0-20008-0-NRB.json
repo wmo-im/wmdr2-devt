@@ -25,12 +25,6 @@
     "created": "2025-05-04T00:00:00Z",
     "updated": "2025-05-04T00:00:00Z",
     "description": "The station is located at 01° 18'S 36° 45' E at an altitude of 1795m and is within the compound of the Kenya Meteorological Department headquarters at Dagoretti Corner, Nairobi.",
-    "externalIds": [
-      {
-        "scheme": "WMO:WIGOS",
-        "value": "0-20008-0-NRB"
-      }
-    ],
     "contacts": [
       {
         "organization": "Kenyan Meteorological Department",
@@ -257,121 +251,107 @@
         "type": "text/html"
       }
     ],
-    "facilitySet": "Nairobi Dagoretti Corner",
     "facilityType": "landFixed",
     "wmoRegion": "africa",
-    "temporalTerritory": {
-      "territory": [
-        "KEN"
-      ],
-      "dates": [
-        "2008-12-05"
-      ]
-    },
-    "environment": {
-      "temporalClimateZone": {
-        "climateZone": [
-          "warmTemperateFullyHumidWarmSummer"
-        ],
-        "dates": [
-          "1996-01-01"
-        ]
-      },
-      "temporalSurfaceCover": {
-        "surfaceCover": [
-          "urbanBuiltup"
-        ],
-        "dates": [
-          "1996-01-01"
-        ]
-      },
-      "temporalTopographyBathymetry": {
-        "topographyBathymetry": [
-          {
-            "topographyBathymetry": {
-              "localTopography": "unknown",
-              "relativeElevation": "middle",
-              "topographicContext": "hills",
-              "altitudeOrDepth": "highAltitude"
-            }
-          }
-        ],
-        "dates": [
-          "1996-01-01"
-        ]
+    "facilitySets": [
+      "facilitySet:Nairobi-Dagoretti-Corner"
+    ],
+    "temporalTerritory": [
+      {
+        "territory": "KEN",
+        "date": "2008-12-05"
       }
-    },
-    "temporalProgramAffiliation": {
-      "programAffiliation": [
-        "GAWregional",
-        "SHADOZ",
-        "AERONET"
+    ],
+    "environment": {
+      "temporalClimateZone": [
+        {
+          "climateZone": "warmTemperateFullyHumidWarmSummer",
+          "date": "1996-01-01"
+        }
       ],
-      "dates": [
-        "1996-01-01",
-        "1996-01-01",
-        "2004-10-22"
+      "temporalSurfaceCover": [
+        {
+          "surfaceCover": "urbanBuiltup",
+          "date": "1996-01-01",
+          "surfaceCoverClassification": "globCover2009"
+        }
       ],
-      "reportingStatus": [
-        "operational",
-        "operational",
-        "operational"
+      "temporalRelativeElevation": [
+        {
+          "relativeElevation": "middle",
+          "date": "1996-01-01"
+        }
+      ],
+      "temporalTopographicContext": [
+        {
+          "topographicContext": "hills",
+          "date": "1996-01-01"
+        }
+      ],
+      "temporalAltitudeOrDepth": [
+        {
+          "altitudeOrDepth": "highAltitude",
+          "date": "1996-01-01"
+        }
       ]
     },
+    "temporalProgramAffiliation": [
+      {
+        "programAffiliation": "GAWregional",
+        "reportingStatus": "operational",
+        "date": "1996-01-01",
+        "programSpecificFacilityId": "NRB"
+      },
+      {
+        "programAffiliation": "SHADOZ",
+        "reportingStatus": "operational",
+        "date": "1996-01-01",
+        "programSpecificFacilityId": "Nairobi"
+      },
+      {
+        "programAffiliation": "AERONET",
+        "reportingStatus": "operational",
+        "date": "2004-10-22",
+        "programSpecificFacilityId": "Nairobi"
+      }
+    ],
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_ec5258f4aed1",
         "start": "0001-01-01T09:00:00",
         "timeZone": "UTC",
-        "duration": "PT7H",
+        "duration": "P1D",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
-            "frequency": "daily",
-            "byDay": [
-              "mo",
-              "tu",
-              "we",
-              "th",
-              "fr"
-            ]
+            "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": null,
         "wmo.int:aggregation": {
           "temporalAggregate": "P11M25DT10H",
           "diurnalBaseTime": "00:00:00"
-        }
+        },
+        "uid": "schedule_bd091f9d7b80"
       },
       {
         "@type": "Event",
-        "uid": "schedule_63a53b055fdb",
         "start": "0001-01-01T09:00:00",
         "timeZone": "UTC",
-        "duration": "PT7H",
+        "duration": "P1D",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
-            "frequency": "daily",
-            "byDay": [
-              "mo",
-              "tu",
-              "we",
-              "th",
-              "fr"
-            ]
+            "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": null,
         "wmo.int:aggregation": {
           "temporalAggregate": "PT1H",
           "diurnalBaseTime": "00:00:00"
-        }
+        },
+        "uid": "schedule_e5f60e66822f"
       },
       {
         "@type": "Event",
-        "uid": "schedule_9c06d8333cb1",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -381,15 +361,14 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": null,
         "wmo.int:aggregation": {
           "temporalAggregate": "P1D",
           "diurnalBaseTime": "00:00:00"
-        }
+        },
+        "uid": "schedule_fd8892047cf5"
       },
       {
         "@type": "Event",
-        "uid": "schedule_74eceaf97c31",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -399,18 +378,17 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": null,
         "wmo.int:aggregation": {
           "temporalAggregate": "PT1H",
           "diurnalBaseTime": "00:00:00"
-        }
+        },
+        "uid": "schedule_2bb1a98fc0c3"
       },
       {
         "@type": "Event",
-        "uid": "schedule_73fdd6550f0e",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "PT10M",
+        "duration": "PT12H",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
@@ -418,18 +396,13 @@
             "interval": 12
           }
         ],
-        "wmo.int:sampling": {
-          "samplingProcedure": "inapplicable",
-          "temporalSamplingInterval": "PT12H",
-          "samplingTimePeriod": "PT10M"
-        },
         "wmo.int:aggregation": {
           "temporalAggregate": "P12D"
-        }
+        },
+        "uid": "schedule_069c221f561e"
       },
       {
         "@type": "Event",
-        "uid": "schedule_26b52fca8ddb",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -439,33 +412,27 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": {
-          "samplingStrategy": "continuous",
-          "temporalSamplingInterval": "PT5S"
-        },
         "wmo.int:aggregation": {
           "temporalAggregate": "PT1H"
-        }
+        },
+        "uid": "schedule_38ade7ec764d"
       },
       {
         "@type": "Event",
-        "uid": "schedule_c080b7aaa6ae",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "P1D",
+        "duration": "PT5S",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
-            "frequency": "daily"
+            "frequency": "secondly",
+            "interval": 5
           }
         ],
-        "wmo.int:sampling": {
-          "samplingStrategy": "continuous"
-        },
         "wmo.int:aggregation": {
-          "temporalAggregate": "P1D",
-          "diurnalBaseTime": "00:00:00"
-        }
+          "temporalAggregate": "PT1H"
+        },
+        "uid": "schedule_9b81841998e0"
       }
     ],
     "observations": [
@@ -481,17 +448,9 @@
         "observedVariable": 263,
         "observedGeometryType": "totalColumn",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          },
-          {
-            "programAffiliation": [
-              "SHADOZ"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
         ],
         "deployments": [
           "deployment:id_fdb01ce3-5f71-44fa-92f2-15672646c5da"
@@ -509,17 +468,9 @@
         "observedVariable": 263,
         "observedGeometryType": "totalColumn",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          },
-          {
-            "programAffiliation": [
-              "SHADOZ"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
         ],
         "deployments": [
           "deployment:id_10307340-c9f1-478d-9d64-ad37dfbe938f"
@@ -530,6 +481,9 @@
           ],
           "temporalAggregate": [
             "P11M25DT10H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -558,17 +512,9 @@
         "observedVariable": 263,
         "observedGeometryType": "totalColumn",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          },
-          {
-            "programAffiliation": [
-              "SHADOZ"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
         ],
         "deployments": [
           "deployment:id_c1094afe-39a2-4156-b2ac-3544fb9ae211"
@@ -595,15 +541,6 @@
           ],
           "levelOfData": [
             "level1"
-          ],
-          "dataFormat": [
-            "ascii"
-          ],
-          "officialStatus": [
-            true
-          ],
-          "timeStampMeaning": [
-            "middle"
           ]
         }
       },
@@ -619,17 +556,9 @@
         "observedVariable": 264,
         "observedGeometryType": "verticalProfile",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          },
-          {
-            "programAffiliation": [
-              "SHADOZ"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
         ],
         "deployments": [
           "deployment:id_e3db3fbf-3ec2-45f3-ad5a-50667fa0a8d9"
@@ -640,6 +569,9 @@
           ],
           "temporalAggregate": [
             "P1D"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -668,17 +600,9 @@
         "observedVariable": 264,
         "observedGeometryType": "verticalProfile",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          },
-          {
-            "programAffiliation": [
-              "SHADOZ"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
         ],
         "deployments": [
           "deployment:id_9eb29f52-8033-4951-85bc-211f84d36894"
@@ -689,6 +613,9 @@
           ],
           "temporalAggregate": [
             "P1D"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -717,17 +644,9 @@
         "observedVariable": 264,
         "observedGeometryType": "verticalProfile",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          },
-          {
-            "programAffiliation": [
-              "SHADOZ"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
         ],
         "deployments": [
           "deployment:id_1f189462-8091-48cf-b052-e09fb3dc829b"
@@ -738,6 +657,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -766,17 +688,9 @@
         "observedVariable": 264,
         "observedGeometryType": "verticalProfile",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          },
-          {
-            "programAffiliation": [
-              "SHADOZ"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
         ],
         "deployments": [
           "deployment:id_7fac1804-438a-4ccf-b215-1148ddf23207"
@@ -803,12 +717,6 @@
           ],
           "levelOfData": [
             "level2"
-          ],
-          "numberOfObservationsInReportingInterval": [
-            true
-          ],
-          "timeStampMeaning": [
-            "end"
           ]
         }
       },
@@ -824,35 +732,13 @@
         "observedVariable": 325,
         "observedGeometryType": "totalColumn",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          },
-          {
-            "programAffiliation": [
-              "AERONET"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional",
+          "AERONET"
         ],
         "deployments": [
           "deployment:id_96ed967a-b01b-4769-8983-54b3655039e7"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "dataPolicy": [
-            {
-              "attribution": {
-                "originator": {
-                  "role": null
-                }
-              }
-            }
-          ]
-        }
+        ]
       },
       {
         "id": "observation:369",
@@ -866,12 +752,8 @@
         "observedVariable": 369,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional"
         ],
         "deployments": [
           "deployment:id_e5770467-8ecb-4bc6-97bd-f3f4b4581b5d"
@@ -910,12 +792,8 @@
         "observedVariable": 573,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GAWregional"
-            ]
-          }
+        "programAffiliations": [
+          "GAWregional"
         ],
         "deployments": [
           "deployment:id_99c1c0c5-0006-4b3d-9c64-a946e1a07aab"
@@ -926,6 +804,9 @@
           ],
           "temporalAggregate": [
             "P1D"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -952,9 +833,9 @@
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
         "instrument": [
-          "instrument:a88f8640075c"
+          "instrument:846099a27ae9"
         ],
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "71"
           ],
@@ -967,7 +848,6 @@
         "keywords": [
           "Kipp&Zonen",
           "Brewer MkIII",
-          "71",
           "automaticReading"
         ]
       },
@@ -982,9 +862,9 @@
         "sourceOfObservation": "manualReading",
         "observingMethod": 106,
         "instrument": [
-          "instrument:3dfbbc12411e"
+          "instrument:6ce3f4bcd416"
         ],
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "18"
           ],
@@ -996,18 +876,14 @@
         "keywords": [
           "R&J Beck London",
           "Dobson",
-          "18",
-          "manualReading",
-          "106"
+          "manualReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_ec5258f4aed1"
-          ],
-          "dates": [
-            "2005-05-01"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_bd091f9d7b80",
+            "date": "2005-05-01"
+          }
+        ]
       },
       {
         "id": "deployment:id_c1094afe-39a2-4156-b2ac-3544fb9ae211",
@@ -1019,17 +895,12 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 106,
-        "keywords": [
-          "106"
-        ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_63a53b055fdb"
-          ],
-          "dates": [
-            "1984-04-19"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_e5f60e66822f",
+            "date": "1984-04-19"
+          }
+        ]
       },
       {
         "id": "deployment:id_e3db3fbf-3ec2-45f3-ad5a-50667fa0a8d9",
@@ -1041,17 +912,12 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 107,
-        "keywords": [
-          "107"
-        ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_9c06d8333cb1"
-          ],
-          "dates": [
-            "2010-06-09"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_fd8892047cf5",
+            "date": "2010-06-09"
+          }
+        ]
       },
       {
         "id": "deployment:id_9eb29f52-8033-4951-85bc-211f84d36894",
@@ -1063,17 +929,12 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 107,
-        "keywords": [
-          "107"
-        ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_9c06d8333cb1"
-          ],
-          "dates": [
-            "1998-09-23"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_fd8892047cf5",
+            "date": "1998-09-23"
+          }
+        ]
       },
       {
         "id": "deployment:id_1f189462-8091-48cf-b052-e09fb3dc829b",
@@ -1085,17 +946,12 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": 107,
-        "keywords": [
-          "107"
-        ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31"
-          ],
-          "dates": [
-            "1998-01-07"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "1998-01-07"
+          }
+        ]
       },
       {
         "id": "deployment:id_7fac1804-438a-4ccf-b215-1148ddf23207",
@@ -1109,17 +965,14 @@
         "observingMethod": 106,
         "representativeness": "mesoscale",
         "keywords": [
-          "manualReading",
-          "106"
+          "manualReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_73fdd6550f0e"
-          ],
-          "dates": [
-            "1984-05-10"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_069c221f561e",
+            "date": "1984-05-10"
+          }
+        ]
       },
       {
         "id": "deployment:id_96ed967a-b01b-4769-8983-54b3655039e7",
@@ -1132,15 +985,14 @@
         "sourceOfObservation": "automaticReading",
         "observingMethod": 244,
         "instrument": [
-          "instrument:15b56ec16608"
+          "instrument:ff4c2d7f70c3"
         ],
         "exposure": "class1",
         "localReferenceSurface": "naturalGround",
         "keywords": [
           "CIMEL",
           "CE318TS9 (Sun Photometer)",
-          "automaticReading",
-          "244"
+          "automaticReading"
         ]
       },
       {
@@ -1153,7 +1005,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": 240,
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "Fidas 6111"
           ],
@@ -1164,27 +1016,26 @@
         "exposure": "class3",
         "representativeness": "toposcale",
         "localReferenceSurface": "roofTerrace",
-        "temporalInstrumentOperatingStatus": {
-          "instrumentOperatingStatus": [
-            "operational"
-          ],
-          "dates": [
-            "2025-05-04"
-          ]
-        },
+        "temporalInstrumentOperatingStatus": [
+          {
+            "instrumentOperatingStatus": "operational",
+            "date": "2025-05-04"
+          }
+        ],
         "keywords": [
           "Fidas 6111",
-          "automaticReading",
-          "240"
+          "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_26b52fca8ddb"
-          ],
-          "dates": [
-            "2025-05-03"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_38ade7ec764d",
+            "date": "2025-05-03"
+          },
+          {
+            "observingSchedule": "schedule_9b81841998e0",
+            "date": "2025-05-03"
+          }
+        ]
       },
       {
         "id": "deployment:id_99c1c0c5-0006-4b3d-9c64-a946e1a07aab",
@@ -1196,29 +1047,27 @@
         },
         "sourceOfObservation": "unknown",
         "observingMethod": "unknown",
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_c080b7aaa6ae"
-          ],
-          "dates": [
-            "1969-08-01"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_fd8892047cf5",
+            "date": "1969-08-01"
+          }
+        ]
       }
     ],
     "instruments": [
       {
-        "id": "instrument:a88f8640075c",
+        "id": "instrument:846099a27ae9",
         "manufacturer": "Kipp&Zonen",
         "model": "Brewer MkIII"
       },
       {
-        "id": "instrument:3dfbbc12411e",
+        "id": "instrument:6ce3f4bcd416",
         "manufacturer": "R&J Beck London",
         "model": "Dobson"
       },
       {
-        "id": "instrument:15b56ec16608",
+        "id": "instrument:ff4c2d7f70c3",
         "manufacturer": "CIMEL",
         "model": "CE318TS9 (Sun Photometer)"
       }

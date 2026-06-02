@@ -37,6 +37,16 @@
         }
       }
     },
+    "nullableTimeInterval": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/timeInterval"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
     "pointGeometry": {
       "type": [
         "object",
@@ -63,6 +73,7 @@
     },
     "temporalGeometry": {
       "type": "object",
+      "description": "The only WMDR2 temporal object that still uses aligned arrays. Coordinates and dates are aligned by array index.",
       "required": [
         "coordinates",
         "dates"
@@ -90,23 +101,12 @@
         }
       }
     },
-    "externalId": {
-      "type": "object",
-      "required": [
-        "scheme",
-        "value"
-      ],
-      "additionalProperties": true,
-      "properties": {
-        "scheme": {
-          "type": "string",
-          "minLength": 1
-        },
-        "value": {
-          "type": "string",
-          "minLength": 1
-        }
-      }
+    "codeValue": {
+      "description": "Compact code-list value. The applicable code list is defined by the property context and checked by a WMDR2 validator.",
+      "type": [
+        "string",
+        "integer"
+      ]
     },
     "link": {
       "type": "object",
@@ -213,264 +213,346 @@
         }
       ]
     },
-    "simpleTemporalHistory": {
+    "temporalObjectBase": {
       "type": "object",
       "required": [
-        "dates"
+        "date"
       ],
       "additionalProperties": true,
       "properties": {
-        "dates": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/dateOrOpen"
-          }
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
         }
       }
     },
     "temporalTerritory": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/simpleTemporalHistory"
-        },
-        {
-          "type": "object",
-          "required": [
-            "territory"
-          ],
-          "properties": {
-            "territory": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "territory"
+            ],
+            "properties": {
+              "territory": {
                 "$ref": "#/$defs/codeValue"
               }
             }
           }
-        }
-      ]
+        ]
+      }
     },
     "temporalClimateZone": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/simpleTemporalHistory"
-        },
-        {
-          "type": "object",
-          "required": [
-            "climateZone"
-          ],
-          "properties": {
-            "climateZone": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "climateZone"
+            ],
+            "properties": {
+              "climateZone": {
                 "$ref": "#/$defs/codeValue"
               }
             }
           }
-        }
-      ]
+        ]
+      }
     },
     "temporalSurfaceCover": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/simpleTemporalHistory"
-        },
-        {
-          "type": "object",
-          "required": [
-            "surfaceCover"
-          ],
-          "properties": {
-            "surfaceCover": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "surfaceCover"
+            ],
+            "properties": {
+              "surfaceCover": {
+                "$ref": "#/$defs/codeValue"
+              },
+              "surfaceCoverClassification": {
+                "$ref": "#/$defs/codeValue"
+              },
+              "surfaceClassification": {
                 "$ref": "#/$defs/codeValue"
               }
             }
+          }
+        ]
+      }
+    },
+    "temporalPopulation": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "population"
+            ],
+            "properties": {
+              "population": {}
+            }
+          }
+        ]
+      }
+    },
+    "temporalPopulationDensities": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "populationDensity"
+            ],
+            "properties": {
+              "populationDensity": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "temporalSurfaceRoughness": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "surfaceRoughness"
+            ],
+            "properties": {
+              "surfaceRoughness": {
+                "$ref": "#/$defs/codeValue"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "temporalEnvironmentValue": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/temporalObjectBase"
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "temporalClimateZone": {
+          "$ref": "#/$defs/temporalClimateZone"
+        },
+        "temporalSurfaceCover": {
+          "$ref": "#/$defs/temporalSurfaceCover"
+        },
+        "temporalPopulation": {
+          "$ref": "#/$defs/temporalPopulation"
+        },
+        "temporalPopulationDensities": {
+          "$ref": "#/$defs/temporalPopulationDensities"
+        },
+        "temporalSurfaceRoughness": {
+          "$ref": "#/$defs/temporalSurfaceRoughness"
+        },
+        "temporalLocalTopography": {
+          "$ref": "#/$defs/temporalEnvironmentValue"
+        },
+        "temporalRelativeElevation": {
+          "$ref": "#/$defs/temporalEnvironmentValue"
+        },
+        "temporalTopographicContext": {
+          "$ref": "#/$defs/temporalEnvironmentValue"
+        },
+        "temporalAltitudeOrDepth": {
+          "$ref": "#/$defs/temporalEnvironmentValue"
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "temporalTopographyBathymetry"
+            ]
           }
         }
       ]
     },
     "reportingStatusTimeline": {
-      "type": "object",
-      "required": [
-        "reportingStatus",
-        "dates"
-      ],
-      "additionalProperties": true,
-      "properties": {
-        "reportingStatus": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/codeValue"
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "reportingStatus"
+            ],
+            "properties": {
+              "reportingStatus": {
+                "$ref": "#/$defs/codeValue"
+              }
+            }
           }
-        },
-        "dates": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/dateOrOpen"
-          }
-        }
+        ]
       }
     },
     "programAffiliationTimeline": {
-      "type": "object",
-      "required": [
-        "programAffiliation"
-      ],
-      "additionalProperties": true,
-      "properties": {
-        "programAffiliation": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/codeValue"
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "programAffiliation"
+            ],
+            "properties": {
+              "programAffiliation": {
+                "$ref": "#/$defs/codeValue"
+              },
+              "reportingStatus": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/codeValue"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "programSpecificFacilityId": {
+                "type": "string"
+              },
+              "programSpecificFacilityTitle": {
+                "type": "string"
+              }
+            }
           }
-        },
-        "programSpecificFacilityId": {
-          "type": "string"
-        },
-        "reportingStatus": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/codeValue"
-          }
-        },
-        "dates": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/dateOrOpen"
-          }
-        }
+        ]
       }
     },
     "temporalProgramAffiliation": {
-      "type": "object",
-      "required": [
-        "programAffiliation",
-        "dates"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "programAffiliation": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/codeValue"
-          }
-        },
-        "reportingStatus": {
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/codeValue"
-              },
-              {
-                "type": "null"
+      "$ref": "#/$defs/programAffiliationTimeline"
+    },
+    "temporalObservingScheduleRefs": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "observingSchedule"
+            ],
+            "properties": {
+              "observingSchedule": {
+                "type": "string",
+                "minLength": 1
               }
-            ]
+            }
           }
-        },
-        "programSpecificFacilityId": {
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "dates": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/dateOrOpen"
-          }
-        }
+        ]
       }
     },
-    "temporalObservingSchedule": {
-      "type": "object",
-      "additionalProperties": true,
-      "not": {
-        "required": [
-          "id"
+    "temporalInstrumentOperatingStatus": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "instrumentOperatingStatus"
+            ],
+            "properties": {
+              "instrumentOperatingStatus": {
+                "$ref": "#/$defs/codeValue"
+              }
+            }
+          }
         ]
-      },
-      "properties": {
-        "interval": {
-          "type": "string"
-        },
-        "startMonth": {
-          "type": [
-            "integer",
-            "number",
-            "string"
-          ]
-        },
-        "endMonth": {
-          "type": [
-            "integer",
-            "number",
-            "string"
-          ]
-        },
-        "startWeekday": {
-          "type": [
-            "integer",
-            "number",
-            "string"
-          ]
-        },
-        "endWeekday": {
-          "type": [
-            "integer",
-            "number",
-            "string"
-          ]
-        },
-        "startHour": {
-          "type": [
-            "integer",
-            "number",
-            "string"
-          ]
-        },
-        "endHour": {
-          "type": [
-            "integer",
-            "number",
-            "string"
-          ]
-        },
-        "startMinute": {
-          "type": [
-            "integer",
-            "number",
-            "string"
-          ]
-        },
-        "endMinute": {
-          "type": [
-            "integer",
-            "number",
-            "string"
-          ]
-        },
-        "diurnalBaseTime": {
-          "type": "string"
-        }
+      }
+    },
+    "temporalDataPolicy": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "dataPolicy": {
+                "$ref": "#/$defs/codeValue"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "temporalTimeliness": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "timeliness"
+            ],
+            "properties": {
+              "timeliness": {}
+            }
+          }
+        ]
       }
     },
     "reporting": {
@@ -492,13 +574,6 @@
               "interval"
             ]
           }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalReportingInterval"
-            ]
-          }
         }
       ],
       "properties": {
@@ -511,15 +586,22 @@
             ]
           }
         },
-        "temporalAggregate": {
-          "description": "Optional temporal aggregate period aligned with other reporting arrays.",
+        "temporalReportingInterval": {
           "type": "array",
           "items": {
             "type": [
               "string",
               "null"
-            ],
-            "pattern": "^(P|$)"
+            ]
+          }
+        },
+        "temporalAggregate": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
           }
         },
         "uom": {
@@ -549,6 +631,7 @@
           "items": {
             "type": [
               "object",
+              "string",
               "null"
             ],
             "additionalProperties": true
@@ -568,45 +651,7 @@
           }
         },
         "temporalTimeliness": {
-          "description": "Optional reporting latency/delay history aligned with the reporting entries. Each timeliness duration becomes valid on the corresponding date.",
-          "type": "object",
-          "required": [
-            "timeliness",
-            "dates"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "timeliness": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "pattern": "^(P|$)"
-              }
-            },
-            "dates": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "$ref": "#/$defs/dateOrOpen"
-              }
-            }
-          }
-        }
-      }
-    },
-    "temporalDataPolicy": {
-      "type": "object",
-      "additionalProperties": true,
-      "properties": {
-        "dataPolicy": {
-          "$ref": "#/$defs/codeValue"
-        },
-        "time": {
-          "$ref": "#/$defs/timeInterval"
+          "$ref": "#/$defs/temporalTimeliness"
         }
       }
     },
@@ -659,6 +704,13 @@
               "temporalObservingSchedule"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "programAffiliation"
+            ]
+          }
         }
       ],
       "properties": {
@@ -681,12 +733,6 @@
         "observedDomain": {
           "$ref": "#/$defs/codeValue"
         },
-        "programAffiliation": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/programAffiliationTimeline"
-          }
-        },
         "contacts": {
           "type": "array",
           "items": {
@@ -697,10 +743,7 @@
           "$ref": "#/$defs/reporting"
         },
         "temporalDataPolicy": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/temporalDataPolicy"
-          }
+          "$ref": "#/$defs/temporalDataPolicy"
         },
         "deployments": {
           "type": "array",
@@ -720,6 +763,9 @@
           "items": {
             "$ref": "#/$defs/link"
           }
+        },
+        "programAffiliations": {
+          "$ref": "#/$defs/programAffiliations"
         }
       }
     },
@@ -778,20 +824,6 @@
               "serialNumber"
             ]
           }
-        },
-        {
-          "not": {
-            "required": [
-              "serialNumbers"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "instrumentOperatingStatus"
-            ]
-          }
         }
       ],
       "properties": {
@@ -816,29 +848,29 @@
         "localReferenceSurface": {
           "$ref": "#/$defs/codeValue"
         },
-        "temporalInstrumentOperatingStatus": {
-          "type": "object",
-          "required": [
-            "instrumentOperatingStatus",
-            "dates"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "instrumentOperatingStatus": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "$ref": "#/$defs/codeValue"
-              }
+        "verticalDistanceFromReferenceSurface": {
+          "description": "Vertical distance of the observation/instrument above or below the local reference surface. WMDR10 source values may be numeric, textual, or structured quantity objects.",
+          "anyOf": [
+            {
+              "type": "number"
             },
-            "dates": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "$ref": "#/$defs/dateOrOpen"
-              }
+            {
+              "type": "string"
+            },
+            {
+              "type": "object",
+              "additionalProperties": true
             }
+          ]
+        },
+        "instrumentOperatingStatus": {
+          "type": "array",
+          "items": {
+            "type": "object"
           }
+        },
+        "temporalInstrumentOperatingStatus": {
+          "$ref": "#/$defs/temporalInstrumentOperatingStatus"
         },
         "contacts": {
           "type": "array",
@@ -865,7 +897,7 @@
             "pattern": "^instrument:"
           }
         },
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "type": "object",
           "required": [
             "serialNumber",
@@ -894,23 +926,6 @@
         }
       }
     },
-    "codeValue": {
-      "description": "Compact code-list value. The applicable code list is defined by the property context and checked by a WMDR2 validator.",
-      "type": [
-        "string",
-        "integer"
-      ]
-    },
-    "nullableTimeInterval": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/timeInterval"
-        },
-        {
-          "type": "null"
-        }
-      ]
-    },
     "instrument": {
       "type": "object",
       "required": [
@@ -922,18 +937,41 @@
           "type": "string",
           "pattern": "^instrument:"
         },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
         "manufacturer": {
           "type": "string"
         },
         "model": {
           "type": "string"
+        },
+        "verticalRange": {
+          "type": "object",
+          "description": "Vertical range covered by the instrument, expressed with minimum and maximum vertical limits.",
+          "required": [
+            "min",
+            "max"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          }
         }
       },
       "allOf": [
         {
           "not": {
             "required": [
-              "temporalSerialNumbers"
+              "serialNumbers"
             ]
           }
         }
@@ -1082,106 +1120,12 @@
         ]
       }
     },
-    "temporalObservingScheduleRefs": {
-      "type": "object",
-      "required": [
-        "observingSchedule",
-        "dates"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "observingSchedule": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "dates": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/dateOrOpen"
-          }
-        }
-      }
-    },
-    "temporalPopulation": {
-      "type": "object",
-      "required": [
-        "populationDensity",
-        "dates"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "populationDensity": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": [
-              "array",
-              "object",
-              "number",
-              "string",
-              "null"
-            ],
-            "additionalProperties": true
-          }
-        },
-        "dates": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/dateOrOpen"
-          }
-        }
-      }
-    },
-    "temporalTopographyBathymetry": {
-      "type": "object",
-      "required": [
-        "topographyBathymetry",
-        "dates"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "topographyBathymetry": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "object",
-            "additionalProperties": true
-          }
-        },
-        "dates": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/dateOrOpen"
-          }
-        }
-      }
-    },
-    "environment": {
-      "description": "Optional environmental context for a facility, represented as temporal histories.",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "temporalClimateZone": {
-          "$ref": "#/$defs/temporalClimateZone"
-        },
-        "temporalSurfaceCover": {
-          "$ref": "#/$defs/temporalSurfaceCover"
-        },
-        "temporalPopulation": {
-          "$ref": "#/$defs/temporalPopulation"
-        },
-        "temporalTopographyBathymetry": {
-          "$ref": "#/$defs/temporalTopographyBathymetry"
-        }
+    "programAffiliations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/codeValue"
       },
-      "minProperties": 1
+      "uniqueItems": true
     }
   }
 }

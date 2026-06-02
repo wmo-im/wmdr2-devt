@@ -20,12 +20,6 @@
     "created": "2020-03-04T00:00:00Z",
     "updated": "2020-03-04T00:00:00Z",
     "description": "The station was originally registered based on WMO Pub 9 Vol A information containing these observation remarks: SOILTEMP;SOLRA;SUNDUR;TOTRA (see code table A for explanations). These remarks imply the following additional observations that could not be registered automatically: Solar radiation measurements; Total radiation measurements.",
-    "externalIds": [
-      {
-        "scheme": "WMO:WIGOS",
-        "value": "0-20000-0-06494"
-      }
-    ],
     "contacts": [
       {
         "organization": "Royal Meteorological Institute of Belgium",
@@ -56,32 +50,27 @@
     ],
     "facilityType": "landFixed",
     "wmoRegion": "europe",
-    "temporalTerritory": {
-      "territory": [
-        "BEL"
-      ],
-      "dates": [
-        "2016-04-28"
-      ]
-    },
-    "temporalProgramAffiliation": {
-      "programAffiliation": [
-        "GOSGeneral",
-        "GBON"
-      ],
-      "dates": [
-        "2016-04-28",
-        "2022-09-08"
-      ],
-      "reportingStatus": [
-        "operational",
-        "operational"
-      ]
-    },
+    "temporalTerritory": [
+      {
+        "territory": "BEL",
+        "date": "2016-04-28"
+      }
+    ],
+    "temporalProgramAffiliation": [
+      {
+        "programAffiliation": "GOSGeneral",
+        "reportingStatus": "operational",
+        "date": "2016-04-28"
+      },
+      {
+        "programAffiliation": "GBON",
+        "reportingStatus": "operational",
+        "date": "2022-09-08"
+      }
+    ],
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_74eceaf97c31",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -91,11 +80,11 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": null,
         "wmo.int:aggregation": {
           "temporalAggregate": "PT1H",
           "diurnalBaseTime": "00:00:00"
-        }
+        },
+        "uid": "schedule_2bb1a98fc0c3"
       }
     ],
     "observations": [
@@ -111,12 +100,8 @@
         "observedVariable": 179,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06"
@@ -127,6 +112,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -151,12 +139,8 @@
         "observedVariable": 216,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id_cbeee7c2-88d2-42b5-9e9b-7d247430b5ad"
@@ -167,6 +151,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -200,12 +187,8 @@
         "observedVariable": 224,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id_5a1a8bb6-8867-4ca4-89ab-f538b6238162"
@@ -216,6 +199,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -240,12 +226,8 @@
         "observedVariable": 230,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id_b3b6f93e-a743-41be-836c-56e4aa2ffecd"
@@ -256,6 +238,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -280,12 +265,8 @@
         "observedVariable": 12249,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id_94df9bb5-31c0-4ec0-9eff-832f20424ec0"
@@ -296,6 +277,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -320,12 +304,8 @@
         "observedVariable": 265,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id_8a767a59-5fea-4c4a-ba63-a215b7a48731"
@@ -336,6 +316,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -360,12 +343,8 @@
         "observedVariable": 266,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id_a3d312d1-31e6-4a19-a147-8fc680f9f71f"
@@ -376,6 +355,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -394,12 +376,8 @@
         "observedVariable": 270,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id_e255ce45-4880-4534-890b-fe13020f1ba9"
@@ -410,6 +388,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -434,12 +415,8 @@
         "observedVariable": 531,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id_f50e905d-0204-455b-a4e3-b61634dde81c"
@@ -450,6 +427,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -474,12 +454,8 @@
         "observedVariable": 550,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id_5afcfbb0-4bf8-42fd-bc88-0ada98fbc2f8"
@@ -490,6 +466,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -508,12 +487,8 @@
         "observedVariable": 596,
         "observedGeometryType": "unknown",
         "observedDomain": "terrestrial",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id_8aba1fb3-7eab-4ee9-bc01-3b9fe58f54d2"
@@ -524,6 +499,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -548,12 +526,8 @@
         "observedVariable": 12005,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id_c0288657-ab05-4e50-a36b-e024a09b7417"
@@ -564,6 +538,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -588,12 +565,8 @@
         "observedVariable": 12006,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:cca8c9b3-4ac7-23ea-e053-148ef98d1a71"
@@ -604,6 +577,9 @@
           ],
           "temporalAggregate": [
             "PT1H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -628,38 +604,32 @@
         },
         "observingMethod": "unknown",
         "localReferenceSurface": "localGround",
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31"
-          ],
-          "dates": [
-            "2016-04-29"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2016-04-29"
+          }
+        ]
       },
       {
         "id": "deployment:id_e255ce45-4880-4534-890b-fe13020f1ba9",
         "observingMethod": "unknown",
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31"
-          ],
-          "dates": [
-            ".."
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": ".."
+          }
+        ]
       },
       {
         "id": "deployment:id_8aba1fb3-7eab-4ee9-bc01-3b9fe58f54d2",
         "observingMethod": "unknown",
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31"
-          ],
-          "dates": [
-            ".."
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": ".."
+          }
+        ]
       }
     ]
   }

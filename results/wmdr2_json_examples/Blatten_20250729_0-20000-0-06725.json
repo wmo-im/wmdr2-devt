@@ -43,12 +43,6 @@
     "created": "2025-07-29T00:00:00Z",
     "updated": "2025-07-29T00:00:00Z",
     "description": "Bla...bla...bla...",
-    "externalIds": [
-      {
-        "scheme": "WMO:WIGOS",
-        "value": "0-20000-0-06725,0-756-1-Blatten"
-      }
-    ],
     "contacts": [
       {
         "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
@@ -86,71 +80,72 @@
     ],
     "facilityType": "landFixed",
     "wmoRegion": "europe",
-    "temporalTerritory": {
-      "territory": [
-        "CHE"
-      ],
-      "dates": [
-        "2000-08-17"
-      ]
-    },
-    "environment": {
-      "temporalClimateZone": {
-        "climateZone": [
-          "polarTundra"
-        ],
-        "dates": [
-          "2024-01-17"
-        ]
-      },
-      "temporalSurfaceCover": {
-        "surfaceCover": [
-          "closedEvergreenNeedleleafForest"
-        ],
-        "dates": [
-          "2024-01-17"
-        ]
-      },
-      "temporalTopographyBathymetry": {
-        "topographyBathymetry": [
-          {
-            "topographyBathymetry": {
-              "localTopography": "unknown",
-              "relativeElevation": "middle",
-              "topographicContext": "mountains",
-              "altitudeOrDepth": "highAltitude"
-            }
-          }
-        ],
-        "dates": [
-          "2024-01-17"
-        ]
+    "temporalTerritory": [
+      {
+        "territory": "CHE",
+        "date": "2000-08-17"
       }
-    },
-    "temporalProgramAffiliation": {
-      "programAffiliation": [
-        "GOSGeneral",
-        "GBON",
-        "GBON",
-        "GOSGeneral"
+    ],
+    "environment": {
+      "temporalClimateZone": [
+        {
+          "climateZone": "polarTundra",
+          "date": "2024-01-17"
+        }
       ],
-      "dates": [
-        "2000-08-17",
-        "2022-09-08",
-        "2025-05-28",
-        "2025-05-28"
+      "temporalSurfaceCover": [
+        {
+          "surfaceCover": "closedEvergreenNeedleleafForest",
+          "date": "2024-01-17",
+          "surfaceCoverClassification": "globCover2009"
+        }
       ],
-      "reportingStatus": [
-        "operational",
-        "operational",
-        "closed",
-        "closed"
+      "temporalRelativeElevation": [
+        {
+          "relativeElevation": "middle",
+          "date": "2024-01-17"
+        }
+      ],
+      "temporalTopographicContext": [
+        {
+          "topographicContext": "mountains",
+          "date": "2024-01-17"
+        }
+      ],
+      "temporalAltitudeOrDepth": [
+        {
+          "altitudeOrDepth": "highAltitude",
+          "date": "2024-01-17"
+        }
       ]
     },
+    "temporalProgramAffiliation": [
+      {
+        "programAffiliation": "GOSGeneral",
+        "reportingStatus": "operational",
+        "date": "2000-08-17"
+      },
+      {
+        "programAffiliation": "GBON",
+        "reportingStatus": "operational",
+        "date": "2022-09-08",
+        "programSpecificFacilityId": "Blatten"
+      },
+      {
+        "programAffiliation": "GBON",
+        "reportingStatus": "closed",
+        "date": "2025-05-28",
+        "programSpecificFacilityId": "Blatten"
+      },
+      {
+        "programAffiliation": "GOSGeneral",
+        "reportingStatus": "closed",
+        "date": "2025-05-28"
+      }
+    ],
     "schedules": [
       {
         "@type": "Event",
-        "uid": "schedule_b145e5c7e91b",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -160,15 +155,14 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": null,
         "wmo.int:aggregation": {
           "temporalAggregate": "PT6H",
           "diurnalBaseTime": "06:00:00"
-        }
+        },
+        "uid": "schedule_ce4e69df0a76"
       },
       {
         "@type": "Event",
-        "uid": "schedule_74eceaf97c31",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -178,15 +172,14 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": null,
         "wmo.int:aggregation": {
           "temporalAggregate": "PT1H",
           "diurnalBaseTime": "00:00:00"
-        }
+        },
+        "uid": "schedule_2bb1a98fc0c3"
       },
       {
         "@type": "Event",
-        "uid": "schedule_9821755d796e",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -196,15 +189,14 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": null,
         "wmo.int:aggregation": {
           "temporalAggregate": "PT10M",
           "diurnalBaseTime": "00:00:00"
-        }
+        },
+        "uid": "schedule_87aa82256d31"
       },
       {
         "@type": "Event",
-        "uid": "schedule_cbd5ca40748b",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
         "duration": "P1D",
@@ -214,11 +206,11 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:sampling": null,
         "wmo.int:aggregation": {
           "temporalAggregate": "PT12H",
           "diurnalBaseTime": "06:00:00"
-        }
+        },
+        "uid": "schedule_2e340fe7bb5c"
       }
     ],
     "observations": [
@@ -234,12 +226,8 @@
         "observedVariable": 57,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-57-dg3-inc1-depl"
@@ -250,6 +238,9 @@
           ],
           "temporalAggregate": [
             "PT6H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -274,12 +265,8 @@
         "observedVariable": 180,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-180-dg3-inc1-depl"
@@ -317,12 +304,8 @@
         "observedVariable": 210,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-210-dg5-inc2-depl"
@@ -337,7 +320,7 @@
             "PT10M"
           ],
           "uom": [
-            null,
+            "unknown",
             "mm"
           ],
           "dataPolicy": [
@@ -370,12 +353,8 @@
         "observedVariable": 210,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-210-dg2-inc1-depl"
@@ -413,12 +392,8 @@
         "observedVariable": 216,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id-metch-20-216-dg5-inc1-depl"
@@ -433,7 +408,7 @@
             "PT10M"
           ],
           "uom": [
-            null,
+            "unknown",
             "hPa"
           ],
           "dataPolicy": [
@@ -466,12 +441,8 @@
         "observedVariable": 224,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id-metch-20-224-dg5-inc1-depl"
@@ -486,7 +457,7 @@
             "PT10M"
           ],
           "uom": [
-            null,
+            "unknown",
             "degC"
           ],
           "dataPolicy": [
@@ -519,12 +490,8 @@
         "observedVariable": 224,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id-metch-20-224-dg5-inc3-depl"
@@ -539,7 +506,7 @@
             "PT10M"
           ],
           "uom": [
-            null,
+            "unknown",
             "degC"
           ],
           "dataPolicy": [
@@ -572,12 +539,8 @@
         "observedVariable": 224,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id-metch-20-224-dg3-inc2-depl"
@@ -615,12 +578,8 @@
         "observedVariable": 225,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-225-dg5-inc1-depl"
@@ -635,7 +594,7 @@
             "PT10M"
           ],
           "uom": [
-            null,
+            "unknown",
             "degC"
           ],
           "dataPolicy": [
@@ -668,12 +627,8 @@
         "observedVariable": 226,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-226-dg2-inc3-depl"
@@ -711,12 +666,8 @@
         "observedVariable": 226,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-226-dg2-inc1-depl"
@@ -754,12 +705,8 @@
         "observedVariable": 226,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-226-dg2-inc2-depl"
@@ -797,12 +744,8 @@
         "observedVariable": 230,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-230-dg3-inc1-depl"
@@ -813,6 +756,9 @@
           ],
           "temporalAggregate": [
             "PT6H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -837,12 +783,8 @@
         "observedVariable": 12249,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id-metch-20-251-dg5-inc1-depl"
@@ -857,7 +799,7 @@
             "PT10M"
           ],
           "uom": [
-            null,
+            "unknown",
             "percent"
           ],
           "dataPolicy": [
@@ -890,12 +832,8 @@
         "observedVariable": 265,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-265-dg3-inc1-depl"
@@ -906,6 +844,9 @@
           ],
           "temporalAggregate": [
             "PT6H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -930,12 +871,8 @@
         "observedVariable": 266,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-266-dg3-inc1-depl"
@@ -946,6 +883,9 @@
           ],
           "temporalAggregate": [
             "PT6H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -970,12 +910,8 @@
         "observedVariable": 270,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-270-dg5-inc1-depl"
@@ -990,7 +926,7 @@
             "PT10M"
           ],
           "uom": [
-            null,
+            "unknown",
             "min"
           ],
           "dataPolicy": [
@@ -1023,12 +959,8 @@
         "observedVariable": 531,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-531-dg3-inc1-depl"
@@ -1039,6 +971,9 @@
           ],
           "temporalAggregate": [
             "PT6H"
+          ],
+          "uom": [
+            "unknown"
           ],
           "dataPolicy": [
             {
@@ -1063,12 +998,8 @@
         "observedVariable": 573,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-573-dg5-inc1-depl"
@@ -1083,7 +1014,7 @@
             "PT10M"
           ],
           "uom": [
-            null,
+            "unknown",
             "W.m-2"
           ],
           "dataPolicy": [
@@ -1116,12 +1047,8 @@
         "observedVariable": 627,
         "observedGeometryType": "point",
         "observedDomain": "terrestrial",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-627-dg2-inc1-depl"
@@ -1159,12 +1086,8 @@
         "observedVariable": 629,
         "observedGeometryType": "point",
         "observedDomain": "terrestrial",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GOSGeneral"
-            ]
-          }
+        "programAffiliations": [
+          "GOSGeneral"
         ],
         "deployments": [
           "deployment:id-metch-20-629-dg2-inc1-depl"
@@ -1202,12 +1125,8 @@
         "observedVariable": 12005,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id-metch-20-12005-dg5-inc2-depl"
@@ -1222,7 +1141,7 @@
             "PT10M"
           ],
           "uom": [
-            null,
+            "unknown",
             "deg"
           ],
           "dataPolicy": [
@@ -1255,12 +1174,8 @@
         "observedVariable": 12005,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id-metch-20-12005-dg3-inc1-depl"
@@ -1298,12 +1213,8 @@
         "observedVariable": 12006,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id-metch-20-12006-dg5-inc2-depl"
@@ -1318,7 +1229,7 @@
             "PT10M"
           ],
           "uom": [
-            null,
+            "unknown",
             "m.s-1"
           ],
           "dataPolicy": [
@@ -1351,12 +1262,8 @@
         "observedVariable": 12006,
         "observedGeometryType": "point",
         "observedDomain": "atmosphere",
-        "programAffiliation": [
-          {
-            "programAffiliation": [
-              "GBON"
-            ]
-          }
+        "programAffiliations": [
+          "GBON"
         ],
         "deployments": [
           "deployment:id-metch-20-12006-dg3-inc1-depl"
@@ -1394,7 +1301,7 @@
         },
         "sourceOfObservation": "humanObservation",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001368"
           ],
@@ -1407,14 +1314,12 @@
           "id-metch-sn-00001368",
           "humanObservation"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_b145e5c7e91b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_ce4e69df0a76",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-180-dg3-inc1-depl",
@@ -1426,7 +1331,7 @@
         },
         "sourceOfObservation": "humanObservation",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001351"
           ],
@@ -1439,14 +1344,12 @@
           "id-metch-sn-00001351",
           "humanObservation"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_b145e5c7e91b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_ce4e69df0a76",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-210-dg5-inc2-depl",
@@ -1458,7 +1361,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001353"
           ],
@@ -1471,16 +1374,16 @@
           "id-metch-sn-00001353",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31",
-            "schedule_9821755d796e"
-          ],
-          "dates": [
-            "2013-05-31",
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2013-05-31"
+          },
+          {
+            "observingSchedule": "schedule_87aa82256d31",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-210-dg2-inc1-depl",
@@ -1492,7 +1395,7 @@
         },
         "sourceOfObservation": "manualReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001352"
           ],
@@ -1505,14 +1408,12 @@
           "id-metch-sn-00001352",
           "manualReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_cbd5ca40748b"
-          ],
-          "dates": [
-            "2001-03-01"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2e340fe7bb5c",
+            "date": "2001-03-01"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-216-dg5-inc1-depl",
@@ -1524,7 +1425,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001354"
           ],
@@ -1537,16 +1438,16 @@
           "id-metch-sn-00001354",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31",
-            "schedule_9821755d796e"
-          ],
-          "dates": [
-            "2013-05-31",
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2013-05-31"
+          },
+          {
+            "observingSchedule": "schedule_87aa82256d31",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-224-dg5-inc1-depl",
@@ -1558,7 +1459,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001355"
           ],
@@ -1571,16 +1472,16 @@
           "id-metch-sn-00001355",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31",
-            "schedule_9821755d796e"
-          ],
-          "dates": [
-            "2013-05-31",
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2013-05-31"
+          },
+          {
+            "observingSchedule": "schedule_87aa82256d31",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-224-dg5-inc3-depl",
@@ -1592,7 +1493,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001357"
           ],
@@ -1605,16 +1506,16 @@
           "id-metch-sn-00001357",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31",
-            "schedule_9821755d796e"
-          ],
-          "dates": [
-            "2013-05-31",
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2013-05-31"
+          },
+          {
+            "observingSchedule": "schedule_87aa82256d31",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-224-dg3-inc2-depl",
@@ -1626,7 +1527,7 @@
         },
         "sourceOfObservation": "manualReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001356"
           ],
@@ -1639,14 +1540,12 @@
           "id-metch-sn-00001356",
           "manualReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_b145e5c7e91b"
-          ],
-          "dates": [
-            "2001-03-01"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_ce4e69df0a76",
+            "date": "2001-03-01"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-225-dg5-inc1-depl",
@@ -1658,7 +1557,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001358"
           ],
@@ -1671,16 +1570,16 @@
           "id-metch-sn-00001358",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31",
-            "schedule_9821755d796e"
-          ],
-          "dates": [
-            "2013-05-31",
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2013-05-31"
+          },
+          {
+            "observingSchedule": "schedule_87aa82256d31",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-226-dg2-inc3-depl",
@@ -1692,7 +1591,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001361"
           ],
@@ -1705,14 +1604,12 @@
           "id-metch-sn-00001361",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_cbd5ca40748b"
-          ],
-          "dates": [
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2e340fe7bb5c",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-226-dg2-inc1-depl",
@@ -1724,7 +1621,7 @@
         },
         "sourceOfObservation": "manualReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001359"
           ],
@@ -1737,14 +1634,12 @@
           "id-metch-sn-00001359",
           "manualReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_cbd5ca40748b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2e340fe7bb5c",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-226-dg2-inc2-depl",
@@ -1756,7 +1651,7 @@
         },
         "sourceOfObservation": "manualReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001360"
           ],
@@ -1769,14 +1664,12 @@
           "id-metch-sn-00001360",
           "manualReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_cbd5ca40748b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2e340fe7bb5c",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-230-dg3-inc1-depl",
@@ -1788,7 +1681,7 @@
         },
         "sourceOfObservation": "humanObservation",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001362"
           ],
@@ -1801,14 +1694,12 @@
           "id-metch-sn-00001362",
           "humanObservation"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_b145e5c7e91b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_ce4e69df0a76",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-251-dg5-inc1-depl",
@@ -1820,7 +1711,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001363"
           ],
@@ -1833,16 +1724,16 @@
           "id-metch-sn-00001363",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31",
-            "schedule_9821755d796e"
-          ],
-          "dates": [
-            "2013-05-31",
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2013-05-31"
+          },
+          {
+            "observingSchedule": "schedule_87aa82256d31",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-265-dg3-inc1-depl",
@@ -1854,7 +1745,7 @@
         },
         "sourceOfObservation": "humanObservation",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001364"
           ],
@@ -1867,14 +1758,12 @@
           "id-metch-sn-00001364",
           "humanObservation"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_b145e5c7e91b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_ce4e69df0a76",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-266-dg3-inc1-depl",
@@ -1886,7 +1775,7 @@
         },
         "sourceOfObservation": "humanObservation",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001365"
           ],
@@ -1899,14 +1788,12 @@
           "id-metch-sn-00001365",
           "humanObservation"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_b145e5c7e91b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_ce4e69df0a76",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-270-dg5-inc1-depl",
@@ -1918,7 +1805,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001366"
           ],
@@ -1931,16 +1818,16 @@
           "id-metch-sn-00001366",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31",
-            "schedule_9821755d796e"
-          ],
-          "dates": [
-            "2013-05-31",
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2013-05-31"
+          },
+          {
+            "observingSchedule": "schedule_87aa82256d31",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-531-dg3-inc1-depl",
@@ -1952,7 +1839,7 @@
         },
         "sourceOfObservation": "humanObservation",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001367"
           ],
@@ -1965,14 +1852,12 @@
           "id-metch-sn-00001367",
           "humanObservation"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_b145e5c7e91b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_ce4e69df0a76",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-573-dg5-inc1-depl",
@@ -1984,7 +1869,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001369"
           ],
@@ -1997,16 +1882,16 @@
           "id-metch-sn-00001369",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31",
-            "schedule_9821755d796e"
-          ],
-          "dates": [
-            "2013-05-31",
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2013-05-31"
+          },
+          {
+            "observingSchedule": "schedule_87aa82256d31",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-627-dg2-inc1-depl",
@@ -2018,7 +1903,7 @@
         },
         "sourceOfObservation": "manualReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001370"
           ],
@@ -2031,14 +1916,12 @@
           "id-metch-sn-00001370",
           "manualReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_cbd5ca40748b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2e340fe7bb5c",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-629-dg2-inc1-depl",
@@ -2050,7 +1933,7 @@
         },
         "sourceOfObservation": "manualReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001371"
           ],
@@ -2063,14 +1946,12 @@
           "id-metch-sn-00001371",
           "manualReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_cbd5ca40748b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2e340fe7bb5c",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-12005-dg5-inc2-depl",
@@ -2082,7 +1963,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001348"
           ],
@@ -2095,16 +1976,16 @@
           "id-metch-sn-00001348",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31",
-            "schedule_9821755d796e"
-          ],
-          "dates": [
-            "2013-05-31",
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2013-05-31"
+          },
+          {
+            "observingSchedule": "schedule_87aa82256d31",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-12005-dg3-inc1-depl",
@@ -2116,7 +1997,7 @@
         },
         "sourceOfObservation": "manualReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001347"
           ],
@@ -2129,14 +2010,12 @@
           "id-metch-sn-00001347",
           "manualReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_b145e5c7e91b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_ce4e69df0a76",
+            "date": "2000-08-17"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-12006-dg5-inc2-depl",
@@ -2148,7 +2027,7 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001350"
           ],
@@ -2161,16 +2040,16 @@
           "id-metch-sn-00001350",
           "automaticReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_74eceaf97c31",
-            "schedule_9821755d796e"
-          ],
-          "dates": [
-            "2013-05-31",
-            "2013-05-31"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2013-05-31"
+          },
+          {
+            "observingSchedule": "schedule_87aa82256d31",
+            "date": "2013-05-31"
+          }
+        ]
       },
       {
         "id": "deployment:id-metch-20-12006-dg3-inc1-depl",
@@ -2182,7 +2061,7 @@
         },
         "sourceOfObservation": "manualReading",
         "observingMethod": "unknown",
-        "temporalSerialNumbers": {
+        "serialNumbers": {
           "serialNumber": [
             "id-metch-sn-00001349"
           ],
@@ -2195,14 +2074,12 @@
           "id-metch-sn-00001349",
           "manualReading"
         ],
-        "temporalObservingSchedule": {
-          "observingSchedule": [
-            "schedule_b145e5c7e91b"
-          ],
-          "dates": [
-            "2000-08-17"
-          ]
-        }
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_ce4e69df0a76",
+            "date": "2000-08-17"
+          }
+        ]
       }
     ]
   }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T14:33:32.728960+00:00",
+  "generatedAt": "2026-06-02T20:10:33.780019+00:00",
   "description": "Semantic XML leaf values not found in the generated WMDR2 JSON, after applying intentional-loss and code-list-compaction rules.",
   "notes": [
     "This is a coverage heuristic: it checks whether XML leaf values survive somewhere in the WMDR2 JSON.",
@@ -10,14 +10,14 @@
   "summary": {
     "xml_files": 6,
     "xml_entries": 2587,
-    "matched_entries": 1519,
-    "lost_entries": 971,
+    "matched_entries": 1529,
+    "lost_entries": 961,
     "ignored_entries": 97
   },
   "files": [
     {
       "xml": "resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-23/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
       "summary": {
         "xmlEntries": 348,
         "matched": 194,
@@ -1294,11 +1294,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-23/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
       "summary": {
         "xmlEntries": 187,
-        "matched": 113,
-        "lost": 63,
+        "matched": 117,
+        "lost": 59,
         "ignored": 11
       },
       "lost": [
@@ -1355,54 +1355,12 @@
         },
         {
           "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/surfaceCover/SurfaceCover/surfaceCoverClassification/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009",
-          "candidateValues": [
-            "globCover2009",
-            "globcover2009",
-            "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
-          ]
-        },
-        {
-          "section": "facility",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/topographyBathymetry/TopographyBathymetry/localTopography/@href",
           "kind": "attribute",
           "value": "http://codes.wmo.int/wmdr/LocalTopography/unknown",
           "candidateValues": [
             "http://codes.wmo.int/wmdr/LocalTopography/unknown",
             "unknown"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/topographyBathymetry/TopographyBathymetry/relativeElevation/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
-          "candidateValues": [
-            "http://codes.wmo.int/wmdr/RelativeElevation/middle",
-            "middle"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/topographyBathymetry/TopographyBathymetry/topographicContext/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/TopographicContext/valleys",
-          "candidateValues": [
-            "http://codes.wmo.int/wmdr/TopographicContext/valleys",
-            "valleys"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/topographyBathymetry/TopographyBathymetry/altitudeOrDepth/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude",
-          "candidateValues": [
-            "highAltitude",
-            "highaltitude",
-            "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
           ]
         },
         {
@@ -1887,11 +1845,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-23/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
       "summary": {
         "xmlEntries": 217,
-        "matched": 158,
-        "lost": 48,
+        "matched": 160,
+        "lost": 46,
         "ignored": 11
       },
       "lost": [
@@ -1981,44 +1939,6 @@
           "candidateValues": [
             "http://codes.wmo.int/wmdr/GeopositioningMethod/map",
             "map"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/programAffiliation[1]/ProgramAffiliation/programSpecificFacilityId/text()",
-          "kind": "text",
-          "value": "THE",
-          "candidateValues": [
-            "THE"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/programAffiliation[2]/ProgramAffiliation/programSpecificFacilityId/text()",
-          "kind": "text",
-          "value": "THE",
-          "candidateValues": [
-            "THE"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/surfaceCover/SurfaceCover/surfaceCoverClassification/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/igbp",
-          "candidateValues": [
-            "http://codes.wmo.int/wmdr/SurfaceCoverClassification/igbp",
-            "igbp"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/surfaceRoughness/SurfaceRoughness/surfaceRoughness/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SurfaceRoughnessDavenport/chaotic",
-          "candidateValues": [
-            "chaotic",
-            "http://codes.wmo.int/wmdr/SurfaceRoughnessDavenport/chaotic"
           ]
         },
         {
@@ -2272,11 +2192,32 @@
         },
         {
           "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
+          "candidateValues": [
+            "continuous",
+            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+          ]
+        },
+        {
+          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/processing/Processing/aggregationPeriod/text()",
           "kind": "text",
           "value": "PT1M",
           "candidateValues": [
             "PT1M"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/reporting/Reporting/referenceTimeSource/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ReferenceTime/timeServer",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/ReferenceTime/timeServer",
+            "timeServer",
+            "timeserver"
           ]
         },
         {
@@ -2351,11 +2292,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-23/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
       "summary": {
         "xmlEntries": 422,
-        "matched": 286,
-        "lost": 114,
+        "matched": 285,
+        "lost": 115,
         "ignored": 22
       },
       "lost": [
@@ -2466,11 +2407,13 @@
         },
         {
           "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/programAffiliation[1]/ProgramAffiliation/programSpecificFacilityId/text()",
-          "kind": "text",
-          "value": "NRB",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/facilitySet/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/Nairobi Dagoretti Corner",
           "candidateValues": [
-            "NRB"
+            "Nairobi Dagoretti Corner",
+            "http://codes.wmo.int/wmdr/Nairobi Dagoretti Corner",
+            "nairobi dagoretti corner"
           ]
         },
         {
@@ -2491,38 +2434,6 @@
           "candidateValues": [
             "2010-06-10",
             "2010-06-10T00:00:00Z"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/surfaceCover/SurfaceCover/surfaceCoverClassification/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009",
-          "candidateValues": [
-            "globCover2009",
-            "globcover2009",
-            "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/topographyBathymetry/TopographyBathymetry/topographicContext/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/TopographicContext/hills",
-          "candidateValues": [
-            "hills",
-            "http://codes.wmo.int/wmdr/TopographicContext/hills"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/topographyBathymetry/TopographyBathymetry/altitudeOrDepth/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude",
-          "candidateValues": [
-            "highAltitude",
-            "highaltitude",
-            "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
           ]
         },
         {
@@ -2559,15 +2470,6 @@
           "value": "1",
           "candidateValues": [
             "1"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
-          "kind": "text",
-          "value": "5",
-          "candidateValues": [
-            "5"
           ]
         },
         {
@@ -2655,15 +2557,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
-          "kind": "text",
-          "value": "5",
-          "candidateValues": [
-            "5"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
           "kind": "text",
           "value": "9",
@@ -2705,6 +2598,16 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/reporting/Reporting/dataFormat/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/DataFormat/ascii",
+          "candidateValues": [
+            "ascii",
+            "http://codes.wmo.int/wmdr/DataFormat/ascii"
           ]
         },
         {
@@ -3118,6 +3021,35 @@
         },
         {
           "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingProcedure/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/SamplingProcedure/inapplicable",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/SamplingProcedure/inapplicable",
+            "inapplicable"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingTimePeriod/text()",
+          "kind": "text",
+          "value": "PT10M",
+          "candidateValues": [
+            "PT10M"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/reporting/Reporting/timeStampMeaning/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/TimeStampMeaning/end",
+          "candidateValues": [
+            "end",
+            "http://codes.wmo.int/wmdr/TimeStampMeaning/end"
+          ]
+        },
+        {
+          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/reporting/Reporting/numberOfObservationsInReportingInterval/text()",
           "kind": "text",
           "value": "1",
@@ -3287,6 +3219,16 @@
         },
         {
           "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
+          "candidateValues": [
+            "continuous",
+            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+          ]
+        },
+        {
+          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/processing/Processing/aggregationPeriod/text()",
           "kind": "text",
           "value": "PT1M",
@@ -3394,6 +3336,16 @@
           ]
         },
         {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
+          "candidateValues": [
+            "continuous",
+            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+          ]
+        },
+        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
           "kind": "text",
@@ -3425,7 +3377,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-23/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
       "summary": {
         "xmlEntries": 419,
         "matched": 236,
@@ -4985,11 +4937,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-15/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-23/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
       "summary": {
         "xmlEntries": 994,
-        "matched": 532,
-        "lost": 436,
+        "matched": 537,
+        "lost": 431,
         "ignored": 26
       },
       "lost": [
@@ -5075,32 +5027,12 @@
         },
         {
           "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/programAffiliation[2]/ProgramAffiliation/programSpecificFacilityId/text()",
-          "kind": "text",
-          "value": "Blatten",
-          "candidateValues": [
-            "Blatten"
-          ]
-        },
-        {
-          "section": "facility",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/programAffiliation[2]/ProgramAffiliation/reportingStatus[2]/ReportingStatus/validPeriod/TimePeriod/endPosition/text()",
           "kind": "text",
           "value": "2025-05-27T00:00:00Z",
           "candidateValues": [
             "2025-05-27",
             "2025-05-27T00:00:00Z"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/surfaceCover/SurfaceCover/surfaceCoverClassification/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009",
-          "candidateValues": [
-            "globCover2009",
-            "globcover2009",
-            "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
           ]
         },
         {
@@ -5148,37 +5080,6 @@
           "candidateValues": [
             "0-20000-0-06725",
             "http://codes.wmo.int/wmdr/0-20000-0-06725"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/topographyBathymetry/TopographyBathymetry/relativeElevation/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
-          "candidateValues": [
-            "http://codes.wmo.int/wmdr/RelativeElevation/middle",
-            "middle"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/topographyBathymetry/TopographyBathymetry/topographicContext/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/TopographicContext/mountains",
-          "candidateValues": [
-            "http://codes.wmo.int/wmdr/TopographicContext/mountains",
-            "mountains"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/topographyBathymetry/TopographyBathymetry/altitudeOrDepth/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude",
-          "candidateValues": [
-            "highAltitude",
-            "highaltitude",
-            "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
           ]
         },
         {
