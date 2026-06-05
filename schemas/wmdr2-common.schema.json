@@ -73,13 +73,17 @@
     },
     "temporalGeometry": {
       "type": "object",
-      "description": "The only WMDR2 temporal object that still uses aligned arrays. Coordinates and dates are aligned by array index.",
+      "description": "Geospatial location history of the facility or equipment, represented as a WMDR2 MovingPoint with coordinate positions and the dates from which each position is considered valid.",
       "required": [
+        "type",
         "coordinates",
         "dates"
       ],
       "additionalProperties": false,
       "properties": {
+        "type": {
+          "const": "MovingPoint"
+        },
         "coordinates": {
           "type": "array",
           "minItems": 2,
@@ -265,7 +269,8 @@
             }
           }
         ]
-      }
+      },
+      "description": "Climate-zone history for the facility. Each entry is valid from its date until the next climate-zone entry."
     },
     "temporalSurfaceCover": {
       "type": "array",
@@ -292,7 +297,8 @@
             }
           }
         ]
-      }
+      },
+      "description": "Surface-cover history for the facility. Each entry is valid from its date until the next surface-cover entry."
     },
     "temporalPopulation": {
       "type": "array",
@@ -311,7 +317,8 @@
             }
           }
         ]
-      }
+      },
+      "description": "Population history around the observing facility."
     },
     "temporalPopulationDensities": {
       "type": "array",
@@ -343,7 +350,8 @@
             }
           }
         ]
-      }
+      },
+      "description": "Population-density history around the observing facility."
     },
     "temporalSurfaceRoughness": {
       "type": "array",
@@ -364,7 +372,8 @@
             }
           }
         ]
-      }
+      },
+      "description": "Surface-roughness history for the facility."
     },
     "temporalEnvironmentValue": {
       "type": "array",
@@ -377,31 +386,40 @@
       "additionalProperties": false,
       "properties": {
         "temporalClimateZone": {
-          "$ref": "#/$defs/temporalClimateZone"
+          "$ref": "#/$defs/temporalClimateZone",
+          "description": "Type of climate zone at the facility, with dates from which values apply."
         },
         "temporalSurfaceCover": {
-          "$ref": "#/$defs/temporalSurfaceCover"
+          "$ref": "#/$defs/temporalSurfaceCover",
+          "description": "Biophysical cover on the earth surface near observations, with dates from which values apply."
         },
         "temporalPopulation": {
-          "$ref": "#/$defs/temporalPopulation"
+          "$ref": "#/$defs/temporalPopulation",
+          "description": "Population in the vicinity of the observing facility, with dates from which values apply."
         },
         "temporalPopulationDensities": {
-          "$ref": "#/$defs/temporalPopulationDensities"
+          "$ref": "#/$defs/temporalPopulationDensities",
+          "description": "Population density in the vicinity of the observing facility, with dates from which values apply."
         },
         "temporalSurfaceRoughness": {
-          "$ref": "#/$defs/temporalSurfaceRoughness"
+          "$ref": "#/$defs/temporalSurfaceRoughness",
+          "description": "Surface roughness at the facility, with dates from which values apply."
         },
         "temporalLocalTopography": {
-          "$ref": "#/$defs/temporalEnvironmentValue"
+          "$ref": "#/$defs/temporalEnvironmentValue",
+          "description": "Local topography or bathymetry context of the facility, with dates from which values apply."
         },
         "temporalRelativeElevation": {
-          "$ref": "#/$defs/temporalEnvironmentValue"
+          "$ref": "#/$defs/temporalEnvironmentValue",
+          "description": "Relative elevation component of the facility topography/bathymetry context, with dates from which values apply."
         },
         "temporalTopographicContext": {
-          "$ref": "#/$defs/temporalEnvironmentValue"
+          "$ref": "#/$defs/temporalEnvironmentValue",
+          "description": "Topographic context of the facility, with dates from which values apply."
         },
         "temporalAltitudeOrDepth": {
-          "$ref": "#/$defs/temporalEnvironmentValue"
+          "$ref": "#/$defs/temporalEnvironmentValue",
+          "description": "Altitude or depth component of the facility topography/bathymetry context, with dates from which values apply."
         }
       },
       "allOf": [
@@ -412,7 +430,8 @@
             ]
           }
         }
-      ]
+      ],
+      "description": "Environmental context and surroundings of the observing facility that may influence observations."
     },
     "reportingStatusTimeline": {
       "type": "array",
@@ -433,7 +452,8 @@
             }
           }
         ]
-      }
+      },
+      "description": "Declared reporting or operational status history of an observing facility."
     },
     "programAffiliationTimeline": {
       "type": "array",
@@ -473,7 +493,8 @@
       }
     },
     "temporalProgramAffiliation": {
-      "$ref": "#/$defs/programAffiliationTimeline"
+      "$ref": "#/$defs/programAffiliationTimeline",
+      "description": "Programme/network affiliation history for the observing facility, including programme-specific identifiers and reporting status where available."
     },
     "temporalObservingScheduleRefs": {
       "type": "array",
@@ -534,7 +555,8 @@
             }
           }
         ]
-      }
+      },
+      "description": "History of data-policy details relating to use limitations imposed by the supervising organization."
     },
     "temporalTimeliness": {
       "type": "array",
@@ -553,7 +575,8 @@
             }
           }
         ]
-      }
+      },
+      "description": "History of typical reporting timeliness, i.e. the time between completion of an observation and availability to users."
     },
     "reporting": {
       "type": "object",
@@ -584,7 +607,8 @@
               "boolean",
               "null"
             ]
-          }
+          },
+          "description": "Whether observations are internationally exchanged."
         },
         "temporalReportingInterval": {
           "type": "array",
@@ -602,7 +626,8 @@
               "string",
               "null"
             ]
-          }
+          },
+          "description": "Time interval over which individual samples or observations are aggregated."
         },
         "uom": {
           "type": "array",
@@ -615,7 +640,8 @@
                 "type": "null"
               }
             ]
-          }
+          },
+          "description": "Measurement unit used for reporting."
         },
         "referenceDatum": {
           "type": "array",
@@ -635,7 +661,8 @@
               "null"
             ],
             "additionalProperties": true
-          }
+          },
+          "description": "Details relating to the use and limitations surrounding data imposed by the supervising organization."
         },
         "levelOfData": {
           "type": "array",
@@ -648,12 +675,15 @@
                 "type": "null"
               }
             ]
-          }
+          },
+          "description": "Level of data processing."
         },
         "temporalTimeliness": {
-          "$ref": "#/$defs/temporalTimeliness"
+          "$ref": "#/$defs/temporalTimeliness",
+          "description": "Typical time between completion of an observation and availability to users."
         }
-      }
+      },
+      "description": "Details of reporting procedures for an observed variable."
     },
     "observation": {
       "type": "object",
@@ -719,19 +749,24 @@
           "pattern": "^observation:"
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "description": "Human-readable observation title derived from domain, geometry, variable code, and label where available."
         },
         "time": {
-          "$ref": "#/$defs/nullableTimeInterval"
+          "$ref": "#/$defs/nullableTimeInterval",
+          "description": "Time interval over which the observation metadata applies."
         },
         "observedVariable": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/codeValue",
+          "description": "Observed variable code or compact value, based on WMDR ObservedVariable terms where possible."
         },
         "observedGeometryType": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/codeValue",
+          "description": "Observed geometry type, based on WMDR geometry terms where possible."
         },
         "observedDomain": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/codeValue",
+          "description": "Observed-variable domain, derived from the observed-variable code list where possible."
         },
         "contacts": {
           "type": "array",
@@ -740,7 +775,8 @@
           }
         },
         "reporting": {
-          "$ref": "#/$defs/reporting"
+          "$ref": "#/$defs/reporting",
+          "description": "Details of reporting procedures, including exchange, aggregation interval, unit, timeliness, policy, and level of data."
         },
         "temporalDataPolicy": {
           "$ref": "#/$defs/temporalDataPolicy"
@@ -750,7 +786,8 @@
           "items": {
             "type": "string",
             "pattern": "^deployment:"
-          }
+          },
+          "description": "References to deployments used to generate this observation."
         },
         "keywords": {
           "type": "array",
@@ -765,9 +802,11 @@
           }
         },
         "programAffiliations": {
-          "$ref": "#/$defs/programAffiliations"
+          "$ref": "#/$defs/programAffiliations",
+          "description": "Programmes or networks for which the observation is primarily made."
         }
-      }
+      },
+      "description": "Observation metadata for an observed variable, including geometry, reporting, data policy, and deployment references."
     },
     "deployment": {
       "type": "object",
@@ -832,24 +871,33 @@
           "pattern": "^deployment:"
         },
         "time": {
-          "$ref": "#/$defs/nullableTimeInterval"
+          "$ref": "#/$defs/nullableTimeInterval",
+          "description": "Period for which the deployment configuration was or is in place."
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "Description of the deployment configuration."
         },
         "sourceOfObservation": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/codeValue",
+          "description": "Source of the observation, such as manual, automatic, or visual."
         },
         "observingMethod": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/codeValue",
+          "description": "Method of measurement or observation."
         },
-        "exposure": {},
-        "representativeness": {},
+        "exposure": {
+          "description": "Degree to which an instrument is affected by external influences according to the CIMO classification."
+        },
+        "representativeness": {
+          "description": "Assessment of the representativeness of the observations."
+        },
         "localReferenceSurface": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/codeValue",
+          "description": "Specified local reference surface for the vertical distance of the sensor."
         },
         "verticalDistanceFromReferenceSurface": {
-          "description": "Vertical distance of the observation/instrument above or below the local reference surface. WMDR10 source values may be numeric, textual, or structured quantity objects.",
+          "description": "Vertical distance of the sensor from the specified reference surface, in the direction away from the earth centre. Positive values indicate above the reference surface; negative values indicate below it.",
           "anyOf": [
             {
               "type": "number"
@@ -870,7 +918,8 @@
           }
         },
         "temporalInstrumentOperatingStatus": {
-          "$ref": "#/$defs/temporalInstrumentOperatingStatus"
+          "$ref": "#/$defs/temporalInstrumentOperatingStatus",
+          "description": "Operational-status history of the instrument when deployed."
         },
         "contacts": {
           "type": "array",
@@ -895,7 +944,8 @@
           "items": {
             "type": "string",
             "pattern": "^instrument:"
-          }
+          },
+          "description": "References to instruments used for this deployment."
         },
         "serialNumbers": {
           "type": "object",
@@ -919,12 +969,15 @@
                 "$ref": "#/$defs/dateOrOpen"
               }
             }
-          }
+          },
+          "description": "Serial-number history for the deployed equipment."
         },
         "temporalObservingSchedule": {
-          "$ref": "#/$defs/temporalObservingScheduleRefs"
+          "$ref": "#/$defs/temporalObservingScheduleRefs",
+          "description": "References to observing schedules that apply to the deployment."
         }
-      }
+      },
+      "description": "Deployment metadata describing equipment deployment, time period, and configuration for generating observations."
     },
     "instrument": {
       "type": "object",
@@ -938,20 +991,24 @@
           "pattern": "^instrument:"
         },
         "title": {
-          "type": "string"
+          "type": "string",
+          "description": "Title or name of the equipment or instrument, when available."
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "Non-formalized information about the equipment or instrument that may influence observations."
         },
         "manufacturer": {
-          "type": "string"
+          "type": "string",
+          "description": "Manufacturer of the equipment."
         },
         "model": {
-          "type": "string"
+          "type": "string",
+          "description": "Model number of the equipment."
         },
         "verticalRange": {
           "type": "object",
-          "description": "Vertical range covered by the instrument, expressed with minimum and maximum vertical limits.",
+          "description": "Vertical range covered by the instrument. This is promoted from the WMDR 1.0 observable-range JSON pattern when source content is available.",
           "required": [
             "min",
             "max"
@@ -959,12 +1016,33 @@
           "additionalProperties": false,
           "properties": {
             "min": {
-              "type": "number"
+              "type": "number",
+              "description": "Minimum vertical limit covered by the instrument."
             },
             "max": {
-              "type": "number"
+              "type": "number",
+              "description": "Maximum vertical limit covered by the instrument."
             }
           }
+        },
+        "observableVariables": {
+          "type": "array",
+          "description": "Variables observable by the instrument. Values should use compact terms from http://codes.wmo.int/wmdr/ObservedVariable where possible, or free-text descriptions when no code-list value is available.",
+          "minItems": 1,
+          "items": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "observableGeometry": {
+          "type": "string",
+          "description": "Observable geometry of the instrument, expressed as a compact term from http://codes.wmo.int/wmdr/Geometry."
         }
       },
       "allOf": [
@@ -975,7 +1053,8 @@
             ]
           }
         }
-      ]
+      ],
+      "description": "Equipment or instrument used to make observations."
     },
     "jscalendarEvent": {
       "type": "object",

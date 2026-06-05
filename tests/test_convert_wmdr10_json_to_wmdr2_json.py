@@ -91,6 +91,8 @@ def _observation_with_deployment(*, duplicate_data_generation: bool = False) -> 
                 "manufacturer": "Maker",
                 "model": "Model",
                 "verticalRange": {"min": 0, "max": 30},
+                "observableVariables": [OBSERVED_12006, "local free-text variable"],
+                "observableGeometry": GEOMETRY_POINT,
                 "serialNumber": "SN1",
                 "dataGeneration": data_generation,
             }
@@ -170,6 +172,7 @@ def test_build_facility_feature_uses_current_core_model() -> None:
     )
     props = record["properties"]
     assert record["type"] == "Feature"
+    assert record["conformsTo"] == ["http://wigos.wmo.int/spec/wmdr/2/conf/core"]
     assert record["geometry"] == {"type": "Point", "coordinates": [7.0, 46.0, 100]}
     assert "wmdr2" not in props
     assert "themes" not in props
@@ -468,7 +471,7 @@ def test_temporal_geometry_extension_requires_at_least_two_coordinate_entries() 
             {"coordinates": [6, 45], "date": "2020-01-01"},
             {"coordinates": [7, 46], "date": None},
         ]
-    ) == {"coordinates": [[6, 45], [7, 46]], "dates": ["2020-01-01", ".."]}
+    ) == {"type": "MovingPoint", "coordinates": [[6, 45], [7, 46]], "dates": ["2020-01-01", ".."]}
 
 
 def test_facility_geometry_uses_latest_temporal_geometry_entry() -> None:
@@ -760,6 +763,50 @@ def test_normalize_instrument_includes_vertical_range_when_available() -> None:
     assert instrument["verticalRange"] == {"min": 0.0, "max": 30.0}
 
 
+def test_normalize_observable_variables_accepts_codes_and_free_text() -> None:
+    assert module._normalize_observable_variables(
+        {
+            "observableVariables": [
+                "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
+                {"href": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"},
+                {"description": "locally defined aerosol metric"},
+            ]
+        }
+    ) == [12006, "locally defined aerosol metric"]
+
+
+def test_normalize_observable_geometry_compacts_geometry_code() -> None:
+    assert module._normalize_observable_geometry(
+        {"observableGeometry": "http://codes.wmo.int/wmdr/Geometry/point"}
+    ) == "point"
+    assert module._normalize_observable_geometry({"observableGeometry": {"href": GEOMETRY_POINT}}) == "point"
+
+
+def test_normalize_instrument_includes_observable_variables_and_geometry_when_available() -> None:
+    instrument = module._normalize_instrument(
+        {
+            "manufacturer": "Maker",
+            "model": "Model",
+            "observableVariables": [OBSERVED_12006, "local free-text variable"],
+            "observableGeometry": GEOMETRY_POINT,
+        },
+        facility_id="0-TEST",
+    )
+    assert instrument is not None
+    assert instrument["observableVariables"] == [12006, "local free-text variable"]
+    assert instrument["observableGeometry"] == "point"
+
+
+def test_observable_variables_alone_are_enough_to_create_an_instrument_record() -> None:
+    instrument = module._normalize_instrument(
+        {"observableVariables": [OBSERVED_12006]},
+        facility_id="0-TEST",
+    )
+    assert instrument is not None
+    assert instrument["id"].startswith("instrument:")
+    assert instrument["observableVariables"] == [12006]
+
+
 def test_vertical_range_alone_is_enough_to_create_an_instrument_record() -> None:
     instrument = module._normalize_instrument(
         {"verticalRangeMin": 10, "verticalRangeMax": 500},
@@ -882,3 +929,50 @@ def test_load_code_list_labels_reads_csv_mapping(tmp_path: Path) -> None:
     assert module._load_code_list_labels({"codeListLabels": {"files": [str(labels)]}}, base_dir=tmp_path) == {
         "ObservedVariableAtmosphere": {"12006": "Air temperature"}
     }
+
+
+def test_configured_empty_discovery_policy_suppresses_keywords() -> None:
+    policy = module._normalize_discovery_policy({"discovery": {"facility": {"keywords": []}}})
+    assert policy["facility"]["keywords"] == []
+
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    assert record["properties"]["keywords"] == ["0-TEST", "TEST"]
+
+    old_policy = getattr(module, "DISCOVERY_POLICY")
+    try:
+        setattr(module, "DISCOVERY_POLICY", policy)
+        record = module.build_facility_feature(
+            _minimal_facility(),
+            [],
+            [],
+            {},
+            source_name="20200101_0-TEST",
+        )
+        assert "keywords" not in record["properties"]
+    finally:
+        setattr(module, "DISCOVERY_POLICY", old_policy)
+
+
+def test_configured_discovery_policy_can_explicitly_keep_facility_keywords() -> None:
+    policy = module._normalize_discovery_policy(
+        {"discovery": {"facility": {"keywords": ["identifier", "name"]}}}
+    )
+    old_policy = getattr(module, "DISCOVERY_POLICY")
+    try:
+        setattr(module, "DISCOVERY_POLICY", policy)
+        record = module.build_facility_feature(
+            _minimal_facility(),
+            [],
+            [],
+            {},
+            source_name="20200101_0-TEST",
+        )
+        assert record["properties"]["keywords"] == ["0-TEST", "TEST"]
+    finally:
+        setattr(module, "DISCOVERY_POLICY", old_policy)

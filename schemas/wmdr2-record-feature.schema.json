@@ -29,22 +29,12 @@
     },
     "conformsTo": {
       "type": "array",
+      "description": "Conformance declaration for the WMDR2 core profile. The only allowed conformance class URI is the WMDR2 core conformance class identifier.",
       "minItems": 1,
+      "maxItems": 1,
       "items": {
-        "type": "string"
-      },
-      "allOf": [
-        {
-          "contains": {
-            "const": "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
-          }
-        },
-        {
-          "contains": {
-            "const": "https://schemas.wmo.int/wmdr/2.0/core/full-record"
-          }
-        }
-      ]
+        "const": "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+      }
     },
     "links": {
       "type": "array",
@@ -202,7 +192,8 @@
           "type": "string"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "Non-formalized information about the observing facility or its surroundings that may influence observations."
         },
         "contacts": {
           "type": "array",
@@ -227,50 +218,63 @@
           "items": {
             "type": "string",
             "pattern": "^facilitySet:"
-          }
+          },
+          "description": "References to sets of associated observing facilities; association criteria may vary and may be programme- or network-specific."
         },
         "facilityType": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue",
+          "description": "Type of the observing facility from the WMDR facility type code list."
         },
         "wmoRegion": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue",
+          "description": "WMO region in which the observing facility is located."
         },
         "surfaceCoverClassification": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
+          "$ref": "wmdr2-common.schema.json#/$defs/codeValue",
+          "description": "Reference to the surface-cover classification type, applicable when surface cover is specified."
         },
-        "timeZone": {},
+        "timeZone": {
+          "description": "Time zone of the observing facility."
+        },
         "regionOfOrigin": {
           "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
         },
         "temporalTerritory": {
-          "$ref": "wmdr2-common.schema.json#/$defs/temporalTerritory"
+          "$ref": "wmdr2-common.schema.json#/$defs/temporalTerritory",
+          "description": "Territory history for the observing facility. Each entry is valid from its date until the next entry."
         },
         "environment": {
-          "$ref": "wmdr2-common.schema.json#/$defs/environment"
+          "$ref": "wmdr2-common.schema.json#/$defs/environment",
+          "description": "Environmental context and surroundings of the observing facility that may influence observations."
         },
         "temporalProgramAffiliation": {
-          "$ref": "wmdr2-common.schema.json#/$defs/temporalProgramAffiliation"
+          "$ref": "wmdr2-common.schema.json#/$defs/temporalProgramAffiliation",
+          "description": "Program/network affiliations of the observing facility, including programme-specific identifiers, titles, and reporting status where available."
         },
         "temporalReportingStatus": {
-          "$ref": "wmdr2-common.schema.json#/$defs/reportingStatusTimeline"
+          "$ref": "wmdr2-common.schema.json#/$defs/reportingStatusTimeline",
+          "description": "Declared reporting or operational status history of the observing facility."
         },
         "observations": {
           "type": "array",
           "items": {
             "$ref": "wmdr2-common.schema.json#/$defs/observation"
-          }
+          },
+          "description": "Observations made by the facility."
         },
         "deployments": {
           "type": "array",
           "items": {
             "$ref": "wmdr2-common.schema.json#/$defs/deployment"
-          }
+          },
+          "description": "Deployments describing which equipment is deployed, during which time period, and in which configuration, for generating observations."
         },
         "instruments": {
           "type": "array",
           "items": {
             "$ref": "wmdr2-common.schema.json#/$defs/instrument"
-          }
+          },
+          "description": "Equipment or instruments used to make observations."
         },
         "schedules": {
           "type": "array",

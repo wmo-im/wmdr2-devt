@@ -72,8 +72,7 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
     "interval": ["2000-08-17", "2025-05-28"]
   },
   "conformsTo": [
-    "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core",
-    "https://schemas.wmo.int/wmdr/2.0/core/full-record"
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
   ],
   "properties": {
     "type": "facility",
@@ -94,16 +93,16 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
 - `type`: always `Feature`.
 - `id`: facility identifier, usually based on the WIGOS station identifier.
 - `geometry`: current GeoJSON point geometry, derived from the most recent known coordinates.
-- `temporalGeometry`: optional WMDR2 coordinate history. It remains the only temporal object that uses aligned `coordinates` and `dates` arrays.
+- `temporalGeometry`: optional WMDR2 `MovingPoint` coordinate history. It remains the only temporal object that uses aligned `coordinates` and `dates` arrays.
 - `time`: facility lifecycle interval. This uses date resolution only. Unknown bounds are represented with `..`.
-- `conformsTo`: declares OGC Records core and the WMDR2 full-record profile.
+- `conformsTo`: declares the WMDR2 core conformance class. The only allowed value is `http://wigos.wmo.int/spec/wmdr/2/conf/core`. Use `http`, not `https`, because this is a stable identifier URI, not primarily a dereferenceable web URL.
 - `properties`: contains the facility, observation, deployment, instrument, schedule, and facility-set references.
 
 `externalIds` is not emitted, because it only repeats the feature `id`.
 
 ## Temporal-history convention
 
-`temporalGeometry` is special and remains an aligned-array object:
+`temporalGeometry` is special and remains an aligned-array `MovingPoint` object:
 
 ```json
 "temporalGeometry": {
@@ -333,7 +332,7 @@ Deployment records do not carry `title`, `type`, `manufacturer`, or `model` prop
 
 ### Instruments
 
-Instruments are reusable catalogue objects. Manufacturer and model are stored here, while serial-number histories remain with deployments. Optional `title`, `description`, and `verticalRange` properties are part of the schema, but are only emitted when suitable source values are available; WMDR 1.0 records often do not provide all of them. `verticalRange` is a WMDR2 object with numeric `min` and `max` limits.
+Instruments are reusable catalogue objects. Manufacturer and model are stored here, while serial-number histories remain with deployments. Optional `title`, `description`, `verticalRange`, `observableVariables`, and `observableGeometry` properties are part of the schema, but are only emitted when suitable source values are available; WMDR 1.0 records often do not provide all of them. `verticalRange` is a WMDR2 object with numeric `min` and `max` limits. `observableVariables` is an array of compact values from `http://codes.wmo.int/wmdr/ObservedVariable` where possible, or free-text descriptions where no code-list value is available. `observableGeometry` is a compact term from `http://codes.wmo.int/wmdr/Geometry`.
 
 ```json
 {
@@ -345,7 +344,9 @@ Instruments are reusable catalogue objects. Manufacturer and model are stored he
   "verticalRange": {
     "min": 0,
     "max": 30
-  }
+  },
+  "observableVariables": [12006, "local free-text variable"],
+  "observableGeometry": "point"
 }
 ```
 
@@ -365,7 +366,38 @@ Role values should be specific role codes, not URLs to a generic role code list.
 
 ## Keywords and themes
 
-`keywords` are retained as lightweight discovery text. `themes` are not emitted in the current WMDR2 core representation. Controlled-vocabulary values are represented as explicit WMDR2 properties instead.
+`keywords` are retained as lightweight discovery text only when configured. If the converter section has no `discovery` block, the built-in defaults emit facility keywords from `identifier` and `name`, and deployment keywords from selected instrument/deployment fields. As soon as a `discovery` block is present in `config.yaml`, it is authoritative: omitted buckets and empty lists suppress extraction. For example, this disables keywords completely:
+
+```yaml
+convert_wmdr10_json_to_wmdr2_json:
+  source: resources/wmdr10_json_examples
+  target: results/wmdr2_json_examples
+  discovery:
+    facility:
+      keywords: []
+      links: []
+    observation:
+      keywords: []
+      links: []
+    deployment:
+      keywords: []
+      links: []
+```
+
+To retain the former default facility keywords explicitly, use:
+
+```yaml
+convert_wmdr10_json_to_wmdr2_json:
+  discovery:
+    facility:
+      keywords: [identifier, name]
+```
+
+`themes` are intentionally not emitted in the current WMDR2 core representation. Controlled-vocabulary values are represented as explicit WMDR2 properties instead.
+
+## Schema descriptions
+
+The JSON Schemas carry human-readable `description` annotations adapted from WMDR 1.0 `xs:documentation` for comparable concepts. Examples include deployment vertical distance and local reference surface, equipment manufacturer/model/description, facility environmental context, surface cover, climate zone, programme affiliation, reporting status, population, surface roughness, and facility-set association. New WMDR2-only instrument elements such as `verticalRange`, `observableVariables`, and `observableGeometry` are documented directly in the WMDR2 schema and are optional when no WMDR 1.0 source content exists.
 
 ## Schemas and tests
 

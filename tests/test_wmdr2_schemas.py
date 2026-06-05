@@ -70,16 +70,14 @@ def _valid_facility_record_feature() -> dict[str, Any]:
         },
         "time": {"interval": ["2016-04-28", ".."]},
         "temporalGeometry": {
+            "type": "MovingPoint",
             "coordinates": [
                 [6.0733333333, 50.5108333333, 671],
                 [6.0734, 50.5109, 671],
             ],
             "dates": ["2016-04-28", "2024-01-17"],
         },
-        "conformsTo": [
-            "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core",
-            "https://schemas.wmo.int/wmdr/2.0/core/full-record",
-        ],
+        "conformsTo": ["http://wigos.wmo.int/spec/wmdr/2/conf/core"],
         "properties": {
             "type": "facility",
             "title": "MONT-RIGI",
@@ -171,6 +169,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "time": {"interval": ["2016-04-29", ".."]},
                     "observingMethod": "automatic",
                     "localReferenceSurface": "localGround",
+                    "verticalDistanceFromReferenceSurface": 2.0,
                     "instrument": ["instrument:example"],
                     "serialNumbers": {
                         "serialNumber": ["ABC123"],
@@ -184,8 +183,13 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             "instruments": [
                 {
                     "id": "instrument:example",
+                    "title": "Example instrument",
+                    "description": "Optional instrument description.",
                     "manufacturer": "Vaisala",
                     "model": "ExampleModel",
+                    "verticalRange": {"min": 0, "max": 30},
+                    "observableVariables": [179, "free text variable"],
+                    "observableGeometry": "point",
                 }
             ],
         },
@@ -247,7 +251,10 @@ def test_temporal_geometry_is_the_only_aligned_temporal_object() -> None:
     instance["properties"]["temporalGeometry"] = deepcopy(instance["temporalGeometry"])
     assert not _is_valid(RECORD_SCHEMA, instance)
     instance = _valid_facility_record_feature()
-    instance["temporalGeometry"]["type"] = "MovingPoint"
+    instance["temporalGeometry"].pop("type")
+    assert not _is_valid(RECORD_SCHEMA, instance)
+    instance = _valid_facility_record_feature()
+    instance["temporalGeometry"]["type"] = "Point"
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
@@ -313,7 +320,88 @@ def test_deployment_title_and_manufacturer_are_invalid() -> None:
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_wmdr2_full_record_conformance_is_required() -> None:
+def test_deployment_vertical_distance_accepts_structured_quantity() -> None:
     instance = _valid_facility_record_feature()
-    instance["conformsTo"].remove("https://schemas.wmo.int/wmdr/2.0/core/full-record")
+    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = {
+        "value": 2.0,
+        "uom": "m",
+    }
+    assert _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_instrument_title_and_description_are_schema_properties() -> None:
+    instance = _valid_facility_record_feature()
+    instrument = instance["properties"]["instruments"][0]
+    instrument["title"] = "Schema-visible instrument title"
+    instrument["description"] = "Schema-visible instrument description."
+    assert _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_instrument_vertical_range_requires_min_and_max() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["verticalRange"] = {"min": 0, "max": 30}
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    incomplete = _valid_facility_record_feature()
+    incomplete["properties"]["instruments"][0]["verticalRange"] = {"min": 0}
+    assert any("'max' is a required property" in message for message in _validate(RECORD_SCHEMA, incomplete))
+
+
+def test_instrument_vertical_range_min_and_max_are_numeric() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["verticalRange"] = {"min": "0", "max": 30}
+    assert any("'0' is not of type 'number'" in message for message in _validate(RECORD_SCHEMA, instance))
+
+
+def test_instrument_observable_variables_accept_code_values_and_free_text() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["observableVariables"] = [179, "free text variable"]
+    assert _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_instrument_observable_variables_must_be_array_of_strings_or_integers() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["observableVariables"] = [{"observedVariable": 179}]
     assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_instrument_observable_geometry_is_schema_property() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["observableGeometry"] = "point"
+    assert _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_instrument_observable_geometry_must_be_string() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["observableGeometry"] = {"href": "point"}
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_wmdr2_core_conformance_is_required() -> None:
+    instance = _valid_facility_record_feature()
+    instance["conformsTo"] = []
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_wmdr2_core_conformance_is_the_only_allowed_value() -> None:
+    instance = _valid_facility_record_feature()
+    instance["conformsTo"] = [
+        "http://wigos.wmo.int/spec/wmdr/2/conf/core",
+        "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core",
+    ]
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_wmdr2_core_conformance_rejects_https_variant() -> None:
+    instance = _valid_facility_record_feature()
+    instance["conformsTo"] = ["https://wigos.wmo.int/spec/wmdr/2/conf/core"]
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_schema_descriptions_carry_wmdr1_documentation() -> None:
+    deployment = COMMON_SCHEMA["$defs"]["deployment"]
+    instrument = COMMON_SCHEMA["$defs"]["instrument"]
+    environment = COMMON_SCHEMA["$defs"]["environment"]
+    assert "Vertical distance of the sensor" in deployment["properties"]["verticalDistanceFromReferenceSurface"]["description"]
+    assert "Manufacturer of the equipment" in instrument["properties"]["manufacturer"]["description"]
+    assert "Environmental context" in environment["description"]

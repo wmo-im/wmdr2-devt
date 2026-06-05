@@ -32,12 +32,17 @@ except Exception:  # pragma: no cover - optional dependency
     yaml = None
 
 OGC_RECORD_CORE_CONF = "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
-WMDR2_CORE_CONF = "https://schemas.wmo.int/wmdr/2.0/core/full-record"
+WMDR2_CORE_CONF = "http://wigos.wmo.int/spec/wmdr/2/conf/core"
 DEFAULT_PATTERN = "*.json"
 OUTPUT_SUFFIX = ".json"
 CANONICAL_SCHEDULE_START_DATE = "0001-01-01"
 _NULL_SENTINEL = "__WMDR2_NULL__"
 
+EMPTY_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
+    "facility": {"keywords": [], "links": []},
+    "observation": {"keywords": [], "links": []},
+    "deployment": {"keywords": [], "links": []},
+}
 DEFAULT_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
     "facility": {
         "keywords": ["identifier", "name"],
@@ -130,10 +135,20 @@ def _format_loaded_config_hint(config_path: Optional[Path], section: Dict[str, A
 
 
 def _normalize_discovery_policy(section: Dict[str, Any]) -> Dict[str, Dict[str, List[str]]]:
-    policy = copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
+    """Return keyword/link extraction policy from the converter config section.
+
+    If no ``discovery`` block is configured, keep the built-in defaults for a
+    convenient command-line conversion.  As soon as a ``discovery`` block is
+    present, treat it as authoritative: omitted buckets and empty lists disable
+    extraction for that entity/bucket.  This makes a config such as
+    ``discovery: {facility: {keywords: []}}`` actually suppress facility
+    keywords instead of silently falling back to defaults.
+    """
     raw = section.get("discovery")
     if not isinstance(raw, dict):
-        return policy
+        return copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
+
+    policy = copy.deepcopy(EMPTY_DISCOVERY_POLICY)
     for entity in ("facility", "observation", "deployment"):
         entity_cfg = raw.get(entity)
         if not isinstance(entity_cfg, dict):
@@ -625,7 +640,7 @@ def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[
             dates.append("..")
     if len(coordinates) <= 1:
         return None
-    return {"coordinates": coordinates, "dates": dates}
+    return {"type": "MovingPoint", "coordinates": coordinates, "dates": dates}
 
 
 def _facility_geometry_from_entries(entries: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
@@ -1366,10 +1381,67 @@ def _normalize_vertical_range(raw: Dict[str, Any]) -> Optional[Dict[str, float]]
     return {"min": min_value, "max": max_value}
 
 
+def _normalize_observable_variables(raw: Dict[str, Any]) -> Optional[List[Any]]:
+    raw_value = _first_non_empty(
+        raw.get("observableVariables"),
+        raw.get("observableVariable"),
+        raw.get("instrumentObservableVariables"),
+        raw.get("instrumentObservableVariable"),
+    )
+    values: List[Any] = []
+    for item in _as_list(raw_value):
+        candidate: Any
+        if isinstance(item, dict):
+            candidate = _first_non_empty(
+                item.get("observableVariable"),
+                item.get("observedVariable"),
+                item.get("observedProperty"),
+                item.get("variable"),
+                item.get("description"),
+                item.get("value"),
+                item.get("href"),
+                item.get("#text"),
+            )
+        else:
+            candidate = item
+        if not _is_substantive_instrument_value(candidate):
+            continue
+        normalized = _compact_wmdr_code_value(candidate) if isinstance(candidate, str) else candidate
+        if _is_substantive_instrument_value(normalized):
+            values.append(normalized)
+    return _uniq_scalars(values) or None
+
+
+def _normalize_observable_geometry(raw: Dict[str, Any]) -> Optional[str]:
+    raw_value = _first_non_empty(
+        raw.get("observableGeometry"),
+        raw.get("instrumentObservableGeometry"),
+        raw.get("observableGeometryType"),
+        raw.get("instrumentObservableGeometryType"),
+    )
+    if isinstance(raw_value, dict):
+        raw_value = _first_non_empty(
+            raw_value.get("observableGeometry"),
+            raw_value.get("geometry"),
+            raw_value.get("geometryType"),
+            raw_value.get("value"),
+            raw_value.get("href"),
+            raw_value.get("#text"),
+        )
+    if not _is_substantive_instrument_value(raw_value):
+        return None
+    normalized = _compact_wmdr_code_value(raw_value) if isinstance(raw_value, str) else raw_value
+    if not _is_substantive_instrument_value(normalized):
+        return None
+    return str(normalized)
+
+
 def _deployment_has_instrument(raw: Dict[str, Any]) -> bool:
     manufacturer, model = _instrument_source_values(raw)
     return any(_is_substantive_instrument_value(value) for value in (manufacturer, model)) or (
         _normalize_vertical_range(raw) is not None
+        or _normalize_observable_variables(raw) is not None
+        or _normalize_observable_geometry(raw) is not None
     )
 
 
@@ -1378,7 +1450,16 @@ def _instrument_record_id(raw: Dict[str, Any], *, facility_id: str) -> Optional[
         return None
     manufacturer, model = _instrument_source_values(raw)
     vertical_range = _normalize_vertical_range(raw)
-    seed_parts = [facility_id, str(manufacturer or ""), str(model or ""), json.dumps(vertical_range, sort_keys=True)]
+    observable_variables = _normalize_observable_variables(raw)
+    observable_geometry = _normalize_observable_geometry(raw)
+    seed_parts = [
+        facility_id,
+        str(manufacturer or ""),
+        str(model or ""),
+        json.dumps(vertical_range, sort_keys=True),
+        json.dumps(observable_variables, sort_keys=True),
+        str(observable_geometry or ""),
+    ]
     digest = hashlib.sha1("|".join(seed_parts).encode("utf-8")).hexdigest()[:12]
     return f"instrument:{digest}"
 
@@ -1416,6 +1497,8 @@ def _normalize_instrument(raw: Dict[str, Any], *, facility_id: str) -> Optional[
             "manufacturer": manufacturer if _is_substantive_instrument_value(manufacturer) else None,
             "model": model if _is_substantive_instrument_value(model) else None,
             "verticalRange": _normalize_vertical_range(raw),
+            "observableVariables": _normalize_observable_variables(raw),
+            "observableGeometry": _normalize_observable_geometry(raw),
         }
     )
 
@@ -1829,9 +1912,7 @@ def _facility_properties(
         facility.get("responsibleParty"),
         header.get("recordOwner"),
     )
-    keywords = _keywords_from_values(
-        [facility_id, facility.get("name")] + _collect_discovery_values("facility", facility, "keywords")
-    )
+    keywords = _keywords_from_values(_collect_discovery_values("facility", facility, "keywords"))
     schedule_registry: Dict[str, Dict[str, Any]] = {}
     facility_time_zone = str(_first_non_empty(facility.get("timeZone"), "UTC"))
 
@@ -1899,7 +1980,7 @@ def build_facility_feature(
         "geometry": _facility_geometry_from_entries(temporal_geometry_entries),
         "temporalGeometry": _temporal_geometry_extension(temporal_geometry_entries),
         "time": _facility_time(facility, observations, deployments),
-        "conformsTo": [OGC_RECORD_CORE_CONF, WMDR2_CORE_CONF],
+        "conformsTo": [WMDR2_CORE_CONF],
         "properties": _facility_properties(facility, observations, deployments, header, source_name=source_name),
     }
     return _restore_null_sentinel(_finalize_wmdr2_value(_clean_none(feature)))

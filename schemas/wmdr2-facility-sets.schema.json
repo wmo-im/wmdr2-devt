@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.wmo.int/wmdr/2.0/schemas/wmdr2-facility-sets.schema.json",
   "title": "WMDR2 facility set catalogue",
-  "description": "Catalogue of facilitySet entities referenced from facility records via properties.facilitySets.",
+  "description": "Catalogue of facility-set objects. A facility set is a set of associated observing facilities; association criteria may vary and may be programme- or network-specific.",
   "type": "object",
   "required": [
     "facilitySets"
@@ -25,12 +25,15 @@
           },
           "title": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "description": "Human-readable name or title of the facility set."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Description of the facility-set association criteria or purpose."
           }
-        }
+        },
+        "description": "A set of associated observing facilities."
       },
       "uniqueItems": true
     }
