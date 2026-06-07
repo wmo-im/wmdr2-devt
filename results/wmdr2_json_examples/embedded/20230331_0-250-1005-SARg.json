@@ -1,0 +1,171 @@
+{
+  "type": "Feature",
+  "id": "facility:0-250-1005-SARg",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      6.07,
+      45.07,
+      2850
+    ]
+  },
+  "time": {
+    "interval": [
+      "1949-01-01",
+      ".."
+    ]
+  },
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
+  "properties": {
+    "type": "facility",
+    "title": "Sarennes Glacier",
+    "created": "2023-03-31T00:00:00Z",
+    "updated": "2023-03-31T00:00:00Z",
+    "description": "WMDR2 facility record for Sarennes Glacier",
+    "contacts": [
+      {
+        "organization": "Université Grenoble-Alpes",
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "name": "SIX,Delphine,Mme",
+        "organization": "Université Grenoble-Alpes",
+        "phones": [
+          {
+            "value": "+33(0)476824239"
+          }
+        ],
+        "emails": [
+          {
+            "value": "delphine.six@univ-grenoble-alpes.fr"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "UGA - IGE CS 40700"
+            ],
+            "city": "Grenoble",
+            "postalCode": "38058",
+            "country": "FRA"
+          }
+        ],
+        "roles": [
+          "principalInvestigator"
+        ]
+      },
+      {
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ]
+      }
+    ],
+    "keywords": [
+      "0-250-1005-SARg",
+      "Sarennes Glacier"
+    ],
+    "links": [
+      {
+        "href": "https://glacioclim.osug.fr/Glacier-de-Sarennes-203",
+        "rel": "about",
+        "type": "text/html"
+      }
+    ],
+    "facilityType": "landOnIce",
+    "wmoRegion": "europe",
+    "temporalTerritory": [
+      {
+        "territory": "FRA",
+        "date": "1949-01-01"
+      }
+    ],
+    "schedules": [
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H"
+        },
+        "uid": "schedule_38ade7ec764d"
+      }
+    ],
+    "observations": [
+      {
+        "id": "observation:12010",
+        "title": "domain: terrestrial; geometry: unknown; variable: 12010",
+        "time": {
+          "interval": [
+            "1949-01-01",
+            ".."
+          ]
+        },
+        "observedVariable": 12010,
+        "observedGeometryType": "unknown",
+        "observedDomain": "terrestrial",
+        "programAffiliations": [
+          "nonAffiliated"
+        ],
+        "deployments": [
+          "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT1H"
+          ],
+          "dataPolicy": [
+            {
+              "attribution": {
+                "originator": {
+                  "role": null
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c",
+        "time": {
+          "interval": [
+            "1949-01-01",
+            ".."
+          ]
+        },
+        "observingMethod": "unknown",
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_38ade7ec764d",
+            "date": "1949-01-01"
+          }
+        ]
+      }
+    ]
+  }
+}

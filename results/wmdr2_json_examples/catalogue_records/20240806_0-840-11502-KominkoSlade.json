@@ -1,0 +1,430 @@
+{
+  "type": "Feature",
+  "id": "facility:0-840-11502-KominkoSlade",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -112.106,
+      -79.466,
+      1801
+    ]
+  },
+  "temporalGeometry": {
+    "type": "MovingPoint",
+    "coordinates": [
+      [
+        -112.086,
+        -79.468,
+        1833
+      ],
+      [
+        -112.106,
+        -79.466,
+        1801
+      ],
+      [
+        -112.106,
+        -79.465,
+        1803
+      ],
+      [
+        -112.106,
+        -79.466,
+        1801
+      ]
+    ],
+    "dates": [
+      "2006-01-13",
+      "2009-01-26",
+      "2010-01-20",
+      "2011-12-17"
+    ]
+  },
+  "time": {
+    "interval": [
+      "2006-01-13",
+      ".."
+    ]
+  },
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
+  "properties": {
+    "type": "facility",
+    "title": "Kominko-Slade (WAIS)",
+    "created": "2024-08-06T00:00:00Z",
+    "updated": "2024-08-06T00:00:00Z",
+    "description": "WMDR2 facility record for Kominko-Slade (WAIS)",
+    "contacts": [
+      {
+        "identifier": "contact:antarctic-meteorological-research-and-data-center-space-science-and-engineering-center-uw-madison--b7023470",
+        "organization": "Antarctic Meteorological Research and Data Center, Space Science and Engineering Center, UW-Madison",
+        "roles": [
+          "owner"
+        ],
+        "links": [
+          {
+            "rel": "about",
+            "href": "../contacts.json#contact:antarctic-meteorological-research-and-data-center-space-science-and-engineering-center-uw-madison--b7023470",
+            "type": "application/json"
+          }
+        ]
+      },
+      {
+        "identifier": "contact:mattl@ssec.wisc.edu",
+        "name": "Lazzara,Matthew A.,Dr.",
+        "organization": "University of Wisconsin-Madison",
+        "roles": [
+          "pointOfContact"
+        ],
+        "links": [
+          {
+            "rel": "about",
+            "href": "../contacts.json#contact:mattl@ssec.wisc.edu",
+            "type": "application/json"
+          }
+        ]
+      },
+      {
+        "identifier": "contact:oscar@wmo.int",
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "links": [
+          {
+            "rel": "about",
+            "href": "../contacts.json#contact:oscar@wmo.int",
+            "type": "application/json"
+          }
+        ]
+      }
+    ],
+    "keywords": [
+      "0-840-11502-KominkoSlade",
+      "Kominko-Slade (WAIS)"
+    ],
+    "links": [
+      {
+        "href": "https://amrc.ssec.wisc.edu/aws/index.php?region=West%20Antarctica&station=Kominko-Slade%20(WAIS)&year=2022",
+        "rel": "about",
+        "type": "text/html"
+      },
+      {
+        "href": "https://amrdcdata.ssec.wisc.edu/",
+        "rel": "about",
+        "type": "text/html"
+      }
+    ],
+    "facilityType": "landOnIce",
+    "wmoRegion": "antarctica",
+    "temporalTerritory": [
+      {
+        "territory": "USA",
+        "date": "2006-01-13"
+      }
+    ],
+    "environment": {
+      "temporalClimateZone": [
+        {
+          "climateZone": "polarFrost",
+          "date": "2006-01-13"
+        }
+      ]
+    },
+    "temporalProgramAffiliation": [
+      {
+        "programAffiliation": "RBON",
+        "reportingStatus": "operational",
+        "date": "2006-01-13"
+      },
+      {
+        "programAffiliation": "GBON",
+        "reportingStatus": "operational",
+        "date": "2022-06-07"
+      }
+    ],
+    "schedules": [
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT3H"
+        },
+        "uid": "schedule_d643a3b71998"
+      }
+    ],
+    "observations": [
+      {
+        "id": "observation:216",
+        "title": "domain: atmosphere; geometry: point; variable: 216",
+        "time": {
+          "interval": [
+            "2006-01-13",
+            ".."
+          ]
+        },
+        "observedVariable": 216,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "RBON",
+          "GBON"
+        ],
+        "deployments": [
+          "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT3H"
+          ],
+          "uom": [
+            "hPa"
+          ]
+        }
+      },
+      {
+        "id": "observation:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
+        "time": {
+          "interval": [
+            "2006-01-13",
+            ".."
+          ]
+        },
+        "observedVariable": 224,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "RBON",
+          "GBON"
+        ],
+        "deployments": [
+          "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT3H"
+          ],
+          "uom": [
+            "degC"
+          ]
+        }
+      },
+      {
+        "id": "observation:12249",
+        "title": "domain: atmosphere; geometry: point; variable: 12249",
+        "time": {
+          "interval": [
+            "2006-01-13",
+            ".."
+          ]
+        },
+        "observedVariable": 12249,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "RBON",
+          "GBON"
+        ],
+        "deployments": [
+          "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT3H"
+          ],
+          "uom": [
+            "percent"
+          ]
+        }
+      },
+      {
+        "id": "observation:12005",
+        "title": "domain: atmosphere; geometry: point; variable: 12005",
+        "time": {
+          "interval": [
+            "2006-01-13",
+            ".."
+          ]
+        },
+        "observedVariable": 12005,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "RBON",
+          "GBON"
+        ],
+        "deployments": [
+          "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT3H"
+          ],
+          "uom": [
+            "deg"
+          ]
+        }
+      },
+      {
+        "id": "observation:12006",
+        "title": "domain: atmosphere; geometry: point; variable: 12006",
+        "time": {
+          "interval": [
+            "2006-01-13",
+            ".."
+          ]
+        },
+        "observedVariable": 12006,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "RBON",
+          "GBON"
+        ],
+        "deployments": [
+          "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT3H"
+          ],
+          "uom": [
+            "m.s-1"
+          ]
+        }
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
+        "time": {
+          "interval": [
+            "2006-01-13",
+            ".."
+          ]
+        },
+        "sourceOfObservation": "automaticReading",
+        "observingMethod": 111,
+        "instrument": [
+          "instrument:a0581aff5850"
+        ],
+        "exposure": "class1",
+        "localReferenceSurface": "naturalGround",
+        "keywords": [
+          "PAROSCIENTIFIC",
+          "Series 2000 Absolute and Gauge Pressure Transducers - 215A-102",
+          "automaticReading"
+        ],
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_d643a3b71998",
+            "date": "2006-01-13"
+          }
+        ]
+      },
+      {
+        "id": "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
+        "time": {
+          "interval": [
+            "2006-01-13",
+            ".."
+          ]
+        },
+        "sourceOfObservation": "humanObservation",
+        "observingMethod": 188,
+        "instrument": [
+          "instrument:58dae3563565"
+        ],
+        "exposure": "class2",
+        "localReferenceSurface": "naturalGround",
+        "keywords": [
+          "Weed Instrument",
+          "Platinum resistance thermometer (PRT)",
+          "humanObservation"
+        ],
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_d643a3b71998",
+            "date": "2006-01-13"
+          }
+        ]
+      },
+      {
+        "id": "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
+        "time": {
+          "interval": [
+            "2006-01-13",
+            ".."
+          ]
+        },
+        "sourceOfObservation": "automaticReading",
+        "observingMethod": 250,
+        "instrument": [
+          "instrument:19cc91763467"
+        ],
+        "exposure": "class2",
+        "localReferenceSurface": "naturalGround",
+        "keywords": [
+          "Vaisala Oyj",
+          "VAISALA HMP45A",
+          "automaticReading"
+        ],
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_d643a3b71998",
+            "date": "2006-01-13"
+          }
+        ]
+      },
+      {
+        "id": "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
+        "time": {
+          "interval": [
+            "2006-01-13",
+            ".."
+          ]
+        },
+        "sourceOfObservation": "automaticReading",
+        "observingMethod": 65,
+        "instrument": [
+          "instrument:2765597f156e"
+        ],
+        "exposure": "class2",
+        "localReferenceSurface": "naturalGround",
+        "keywords": [
+          "RM Young",
+          "Wind Monitor HD-Alpine 05108-45",
+          "automaticReading"
+        ],
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_d643a3b71998",
+            "date": "2006-01-13"
+          }
+        ]
+      }
+    ]
+  }
+}
