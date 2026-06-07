@@ -67,52 +67,75 @@ convert_wmdr10_xml_to_wmdr10_json:
 #     # deployments: mappings/wmdr10_deployments_vs_records_part1.csv
 #     # full: mappings/wmdr10_full_vs_records_part1.csv
 
+# convert_wmdr10_json_to_wmdr2_json:
+#   source: resources/wmdr10_json_examples
+#   target: results/wmdr2_json_examples/embedded
+#   pattern: "*.json"
+#   recursive: true
+#   discovery:
+#     facility:
+#       keywords:
+#         # - identifier
+#         # - name
+#         # - facilityType
+#       themes:
+#         - facilitySet
+#         - wmoRegion
+#         - territoryName
+#         - climateZone
+#         - surfaceCover
+#         - surfaceCoverClassification
+#         - localTopography
+#         - relativeElevation
+#         - topographicContext
+#         - altitudeOrDepth
+#         - programAffiliation
+#         - reportingStatus
+#       links:
+#         - onlineResource
+#     observation:
+#       keywords: []
+#       themes:
+#         - programAffiliation
+#       links: []
+#     deployment:
+#       keywords:
+#         - manufacturer
+#         - model
+#         - serialNumber
+#         - sourceOfObservation
+#         - observingMethod
+#       themes:
+#         - sourceOfObservation
+#         - observingMethod
+#         - exposure
+#         - representativeness
+#         - localReferenceSurface
+#         - instrumentOperatingStatus
+#       links: []
+#   codeListLabels:
+#     files:
+#       - path: wmdr_observed_variable_labels.csv
+
 convert_wmdr10_json_to_wmdr2_json:
   source: resources/wmdr10_json_examples
-  target: results/wmdr2_json_examples
+
+  # Existing embedded/self-contained converter output. Keep this if you still
+  # want the original converter to write full records first.
+  target: results/wmdr2_json_examples/embedded
+
   pattern: "*.json"
   recursive: true
-  discovery:
-    facility:
-      keywords:
-        # - identifier
-        # - name
-        # - facilityType
-      themes:
-        - facilitySet
-        - wmoRegion
-        - territoryName
-        - climateZone
-        - surfaceCover
-        - surfaceCoverClassification
-        - localTopography
-        - relativeElevation
-        - topographicContext
-        - altitudeOrDepth
-        - programAffiliation
-        - reportingStatus
-      links:
-        - onlineResource
-    observation:
-      keywords: []
-      themes:
-        - programAffiliation
-      links: []
-    deployment:
-      keywords:
-        - manufacturer
-        - model
-        - serialNumber
-        - sourceOfObservation
-        - observingMethod
-      themes:
-        - sourceOfObservation
-        - observingMethod
-        - exposure
-        - representativeness
-        - localReferenceSurface
-        - instrumentOperatingStatus
-      links: []
-  codeListLabels:
-    files:
-      - path: wmdr_observed_variable_labels.csv
+
+  catalogues:
+    enabled: true
+
+    # Read from the converter's embedded output by default; may be overridden.
+    source: results/wmdr2_json_examples/embedded
+
+    # Write the catalogue-based facility records separately.
+    records_path: results/wmdr2_json_examples/catalogue_records
+
+    # Shared catalogues.
+    contacts_path: results/wmdr2_json_examples/catalogues/contacts.json
+    instruments_path: results/wmdr2_json_examples/catalogues/instruments.json

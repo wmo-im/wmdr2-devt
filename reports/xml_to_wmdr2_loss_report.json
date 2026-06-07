@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-05T15:38:20.495383+00:00",
+  "generatedAt": "2026-06-07T07:09:32.290322+00:00",
   "description": "Semantic XML leaf values not found in the generated WMDR2 JSON, after applying intentional-loss and code-list-compaction rules.",
   "notes": [
     "This is a coverage heuristic: it checks whether XML leaf values survive somewhere in the WMDR2 JSON.",
@@ -10,18 +10,18 @@
   "summary": {
     "xml_files": 6,
     "xml_entries": 2587,
-    "matched_entries": 1479,
-    "lost_entries": 1011,
+    "matched_entries": 1529,
+    "lost_entries": 961,
     "ignored_entries": 97
   },
   "files": [
     {
       "xml": "resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-30/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
       "summary": {
         "xmlEntries": 348,
-        "matched": 179,
-        "lost": 155,
+        "matched": 194,
+        "lost": 140,
         "ignored": 14
       },
       "lost": [
@@ -59,39 +59,11 @@
         },
         {
           "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/text()",
-          "kind": "text",
-          "value": "0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/@codeSpace",
-          "kind": "attribute",
-          "value": "0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494"
-          ]
-        },
-        {
-          "section": "facility",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "50.5108333333 6.0733333333 671.0",
           "candidateValues": [
             "50.5108333333 6.0733333333 671.0"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
           ]
         },
         {
@@ -185,16 +157,6 @@
           ]
         },
         {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
-          ]
-        },
-        {
           "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
@@ -282,16 +244,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
           ]
         },
         {
@@ -403,16 +355,6 @@
           ]
         },
         {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
-          ]
-        },
-        {
           "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
@@ -500,16 +442,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
           ]
         },
         {
@@ -621,16 +553,6 @@
           ]
         },
         {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
-          ]
-        },
-        {
           "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
@@ -718,16 +640,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
           ]
         },
         {
@@ -821,16 +733,6 @@
           ]
         },
         {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
-          ]
-        },
-        {
           "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
@@ -909,16 +811,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
           ]
         },
         {
@@ -1012,16 +904,6 @@
           ]
         },
         {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
-          ]
-        },
-        {
           "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
@@ -1112,16 +994,6 @@
           ]
         },
         {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
-          ]
-        },
-        {
           "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
@@ -1200,16 +1072,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
           ]
         },
         {
@@ -1318,16 +1180,6 @@
           "value": "m",
           "candidateValues": [
             "m"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06494",
-          "candidateValues": [
-            "0-20000-0-06494",
-            "http://codes.wmo.int/wmdr/0-20000-0-06494"
           ]
         },
         {
@@ -1442,11 +1294,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-30/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
       "summary": {
         "xmlEntries": 187,
-        "matched": 107,
-        "lost": 69,
+        "matched": 117,
+        "lost": 59,
         "ignored": 11
       },
       "lost": [
@@ -1484,24 +1336,6 @@
         },
         {
           "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/text()",
-          "kind": "text",
-          "value": "0-404-0-63707",
-          "candidateValues": [
-            "0-404-0-63707"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/@codeSpace",
-          "kind": "attribute",
-          "value": "0-404-0-63707",
-          "candidateValues": [
-            "0-404-0-63707"
-          ]
-        },
-        {
-          "section": "facility",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "-0.714732 35.3833 2156.0",
@@ -1527,16 +1361,6 @@
           "candidateValues": [
             "http://codes.wmo.int/wmdr/LocalTopography/unknown",
             "unknown"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-404-0-63707",
-          "candidateValues": [
-            "0-404-0-63707",
-            "http://codes.wmo.int/wmdr/0-404-0-63707"
           ]
         },
         {
@@ -1609,16 +1433,6 @@
           "value": "59",
           "candidateValues": [
             "59"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-404-0-63707",
-          "candidateValues": [
-            "0-404-0-63707",
-            "http://codes.wmo.int/wmdr/0-404-0-63707"
           ]
         },
         {
@@ -1740,16 +1554,6 @@
           ]
         },
         {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-404-0-63707",
-          "candidateValues": [
-            "0-404-0-63707",
-            "http://codes.wmo.int/wmdr/0-404-0-63707"
-          ]
-        },
-        {
           "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
@@ -1819,16 +1623,6 @@
           "value": "59",
           "candidateValues": [
             "59"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-404-0-63707",
-          "candidateValues": [
-            "0-404-0-63707",
-            "http://codes.wmo.int/wmdr/0-404-0-63707"
           ]
         },
         {
@@ -1904,36 +1698,6 @@
           ]
         },
         {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-404-0-63707",
-          "candidateValues": [
-            "0-404-0-63707",
-            "http://codes.wmo.int/wmdr/0-404-0-63707"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-404-0-63707",
-          "candidateValues": [
-            "0-404-0-63707",
-            "http://codes.wmo.int/wmdr/0-404-0-63707"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-404-0-63707",
-          "candidateValues": [
-            "0-404-0-63707",
-            "http://codes.wmo.int/wmdr/0-404-0-63707"
-          ]
-        },
-        {
           "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
@@ -2003,16 +1767,6 @@
           "value": "59",
           "candidateValues": [
             "59"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-404-0-63707",
-          "candidateValues": [
-            "0-404-0-63707",
-            "http://codes.wmo.int/wmdr/0-404-0-63707"
           ]
         },
         {
@@ -2091,11 +1845,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-30/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
       "summary": {
         "xmlEntries": 217,
-        "matched": 148,
-        "lost": 58,
+        "matched": 160,
+        "lost": 46,
         "ignored": 11
       },
       "lost": [
@@ -2129,24 +1883,6 @@
           "value": "custodian",
           "candidateValues": [
             "custodian"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/text()",
-          "kind": "text",
-          "value": "0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/@codeSpace",
-          "kind": "attribute",
-          "value": "0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE"
           ]
         },
         {
@@ -2203,17 +1939,6 @@
           "candidateValues": [
             "http://codes.wmo.int/wmdr/GeopositioningMethod/map",
             "map"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE",
-            "0-20008-0-the",
-            "http://codes.wmo.int/wmdr/0-20008-0-THE"
           ]
         },
         {
@@ -2307,50 +2032,6 @@
           ]
         },
         {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE",
-            "0-20008-0-the",
-            "http://codes.wmo.int/wmdr/0-20008-0-THE"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE",
-            "0-20008-0-the",
-            "http://codes.wmo.int/wmdr/0-20008-0-THE"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE",
-            "0-20008-0-the",
-            "http://codes.wmo.int/wmdr/0-20008-0-THE"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE",
-            "0-20008-0-the",
-            "http://codes.wmo.int/wmdr/0-20008-0-THE"
-          ]
-        },
-        {
           "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
@@ -2407,17 +2088,6 @@
             "dataLandline",
             "datalandline",
             "http://codes.wmo.int/wmdr/DataCommunicationMethod/dataLandline"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE",
-            "0-20008-0-the",
-            "http://codes.wmo.int/wmdr/0-20008-0-THE"
           ]
         },
         {
@@ -2617,60 +2287,16 @@
           "candidateValues": [
             "Archive"
           ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE",
-            "0-20008-0-the",
-            "http://codes.wmo.int/wmdr/0-20008-0-THE"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE",
-            "0-20008-0-the",
-            "http://codes.wmo.int/wmdr/0-20008-0-THE"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE",
-            "0-20008-0-the",
-            "http://codes.wmo.int/wmdr/0-20008-0-THE"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-THE",
-          "candidateValues": [
-            "0-20008-0-THE",
-            "0-20008-0-the",
-            "http://codes.wmo.int/wmdr/0-20008-0-THE"
-          ]
         }
       ]
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-30/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
       "summary": {
         "xmlEntries": 422,
-        "matched": 278,
-        "lost": 122,
+        "matched": 285,
+        "lost": 115,
         "ignored": 22
       },
       "lost": [
@@ -2704,24 +2330,6 @@
           "value": "custodian",
           "candidateValues": [
             "custodian"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/text()",
-          "kind": "text",
-          "value": "0-20008-0-NRB",
-          "candidateValues": [
-            "0-20008-0-NRB"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/@codeSpace",
-          "kind": "attribute",
-          "value": "0-20008-0-NRB",
-          "candidateValues": [
-            "0-20008-0-NRB"
           ]
         },
         {
@@ -2826,17 +2434,6 @@
           "candidateValues": [
             "2010-06-10",
             "2010-06-10T00:00:00Z"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-NRB",
-          "candidateValues": [
-            "0-20008-0-NRB",
-            "0-20008-0-nrb",
-            "http://codes.wmo.int/wmdr/0-20008-0-NRB"
           ]
         },
         {
@@ -3120,17 +2717,6 @@
           "value": "Archive",
           "candidateValues": [
             "Archive"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-NRB",
-          "candidateValues": [
-            "0-20008-0-NRB",
-            "0-20008-0-nrb",
-            "http://codes.wmo.int/wmdr/0-20008-0-NRB"
           ]
         },
         {
@@ -3504,17 +3090,6 @@
         },
         {
           "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-NRB",
-          "candidateValues": [
-            "0-20008-0-NRB",
-            "0-20008-0-nrb",
-            "http://codes.wmo.int/wmdr/0-20008-0-NRB"
-          ]
-        },
-        {
-          "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/metadata/MD_Metadata/contact/CI_ResponsibleParty/organisationName/CharacterString/text()",
           "kind": "text",
           "value": "NASA Goddard Space Flight Center",
@@ -3577,17 +3152,6 @@
           "value": "Archive",
           "candidateValues": [
             "Archive"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-NRB",
-          "candidateValues": [
-            "0-20008-0-NRB",
-            "0-20008-0-nrb",
-            "http://codes.wmo.int/wmdr/0-20008-0-NRB"
           ]
         },
         {
@@ -3697,17 +3261,6 @@
           "value": "Unheated PM10 inlet",
           "candidateValues": [
             "Unheated PM10 inlet"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20008-0-NRB",
-          "candidateValues": [
-            "0-20008-0-NRB",
-            "0-20008-0-nrb",
-            "http://codes.wmo.int/wmdr/0-20008-0-NRB"
           ]
         },
         {
@@ -3824,11 +3377,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-30/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
       "summary": {
         "xmlEntries": 419,
-        "matched": 232,
-        "lost": 174,
+        "matched": 236,
+        "lost": 170,
         "ignored": 13
       },
       "lost": [
@@ -3866,24 +3419,6 @@
         },
         {
           "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/text()",
-          "kind": "text",
-          "value": "0-20000-0-06650",
-          "candidateValues": [
-            "0-20000-0-06650"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/@codeSpace",
-          "kind": "attribute",
-          "value": "0-20000-0-06650",
-          "candidateValues": [
-            "0-20000-0-06650"
-          ]
-        },
-        {
-          "section": "facility",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[1]/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "47.037 8.302 450.0",
@@ -3908,16 +3443,6 @@
           "candidateValues": [
             "gps",
             "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06650",
-          "candidateValues": [
-            "0-20000-0-06650",
-            "http://codes.wmo.int/wmdr/0-20000-0-06650"
           ]
         },
         {
@@ -4418,16 +3943,6 @@
           "value": "06:00:00Z",
           "candidateValues": [
             "06:00:00Z"
-          ]
-        },
-        {
-          "section": "observation",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/facility/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/0-20000-0-06650",
-          "candidateValues": [
-            "0-20000-0-06650",
-            "http://codes.wmo.int/wmdr/0-20000-0-06650"
           ]
         },
         {
@@ -5422,11 +4937,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-30/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
       "summary": {
         "xmlEntries": 994,
-        "matched": 535,
-        "lost": 433,
+        "matched": 537,
+        "lost": 431,
         "ignored": 26
       },
       "lost": [
@@ -5460,24 +4975,6 @@
           "value": "custodian",
           "candidateValues": [
             "custodian"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/text()",
-          "kind": "text",
-          "value": "0-20000-0-06725,0-756-1-Blatten",
-          "candidateValues": [
-            "0-20000-0-06725,0-756-1-Blatten"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/identifier/@codeSpace",
-          "kind": "attribute",
-          "value": "0-20000-0-06725,0-756-1-Blatten",
-          "candidateValues": [
-            "0-20000-0-06725,0-756-1-Blatten"
           ]
         },
         {

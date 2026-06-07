@@ -1,0 +1,540 @@
+{
+  "type": "Feature",
+  "id": "facility:0-404-0-63707",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      35.3833,
+      -0.714732,
+      2156
+    ]
+  },
+  "time": {
+    "interval": [
+      "2020-09-21",
+      ".."
+    ]
+  },
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
+  "properties": {
+    "type": "facility",
+    "title": "BOMET",
+    "created": "2022-05-11T00:00:00Z",
+    "updated": "2022-05-11T00:00:00Z",
+    "description": "WMDR2 facility record for BOMET",
+    "contacts": [
+      {
+        "identifier": "contact:kenyan-meteorological-department--4e93cec6",
+        "organization": "Kenyan Meteorological Department",
+        "roles": [
+          "owner"
+        ],
+        "links": [
+          {
+            "rel": "about",
+            "href": "../contacts.json#contact:kenyan-meteorological-department--4e93cec6",
+            "type": "application/json"
+          }
+        ]
+      },
+      {
+        "identifier": "contact:gitaukaigua@gmail.com",
+        "name": "KAIGUA,JAMES",
+        "organization": "Kenya Meteorological Department",
+        "roles": [
+          "pointOfContact"
+        ],
+        "links": [
+          {
+            "rel": "about",
+            "href": "../contacts.json#contact:gitaukaigua@gmail.com",
+            "type": "application/json"
+          }
+        ]
+      },
+      {
+        "identifier": "contact:oscar@wmo.int",
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "links": [
+          {
+            "rel": "about",
+            "href": "../contacts.json#contact:oscar@wmo.int",
+            "type": "application/json"
+          }
+        ]
+      }
+    ],
+    "facilityType": "landFixed",
+    "wmoRegion": "africa",
+    "temporalTerritory": [
+      {
+        "territory": "KEN",
+        "date": "2020-09-21"
+      }
+    ],
+    "environment": {
+      "temporalClimateZone": [
+        {
+          "climateZone": "warmTemperateFullyHumidWarmSummer",
+          "date": "2020-09-21"
+        }
+      ],
+      "temporalSurfaceCover": [
+        {
+          "surfaceCover": "rainfedCroplands",
+          "date": "2020-09-21",
+          "surfaceCoverClassification": "globCover2009"
+        }
+      ],
+      "temporalRelativeElevation": [
+        {
+          "relativeElevation": "middle",
+          "date": "2020-09-21"
+        }
+      ],
+      "temporalTopographicContext": [
+        {
+          "topographicContext": "valleys",
+          "date": "2020-09-21"
+        }
+      ],
+      "temporalAltitudeOrDepth": [
+        {
+          "altitudeOrDepth": "highAltitude",
+          "date": "2020-09-21"
+        }
+      ]
+    },
+    "temporalProgramAffiliation": [
+      {
+        "programAffiliation": "GOSGeneral",
+        "reportingStatus": "preOperational",
+        "date": "2022-05-11"
+      }
+    ],
+    "schedules": [
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H"
+        },
+        "uid": "schedule_38ade7ec764d"
+      },
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H",
+          "diurnalBaseTime": "00:00:00"
+        },
+        "uid": "schedule_2bb1a98fc0c3"
+      }
+    ],
+    "observations": [
+      {
+        "id": "observation:12249",
+        "title": "domain: atmosphere; geometry: point; variable: 12249 Relative humidity (with respect to water)",
+        "time": {
+          "interval": [
+            "2020-12-15",
+            ".."
+          ]
+        },
+        "observedVariable": 12249,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "deployments": [
+          "deployment:id_f98fadaa-67f5-4269-9460-ecb3117da5af"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT1H"
+          ]
+        }
+      },
+      {
+        "id": "observation:210",
+        "title": "domain: atmosphere; geometry: point; variable: 210 Amount of precipitation",
+        "time": {
+          "interval": [
+            "2020-09-22",
+            ".."
+          ]
+        },
+        "observedVariable": 210,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "deployments": [
+          "deployment:id_b074e829-f3a1-7937-e053-148ef98d6de4"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            true
+          ],
+          "temporalAggregate": [
+            "PT1H"
+          ],
+          "uom": [
+            "inapplicable"
+          ],
+          "dataPolicy": [
+            {
+              "dataPolicy": "inapplicable"
+            }
+          ]
+        }
+      },
+      {
+        "id": "observation:210",
+        "title": "domain: atmosphere; geometry: point; variable: 210 Amount of precipitation",
+        "time": {
+          "interval": [
+            "2020-09-22",
+            ".."
+          ]
+        },
+        "observedVariable": 210,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "deployments": [
+          "deployment:id_b074e829-f429-7937-e053-148ef98d6de4"
+        ]
+      },
+      {
+        "id": "observation:216",
+        "title": "domain: atmosphere; geometry: point; variable: 216 Atmospheric pressure",
+        "time": {
+          "interval": [
+            "2020-12-15",
+            ".."
+          ]
+        },
+        "observedVariable": 216,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "deployments": [
+          "deployment:id_2a3bfeda-275b-4ec7-a4f0-37fdb7ea3201"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT1H"
+          ]
+        }
+      },
+      {
+        "id": "observation:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
+        "time": {
+          "interval": [
+            "2020-12-15",
+            ".."
+          ]
+        },
+        "observedVariable": 224,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "deployments": [
+          "deployment:id_497d5aff-c0d6-4002-ab1c-6c661c36a566"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT1H"
+          ]
+        }
+      },
+      {
+        "id": "observation:225",
+        "title": "domain: atmosphere; geometry: point; variable: 225 Dew-point temperature (at specified distance from reference surface)",
+        "time": {
+          "interval": [
+            "2020-09-22",
+            ".."
+          ]
+        },
+        "observedVariable": 225,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "deployments": [
+          "deployment:id_b074e829-f42d-7937-e053-148ef98d6de4"
+        ]
+      },
+      {
+        "id": "observation:230",
+        "title": "domain: atmosphere; geometry: point; variable: 230 Visibility",
+        "time": {
+          "interval": [
+            "2020-09-22",
+            ".."
+          ]
+        },
+        "observedVariable": 230,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "deployments": [
+          "deployment:id_b074e829-f42e-7937-e053-148ef98d6de4"
+        ]
+      },
+      {
+        "id": "observation:12005",
+        "title": "domain: atmosphere; geometry: point; variable: 12005 Horizontal wind direction at specified distance from reference surface",
+        "time": {
+          "interval": [
+            "2020-12-15",
+            ".."
+          ]
+        },
+        "observedVariable": 12005,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "deployments": [
+          "deployment:id_e8092fc4-ec5d-4bee-957e-99a648fd56ad"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT1H"
+          ]
+        }
+      },
+      {
+        "id": "observation:12006",
+        "title": "domain: atmosphere; geometry: point; variable: 12006 Horizontal wind speed at specified distance from reference surface",
+        "time": {
+          "interval": [
+            "2020-12-15",
+            ".."
+          ]
+        },
+        "observedVariable": 12006,
+        "observedGeometryType": "point",
+        "observedDomain": "atmosphere",
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "deployments": [
+          "deployment:cca8c9b3-9ca8-23ea-e053-148ef98d1a71"
+        ],
+        "reporting": {
+          "internationalExchange": [
+            false
+          ],
+          "temporalAggregate": [
+            "PT1H"
+          ]
+        }
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_f98fadaa-67f5-4269-9460-ecb3117da5af",
+        "time": {
+          "interval": [
+            "2020-12-15",
+            ".."
+          ]
+        },
+        "observingMethod": "inapplicable",
+        "keywords": [
+          "inapplicable"
+        ],
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_38ade7ec764d",
+            "date": "2020-12-15"
+          }
+        ]
+      },
+      {
+        "id": "deployment:id_b074e829-f3a1-7937-e053-148ef98d6de4",
+        "time": {
+          "interval": [
+            "2020-09-22",
+            ".."
+          ]
+        },
+        "sourceOfObservation": "automaticReading",
+        "observingMethod": "inapplicable",
+        "localReferenceSurface": "localGround",
+        "keywords": [
+          "automaticReading",
+          "inapplicable"
+        ],
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_2bb1a98fc0c3",
+            "date": "2020-09-22"
+          }
+        ]
+      },
+      {
+        "id": "deployment:id_b074e829-f429-7937-e053-148ef98d6de4",
+        "time": {
+          "interval": [
+            "2020-09-22",
+            ".."
+          ]
+        },
+        "observingMethod": "inapplicable",
+        "keywords": [
+          "inapplicable"
+        ]
+      },
+      {
+        "id": "deployment:id_2a3bfeda-275b-4ec7-a4f0-37fdb7ea3201",
+        "time": {
+          "interval": [
+            "2020-12-15",
+            ".."
+          ]
+        },
+        "observingMethod": "inapplicable",
+        "keywords": [
+          "inapplicable"
+        ],
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_38ade7ec764d",
+            "date": "2020-12-15"
+          }
+        ]
+      },
+      {
+        "id": "deployment:id_497d5aff-c0d6-4002-ab1c-6c661c36a566",
+        "time": {
+          "interval": [
+            "2020-12-15",
+            ".."
+          ]
+        },
+        "observingMethod": "inapplicable",
+        "keywords": [
+          "inapplicable"
+        ],
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_38ade7ec764d",
+            "date": "2020-12-15"
+          }
+        ]
+      },
+      {
+        "id": "deployment:id_b074e829-f42d-7937-e053-148ef98d6de4",
+        "time": {
+          "interval": [
+            "2020-09-22",
+            ".."
+          ]
+        },
+        "observingMethod": "inapplicable",
+        "keywords": [
+          "inapplicable"
+        ]
+      },
+      {
+        "id": "deployment:id_b074e829-f42e-7937-e053-148ef98d6de4",
+        "time": {
+          "interval": [
+            "2020-09-22",
+            ".."
+          ]
+        },
+        "observingMethod": "inapplicable",
+        "keywords": [
+          "inapplicable"
+        ]
+      },
+      {
+        "id": "deployment:id_e8092fc4-ec5d-4bee-957e-99a648fd56ad",
+        "time": {
+          "interval": [
+            "2020-12-15",
+            ".."
+          ]
+        },
+        "observingMethod": "inapplicable",
+        "keywords": [
+          "inapplicable"
+        ],
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_38ade7ec764d",
+            "date": "2020-12-15"
+          }
+        ]
+      },
+      {
+        "id": "deployment:cca8c9b3-9ca8-23ea-e053-148ef98d1a71",
+        "time": {
+          "interval": [
+            "2020-12-15",
+            ".."
+          ]
+        },
+        "observingMethod": "inapplicable",
+        "keywords": [
+          "inapplicable"
+        ],
+        "temporalObservingSchedule": [
+          {
+            "observingSchedule": "schedule_38ade7ec764d",
+            "date": "2020-12-15"
+          }
+        ]
+      }
+    ]
+  }
+}
