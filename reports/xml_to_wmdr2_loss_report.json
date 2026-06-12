@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-07T07:34:50.811892+00:00",
+  "generatedAt": "2026-06-12T10:31:23.898062+00:00",
   "description": "Semantic XML leaf values not found in the generated WMDR2 JSON, after applying intentional-loss and code-list-compaction rules.",
   "notes": [
     "This is a coverage heuristic: it checks whether XML leaf values survive somewhere in the WMDR2 JSON.",
@@ -10,14 +10,14 @@
   "summary": {
     "xml_files": 14,
     "xml_entries": 4368,
-    "matched_entries": 2612,
-    "lost_entries": 1564,
+    "matched_entries": 2672,
+    "lost_entries": 1504,
     "ignored_entries": 192
   },
   "files": [
     {
       "xml": "resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
       "summary": {
         "xmlEntries": 348,
         "matched": 194,
@@ -1294,7 +1294,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20201007_0-156-10000-51056.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20201007_0-156-10000-51056.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20201007_0-156-10000-51056.json",
       "summary": {
         "xmlEntries": 151,
         "matched": 90,
@@ -1789,11 +1789,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
       "summary": {
         "xmlEntries": 187,
-        "matched": 117,
-        "lost": 59,
+        "matched": 118,
+        "lost": 58,
         "ignored": 11
       },
       "lost": [
@@ -1836,16 +1836,6 @@
           "value": "-0.714732 35.3833 2156.0",
           "candidateValues": [
             "-0.714732 35.3833 2156.0"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -2340,11 +2330,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20221124_0-578-0-92100.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20221124_0-578-0-92100.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20221124_0-578-0-92100.json",
       "summary": {
         "xmlEntries": 70,
-        "matched": 58,
-        "lost": 6,
+        "matched": 59,
+        "lost": 5,
         "ignored": 6
       },
       "lost": [
@@ -2397,22 +2387,12 @@
           "candidateValues": [
             "-71.9563 2.4668 1235.0"
           ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/map",
-          "candidateValues": [
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/map",
-            "map"
-          ]
         }
       ]
     },
     {
       "xml": "resources/wmdr10_xml_examples/20230331_0-250-1005-SARg.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20230331_0-250-1005-SARg.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20230331_0-250-1005-SARg.json",
       "summary": {
         "xmlEntries": 52,
         "matched": 36,
@@ -2546,11 +2526,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20240806_0-840-11502-KominkoSlade.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20240806_0-840-11502-KominkoSlade.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20240806_0-840-11502-KominkoSlade.json",
       "summary": {
         "xmlEntries": 225,
-        "matched": 131,
-        "lost": 87,
+        "matched": 140,
+        "lost": 78,
         "ignored": 7
       },
       "lost": [
@@ -2597,31 +2577,11 @@
         },
         {
           "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[1]/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "facility",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[2]/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "-79.465 -112.106 1803.0",
           "candidateValues": [
             "-79.465 -112.106 1803.0"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[2]/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -2635,31 +2595,11 @@
         },
         {
           "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[3]/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "facility",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[4]/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "-79.468 -112.086 1833.0",
           "candidateValues": [
             "-79.468 -112.086 1833.0"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[4]/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -2669,16 +2609,6 @@
           "value": "-79.466 -112.106 1801.0",
           "candidateValues": [
             "-79.466 -112.106 1801.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -2815,16 +2745,6 @@
           "value": "-79.466 -112.106 1801.0",
           "candidateValues": [
             "-79.466 -112.106 1801.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -2975,16 +2895,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -3080,16 +2990,6 @@
           "value": "-79.466 -112.106 1801.0",
           "candidateValues": [
             "-79.466 -112.106 1801.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -3217,16 +3117,6 @@
           "value": "-79.466 -112.106 1801.0",
           "candidateValues": [
             "-79.466 -112.106 1801.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -3360,11 +3250,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
       "summary": {
         "xmlEntries": 217,
-        "matched": 160,
-        "lost": 46,
+        "matched": 164,
+        "lost": 42,
         "ignored": 11
       },
       "lost": [
@@ -3429,31 +3319,11 @@
         },
         {
           "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[1]/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "facility",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[2]/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "40.517 22.967 60.0",
           "candidateValues": [
             "40.517 22.967 60.0"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[2]/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/map",
-          "candidateValues": [
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/map",
-            "map"
           ]
         },
         {
@@ -3557,16 +3427,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
           "kind": "text",
           "value": "20.0",
@@ -3612,16 +3472,6 @@
           "value": "40.634 22.956 60.0",
           "candidateValues": [
             "40.634 22.956 60.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -3807,11 +3657,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250314_0-404-800-4AA01.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20250314_0-404-800-4AA01.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20250314_0-404-800-4AA01.json",
       "summary": {
         "xmlEntries": 57,
-        "matched": 41,
-        "lost": 13,
+        "matched": 42,
+        "lost": 12,
         "ignored": 3
       },
       "lost": [
@@ -3854,16 +3704,6 @@
           "value": "-0.36172 37.06812 1813.0",
           "candidateValues": [
             "-0.36172 37.06812 1813.0"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -3942,11 +3782,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
       "summary": {
         "xmlEntries": 422,
-        "matched": 285,
-        "lost": 115,
+        "matched": 286,
+        "lost": 114,
         "ignored": 22
       },
       "lost": [
@@ -4034,16 +3874,6 @@
           "value": "-1.30169 36.75919 1795.0",
           "candidateValues": [
             "-1.30169 36.75919 1795.0"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -5027,7 +4857,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250529_0-410-0-22184.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20250529_0-410-0-22184.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20250529_0-410-0-22184.json",
       "summary": {
         "xmlEntries": 61,
         "matched": 56,
@@ -5080,11 +4910,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
       "summary": {
         "xmlEntries": 419,
-        "matched": 236,
-        "lost": 170,
+        "matched": 249,
+        "lost": 157,
         "ignored": 13
       },
       "lost": [
@@ -5139,32 +4969,12 @@
           ]
         },
         {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[2]/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
           "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "47.040886 8.308403 445.0",
           "candidateValues": [
             "47.040886 8.308403 445.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -5259,16 +5069,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -5355,16 +5155,6 @@
           "value": "47.042153 8.319214 436.5",
           "candidateValues": [
             "47.042153 8.319214 436.5"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -5459,16 +5249,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -5559,16 +5339,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -5655,16 +5425,6 @@
           "value": "47.036392 8.300933 454.46",
           "candidateValues": [
             "47.036392 8.300933 454.46"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -5858,16 +5618,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[1]/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -6057,16 +5807,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -6171,16 +5911,6 @@
           "value": "47.036536 8.3007 456.0",
           "candidateValues": [
             "47.036536 8.3007 456.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -6293,16 +6023,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -6407,16 +6127,6 @@
           "value": "47.061539 8.313344 498.0",
           "candidateValues": [
             "47.061539 8.313344 498.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[6]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -6529,16 +6239,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -6640,11 +6340,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20251001_0-20008-0-MKN.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20251001_0-20008-0-MKN.json",
       "summary": {
         "xmlEntries": 1120,
-        "matched": 634,
-        "lost": 422,
+        "matched": 636,
+        "lost": 420,
         "ignored": 64
       },
       "lost": [
@@ -6741,16 +6441,6 @@
           "value": "-0.0621999986 37.2971992493 3678.0",
           "candidateValues": [
             "-0.0621999986 37.2971992493 3678.0"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -7938,16 +7628,6 @@
           "value": "-0.0621999986 37.2971992493 3678.0",
           "candidateValues": [
             "-0.0621999986 37.2971992493 3678.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -10529,11 +10209,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20260604_0-70-0-Lukavac.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/20260604_0-70-0-Lukavac.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/20260604_0-70-0-Lukavac.json",
       "summary": {
         "xmlEntries": 45,
-        "matched": 37,
-        "lost": 5,
+        "matched": 38,
+        "lost": 4,
         "ignored": 3
       },
       "lost": [
@@ -10577,26 +10257,16 @@
           "candidateValues": [
             "44.5213 18.5262 188.17"
           ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
         }
       ]
     },
     {
       "xml": "resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-33/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-2/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
       "summary": {
         "xmlEntries": 994,
-        "matched": 537,
-        "lost": 431,
+        "matched": 564,
+        "lost": 404,
         "ignored": 26
       },
       "lost": [
@@ -10643,31 +10313,11 @@
         },
         {
           "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[1]/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/map",
-          "candidateValues": [
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/map",
-            "map"
-          ]
-        },
-        {
-          "section": "facility",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[2]/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "46.420453 7.823197 1538.0",
           "candidateValues": [
             "46.420453 7.823197 1538.0"
-          ]
-        },
-        {
-          "section": "facility",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[2]/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -10754,16 +10404,6 @@
           "value": "46.419478 7.821056 1535.0",
           "candidateValues": [
             "46.419478 7.821056 1535.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -10868,16 +10508,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -10974,16 +10604,6 @@
           "value": "46.420408 7.823197 1538.0",
           "candidateValues": [
             "46.420408 7.823197 1538.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -11177,16 +10797,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -11301,16 +10911,6 @@
           "value": "46.420453 7.823197 1538.86",
           "candidateValues": [
             "46.420453 7.823197 1538.86"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -11514,16 +11114,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[1]/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -11709,16 +11299,6 @@
           "value": "46.420372 7.823222 1538.0",
           "candidateValues": [
             "46.420372 7.823222 1538.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -11912,16 +11492,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -12036,16 +11606,6 @@
           "value": "46.420372 7.823222 1538.0",
           "candidateValues": [
             "46.420372 7.823222 1538.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -12249,16 +11809,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -12367,16 +11917,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -12481,16 +12021,6 @@
           "value": "46.419478 7.821056 1535.0",
           "candidateValues": [
             "46.419478 7.821056 1535.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -12613,16 +12143,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -12719,16 +12239,6 @@
           "value": "46.420372 7.823222 1538.0",
           "candidateValues": [
             "46.420372 7.823222 1538.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -12932,16 +12442,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -13042,16 +12542,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -13148,16 +12638,6 @@
           "value": "46.420372 7.823222 1538.0",
           "candidateValues": [
             "46.420372 7.823222 1538.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -13361,16 +12841,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -13467,16 +12937,6 @@
           "value": "46.420372 7.823222 1538.0",
           "candidateValues": [
             "46.420372 7.823222 1538.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -13680,16 +13140,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[15]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[15]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -13790,16 +13240,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[16]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[16]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -13896,16 +13336,6 @@
           "value": "46.420408 7.823197 1538.0",
           "candidateValues": [
             "46.420408 7.823197 1538.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[17]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -14099,16 +13529,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[17]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[17]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -14223,16 +13643,6 @@
           "value": "46.420408 7.823197 1538.0",
           "candidateValues": [
             "46.420408 7.823197 1538.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[18]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {
@@ -14422,16 +13832,6 @@
           "value": "46.419478 7.821056 1535.0",
           "candidateValues": [
             "46.419478 7.821056 1535.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[18]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geopositioningMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
-          "candidateValues": [
-            "gps",
-            "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
           ]
         },
         {

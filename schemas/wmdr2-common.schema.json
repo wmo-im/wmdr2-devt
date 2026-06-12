@@ -73,7 +73,7 @@
     },
     "temporalGeometry": {
       "type": "object",
-      "description": "Geospatial location history of the facility or equipment, represented as a WMDR2 MovingPoint with coordinate positions and the dates from which each position is considered valid.",
+      "description": "Geospatial location history of the facility or equipment, represented as a WMDR2 MovingPoint with coordinate positions, the dates from which each position is considered valid, and optional geopositioning method terms aligned with those positions. A single-position temporalGeometry is allowed when extra temporal metadata such as methods needs to be preserved for the current position.",
       "required": [
         "type",
         "coordinates",
@@ -86,7 +86,7 @@
         },
         "coordinates": {
           "type": "array",
-          "minItems": 2,
+          "minItems": 1,
           "items": {
             "type": "array",
             "minItems": 2,
@@ -98,9 +98,22 @@
         },
         "dates": {
           "type": "array",
-          "minItems": 2,
+          "minItems": 1,
           "items": {
             "$ref": "#/$defs/dateOrOpen"
+          }
+        },
+        "methods": {
+          "type": "array",
+          "description": "Optional geopositioning method terms aligned with temporalGeometry.coordinates and temporalGeometry.dates. Each inner array contains zero, one, or more compact terms from http://codes.wmo.int/wmdr/GeopositioningMethod for the corresponding coordinate/date.",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
           }
         }
       }

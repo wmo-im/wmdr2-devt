@@ -62,11 +62,13 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
     "coordinates": [7.8232, 46.4204, 1540]
   },
   "temporalGeometry": {
+    "type": "MovingPoint",
     "coordinates": [
       [7.823197, 46.420453, 1538],
       [7.8232, 46.4204, 1540]
     ],
-    "dates": ["2000-08-17", "2024-01-17"]
+    "dates": ["2000-08-17", "2024-01-17"],
+    "methods": [["gps"], []]
   },
   "time": {
     "interval": ["2000-08-17", "2025-05-28"]
@@ -93,7 +95,7 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
 - `type`: always `Feature`.
 - `id`: facility identifier, usually based on the WIGOS station identifier.
 - `geometry`: current GeoJSON point geometry, derived from the most recent known coordinates.
-- `temporalGeometry`: optional WMDR2 `MovingPoint` coordinate history. It remains the only temporal object that uses aligned `coordinates` and `dates` arrays.
+- `temporalGeometry`: optional WMDR2 `MovingPoint` coordinate history. It remains the only temporal object that uses aligned `coordinates`, `dates`, and optional geopositioning `methods` arrays. It may contain a single coordinate/date when this is needed to preserve geopositioning method metadata for the current location.
 - `time`: facility lifecycle interval. This uses date resolution only. Unknown bounds are represented with `..`.
 - `conformsTo`: declares the WMDR2 core conformance class. The only allowed value is `http://wigos.wmo.int/spec/wmdr/2/conf/core`. Use `http`, not `https`, because this is a stable identifier URI, not primarily a dereferenceable web URL.
 - `properties`: contains the facility, observation, deployment, instrument, schedule, and facility-set references.
@@ -102,15 +104,17 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
 
 ## Temporal-history convention
 
-`temporalGeometry` is special and remains an aligned-array `MovingPoint` object:
+`temporalGeometry` is special and remains an aligned-array `MovingPoint` object. The optional `methods` array is aligned with `coordinates` and `dates`; each inner array contains zero, one, or more compact terms from `http://codes.wmo.int/wmdr/GeopositioningMethod` for the corresponding position/date. If there is only one known location but a geopositioning method is declared, `temporalGeometry` is still emitted with one coordinate/date so that the method is not lost:
 
 ```json
 "temporalGeometry": {
+  "type": "MovingPoint",
   "coordinates": [
     [7.823197, 46.420453, 1538],
     [7.8232, 46.4204, 1540]
   ],
-  "dates": ["2000-08-17", "2024-01-17"]
+  "dates": ["2000-08-17", "2024-01-17"],
+  "methods": [["gps"], []]
 }
 ```
 

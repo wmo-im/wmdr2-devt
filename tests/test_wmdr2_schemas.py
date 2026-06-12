@@ -76,6 +76,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                 [6.0734, 50.5109, 671],
             ],
             "dates": ["2016-04-28", "2024-01-17"],
+            "methods": [["gps"], []],
         },
         "conformsTo": ["http://wigos.wmo.int/spec/wmdr/2/conf/core"],
         "properties": {
@@ -256,6 +257,33 @@ def test_temporal_geometry_is_the_only_aligned_temporal_object() -> None:
     instance = _valid_facility_record_feature()
     instance["temporalGeometry"]["type"] = "Point"
     assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_temporal_geometry_methods_are_optional_aligned_term_lists() -> None:
+    instance = _valid_facility_record_feature()
+    instance["temporalGeometry"].pop("methods")
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    instance = _valid_facility_record_feature()
+    instance["temporalGeometry"]["methods"] = ["gps", None]
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    instance = _valid_facility_record_feature()
+    instance["temporalGeometry"]["methods"] = [["gps"], [None]]
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    instance = _valid_facility_record_feature()
+    instance["temporalGeometry"]["methods"] = [["gps"], []]
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    instance = _valid_facility_record_feature()
+    instance["temporalGeometry"] = {
+        "type": "MovingPoint",
+        "coordinates": [[6.0733333333, 50.5108333333, 671]],
+        "dates": ["2016-04-28"],
+        "methods": [["gps"]],
+    }
+    assert _validate(RECORD_SCHEMA, instance) == []
 
 
 def test_environment_topography_bathymetry_wrapper_is_invalid() -> None:

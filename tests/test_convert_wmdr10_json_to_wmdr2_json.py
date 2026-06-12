@@ -464,8 +464,28 @@ def test_facility_temporal_geometry_entries_are_sorted_and_deduplicated() -> Non
     ]
 
 
-def test_temporal_geometry_extension_requires_at_least_two_coordinate_entries() -> None:
+def test_temporal_geometry_extension_omits_single_coordinate_without_methods() -> None:
     assert module._temporal_geometry_extension([{"coordinates": [7, 46], "date": "2020-01-01"}]) is None
+
+
+def test_temporal_geometry_extension_emits_single_coordinate_when_methods_are_present() -> None:
+    assert module._temporal_geometry_extension(
+        [
+            {
+                "coordinates": [7, 46],
+                "date": "2020-01-01",
+                "methods": ["gps"],
+            }
+        ]
+    ) == {
+        "type": "MovingPoint",
+        "coordinates": [[7, 46]],
+        "dates": ["2020-01-01"],
+        "methods": [["gps"]],
+    }
+
+
+def test_temporal_geometry_extension_emits_two_or_more_coordinates_without_methods() -> None:
     assert module._temporal_geometry_extension(
         [
             {"coordinates": [6, 45], "date": "2020-01-01"},
@@ -481,6 +501,63 @@ def test_facility_geometry_uses_latest_temporal_geometry_entry() -> None:
             {"coordinates": [7, 46, 100], "date": "2021-01-01"},
         ]
     ) == {"type": "Point", "coordinates": [7, 46, 100]}
+
+
+def test_geopositioning_methods_are_extracted_from_exact_wmdr10_key() -> None:
+    item = {
+        "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+    }
+    assert module._geopositioning_methods(item) == ["gps"]
+
+
+def test_geopositioning_methods_ignore_unrecognised_spelling_variants() -> None:
+    item = {
+        "geoPositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+    }
+    assert module._geopositioning_methods(item) == []
+
+
+def test_temporal_geometry_entries_include_geopositioning_methods_when_present() -> None:
+    facility = {
+        "geospatialLocation": {
+            "geoLocation": "46 7 100",
+            "beginPosition": "2021-01-01",
+            "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+        },
+        "geospatialLocationHistory": [
+            {"geoLocation": "45 6 99", "beginPosition": "2020-01-01"},
+        ],
+    }
+    assert module._facility_temporal_geometry_entries(facility) == [
+        {"coordinates": [6.0, 45.0, 99], "date": "2020-01-01"},
+        {"coordinates": [7.0, 46.0, 100], "date": "2021-01-01", "methods": ["gps"]},
+    ]
+
+
+def test_temporal_geometry_extension_emits_aligned_methods_only_when_present() -> None:
+    assert module._temporal_geometry_extension(
+        [
+            {"coordinates": [6, 45], "date": "2020-01-01"},
+            {"coordinates": [7, 46], "date": "2021-01-01", "methods": ["gps"]},
+        ]
+    ) == {
+        "type": "MovingPoint",
+        "coordinates": [[6, 45], [7, 46]],
+        "dates": ["2020-01-01", "2021-01-01"],
+        "methods": [[], ["gps"]],
+    }
+
+
+def test_temporal_geometry_methods_empty_slots_survive_clean_none() -> None:
+    payload = {
+        "temporalGeometry": {
+            "type": "MovingPoint",
+            "coordinates": [[6, 45], [7, 46]],
+            "dates": ["2020-01-01", "2021-01-01"],
+            "methods": [[], ["gps"]],
+        }
+    }
+    assert module._clean_none(payload) == payload
 
 
 @pytest.mark.parametrize(
@@ -906,6 +983,58 @@ def test_convert_payload_accepts_split_payload_shape() -> None:
     assert converted["id"] == "facility:0-TEST"
     assert converted["properties"]["created"] == "2020-01-02T00:00:00Z"
     assert converted["properties"]["observations"][0]["programAffiliations"] == ["GAWregional", "GBON"]
+
+
+def test_convert_payload_emits_temporal_geometry_methods_from_geopositioning_method() -> None:
+    converted = module.convert_payload(
+        {
+            "facility": {
+                "identifier": "0-TEST",
+                "name": "TEST",
+                "geospatialLocation": {
+                    "geoLocation": "46 7 100",
+                    "beginPosition": "2021-01-01",
+                    "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+                },
+                "geospatialLocationHistory": [
+                    {"geoLocation": "45 6 99", "beginPosition": "2020-01-01"},
+                ],
+            },
+            "observations": [],
+        },
+        source_name="0-TEST",
+    )
+    assert converted["temporalGeometry"] == {
+        "type": "MovingPoint",
+        "coordinates": [[6.0, 45.0, 99], [7.0, 46.0, 100]],
+        "dates": ["2020-01-01", "2021-01-01"],
+        "methods": [[], ["gps"]],
+    }
+
+
+def test_convert_payload_emits_single_temporal_geometry_when_method_is_present() -> None:
+    converted = module.convert_payload(
+        {
+            "facility": {
+                "identifier": "0-TEST",
+                "name": "TEST",
+                "geospatialLocation": {
+                    "geoLocation": "46 7 100",
+                    "beginPosition": "2021-01-01",
+                    "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+                },
+            },
+            "observations": [],
+        },
+        source_name="0-TEST",
+    )
+    assert converted["geometry"] == {"type": "Point", "coordinates": [7.0, 46.0, 100]}
+    assert converted["temporalGeometry"] == {
+        "type": "MovingPoint",
+        "coordinates": [[7.0, 46.0, 100]],
+        "dates": ["2021-01-01"],
+        "methods": [["gps"]],
+    }
 
 
 def test_convert_group_uses_source_name_as_fallback_facility_when_missing() -> None:

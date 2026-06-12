@@ -52,13 +52,27 @@ def _non_empty(value: Any) -> bool:
     return value not in (None, "", [], {})
 
 
-def _clean_none(obj: Any) -> Any:
+def _clean_none(obj: Any, *, _path: tuple[str, ...] = ()) -> Any:
+    """Remove empty object members, but preserve aligned temporalGeometry methods.
+
+    ``temporalGeometry.methods`` is an aligned array whose items are lists of
+    geopositioning-method terms. Empty inner lists are meaningful there: they
+    mean that no method is declared for the corresponding coordinate/date.
+    """
+
+    def preserve_empty_list(path: tuple[str, ...]) -> bool:
+        return len(path) >= 2 and path[-2:] == ("temporalGeometry", "methods")
+
     if isinstance(obj, dict):
-        cleaned = {key: _clean_none(value) for key, value in obj.items()}
+        cleaned = {key: _clean_none(value, _path=_path + (key,)) for key, value in obj.items()}
         return {key: value for key, value in cleaned.items() if value not in (None, "", [], {})}
     if isinstance(obj, list):
-        cleaned = [_clean_none(item) for item in obj]
-        return [item for item in cleaned if item not in (None, "", [], {})]
+        cleaned = [_clean_none(item, _path=_path) for item in obj]
+        return [
+            item
+            for item in cleaned
+            if item not in ("", {}) and (item != [] or preserve_empty_list(_path))
+        ]
     return obj
 
 
@@ -367,7 +381,7 @@ def _paths_from_config(config_path: Path) -> CataloguePaths:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Externalize WMDR2 contacts and instruments into shared catalogues.")
-    parser.add_argument("--config", type=Path, default="config.yaml", help="Read catalogue paths from config.yaml.")
+    parser.add_argument("--config", default="config.yaml", type=Path, help="Read catalogue paths from config.yaml.")
     parser.add_argument("--source", type=Path, help="Source WMDR2 facility records, usually converter target output.")
     parser.add_argument("--records-path", type=Path, help="Target folder for rewritten facility records.")
     parser.add_argument("--contacts-path", type=Path, help="Target contacts.json path.")

@@ -248,14 +248,23 @@ def _first_non_empty(*values: Any) -> Any:
     return None
 
 
-def _clean_none(obj: Any) -> Any:
-    """Remove empty object members, but preserve nulls inside arrays."""
+def _clean_none(obj: Any, *, _path: Tuple[str, ...] = ()) -> Any:
+    """Remove empty object members, but preserve nulls inside arrays.
+
+    ``temporalGeometry.methods`` is an aligned array whose items are lists of
+    geopositioning-method terms. Empty inner lists are meaningful there: they
+    mean that no method is declared for the corresponding coordinate/date.
+    """
+
+    def preserve_empty_list(path: Tuple[str, ...]) -> bool:
+        return len(path) >= 2 and path[-2:] == ("temporalGeometry", "methods")
+
     if isinstance(obj, dict):
-        cleaned = {k: _clean_none(v) for k, v in obj.items()}
+        cleaned = {k: _clean_none(v, _path=_path + (k,)) for k, v in obj.items()}
         return {k: v for k, v in cleaned.items() if v not in (None, "", [], {})}
     if isinstance(obj, list):
-        cleaned = [_clean_none(v) for v in obj]
-        return [v for v in cleaned if v not in ("", [], {})]
+        cleaned = [_clean_none(v, _path=_path) for v in obj]
+        return [v for v in cleaned if v not in ("", {}) and (v != [] or preserve_empty_list(_path))]
     return obj
 
 
@@ -598,6 +607,27 @@ def _parse_pos_lon_lat_z(raw: Any) -> Optional[List[Any]]:
     return coords
 
 
+def _geopositioning_methods(item: Any) -> List[str]:
+    """Return compact WMDR geopositioning method terms for a location item."""
+    if not isinstance(item, dict):
+        return []
+    raw = item.get("geopositioningMethod")
+    if raw in (None, "", [], {}):
+        return []
+
+    values = raw if isinstance(raw, list) else [raw]
+    methods: List[str] = []
+    for value in values:
+        if isinstance(value, dict):
+            value = _first_non_empty(value.get("href"), value.get("value"), value.get("#text"), value.get("text"))
+        if not isinstance(value, str):
+            continue
+        compact = _compact_wmdr_code_value(value)
+        if isinstance(compact, str) and compact.strip():
+            methods.append(compact.strip())
+    return sorted(dict.fromkeys(methods))
+
+
 def _facility_temporal_geometry_entries(facility: Dict[str, Any]) -> List[Dict[str, Any]]:
     entries: List[Tuple[str, str, Dict[str, Any]]] = []
 
@@ -606,7 +636,11 @@ def _facility_temporal_geometry_entries(facility: Dict[str, Any]) -> List[Dict[s
         if coords is None:
             return
         date = _temporal_begin_date(item)
-        entries.append((date, json.dumps(coords, sort_keys=True), {"coordinates": coords, "date": date}))
+        entry: Dict[str, Any] = {"coordinates": coords, "date": date}
+        methods = _geopositioning_methods(item)
+        if methods:
+            entry["methods"] = methods
+        entries.append((date, json.dumps(coords, sort_keys=True), entry))
 
     for item in _as_list(facility.get("geospatialLocation") or facility.get("geometry")):
         add(item)
@@ -625,10 +659,10 @@ def _facility_temporal_geometry_entries(facility: Dict[str, Any]) -> List[Dict[s
 
 
 def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
-    if len(entries) <= 1:
-        return None
     coordinates: List[Any] = []
     dates: List[str] = []
+    methods: List[List[str]] = []
+    has_methods = False
     for entry in entries:
         if "coordinates" not in entry:
             continue
@@ -638,9 +672,20 @@ def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[
             dates.append(raw_date)
         else:
             dates.append("..")
-    if len(coordinates) <= 1:
+        raw_methods = entry.get("methods")
+        entry_methods = raw_methods if isinstance(raw_methods, list) else []
+        method_terms = [method for method in entry_methods if isinstance(method, str) and method.strip()]
+        if method_terms:
+            has_methods = True
+        methods.append(method_terms)
+    if not coordinates:
         return None
-    return {"type": "MovingPoint", "coordinates": coordinates, "dates": dates}
+    if len(coordinates) == 1 and not has_methods:
+        return None
+    out: Dict[str, Any] = {"type": "MovingPoint", "coordinates": coordinates, "dates": dates}
+    if has_methods:
+        out["methods"] = methods
+    return out
 
 
 def _facility_geometry_from_entries(entries: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
