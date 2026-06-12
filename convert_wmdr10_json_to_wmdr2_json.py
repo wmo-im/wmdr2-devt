@@ -23,6 +23,7 @@ import csv
 import hashlib
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
@@ -2165,6 +2166,79 @@ def convert_tree(
 
 
 # ---------------------------------------------------------------------------
+# Optional catalogue post-processing
+# ---------------------------------------------------------------------------
+
+
+def _config_bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    parsed = _parse_bool(value)
+    return bool(parsed) if parsed is not None else False
+
+
+def _resolve_config_path_value(value: Any, *, base_dir: Path) -> Path:
+    path = value if isinstance(value, Path) else Path(str(value))
+    path = path.expanduser()
+    return path if path.is_absolute() else base_dir / path
+
+
+def _catalogue_paths_from_config(
+    section: Dict[str, Any],
+    *,
+    base_dir: Path,
+    target: Path,
+    pattern: str,
+    recursive: bool,
+) -> Optional[Any]:
+    catalogues = section.get("catalogues")
+    if not isinstance(catalogues, dict) or not _config_bool(catalogues.get("enabled")):
+        return None
+    if "source" in catalogues:
+        raise SystemExit("catalogues.source is obsolete; catalogue input is always the converter target.")
+
+    script_dir = Path(__file__).resolve().parent
+    if str(script_dir) not in sys.path:
+        sys.path.insert(0, str(script_dir))
+    from convert_wmdr2_json_to_catalogue_version import CataloguePaths
+
+    default_records_path = target / "catalogue_representation"
+    default_contacts_path = target / "catalogues" / "contacts.json"
+    default_instruments_path = target / "catalogues" / "instruments.json"
+
+    records_path = _resolve_config_path_value(
+        catalogues.get("records_path") or default_records_path,
+        base_dir=base_dir,
+    )
+    contacts_path = _resolve_config_path_value(
+        catalogues.get("contacts_path") or default_contacts_path,
+        base_dir=base_dir,
+    )
+    instruments_path = _resolve_config_path_value(
+        catalogues.get("instruments_path") or default_instruments_path,
+        base_dir=base_dir,
+    )
+
+    return CataloguePaths(
+        source=target,
+        records_path=records_path,
+        contacts_path=contacts_path,
+        instruments_path=instruments_path,
+        pattern=pattern,
+        recursive=recursive,
+    )
+
+
+def _run_catalogue_post_processing(written: Sequence[Path], catalogue_paths: Any) -> List[Path]:
+    script_dir = Path(__file__).resolve().parent
+    if str(script_dir) not in sys.path:
+        sys.path.insert(0, str(script_dir))
+    from convert_wmdr2_json_to_catalogue_version import convert_catalogue_files
+
+    return convert_catalogue_files(written, catalogue_paths)
+
+
+# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
@@ -2233,6 +2307,19 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
         code_list_labels=code_list_labels,
     )
     print(f"Wrote {len(written)} WMDR2 JSON file(s) to {target}")
+
+    catalogue_paths = _catalogue_paths_from_config(
+        section,
+        base_dir=base_dir,
+        target=target,
+        pattern=str(pattern),
+        recursive=recursive,
+    )
+    if catalogue_paths is not None:
+        externalized = _run_catalogue_post_processing(written, catalogue_paths)
+        print(f"Wrote {len(externalized)} catalogue-based WMDR2 JSON file(s) to {catalogue_paths.records_path}")
+        print(f"Wrote contacts catalogue to {catalogue_paths.contacts_path}")
+        print(f"Wrote instruments catalogue to {catalogue_paths.instruments_path}")
 
 
 if __name__ == "__main__":

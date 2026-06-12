@@ -122,7 +122,7 @@ convert_wmdr10_json_to_wmdr2_json:
 
   # Existing embedded/self-contained converter output. Keep this if you still
   # want the original converter to write full records first.
-  target: results/wmdr2_json_examples/embedded
+  target: results/wmdr2_json_examples
 
   pattern: "*.json"
   recursive: true
@@ -130,12 +130,9 @@ convert_wmdr10_json_to_wmdr2_json:
   catalogues:
     enabled: true
 
-    # Read from the converter's embedded output by default; may be overridden.
-    source: results/wmdr2_json_examples/embedded
-
     # Write the catalogue-based facility records separately.
-    records_path: results/wmdr2_json_examples/catalogue_records
+    records_path: results/wmdr2_json_examples/catalogue_based
 
     # Shared catalogues.
-    contacts_path: results/wmdr2_json_examples/catalogues/contacts.json
-    instruments_path: results/wmdr2_json_examples/catalogues/instruments.json
+    contacts_path: results/wmdr2_json_examples/catalogue_based/catalogues/contacts.json
+    instruments_path: results/wmdr2_json_examples/catalogue_based/catalogues/instruments.json

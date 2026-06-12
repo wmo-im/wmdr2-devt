@@ -49,6 +49,22 @@ python convert_wmdr10_json_to_wmdr2_json.py \
 
 This stage writes one `.json` WMDR2 full record per facility.
 
+If shared catalogues are enabled in `config.yaml`, the converter immediately runs the catalogue externalization step after writing the embedded facility records. The catalogue source is always the converter's effective `target`.
+
+```yaml
+convert_wmdr10_json_to_wmdr2_json:
+  source: resources/wmdr10_json_examples
+  target: results/wmdr2_json_examples
+
+  catalogues:
+    enabled: true
+    records_path: results/wmdr2_json_examples/catalogue_based
+    contacts_path: results/wmdr2_json_examples/catalogue_based/catalogues/contacts.json
+    instruments_path: results/wmdr2_json_examples/catalogue_based/catalogues/instruments.json
+```
+
+With this setting, the converter writes the normal embedded records to `target`, then writes catalogue-based facility records to `catalogues.records_path`, plus shared `contacts.json` and `instruments.json`. The standalone `convert_wmdr2_json_to_catalogue_version.py` script remains available for re-running this step manually.
+
 ## WMDR2 full-record structure
 
 Each WMDR2 output file is a facility-centric JSON `Feature`.
@@ -367,6 +383,8 @@ Contacts are stored in `properties.contacts`. A contact may include an `id`, `or
 ```
 
 Role values should be specific role codes, not URLs to a generic role code list.
+
+When catalogue externalization is enabled, full contact details are collected in `contacts.json`. The facility record keeps only a minimal OGC Records-compatible contact object with `identifier`, `name` and/or `organization`, optional `roles`, and a link to the catalogue entry. Contacts with e-mail addresses use identifiers such as `contact:jane.smith@example.org`; contacts without e-mail use deterministic fallback identifiers derived from name and organization.
 
 ## Keywords and themes
 

@@ -1105,3 +1105,104 @@ def test_configured_discovery_policy_can_explicitly_keep_facility_keywords() -> 
         assert record["properties"]["keywords"] == ["0-TEST", "TEST"]
     finally:
         setattr(module, "DISCOVERY_POLICY", old_policy)
+
+
+def test_main_runs_catalogue_post_processing_when_enabled(tmp_path: Path) -> None:
+    source = tmp_path / "wmdr10"
+    target = tmp_path / "wmdr2"
+    catalogue_records = target / "catalogue_representation"
+    catalogues = target / "catalogues"
+    source.mkdir()
+
+    payload = {
+        "header": {"dateStamp": "2020-01-02"},
+        "facility": _minimal_facility()
+        | {
+            "contact": {
+                "individualName": "Jane Smith",
+                "organisationName": "Example Org",
+                "contactInfo": {
+                    "address": {"electronicMailAddress": "jane.smith@example.org"},
+                    "phone": {"voice": "+41 1 234 56 78"},
+                },
+                "role": "http://codes.wmo.int/wmdr/ResponsiblePartyRole/owner",
+            }
+        },
+        "observations": [_observation_with_deployment()],
+        "deployments": [],
+    }
+    (source / "record.json").write_text(json.dumps(payload), encoding="utf-8")
+
+    config = tmp_path / "config.yaml"
+    config.write_text(
+        "\n".join(
+            [
+                "convert_wmdr10_json_to_wmdr2_json:",
+                f"  source: {source.as_posix()}",
+                f"  target: {target.as_posix()}",
+                "  recursive: true",
+                "  catalogues:",
+                "    enabled: true",
+                f"    records_path: {catalogue_records.as_posix()}",
+                f"    contacts_path: {(catalogues / 'contacts.json').as_posix()}",
+                f"    instruments_path: {(catalogues / 'instruments.json').as_posix()}",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    module.main(["--config", str(config)])
+    # Run twice to ensure integrated post-processing only uses the freshly
+    # written converter outputs and does not reprocess previous catalogue files.
+    module.main(["--config", str(config)])
+
+    embedded = json.loads((target / "record.json").read_text(encoding="utf-8"))
+    rewritten = json.loads((catalogue_records / "record.json").read_text(encoding="utf-8"))
+    contacts = json.loads((catalogues / "contacts.json").read_text(encoding="utf-8"))["contacts"]
+    instruments = json.loads((catalogues / "instruments.json").read_text(encoding="utf-8"))["instruments"]
+
+    assert embedded["properties"]["instruments"]
+    assert "instruments" not in rewritten["properties"]
+    assert rewritten["properties"]["contacts"] == [
+        {
+            "identifier": "contact:jane.smith@example.org",
+            "name": "Jane Smith",
+            "organization": "Example Org",
+            "roles": ["owner"],
+            "links": [
+                {
+                    "rel": "about",
+                    "href": "../catalogues/contacts.json#contact:jane.smith@example.org",
+                    "type": "application/json",
+                }
+            ],
+        }
+    ]
+    assert [contact["identifier"] for contact in contacts] == ["contact:jane.smith@example.org"]
+    assert contacts[0]["phones"] == [{"value": "+41 1 234 56 78"}]
+    assert len(instruments) == 1
+    assert rewritten["properties"]["deployments"][0]["instrument"] == [instruments[0]["id"]]
+
+
+def test_catalogues_source_config_key_is_obsolete(tmp_path: Path) -> None:
+    source = tmp_path / "wmdr10"
+    target = tmp_path / "wmdr2"
+    source.mkdir()
+    (source / "record.json").write_text(json.dumps({"facility": _minimal_facility()}), encoding="utf-8")
+    config = tmp_path / "config.yaml"
+    config.write_text(
+        "\n".join(
+            [
+                "convert_wmdr10_json_to_wmdr2_json:",
+                f"  source: {source.as_posix()}",
+                f"  target: {target.as_posix()}",
+                "  catalogues:",
+                "    enabled: true",
+                "    source: old-derived-source",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(SystemExit, match="catalogues.source is obsolete"):
+        module.main(["--config", str(config)])
