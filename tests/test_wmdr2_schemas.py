@@ -150,9 +150,9 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "id": "observation:179",
                     "title": "domain: atmosphere; geometry: point; variable: 179 Cloud amount",
                     "time": {"interval": ["2016-04-29", ".."]},
-                    "observedVariable": 179,
-                    "observedGeometryType": "point",
-                    "observedDomain": "atmosphere",
+                    "observedProperty": 179,
+                    "observedGeometry": "point",
+                    "observedDomain": {"domain": "atmosphere"},
                     "programAffiliations": ["GAWregional"],
                     "reporting": {
                         "internationalExchange": [True, False],
@@ -169,8 +169,8 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "id": "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
                     "time": {"interval": ["2016-04-29", ".."]},
                     "observingMethod": "automatic",
-                    "localReferenceSurface": "localGround",
-                    "verticalDistanceFromReferenceSurface": 2.0,
+                    "referenceSurface": "localGround",
+                    "verticalDistanceFromReferenceSurface": {"value": 2.0, "uom": "m"},
                     "instrument": ["instrument:example"],
                     "serialNumbers": {
                         "serialNumber": ["ABC123"],
@@ -389,7 +389,7 @@ def test_instrument_observable_variables_accept_code_values_and_free_text() -> N
 
 def test_instrument_observable_variables_must_be_array_of_strings_or_integers() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["instruments"][0]["observableVariables"] = [{"observedVariable": 179}]
+    instance["properties"]["instruments"][0]["observableVariables"] = [{"observedProperty": 179}]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
@@ -433,3 +433,58 @@ def test_schema_descriptions_carry_wmdr1_documentation() -> None:
     assert "Vertical distance of the sensor" in deployment["properties"]["verticalDistanceFromReferenceSurface"]["description"]
     assert "Manufacturer of the equipment" in instrument["properties"]["manufacturer"]["description"]
     assert "Environmental context" in environment["description"]
+
+
+def test_observation_uses_observed_property_not_observed_variable() -> None:
+    instance = _valid_facility_record_feature()
+    observation = instance["properties"]["observations"][0]
+    assert "observedProperty" in observation
+    observation["observedVariable"] = observation.pop("observedProperty")
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_observed_domain_accepts_domain_feature_and_feature_name() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observations"][0]["observedDomain"] = {
+        "domain": "atmosphere",
+        "domainFeature": "near-surface-air",
+        "featureName": "2 m air",
+    }
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_deployment_uses_reference_surface_not_local_reference_surface() -> None:
+    instance = _valid_facility_record_feature()
+    deployment = instance["properties"]["deployments"][0]
+    assert "referenceSurface" in deployment
+    deployment["localReferenceSurface"] = deployment.pop("referenceSurface")
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_deployment_vertical_distance_requires_quantity_object_with_value() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = 2.0
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = {"uom": "m"}
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_deployment_temporal_geometry_is_valid_moving_point() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["temporalGeometry"] = {
+        "type": "MovingPoint",
+        "coordinates": [[7.0, 46.0, 100]],
+        "dates": ["2021-01-01"],
+        "methods": [["gps"]],
+    }
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_observation_uses_observed_geometry_not_observed_geometry_type() -> None:
+    instance = _valid_facility_record_feature()
+    observation = instance["properties"]["observations"][0]
+    assert "observedGeometry" in observation
+    observation["observedGeometryType"] = observation.pop("observedGeometry")
+    assert not _is_valid(RECORD_SCHEMA, instance)

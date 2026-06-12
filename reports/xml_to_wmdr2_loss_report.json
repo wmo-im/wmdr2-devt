@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T15:52:22.013728+00:00",
+  "generatedAt": "2026-06-12T18:14:05.363044+00:00",
   "description": "Semantic XML leaf values not found in the generated WMDR2 JSON, after applying intentional-loss and code-list-compaction rules.",
   "notes": [
     "This is a coverage heuristic: it checks whether XML leaf values survive somewhere in the WMDR2 JSON.",
@@ -10,14 +10,14 @@
   "summary": {
     "xml_files": 14,
     "xml_entries": 4368,
-    "matched_entries": 2672,
-    "lost_entries": 1504,
+    "matched_entries": 2773,
+    "lost_entries": 1403,
     "ignored_entries": 192
   },
   "files": [
     {
       "xml": "resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
       "summary": {
         "xmlEntries": 348,
         "matched": 194,
@@ -1294,7 +1294,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20201007_0-156-10000-51056.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20201007_0-156-10000-51056.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20201007_0-156-10000-51056.json",
       "summary": {
         "xmlEntries": 151,
         "matched": 90,
@@ -1789,11 +1789,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
       "summary": {
         "xmlEntries": 187,
-        "matched": 118,
-        "lost": 58,
+        "matched": 120,
+        "lost": 56,
         "ignored": 11
       },
       "lost": [
@@ -2018,24 +2018,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -2330,7 +2312,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20221124_0-578-0-92100.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20221124_0-578-0-92100.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20221124_0-578-0-92100.json",
       "summary": {
         "xmlEntries": 70,
         "matched": 59,
@@ -2392,7 +2374,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20230331_0-250-1005-SARg.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20230331_0-250-1005-SARg.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20230331_0-250-1005-SARg.json",
       "summary": {
         "xmlEntries": 52,
         "matched": 36,
@@ -2526,11 +2508,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20240806_0-840-11502-KominkoSlade.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20240806_0-840-11502-KominkoSlade.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20240806_0-840-11502-KominkoSlade.json",
       "summary": {
         "xmlEntries": 225,
-        "matched": 140,
-        "lost": 78,
+        "matched": 150,
+        "lost": 68,
         "ignored": 7
       },
       "lost": [
@@ -2722,24 +2704,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "-79.466 -112.106 1801.0",
@@ -2868,24 +2832,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "-79.466 -112.106 1801.0",
@@ -2963,24 +2909,6 @@
           "value": "59",
           "candidateValues": [
             "59"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -3090,24 +3018,6 @@
           "value": "59",
           "candidateValues": [
             "59"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "3.0",
-          "candidateValues": [
-            "3.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -3227,34 +3137,16 @@
           "candidateValues": [
             "59"
           ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "3.0",
-          "candidateValues": [
-            "3.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
         }
       ]
     },
     {
       "xml": "resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
       "summary": {
         "xmlEntries": 217,
-        "matched": 164,
-        "lost": 42,
+        "matched": 168,
+        "lost": 38,
         "ignored": 11
       },
       "lost": [
@@ -3427,24 +3319,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "20.0",
-          "candidateValues": [
-            "20.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/applicationArea/@href",
           "kind": "attribute",
           "value": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring",
@@ -3587,24 +3461,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "20.0",
-          "candidateValues": [
-            "20.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/applicationArea/@href",
           "kind": "attribute",
           "value": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring",
@@ -3657,7 +3513,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250314_0-404-800-4AA01.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20250314_0-404-800-4AA01.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20250314_0-404-800-4AA01.json",
       "summary": {
         "xmlEntries": 57,
         "matched": 42,
@@ -3782,11 +3638,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
       "summary": {
         "xmlEntries": 422,
-        "matched": 286,
-        "lost": 114,
+        "matched": 292,
+        "lost": 108,
         "ignored": 22
       },
       "lost": [
@@ -3914,24 +3770,6 @@
           "candidateValues": [
             "2010-06-10",
             "2010-06-10T00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "4.0",
-          "candidateValues": [
-            "4.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -4588,24 +4426,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
           "kind": "text",
           "value": "2010-06-10T00:00:00Z",
@@ -4714,24 +4534,6 @@
           "value": "PT1M",
           "candidateValues": [
             "PT1M"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -4857,7 +4659,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250529_0-410-0-22184.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20250529_0-410-0-22184.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20250529_0-410-0-22184.json",
       "summary": {
         "xmlEntries": 61,
         "matched": 56,
@@ -4910,11 +4712,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
       "summary": {
         "xmlEntries": 419,
-        "matched": 249,
-        "lost": 157,
+        "matched": 263,
+        "lost": 143,
         "ignored": 13
       },
       "lost": [
@@ -5591,24 +5393,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "0.05",
-          "candidateValues": [
-            "0.05"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "47.036419 8.30095 454.32",
@@ -5780,24 +5564,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "47.036536 8.3007 456.0",
@@ -5884,24 +5650,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "0.05",
-          "candidateValues": [
-            "0.05"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -5996,24 +5744,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "47.042153 8.319214 436.5",
@@ -6100,24 +5830,6 @@
           "value": "06:00:00Z",
           "candidateValues": [
             "06:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -6212,24 +5924,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[6]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[6]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "47.054394 8.306517 451.0",
@@ -6317,34 +6011,16 @@
           "candidateValues": [
             "06:00:00Z"
           ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
         }
       ]
     },
     {
       "xml": "resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20251001_0-20008-0-MKN.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20251001_0-20008-0-MKN.json",
       "summary": {
         "xmlEntries": 1120,
-        "matched": 636,
-        "lost": 420,
+        "matched": 667,
+        "lost": 389,
         "ignored": 64
       },
       "lost": [
@@ -7041,24 +6717,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "0.0",
-          "candidateValues": [
-            "0.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "-0.0621999986 37.2971992493 3678.0",
@@ -7149,24 +6807,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "0.0",
-          "candidateValues": [
-            "0.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "-0.0621999986 37.2971992493 3678.0",
@@ -7253,24 +6893,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "0.0",
-          "candidateValues": [
-            "0.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -7385,24 +7007,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -7485,24 +7089,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -7581,24 +7167,6 @@
           "candidateValues": [
             "continuous",
             "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -7715,24 +7283,6 @@
           "value": "1",
           "candidateValues": [
             "1"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -7864,24 +7414,6 @@
           "candidateValues": [
             "http://codes.wmo.int/wmdr/SamplingProcedure/inapplicable",
             "inapplicable"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -8101,15 +7633,6 @@
           "value": "4.0",
           "candidateValues": [
             "4.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -8343,24 +7866,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "0.0",
-          "candidateValues": [
-            "0.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/applicationArea/@href",
           "kind": "attribute",
           "value": "http://codes.wmo.int/wmdr/ApplicationArea/climateMonitoring",
@@ -8516,24 +8021,6 @@
           "candidateValues": [
             "continuous",
             "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "5.0",
-          "candidateValues": [
-            "5.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -8709,24 +8196,6 @@
           "candidateValues": [
             "continuous",
             "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[16]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[16]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -9794,24 +9263,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[25]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[25]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[25]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/communicationMethod/@href",
           "kind": "attribute",
           "value": "http://codes.wmo.int/wmdr/DataCommunicationMethod/dataCellular",
@@ -9932,24 +9383,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[25]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[25]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[26]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "-0.0621999986 37.2971992493 3678.0",
@@ -10047,24 +9480,6 @@
           "candidateValues": [
             "http://codes.wmo.int/wmdr/SamplingProcedure/inapplicable",
             "inapplicable"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[26]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[26]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -10186,30 +9601,12 @@
             "http://codes.wmo.int/wmdr/SamplingProcedure/inapplicable",
             "inapplicable"
           ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[26]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[26]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
         }
       ]
     },
     {
       "xml": "resources/wmdr10_xml_examples/20260604_0-70-0-Lukavac.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/20260604_0-70-0-Lukavac.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/20260604_0-70-0-Lukavac.json",
       "summary": {
         "xmlEntries": 45,
         "matched": 38,
@@ -10262,11 +9659,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-5/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-7/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
       "summary": {
         "xmlEntries": 994,
-        "matched": 564,
-        "lost": 404,
+        "matched": 598,
+        "lost": 370,
         "ignored": 26
       },
       "lost": [
@@ -10770,24 +10167,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "46.419478 7.821056 1535.0",
@@ -10874,24 +10253,6 @@
           "value": "06:00:00Z",
           "candidateValues": [
             "06:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -11073,24 +10434,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "0.86",
-          "candidateValues": [
-            "0.86"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -11276,24 +10619,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "0.05",
-          "candidateValues": [
-            "0.05"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "46.420372 7.823222 1538.0",
@@ -11465,24 +10790,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "46.419478 7.821056 1535.0",
@@ -11569,24 +10876,6 @@
           "value": "06:00:00Z",
           "candidateValues": [
             "06:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -11771,24 +11060,6 @@
           ]
         },
         {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/facility/@href",
           "kind": "attribute",
@@ -11890,24 +11161,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "46.419478 7.821056 1535.0",
@@ -11998,24 +11251,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "46.419478 7.821056 1535.0",
@@ -12102,24 +11337,6 @@
           "value": "06:00:00Z",
           "candidateValues": [
             "06:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -12401,24 +11618,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -12803,24 +12002,6 @@
           ]
         },
         {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/facility/@href",
           "kind": "attribute",
@@ -13099,24 +12280,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "2.0",
-          "candidateValues": [
-            "2.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -13502,24 +12665,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[17]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[17]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[17]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "46.419478 7.821056 1535.0",
@@ -13606,24 +12751,6 @@
           "value": "06:00:00Z",
           "candidateValues": [
             "06:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[17]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[17]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         },
         {
@@ -13809,24 +12936,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[18]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[18]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[18]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "46.419478 7.821056 1535.0",
@@ -13913,24 +13022,6 @@
           "value": "06:00:00Z",
           "candidateValues": [
             "06:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[18]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/text()",
-          "kind": "text",
-          "value": "10.0",
-          "candidateValues": [
-            "10.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[18]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/heightAboveLocalReferenceSurface/@uom",
-          "kind": "attribute",
-          "value": "m",
-          "candidateValues": [
-            "m"
           ]
         }
       ]

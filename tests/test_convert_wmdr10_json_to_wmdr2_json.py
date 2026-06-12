@@ -86,7 +86,7 @@ def _observation_with_deployment(*, duplicate_data_generation: bool = False) -> 
                 "beginPosition": "2020-01-01T00:00:00Z",
                 "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
                 "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
-                "localReferenceSurface": "http://codes.wmo.int/wmdr/LocalReferenceSurface/localGround",
+                "referenceSurface": "http://codes.wmo.int/wmdr/LocalReferenceSurface/localGround",
                 "verticalDistanceFromReferenceSurface": 2.0,
                 "manufacturer": "Maker",
                 "model": "Model",
@@ -177,12 +177,12 @@ def test_build_facility_feature_uses_current_core_model() -> None:
     assert "wmdr2" not in props
     assert "themes" not in props
     assert "externalIds" not in props
-    assert props["observations"][0]["observedVariable"] == 12006
-    assert props["observations"][0]["observedGeometryType"] == "point"
-    assert props["observations"][0]["observedDomain"] == "atmosphere"
+    assert props["observations"][0]["observedProperty"] == 12006
+    assert props["observations"][0]["observedGeometry"] == "point"
+    assert props["observations"][0]["observedDomain"] == {"domain": "atmosphere"}
     assert "description" not in props["observations"][0]
-    assert props["deployments"][0]["localReferenceSurface"] == "localGround"
-    assert props["deployments"][0]["verticalDistanceFromReferenceSurface"] == 2.0
+    assert props["deployments"][0]["referenceSurface"] == "localGround"
+    assert props["deployments"][0]["verticalDistanceFromReferenceSurface"] == {"value": 2.0}
     assert props["instruments"][0]["verticalRange"] == {"min": 0.0, "max": 30.0}
 
 
@@ -1206,3 +1206,82 @@ def test_catalogues_source_config_key_is_obsolete(tmp_path: Path) -> None:
 
     with pytest.raises(SystemExit, match="catalogues.source is obsolete"):
         module.main(["--config", str(config)])
+
+
+def test_observation_uses_observed_property_and_observed_domain_object() -> None:
+    observation = module._normalize_observation(_observation_with_deployment(), index=1, facility_id="0-TEST")
+    assert observation["observedProperty"] == OBSERVED_12006
+    assert "observedVariable" not in observation
+    assert observation["observedDomain"] == {"domain": "atmosphere"}
+
+
+def test_observed_domain_object_accepts_future_domain_feature_fields() -> None:
+    observation = module._normalize_observation(
+        {
+            "observedProperty": OBSERVED_12006,
+            "observedDomain": {
+                "domainFeature": "near-surface-air",
+                "featureName": "2 m air",
+            },
+        },
+        index=1,
+        facility_id="0-TEST",
+    )
+    assert observation["observedDomain"] == {
+        "domain": "atmosphere",
+        "domainFeature": "near-surface-air",
+        "featureName": "2 m air",
+    }
+
+
+def test_deployment_vertical_distance_is_quantity_from_height_above_local_reference_surface() -> None:
+    deployment = module._normalize_deployment(
+        {
+            "id": "dep1",
+            "heightAboveLocalReferenceSurface": {"@uom": "m", "#text": "0.0"},
+        },
+        index=1,
+        facility_id="0-TEST",
+        schedule_registry={},
+    )
+    assert deployment["verticalDistanceFromReferenceSurface"] == {"value": 0.0, "uom": "m"}
+
+
+def test_deployment_temporal_geometry_uses_same_moving_point_model_as_facility() -> None:
+    deployment = module._normalize_deployment(
+        {
+            "id": "dep1",
+            "geospatialLocation": {
+                "geoLocation": "46 7 100",
+                "beginPosition": "2021-01-01",
+                "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
+            },
+        },
+        index=1,
+        facility_id="0-TEST",
+        schedule_registry={},
+    )
+    assert deployment["temporalGeometry"] == {
+        "type": "MovingPoint",
+        "coordinates": [[7.0, 46.0, 100]],
+        "dates": ["2021-01-01"],
+        "methods": [["gps"]],
+    }
+
+
+def test_observation_accepts_legacy_observed_geometry_type_but_outputs_observed_geometry() -> None:
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [
+            {
+                "observedProperty": OBSERVED_12006,
+                "observedGeometryType": GEOMETRY_POINT,
+            }
+        ],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    observation = record["properties"]["observations"][0]
+    assert observation["observedGeometry"] == "point"
+    assert "observedGeometryType" not in observation

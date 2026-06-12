@@ -13,6 +13,8 @@ Feature.  This replacement implements the June 2026 temporal-history update:
 * facilitySet is replaced by facilitySets references;
 * externalIds is no longer emitted;
 * observation-level program affiliations are emitted as programAffiliations list[str].
+* observations use observedProperty and observedDomain objects.
+* deployments use referenceSurface, optional temporalGeometry, and structured vertical distances.
 """
 
 from __future__ import annotations
@@ -1792,6 +1794,89 @@ def _flatten_deployments_from_observations(observations: Sequence[Dict[str, Any]
     return deployments
 
 
+def _observed_domain_object(raw: Dict[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
+    """Return the WMDR2 observedDomain object for an observation.
+
+    WMDR10 currently only lets us derive the broad domain from the observed
+    property code-list branch, e.g. ObservedVariableAtmosphere -> atmosphere.
+    ``domainFeature`` and ``featureName`` are new WMDR2 concepts, so they are
+    only emitted if a future/source JSON record already contains explicit
+    values for them.
+    """
+    observed_domain = raw.get("observedDomain")
+    domain = _observed_domain_from_observed_variable(observed_property)
+    domain_feature = None
+    feature_name = None
+
+    if isinstance(observed_domain, dict):
+        domain = _first_non_empty(observed_domain.get("domain"), observed_domain.get("value"), observed_domain.get("href"), domain)
+        domain_feature = _first_non_empty(observed_domain.get("domainFeature"), observed_domain.get("feature"))
+        feature_name = observed_domain.get("featureName")
+    elif _non_empty(observed_domain) and domain is None:
+        domain = observed_domain
+
+    domain_feature = _first_non_empty(domain_feature, raw.get("domainFeature"), raw.get("observedDomainFeature"))
+    feature_name = _first_non_empty(feature_name, raw.get("featureName"), raw.get("observedDomainFeatureName"))
+
+    out: Dict[str, Any] = {}
+    if _non_empty(domain):
+        out["domain"] = _normalize_code_value(domain) if isinstance(domain, str) else domain
+    if _non_empty(domain_feature):
+        out["domainFeature"] = str(domain_feature)
+    if _non_empty(feature_name):
+        out["featureName"] = str(feature_name)
+    return _clean_none(out) or None
+
+
+def _parse_quantity_value(value: Any) -> Any:
+    if isinstance(value, bool) or value in (None, ""):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None
+        try:
+            return float(text)
+        except ValueError:
+            return text
+    return value
+
+
+def _normalize_vertical_distance_from_reference_surface(raw: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Return vertical distance as a structured quantity with value/uom.
+
+    WMDR10 commonly carries this as ``heightAboveLocalReferenceSurface`` with
+    ``@uom`` and ``#text`` members.  Older intermediate examples used plain
+    ``verticalDistanceFromReferenceSurface`` or ``distanceFromReferenceSurface``
+    values; these are still accepted as input but normalized to the new object
+    shape.
+    """
+    source = _first_non_empty(
+        raw.get("heightAboveLocalReferenceSurface"),
+        raw.get("verticalDistanceFromReferenceSurface"),
+        raw.get("distanceFromReferenceSurface"),
+    )
+    if source in (None, "", [], {}):
+        return None
+
+    uom = None
+    value: Any = source
+    if isinstance(source, dict):
+        value = _first_non_empty(source.get("#text"), source.get("text"), source.get("value"))
+        uom = _first_non_empty(source.get("@uom"), source.get("uom"), source.get("unit"))
+
+    parsed_value = _parse_quantity_value(value)
+    if parsed_value in (None, "", [], {}):
+        return None
+
+    out: Dict[str, Any] = {"value": parsed_value}
+    if _non_empty(uom):
+        out["uom"] = _compact_wmdr_code_value(uom) if isinstance(uom, str) else uom
+    return _clean_none(out)
+
+
 def _normalize_deployment(
     raw: Dict[str, Any],
     *,
@@ -1818,11 +1903,9 @@ def _normalize_deployment(
         "serialNumbers": _deployment_serial_numbers(raw),
         "exposure": raw.get("exposure"),
         "representativeness": raw.get("representativeness"),
-        "localReferenceSurface": raw.get("localReferenceSurface"),
-        "verticalDistanceFromReferenceSurface": _first_non_empty(
-            raw.get("verticalDistanceFromReferenceSurface"),
-            raw.get("distanceFromReferenceSurface"),
-        ),
+        "referenceSurface": _first_non_empty(raw.get("referenceSurface"), raw.get("localReferenceSurface")),
+        "verticalDistanceFromReferenceSurface": _normalize_vertical_distance_from_reference_surface(raw),
+        "temporalGeometry": _temporal_geometry_extension(_facility_temporal_geometry_entries(raw)),
         "temporalInstrumentOperatingStatus": _normalize_temporal_instrument_operating_status(raw.get("instrumentOperatingStatus")),
         "contacts": contacts,
         "keywords": _keywords_from_values(_collect_discovery_values("deployment", raw, "keywords")),
@@ -1855,9 +1938,9 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
     explicit_obs_id = _first_non_empty(raw.get("identifier"), raw.get("@gml:id"), raw.get("@id"), raw.get("id"))
     obs_id = _first_non_empty(explicit_obs_id, _compact_wmdr_code_value(observed_variable), f"{facility_id}:observation:{index}")
     source_id = _sanitize_id(str(obs_id))
-    observed_geometry_type = raw.get("observedGeometryType") or raw.get("geometryType") or raw.get("type")
+    observed_geometry = raw.get("observedGeometry") or raw.get("observedGeometryType") or raw.get("geometryType") or raw.get("type")
     title = _first_non_empty(
-        _format_observation_title(observed_variable, observed_geometry_type),
+        _format_observation_title(observed_variable, observed_geometry),
         raw.get("title"),
         raw.get("name"),
         f"Observation {index}",
@@ -1873,9 +1956,9 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
         "id": f"observation:{source_id}",
         "title": title,
         "time": _derive_observation_time(raw, embedded_deployments),
-        "observedVariable": observed_variable,
-        "observedGeometryType": observed_geometry_type,
-        "observedDomain": _observed_domain_from_observed_variable(observed_variable),
+        "observedProperty": observed_variable,
+        "observedGeometry": observed_geometry,
+        "observedDomain": _observed_domain_object(raw, observed_variable),
         "programAffiliations": _normalize_program_affiliations(raw.get("programAffiliation")),
         "contacts": contacts,
         "temporalDataPolicy": _normalize_temporal_data_policy(

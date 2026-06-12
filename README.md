@@ -49,22 +49,6 @@ python convert_wmdr10_json_to_wmdr2_json.py \
 
 This stage writes one `.json` WMDR2 full record per facility.
 
-If shared catalogues are enabled in `config.yaml`, the converter immediately runs the catalogue externalization step after writing the embedded facility records. The catalogue source is always the converter's effective `target`.
-
-```yaml
-convert_wmdr10_json_to_wmdr2_json:
-  source: resources/wmdr10_json_examples
-  target: results/wmdr2_json_examples
-
-  catalogues:
-    enabled: true
-    records_path: results/wmdr2_json_examples/catalogue_based
-    contacts_path: results/wmdr2_json_examples/catalogue_based/catalogues/contacts.json
-    instruments_path: results/wmdr2_json_examples/catalogue_based/catalogues/instruments.json
-```
-
-With this setting, the converter writes the normal embedded records to `target`, then writes catalogue-based facility records to `catalogues.records_path`, plus shared `contacts.json` and `instruments.json`. The standalone `convert_wmdr2_json_to_catalogue_version.py` script remains available for re-running this step manually.
-
 ## WMDR2 full-record structure
 
 Each WMDR2 output file is a facility-centric JSON `Feature`.
@@ -78,13 +62,11 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
     "coordinates": [7.8232, 46.4204, 1540]
   },
   "temporalGeometry": {
-    "type": "MovingPoint",
     "coordinates": [
       [7.823197, 46.420453, 1538],
       [7.8232, 46.4204, 1540]
     ],
-    "dates": ["2000-08-17", "2024-01-17"],
-    "methods": [["gps"], []]
+    "dates": ["2000-08-17", "2024-01-17"]
   },
   "time": {
     "interval": ["2000-08-17", "2025-05-28"]
@@ -111,7 +93,7 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
 - `type`: always `Feature`.
 - `id`: facility identifier, usually based on the WIGOS station identifier.
 - `geometry`: current GeoJSON point geometry, derived from the most recent known coordinates.
-- `temporalGeometry`: optional WMDR2 `MovingPoint` coordinate history. It remains the only temporal object that uses aligned `coordinates`, `dates`, and optional geopositioning `methods` arrays. It may contain a single coordinate/date when this is needed to preserve geopositioning method metadata for the current location.
+- `temporalGeometry`: optional WMDR2 `MovingPoint` coordinate history. It remains the only temporal object that uses aligned `coordinates` and `dates` arrays.
 - `time`: facility lifecycle interval. This uses date resolution only. Unknown bounds are represented with `..`.
 - `conformsTo`: declares the WMDR2 core conformance class. The only allowed value is `http://wigos.wmo.int/spec/wmdr/2/conf/core`. Use `http`, not `https`, because this is a stable identifier URI, not primarily a dereferenceable web URL.
 - `properties`: contains the facility, observation, deployment, instrument, schedule, and facility-set references.
@@ -120,17 +102,15 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
 
 ## Temporal-history convention
 
-`temporalGeometry` is special and remains an aligned-array `MovingPoint` object. The optional `methods` array is aligned with `coordinates` and `dates`; each inner array contains zero, one, or more compact terms from `http://codes.wmo.int/wmdr/GeopositioningMethod` for the corresponding position/date. If there is only one known location but a geopositioning method is declared, `temporalGeometry` is still emitted with one coordinate/date so that the method is not lost:
+`temporalGeometry` is special and remains an aligned-array `MovingPoint` object:
 
 ```json
 "temporalGeometry": {
-  "type": "MovingPoint",
   "coordinates": [
     [7.823197, 46.420453, 1538],
     [7.8232, 46.4204, 1540]
   ],
-  "dates": ["2000-08-17", "2024-01-17"],
-  "methods": [["gps"], []]
+  "dates": ["2000-08-17", "2024-01-17"]
 }
 ```
 
@@ -234,8 +214,10 @@ The singular `facilitySet` property is obsolete.
 The WMDR2 JSON output stores compact values, not full code-list URLs.
 
 ```json
-"observedVariable": 12006,
-"observedDomain": "atmosphere",
+"observedProperty": 12006,
+"observedDomain": {
+  "domain": "atmosphere"
+},
 "facilityType": "landFixed",
 "wmoRegion": "europe"
 ```
@@ -252,13 +234,21 @@ Observations contain observation-specific metadata and references to deployments
 {
   "id": "observation:12006",
   "title": "domain: atmosphere; geometry: point; variable: 12006 Horizontal wind speed at specified distance from reference surface",
-  "observedVariable": 12006,
-  "observedDomain": "atmosphere",
-  "observedGeometryType": "point",
+  "observedProperty": 12006,
+  "observedDomain": {
+    "domain": "atmosphere",
+    "domainFeature": "near-surface-air",
+    "featureName": "2 m air"
+  },
+  "observedGeometry": "point",
   "programAffiliations": ["GAWregional"],
   "deployments": ["deployment:abc123"]
 }
 ```
+
+`observedDomain` is now an object. The converter derives `observedDomain.domain` from the observed-property code-list branch where possible, for example `ObservedVariableAtmosphere` becomes `atmosphere`. `domainFeature` and `featureName` are optional WMDR2 fields for future enrichment; WMDR10 normally does not provide values for them.
+
+`observedGeometry` replaces the former `observedGeometryType` name; the WMDR2 output avoids `*Type` suffixes for this observation geometry property.
 
 Observation-level program affiliation is intentionally non-temporal and plural: use `programAffiliations: ["GAWregional"]`. Do not use the old singular temporal-object form:
 
@@ -335,9 +325,18 @@ Deployments are referenceable objects. Their `id` is preserved from the WMDR1 XM
 {
   "id": "deployment:abc123",
   "observingMethod": "automaticWeatherStation",
-  "localReferenceSurface": "localGround",
-  "verticalDistanceFromReferenceSurface": 2.0,
+  "referenceSurface": "localGround",
+  "verticalDistanceFromReferenceSurface": {
+    "value": 2.0,
+    "uom": "m"
+  },
   "instrument": ["instrument:def456"],
+  "temporalGeometry": {
+    "type": "MovingPoint",
+    "coordinates": [[7.8232, 46.4204, 1540]],
+    "dates": ["2020-01-01"],
+    "methods": [["gps"]]
+  },
   "serialNumbers": {
     "serialNumber": ["S123"],
     "dates": ["2020-01-01"]
@@ -347,6 +346,8 @@ Deployments are referenceable objects. Their `id` is preserved from the WMDR1 XM
   ]
 }
 ```
+
+`referenceSurface` replaces the older `localReferenceSurface` property name. `verticalDistanceFromReferenceSurface` is represented as a quantity object with `value` and optional `uom`; the converter populates this from WMDR10 `heightAboveLocalReferenceSurface`, including source `@uom` when available. Deployments may also carry their own optional `temporalGeometry` object, using the same MovingPoint structure as facility `temporalGeometry`.
 
 Deployment records do not carry `title`, `type`, `manufacturer`, or `model` properties.
 
@@ -384,8 +385,6 @@ Contacts are stored in `properties.contacts`. A contact may include an `id`, `or
 
 Role values should be specific role codes, not URLs to a generic role code list.
 
-When catalogue externalization is enabled, full contact details are collected in `contacts.json`. The facility record keeps only a minimal OGC Records-compatible contact object with `identifier`, `name` and/or `organization`, optional `roles`, and a link to the catalogue entry. Contacts with e-mail addresses use identifiers such as `contact:jane.smith@example.org`; contacts without e-mail use deterministic fallback identifiers derived from name and organization.
-
 ## Keywords and themes
 
 `keywords` are retained as lightweight discovery text only when configured. If the converter section has no `discovery` block, the built-in defaults emit facility keywords from `identifier` and `name`, and deployment keywords from selected instrument/deployment fields. As soon as a `discovery` block is present in `config.yaml`, it is authoritative: omitted buckets and empty lists suppress extraction. For example, this disables keywords completely:
@@ -419,7 +418,7 @@ convert_wmdr10_json_to_wmdr2_json:
 
 ## Schema descriptions
 
-The JSON Schemas carry human-readable `description` annotations adapted from WMDR 1.0 `xs:documentation` for comparable concepts. Examples include deployment vertical distance and local reference surface, equipment manufacturer/model/description, facility environmental context, surface cover, climate zone, programme affiliation, reporting status, population, surface roughness, and facility-set association. New WMDR2-only instrument elements such as `verticalRange`, `observableVariables`, and `observableGeometry` are documented directly in the WMDR2 schema and are optional when no WMDR 1.0 source content exists.
+The JSON Schemas carry human-readable `description` annotations adapted from WMDR 1.0 `xs:documentation` for comparable concepts. Examples include deployment vertical distance and reference surface, equipment manufacturer/model/description, facility environmental context, surface cover, climate zone, programme affiliation, reporting status, population, surface roughness, and facility-set association. New WMDR2-only instrument elements such as `verticalRange`, `observableVariables`, and `observableGeometry` are documented directly in the WMDR2 schema and are optional when no WMDR 1.0 source content exists.
 
 ## Schemas and tests
 

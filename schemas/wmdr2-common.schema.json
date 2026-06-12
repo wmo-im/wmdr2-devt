@@ -702,7 +702,7 @@
       "type": "object",
       "required": [
         "id",
-        "observedVariable"
+        "observedProperty"
       ],
       "additionalProperties": true,
       "allOf": [
@@ -754,6 +754,20 @@
               "programAffiliation"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "observedVariable"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observedGeometryType"
+            ]
+          }
         }
       ],
       "properties": {
@@ -769,17 +783,34 @@
           "$ref": "#/$defs/nullableTimeInterval",
           "description": "Time interval over which the observation metadata applies."
         },
-        "observedVariable": {
+        "observedProperty": {
           "$ref": "#/$defs/codeValue",
-          "description": "Observed variable code or compact value, based on WMDR ObservedVariable terms where possible."
+          "description": "Observed property code or compact value, based on WMDR ObservedVariable terms where possible."
         },
-        "observedGeometryType": {
+        "observedGeometry": {
           "$ref": "#/$defs/codeValue",
-          "description": "Observed geometry type, based on WMDR geometry terms where possible."
+          "description": "Observed geometry, based on WMDR geometry terms where possible."
         },
         "observedDomain": {
-          "$ref": "#/$defs/codeValue",
-          "description": "Observed-variable domain, derived from the observed-variable code list where possible."
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "domain": {
+              "$ref": "#/$defs/codeValue",
+              "description": "Observed domain derived from the observed-property code-list branch where possible, e.g. atmosphere."
+            },
+            "domainFeature": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional feature type or domain feature associated with the observed domain."
+            },
+            "featureName": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional human-readable name of the observed-domain feature."
+            }
+          },
+          "description": "Observed-domain context for the observation. WMDR10 currently only supports deriving the broad domain; domainFeature and featureName are WMDR2 extensions."
         },
         "contacts": {
           "type": "array",
@@ -876,6 +907,13 @@
               "serialNumber"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "localReferenceSurface"
+            ]
+          }
         }
       ],
       "properties": {
@@ -905,24 +943,38 @@
         "representativeness": {
           "description": "Assessment of the representativeness of the observations."
         },
-        "localReferenceSurface": {
+        "referenceSurface": {
           "$ref": "#/$defs/codeValue",
-          "description": "Specified local reference surface for the vertical distance of the sensor."
+          "description": "Specified reference surface for the vertical distance of the sensor."
         },
         "verticalDistanceFromReferenceSurface": {
-          "description": "Vertical distance of the sensor from the specified reference surface, in the direction away from the earth centre. Positive values indicate above the reference surface; negative values indicate below it.",
-          "anyOf": [
-            {
-              "type": "number"
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "description": "Vertical distance from the specified reference surface."
             },
-            {
-              "type": "string"
-            },
-            {
-              "type": "object",
-              "additionalProperties": true
+            "uom": {
+              "$ref": "#/$defs/codeValue",
+              "description": "Unit of measure for the vertical distance, e.g. m."
             }
-          ]
+          },
+          "description": "Vertical distance of the sensor from the specified reference surface, represented as a quantity with value and optional unit. Positive values indicate above the reference surface; negative values indicate below it."
+        },
+        "temporalGeometry": {
+          "$ref": "#/$defs/temporalGeometry",
+          "description": "Optional geospatial location history of the deployed equipment or instrument, using the same MovingPoint structure as facility temporalGeometry."
         },
         "instrumentOperatingStatus": {
           "type": "array",

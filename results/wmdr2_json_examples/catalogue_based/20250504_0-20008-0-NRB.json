@@ -394,9 +394,11 @@
             ".."
           ]
         },
-        "observedVariable": 263,
-        "observedGeometryType": "totalColumn",
-        "observedDomain": "atmosphere",
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
         "programAffiliations": [
           "GAWregional",
           "SHADOZ"
@@ -414,9 +416,11 @@
             "2012-12-31"
           ]
         },
-        "observedVariable": 263,
-        "observedGeometryType": "totalColumn",
-        "observedDomain": "atmosphere",
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
         "programAffiliations": [
           "GAWregional",
           "SHADOZ"
@@ -453,9 +457,11 @@
             "1999-12-31"
           ]
         },
-        "observedVariable": 263,
-        "observedGeometryType": "totalColumn",
-        "observedDomain": "atmosphere",
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
         "programAffiliations": [
           "GAWregional",
           "SHADOZ"
@@ -492,9 +498,11 @@
             "2013-12-24"
           ]
         },
-        "observedVariable": 264,
-        "observedGeometryType": "verticalProfile",
-        "observedDomain": "atmosphere",
+        "observedProperty": 264,
+        "observedGeometry": "verticalProfile",
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
         "programAffiliations": [
           "GAWregional",
           "SHADOZ"
@@ -531,9 +539,11 @@
             "2013-09-04"
           ]
         },
-        "observedVariable": 264,
-        "observedGeometryType": "verticalProfile",
-        "observedDomain": "atmosphere",
+        "observedProperty": 264,
+        "observedGeometry": "verticalProfile",
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
         "programAffiliations": [
           "GAWregional",
           "SHADOZ"
@@ -570,9 +580,11 @@
             "2010-03-03"
           ]
         },
-        "observedVariable": 264,
-        "observedGeometryType": "verticalProfile",
-        "observedDomain": "atmosphere",
+        "observedProperty": 264,
+        "observedGeometry": "verticalProfile",
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
         "programAffiliations": [
           "GAWregional",
           "SHADOZ"
@@ -609,9 +621,11 @@
             "1984-05-17"
           ]
         },
-        "observedVariable": 264,
-        "observedGeometryType": "verticalProfile",
-        "observedDomain": "atmosphere",
+        "observedProperty": 264,
+        "observedGeometry": "verticalProfile",
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
         "programAffiliations": [
           "GAWregional",
           "SHADOZ"
@@ -648,9 +662,11 @@
             ".."
           ]
         },
-        "observedVariable": 325,
-        "observedGeometryType": "totalColumn",
-        "observedDomain": "atmosphere",
+        "observedProperty": 325,
+        "observedGeometry": "totalColumn",
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
         "programAffiliations": [
           "GAWregional",
           "AERONET"
@@ -668,9 +684,11 @@
             ".."
           ]
         },
-        "observedVariable": 369,
-        "observedGeometryType": "point",
-        "observedDomain": "atmosphere",
+        "observedProperty": 369,
+        "observedGeometry": "point",
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
         "programAffiliations": [
           "GAWregional"
         ],
@@ -703,9 +721,11 @@
             "2007-12-01"
           ]
         },
-        "observedVariable": 573,
-        "observedGeometryType": "point",
-        "observedDomain": "atmosphere",
+        "observedProperty": 573,
+        "observedGeometry": "point",
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
         "programAffiliations": [
           "GAWregional"
         ],
@@ -753,7 +773,11 @@
           ]
         },
         "exposure": "class1",
-        "localReferenceSurface": "localGround",
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 4.0,
+          "uom": "m"
+        },
         "keywords": [
           "Kipp&Zonen",
           "Brewer MkIII",
@@ -897,7 +921,29 @@
           "instrument:a3cfe9307c0e"
         ],
         "exposure": "class1",
-        "localReferenceSurface": "naturalGround",
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
+        },
+        "temporalGeometry": {
+          "type": "MovingPoint",
+          "coordinates": [
+            [
+              36.8653,
+              -1.33888,
+              1650
+            ]
+          ],
+          "dates": [
+            "2004-10-22"
+          ],
+          "methods": [
+            [
+              "unknown"
+            ]
+          ]
+        },
         "keywords": [
           "CIMEL",
           "CE318TS9 (Sun Photometer)",
@@ -924,7 +970,11 @@
         },
         "exposure": "class3",
         "representativeness": "toposcale",
-        "localReferenceSurface": "roofTerrace",
+        "referenceSurface": "roofTerrace",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
+        },
         "temporalInstrumentOperatingStatus": [
           {
             "instrumentOperatingStatus": "operational",
