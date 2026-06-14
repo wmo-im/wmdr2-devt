@@ -8,8 +8,8 @@ Feature.  This replacement implements the June 2026 temporal-history update:
 * root temporalGeometry remains the only aligned-array temporal object;
 * every other temporal* member is emitted as an array of objects;
 * environmental histories are grouped under properties.environment;
-* temporalTopographyBathymetry is removed and its members are promoted to
-  first-level environment properties;
+* temporalPopulationDensities is obsolete;
+* topography/bathymetry context is emitted as environment.topographyBathymetry;
 * facilitySet is replaced by facilitySets references;
 * externalIds is no longer emitted;
 * observation-level program affiliations are emitted as programAffiliations list[str].
@@ -1016,57 +1016,103 @@ def _normalize_temporal_surface_cover(value: Any) -> Optional[List[Dict[str, Any
     return out or None
 
 
-def _parse_population_density_value(value: Any) -> Any:
+def _parse_nullable_number(value: Any) -> Optional[float]:
+    if value in (None, "", [], {}):
+        return None
+    if isinstance(value, bool):
+        return None
     if isinstance(value, (int, float)):
-        return value
-    if isinstance(value, list):
-        nums: List[float] = []
-        for item in value:
-            try:
-                nums.append(float(item))
-            except Exception:
-                return value
-        if len(nums) == 1:
-            return nums[0]
-        return nums
+        return float(value)
     if isinstance(value, str):
+        text = value.strip()
+        if not text or _is_unknown_token(text):
+            return None
+        try:
+            return float(text)
+        except ValueError:
+            return None
+    return None
+
+
+def _parse_two_value_number_array(value: Any) -> Optional[List[Optional[float]]]:
+    if value in (None, "", [], {}):
+        return None
+
+    if isinstance(value, list):
+        values = [_parse_nullable_number(item) for item in value[:2]]
+    elif isinstance(value, str):
         parts = [part for part in re.split(r"[,\s]+", value.strip()) if part]
-        nums: List[float] = []
-        for part in parts:
-            try:
-                nums.append(float(part))
-            except Exception:
-                return value
-        if len(nums) == 1:
-            return nums[0]
-        if nums:
-            return nums
-    return value
+        values = [_parse_nullable_number(part) for part in parts[:2]]
+    else:
+        values = [_parse_nullable_number(value)]
+
+    while len(values) < 2:
+        values.append(None)
+
+    values = values[:2]
+    if all(item is None for item in values):
+        return None
+    return values
 
 
-def _normalize_temporal_population_densities(value: Any) -> Optional[List[Dict[str, Any]]]:
-    out: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        record = _temporal_object_from_item(
-            item,
-            output_key="populationDensity",
-            value_keys=("populationDensity", "density", "value"),
-            allow_structured_fallback=False,
-        )
-        if record:
-            record["populationDensity"] = _parse_population_density_value(record["populationDensity"])
-            out.append(record)
-    out = _uniq_dicts(_clean_none(out))
-    return out or None
+def _parse_two_value_perimeter_array(value: Any) -> List[float]:
+    parsed = _parse_two_value_number_array(value)
+    if parsed is None:
+        return [10.0, 50.0]
+
+    out: List[float] = []
+    for fallback, item in zip((10.0, 50.0), parsed):
+        out.append(float(item) if item is not None else fallback)
+    return out
 
 
 def _normalize_temporal_population(value: Any) -> Optional[List[Dict[str, Any]]]:
-    return _normalize_temporal_values(
-        value,
-        output_key="population",
-        value_keys=("population", "value", "href"),
-        allow_structured_fallback=True,
-    )
+    out: List[Dict[str, Any]] = []
+
+    for item in _as_list(value):
+        if isinstance(item, dict):
+            raw_population = _first_non_empty(
+                item.get("population"),
+                item.get("value"),
+                item.get("href"),
+            )
+            population = _parse_two_value_number_array(raw_population)
+            if population is None:
+                continue
+
+            raw_perimeter = _first_non_empty(
+                item.get("perimeter_km"),
+                item.get("perimeterKm"),
+                item.get("perimeter"),
+            )
+            start, end = _extract_interval(item)
+            dates = [
+                _normalize_date_value(start) or _temporal_begin_date(item),
+                _normalize_date_value(end) or "..",
+            ]
+
+            out.append(
+                {
+                    "population": population,
+                    "perimeter_km": _parse_two_value_perimeter_array(raw_perimeter),
+                    "dates": dates,
+                }
+            )
+            continue
+
+        population = _parse_two_value_number_array(item)
+        if population is not None:
+            out.append(
+                {
+                    "population": population,
+                    "perimeter_km": [10.0, 50.0],
+                    "dates": ["..", ".."],
+                }
+            )
+
+    out = _uniq_dicts(_clean_none(_preserve_nulls(out)))
+    out = _restore_null_sentinel(out)
+    return out or None
 
 
 def _normalize_temporal_surface_roughness(value: Any) -> Optional[List[Dict[str, Any]]]:
@@ -1096,6 +1142,33 @@ def _topography_items(facility: Dict[str, Any], target_key: str) -> List[Any]:
     return out
 
 
+def _normalize_topography_bathymetry(facility: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    out: Dict[str, Any] = {}
+
+    for source_key in (
+        "localTopography",
+        "relativeElevation",
+        "topographicContext",
+        "altitudeOrDepth",
+    ):
+        values = _topography_items(facility, source_key)
+        temporal_values = _normalize_temporal_values(
+            values,
+            output_key=source_key,
+            value_keys=(source_key, "value", "href"),
+        )
+        if not temporal_values:
+            continue
+
+        # The WMDR2 target is non-temporal here. Use the latest normalized value
+        # as the current topography/bathymetry context value.
+        value = temporal_values[-1].get(source_key)
+        if _non_empty(value):
+            out[source_key] = value
+
+    return _clean_none(out) or None
+
+
 def _normalize_environment(facility: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     environment: Dict[str, Any] = {}
 
@@ -1111,29 +1184,15 @@ def _normalize_environment(facility: Dict[str, Any]) -> Optional[Dict[str, Any]]
     if temporal_population:
         environment["temporalPopulation"] = temporal_population
 
-    temporal_population_densities = _normalize_temporal_population_densities(
-        _first_non_empty(facility.get("populationDensity"), facility.get("populationDensities"), facility.get("demography"))
-    )
-    if temporal_population_densities:
-        environment["temporalPopulationDensities"] = temporal_population_densities
-
     temporal_surface_roughness = _normalize_temporal_surface_roughness(
         _first_non_empty(facility.get("surfaceRoughness"), facility.get("roughness"))
     )
     if temporal_surface_roughness:
         environment["temporalSurfaceRoughness"] = temporal_surface_roughness
 
-    promoted = {
-        "localTopography": "temporalLocalTopography",
-        "relativeElevation": "temporalRelativeElevation",
-        "topographicContext": "temporalTopographicContext",
-        "altitudeOrDepth": "temporalAltitudeOrDepth",
-    }
-    for source_key, output_key in promoted.items():
-        values = _topography_items(facility, source_key)
-        temporal_values = _normalize_temporal_values(values, output_key=source_key, value_keys=(source_key, "value", "href"))
-        if temporal_values:
-            environment[output_key] = temporal_values
+    topography_bathymetry = _normalize_topography_bathymetry(facility)
+    if topography_bathymetry:
+        environment["topographyBathymetry"] = topography_bathymetry
 
     return _clean_none(environment) or None
 

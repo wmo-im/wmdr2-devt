@@ -316,55 +316,47 @@
     "temporalPopulation": {
       "type": "array",
       "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
+        "type": "object",
+        "required": [
+          "population",
+          "perimeter_km",
+          "dates"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "population": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "description": "Population estimates aligned with perimeter_km. Use null where one perimeter-specific estimate is unknown."
           },
-          {
-            "type": "object",
-            "required": [
-              "population"
-            ],
-            "properties": {
-              "population": {}
-            }
-          }
-        ]
-      },
-      "description": "Population history around the observing facility."
-    },
-    "temporalPopulationDensities": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
+          "perimeter_km": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number"
+            },
+            "description": "Perimeters in kilometres for which the corresponding population estimates are valid."
           },
-          {
-            "type": "object",
-            "required": [
-              "populationDensity"
-            ],
-            "properties": {
-              "populationDensity": {
-                "oneOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                      "type": "number"
-                    }
-                  }
-                ]
-              }
-            }
+          "dates": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "$ref": "#/$defs/dateOrOpen"
+            },
+            "description": "Validity interval for this population statement."
           }
-        ]
+        }
       },
-      "description": "Population-density history around the observing facility."
+      "description": "Population history around the observing facility. Each entry contains two population estimates aligned with two perimeter_km values and a two-date validity interval."
     },
     "temporalSurfaceRoughness": {
       "type": "array",
@@ -388,12 +380,6 @@
       },
       "description": "Surface-roughness history for the facility."
     },
-    "temporalEnvironmentValue": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/temporalObjectBase"
-      }
-    },
     "environment": {
       "type": "object",
       "additionalProperties": false,
@@ -408,42 +394,17 @@
         },
         "temporalPopulation": {
           "$ref": "#/$defs/temporalPopulation",
-          "description": "Population in the vicinity of the observing facility, with dates from which values apply."
-        },
-        "temporalPopulationDensities": {
-          "$ref": "#/$defs/temporalPopulationDensities",
-          "description": "Population density in the vicinity of the observing facility, with dates from which values apply."
+          "description": "Population in the vicinity of the observing facility, with validity dates."
         },
         "temporalSurfaceRoughness": {
           "$ref": "#/$defs/temporalSurfaceRoughness",
           "description": "Surface roughness at the facility, with dates from which values apply."
         },
-        "temporalLocalTopography": {
-          "$ref": "#/$defs/temporalEnvironmentValue",
-          "description": "Local topography or bathymetry context of the facility, with dates from which values apply."
-        },
-        "temporalRelativeElevation": {
-          "$ref": "#/$defs/temporalEnvironmentValue",
-          "description": "Relative elevation component of the facility topography/bathymetry context, with dates from which values apply."
-        },
-        "temporalTopographicContext": {
-          "$ref": "#/$defs/temporalEnvironmentValue",
-          "description": "Topographic context of the facility, with dates from which values apply."
-        },
-        "temporalAltitudeOrDepth": {
-          "$ref": "#/$defs/temporalEnvironmentValue",
-          "description": "Altitude or depth component of the facility topography/bathymetry context, with dates from which values apply."
+        "topographyBathymetry": {
+          "$ref": "#/$defs/topographyBathymetry",
+          "description": "Topographic or bathymetric context of the observing facility."
         }
       },
-      "allOf": [
-        {
-          "not": {
-            "required": [
-              "temporalTopographyBathymetry"
-            ]
-          }
-        }
-      ],
       "description": "Environmental context and surroundings of the observing facility that may influence observations."
     },
     "reportingStatusTimeline": {
@@ -1270,6 +1231,26 @@
         "$ref": "#/$defs/codeValue"
       },
       "uniqueItems": true
+    },
+    "topographyBathymetry": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "localTopography": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "relativeElevation": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "topographicContext": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "altitudeOrDepth": {
+          "$ref": "#/$defs/codeValue"
+        }
+      },
+      "description": "Topographic or bathymetric context of the observing facility."
     }
   }
 }

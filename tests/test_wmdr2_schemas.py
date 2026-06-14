@@ -97,27 +97,31 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             "facilityType": "landFixed",
             "wmoRegion": "europe",
             "temporalTerritory": [
-                {"territory": "BEL", "date": "2016-04-28"}
+                {"territory": "BEL", "date": "2016-04-28"},
             ],
             "environment": {
                 "temporalClimateZone": [
-                    {"climateZone": "Cfb", "date": ".."}
+                    {"climateZone": "Cfb", "date": ".."},
                 ],
                 "temporalSurfaceCover": [
-                    {"surfaceCover": "grassland", "date": ".."}
+                    {"surfaceCover": "grassland", "date": ".."},
                 ],
                 "temporalPopulation": [
-                    {"population": 1000, "date": "2020-01-01"}
-                ],
-                "temporalPopulationDensities": [
-                    {"populationDensity": [100.0, 200.0], "date": "2020-01-01"}
+                    {
+                        "population": [1000, None],
+                        "perimeter_km": [10, 50],
+                        "dates": ["2020-01-01", ".."],
+                    }
                 ],
                 "temporalSurfaceRoughness": [
-                    {"surfaceRoughness": "rough", "date": "2020-01-01"}
+                    {"surfaceRoughness": "rough", "date": "2020-01-01"},
                 ],
-                "temporalLocalTopography": [
-                    {"localTopography": "flat", "date": "2020-01-01"}
-                ],
+                "topographyBathymetry": {
+                    "localTopography": "flat",
+                    "relativeElevation": "middle",
+                    "topographicContext": "rises",
+                    "altitudeOrDepth": "veryHighAltitude",
+                },
             },
             "temporalProgramAffiliation": [
                 {
@@ -141,7 +145,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "timeZone": "UTC",
                     "duration": "PT0S",
                     "recurrenceRules": [
-                        {"@type": "RecurrenceRule", "frequency": "daily"}
+                        {"@type": "RecurrenceRule", "frequency": "daily"},
                     ],
                 }
             ],
@@ -160,7 +164,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                         "uom": [None, "mm"],
                     },
                     "deployments": [
-                        "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06"
+                        "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
                     ],
                 }
             ],
@@ -177,7 +181,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                         "dates": [".."],
                     },
                     "temporalObservingSchedule": [
-                        {"observingSchedule": "schedule_daily_12", "date": "2025-01-01"}
+                        {"observingSchedule": "schedule_daily_12", "date": "2025-01-01"},
                     ],
                 }
             ],
@@ -213,7 +217,7 @@ def test_observation_program_affiliation_temporal_object_is_invalid() -> None:
     observation = instance["properties"]["observations"][0]
     observation.pop("programAffiliations", None)
     observation["programAffiliation"] = [
-        {"programAffiliation": "GAWregional", "date": ".."}
+        {"programAffiliation": "GAWregional", "date": ".."},
     ]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
@@ -242,18 +246,22 @@ def test_time_intervals_use_date_resolution_only() -> None:
     instance = _valid_facility_record_feature()
     instance["time"] = {"interval": ["2000-08-17", "2025-05-28"]}
     assert _validate(RECORD_SCHEMA, instance) == []
+
     instance["time"] = {"interval": ["2000-08-17T00:00:00Z", "2025-05-28T00:00:00Z"]}
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_temporal_geometry_is_the_only_aligned_temporal_object() -> None:
+def test_temporal_geometry_is_the_root_aligned_temporal_object() -> None:
     instance = _valid_facility_record_feature()
     assert _validate(RECORD_SCHEMA, instance) == []
+
     instance["properties"]["temporalGeometry"] = deepcopy(instance["temporalGeometry"])
     assert not _is_valid(RECORD_SCHEMA, instance)
+
     instance = _valid_facility_record_feature()
     instance["temporalGeometry"].pop("type")
     assert not _is_valid(RECORD_SCHEMA, instance)
+
     instance = _valid_facility_record_feature()
     instance["temporalGeometry"]["type"] = "Point"
     assert not _is_valid(RECORD_SCHEMA, instance)
@@ -286,10 +294,43 @@ def test_temporal_geometry_methods_are_optional_aligned_term_lists() -> None:
     assert _validate(RECORD_SCHEMA, instance) == []
 
 
-def test_environment_topography_bathymetry_wrapper_is_invalid() -> None:
+def test_environment_topography_bathymetry_object_is_valid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["environment"]["topographyBathymetry"] = {
+        "localTopography": "slope",
+        "relativeElevation": "middle",
+        "topographicContext": "rises",
+        "altitudeOrDepth": "veryHighAltitude",
+    }
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_environment_obsolete_topography_bathymetry_timeline_is_invalid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["environment"]["temporalTopographyBathymetry"] = [
-        {"topographyBathymetry": {"localTopography": "flat"}, "date": "2020-01-01"}
+        {"topographyBathymetry": {"localTopography": "flat"}, "date": "2020-01-01"},
+    ]
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_environment_obsolete_population_density_timeline_is_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["environment"]["temporalPopulationDensities"] = [
+        {"populationDensity": [100.0, 200.0], "date": "2020-01-01"},
+    ]
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_temporal_population_requires_population_perimeter_and_dates() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["environment"]["temporalPopulation"] = [
+        {"population": [1000, None], "perimeter_km": [10, 50], "dates": ["2020-01-01", ".."]},
+    ]
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    instance = _valid_facility_record_feature()
+    instance["properties"]["environment"]["temporalPopulation"] = [
+        {"population": 1000, "date": "2020-01-01"},
     ]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
@@ -298,7 +339,7 @@ def test_environmental_histories_are_invalid_as_direct_facility_properties() -> 
     instance = _valid_facility_record_feature()
     instance["properties"].pop("environment", None)
     instance["properties"]["temporalClimateZone"] = [
-        {"climateZone": "Cfb", "date": "1982-03-13"}
+        {"climateZone": "Cfb", "date": "1982-03-13"},
     ]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
@@ -307,6 +348,7 @@ def test_external_ids_and_singular_facility_set_are_invalid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["externalIds"] = [{"value": "0-20000-0-06494"}]
     assert not _is_valid(RECORD_SCHEMA, instance)
+
     instance = _valid_facility_record_feature()
     instance["properties"]["facilitySet"] = "GAW"
     assert not _is_valid(RECORD_SCHEMA, instance)
@@ -334,7 +376,7 @@ def test_observation_description_is_not_part_of_current_core_model() -> None:
 def test_observation_deployments_are_id_references_not_objects() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observations"][0]["deployments"] = [
-        {"id": "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06"}
+        {"id": "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06"},
     ]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
@@ -343,6 +385,7 @@ def test_deployment_title_and_manufacturer_are_invalid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["deployments"][0]["title"] = "Deployment title"
     assert not _is_valid(RECORD_SCHEMA, instance)
+
     instance = _valid_facility_record_feature()
     instance["properties"]["deployments"][0]["manufacturer"] = "Vaisala"
     assert not _is_valid(RECORD_SCHEMA, instance)

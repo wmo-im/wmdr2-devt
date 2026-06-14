@@ -237,17 +237,17 @@ def test_facility_environment_wraps_environmental_histories_as_arrays_of_objects
             "surfaceCover": "http://codes.wmo.int/wmdr/SurfaceCover/urbanBuiltup",
             "beginPosition": "1981-01-01T00:00:00Z",
         },
-        "populationDensity": {
-            "populationDensity": [100, 200],
+        "population": {
+            "population": [100, None],
+            "perimeter_km": [10, 50],
             "beginPosition": "1990-01-01T00:00:00Z",
         },
         "surfaceRoughness": {
             "surfaceRoughness": "http://codes.wmo.int/wmdr/SurfaceRoughness/rough",
             "beginPosition": "1991-01-01T00:00:00Z",
         },
-        "localTopography": {
-            "value": "flat",
-            "beginPosition": "1970-01-01T00:00:00Z",
+        "topographyBathymetry": {
+            "localTopography": "flat",
         },
     }
     record = module.build_facility_feature(
@@ -268,15 +268,15 @@ def test_facility_environment_wraps_environmental_histories_as_arrays_of_objects
     assert environment["temporalSurfaceCover"] == [
         {"surfaceCover": "urbanBuiltup", "date": "1981-01-01"}
     ]
-    assert environment["temporalPopulationDensities"] == [
-        {"populationDensity": [100, 200], "date": "1990-01-01"}
+    assert environment["temporalPopulation"] == [
+        {"population": [100.0, None], "perimeter_km": [10.0, 50.0], "dates": ["1990-01-01", ".."]}
     ]
     assert environment["temporalSurfaceRoughness"] == [
         {"surfaceRoughness": "rough", "date": "1991-01-01"}
     ]
-    assert environment["temporalLocalTopography"] == [
-        {"localTopography": "flat", "date": "1970-01-01"}
-    ]
+    assert environment["topographyBathymetry"] == {"localTopography": "flat"}
+    assert "temporalPopulationDensities" not in environment
+    assert "temporalLocalTopography" not in environment
     assert "temporalTopographyBathymetry" not in environment
 
 # ---------------------------------------------------------------------------
@@ -674,18 +674,23 @@ def test_surface_cover_preserves_classification_inside_each_temporal_object() ->
         ("100 200", [100.0, 200.0]),
         ("100,200", [100.0, 200.0]),
         ([1, 2], [1.0, 2.0]),
-        ("100", 100.0),
-        ("not numeric", "not numeric"),
+        ("100", [100.0, None]),
+        ("not numeric", None),
     ],
 )
-def test_parse_population_density_value(raw: Any, expected: Any) -> None:
-    assert module._parse_population_density_value(raw) == expected
+def test_parse_two_value_number_array(raw: Any, expected: list[float | None] | None) -> None:
+    assert module._parse_two_value_number_array(raw) == expected
 
 
-def test_normalize_temporal_population_density_accepts_numeric_range_and_date() -> None:
-    assert module._normalize_temporal_population_densities(
-        {"populationDensity": "100 200", "beginPosition": "1990-01-01T00:00:00Z"}
-    ) == [{"populationDensity": [100.0, 200.0], "date": "1990-01-01"}]
+def test_parse_two_value_perimeter_array_defaults_missing_values() -> None:
+    assert module._parse_two_value_perimeter_array(None) == [10.0, 50.0]
+    assert module._parse_two_value_perimeter_array([5, None]) == [5.0, 50.0]
+
+
+def test_normalize_temporal_population_uses_population_perimeter_and_dates() -> None:
+    assert module._normalize_temporal_population(
+        {"population": "100", "perimeter_km": [10, 50], "beginPosition": "1990-01-01T00:00:00Z"}
+    ) == [{"population": [100.0, None], "perimeter_km": [10.0, 50.0], "dates": ["1990-01-01", ".."]}]
 
 
 def test_normalize_temporal_surface_roughness_is_array_of_objects() -> None:
@@ -694,7 +699,7 @@ def test_normalize_temporal_surface_roughness_is_array_of_objects() -> None:
     ) == [{"surfaceRoughness": "rough", "date": "1991-01-01"}]
 
 
-def test_environment_promotes_topography_bathymetry_sub_elements() -> None:
+def test_environment_uses_topography_bathymetry_object() -> None:
     environment = module._normalize_environment(
         {
             "topographyBathymetry": {
@@ -706,10 +711,12 @@ def test_environment_promotes_topography_bathymetry_sub_elements() -> None:
         }
     )
     assert environment == {
-        "temporalLocalTopography": [{"localTopography": "flat", "date": "2020-01-01"}],
-        "temporalRelativeElevation": [{"relativeElevation": "ridge", "date": "2021-01-01"}],
-        "temporalTopographicContext": [{"topographicContext": "valley", "date": "2022-01-01"}],
-        "temporalAltitudeOrDepth": [{"altitudeOrDepth": 123, "date": "2023-01-01"}],
+        "topographyBathymetry": {
+            "localTopography": "flat",
+            "relativeElevation": "ridge",
+            "topographicContext": "valley",
+            "altitudeOrDepth": 123,
+        }
     }
 
 
