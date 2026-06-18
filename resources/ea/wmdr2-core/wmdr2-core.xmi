@@ -198,13 +198,13 @@
 				</ownedEnd>
 			</packagedElement>
 			<packagedElement xmi:type="uml:Class" xmi:id="EAID_D5A2A12F_D397_4eea_AC75_E35A7C9EB2F6" name="domain" visibility="public">
-				<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_1DBC14A4_4A9A_4f7a_8C82_FA151372F959" name="domain" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
-					<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000061_4A9A_4f7a_8C82_FA151372F959" value="1"/>
-					<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000062_4A9A_4f7a_8C82_FA151372F959" value="1"/>
-				</ownedAttribute>
 				<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_39BD91F5_C0D7_4b03_96E6_E955F3489D09" name="domainFeature" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
-					<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000063_C0D7_4b03_96E6_E955F3489D09" value="0"/>
-					<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000064_C0D7_4b03_96E6_E955F3489D09" value="1"/>
+					<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000061_C0D7_4b03_96E6_E955F3489D09" value="0"/>
+					<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000062_C0D7_4b03_96E6_E955F3489D09" value="1"/>
+				</ownedAttribute>
+				<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_1DBC14A4_4A9A_4f7a_8C82_FA151372F959" name="domainName" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
+					<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000063_4A9A_4f7a_8C82_FA151372F959" value="1"/>
+					<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000064_4A9A_4f7a_8C82_FA151372F959" value="1"/>
 				</ownedAttribute>
 				<ownedAttribute xmi:type="uml:Property" xmi:id="EAID_8A9DB357_21C3_4b53_982C_7A15704F78B9" name="featureName" visibility="private" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false">
 					<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000065_21C3_4b53_982C_7A15704F78B9" value="0"/>
@@ -625,15 +625,15 @@
 			<element xmi:idref="EAPK_1ACEFA57_4ABB_4d99_90F3_D1320B5B2970" xmi:type="uml:Package" name="WMDR2-core" scope="public">
 				<model package2="EAID_1ACEFA57_4ABB_4d99_90F3_D1320B5B2970" package="EAPK_030FABF6_519D_492e_BB44_67C658B5D31F" tpos="4" ea_localid="4" ea_eleType="package"/>
 				<properties isSpecification="false" sType="Package" nType="0" scope="public"/>
-				<project author="jkl" version="0.1.11" phase="1.0" created="2026-03-06 10:35:23" modified="2026-06-18 12:21:26" complexity="1" status="Proposed"/>
+				<project author="jkl" version="0.1.12" phase="1.0" created="2026-03-06 10:35:23" modified="2026-06-18 15:48:07" complexity="1" status="Proposed"/>
 				<code gentype="&lt;none&gt;"/>
 				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 				<tags/>
 				<xrefs/>
 				<extendedProperties tagged="0" package_name="Model"/>
-				<packageproperties version="0.1.11" tpos="4"/>
+				<packageproperties version="0.1.12" tpos="4"/>
 				<paths/>
-				<times created="2026-03-06 10:35:23" modified="2026-06-18 12:21:26" lastloaddate="2019-01-23 13:38:11" lastsavedate="2019-01-23 13:38:11"/>
+				<times created="2026-03-06 10:35:23" modified="2026-06-18 15:48:07" lastloaddate="2019-01-23 13:38:11" lastsavedate="2019-01-23 13:38:11"/>
 				<flags iscontrolled="FALSE" isprotected="FALSE" batchsave="0" batchload="0" usedtd="FALSE" logxml="FALSE"/>
 			</element>
 			<element xmi:idref="EAID_5E9541CA_F6B8_4646_9F68_078DC8F5AFD5" xmi:type="uml:Class" name="contact" scope="public">
@@ -1026,21 +1026,6 @@
 				<xrefs/>
 				<extendedProperties tagged="0" package_name="WMDR2-core"/>
 				<attributes>
-					<attribute xmi:idref="EAID_1DBC14A4_4A9A_4f7a_8C82_FA151372F959" name="domain" scope="Private">
-						<initial/>
-						<documentation value="The largest scale in WIGOS, cf. http://codes.wmo.int/wmdr/Domain&#xA;"/>
-						<model ea_localid="350" ea_guid="{1DBC14A4-4A9A-4f7a-8C82-FA151372F959}"/>
-						<properties collection="false" static="0" duplicates="0" changeability="changeable"/>
-						<coords ordered="0"/>
-						<containment containment="Not Specified" position="0"/>
-						<stereotype/>
-						<bounds lower="1" upper="1"/>
-						<options/>
-						<style/>
-						<styleex value="volatile=0;"/>
-						<tags/>
-						<xrefs/>
-					</attribute>
 					<attribute xmi:idref="EAID_39BD91F5_C0D7_4b03_96E6_E955F3489D09" name="domainFeature" scope="Private">
 						<initial/>
 						<documentation value="Describes the type of the larger-scale environmental target or ultimate-feature-of-interest, of an observation.&#xA;&#xA;Concept motivated by requirements from hydrology, but may be useful elsewhere. New code list is proposed, with terms like&#xA;- river basin&#xA;- lake&#xA;- river&#xA;- catchment&#xA;&#xA;- canopy&#xA;&#xA;- epilimnion&#xA;- hypolimnion&#xA;&#xA;- troposphere&#xA;- tropopause&#xA;- stratosphere&#xA;&#xA;- thermocline (useful as a general term, but needs &quot;domain&quot;)&#xA;- boundary layer (useful as a general term, but needs &quot;domain&quot;)&#xA;&#xA;- ...&#xA;"/>
@@ -1050,6 +1035,21 @@
 						<containment containment="Not Specified" position="1"/>
 						<stereotype/>
 						<bounds lower="0" upper="1"/>
+						<options/>
+						<style/>
+						<styleex value="volatile=0;"/>
+						<tags/>
+						<xrefs/>
+					</attribute>
+					<attribute xmi:idref="EAID_1DBC14A4_4A9A_4f7a_8C82_FA151372F959" name="domainName" scope="Private">
+						<initial/>
+						<documentation value="The largest scale in WIGOS, cf. http://codes.wmo.int/wmdr/Domain&#xA;"/>
+						<model ea_localid="350" ea_guid="{1DBC14A4-4A9A-4f7a-8C82-FA151372F959}"/>
+						<properties collection="false" static="0" duplicates="0" changeability="changeable"/>
+						<coords ordered="0"/>
+						<containment containment="Not Specified" position="0"/>
+						<stereotype/>
+						<bounds lower="1" upper="1"/>
 						<options/>
 						<style/>
 						<styleex value="volatile=0;"/>
@@ -2849,11 +2849,11 @@
 		<diagrams>
 			<diagram xmi:id="EAID_1C264E1A_10CD_4b0e_9565_9890D5B54547">
 				<model package="EAPK_1ACEFA57_4ABB_4d99_90F3_D1320B5B2970" localID="5" owner="EAPK_1ACEFA57_4ABB_4d99_90F3_D1320B5B2970"/>
-				<properties name="WMDR2-core" type="Logical" documentation="wmdr2-core&#xA;Notes&#xA;1. temporalExtent shall be realized as time:interval&#xA;2. temporal&amp;lt;Name&amp;gt; elements other than temporalGeometry shall be realized as arrays of dictionary objects for (begin) date, and the values of &amp;lt;Name&amp;gt;, e.g., &#xA;temporalTerritory = [{&#xA;&quot;date&quot;: &quot;2000-01-01&quot;,&#xA;&quot;territory&quot;: &quot;&amp;lt;ISO1&amp;gt;&quot;&#xA;},&#xA;{&#xA;&quot;date&quot; 2024-07-13&quot;, &#xA;&quot;territory&quot;: &quot;&amp;lt;ISO2&amp;gt;&quot;&#xA;}.&#xA;3. Following the OGC Features model, geometry = geolocation = coordinates + elevation&#xA;4. Schedules&#xA;&#xA;v0.1.4 Introduce instrument class.&#xA;v0.1.5 Expand instrument class.&#xA;v0.1.6 introduce more elements&#xA;v0.1.8 &#xA;   - require and expanded observation.observedDomain (includes domain, domainFeature [0..1], featureName [0..1])&#xA;   - introduce temporalGeometry.methods&#xA;v0.1.9&#xA;   - introduce deployment.temporalGeometry [0..1], verticalDistanceFromReferenceSurface [0..1]&#xA;   - rename localReferenceSurface to referenceSurface&#xA;   - rename observation.observedVariable to observation.observedProperty &#xA;   - remove xType suffix to manage expectations: many elements are 'Types', i.e., codelist-based&#xA;v0.1.10&#xA;   - rename environment.temporalTopographyBathymetry to topographyBathymetry&#xA;   - add environment.temporalSurfaceRoughness&#xA;   - rename instrumentCapability to instrument&#xA;   - rename instrumet.observableVariable to observedProperty, observableGeometry to observedGeometry.&#xA;v.0.1.11&#xA;   - rename observedDomain to domain&#xA;   - move reporting.officialStatus to deployment.temporalOfficialStatus&#xA;   - remove inline deployment.temporalObservingSchedule as being redundant to the explicit association.&#xA;   - update cardinality of association to deployment.temporalObservingSchedule&#xA;   - model verticalDistanceFromReferenceSurface with &quot;value&quot; and &quot;uom&quot;&#xA;   - update documentation"/>
-				<project author="jkl" version="0.1.11" created="2026-03-06 10:35:24" modified="2026-06-18 12:17:45"/>
+				<properties name="WMDR2-core" type="Logical" documentation="wmdr2-core&#xA;Notes&#xA;1. temporalExtent shall be realized as time:interval&#xA;2. temporal&amp;lt;Name&amp;gt; elements other than temporalGeometry shall be realized as arrays of dictionary objects for (begin) date, and the values of &amp;lt;Name&amp;gt;, e.g., &#xA;temporalTerritory = [{&#xA;&quot;date&quot;: &quot;2000-01-01&quot;,&#xA;&quot;territory&quot;: &quot;&amp;lt;ISO1&amp;gt;&quot;&#xA;},&#xA;{&#xA;&quot;date&quot; 2024-07-13&quot;, &#xA;&quot;territory&quot;: &quot;&amp;lt;ISO2&amp;gt;&quot;&#xA;}.&#xA;3. Following the OGC Features model, geometry = geolocation = coordinates + elevation&#xA;4. Schedules&#xA;&#xA;v0.1.4 Introduce instrument class.&#xA;v0.1.5 Expand instrument class.&#xA;v0.1.6 introduce more elements&#xA;v0.1.8 &#xA;   - require and expanded observation.observedDomain (includes domain, domainFeature [0..1], featureName [0..1])&#xA;   - introduce temporalGeometry.methods&#xA;v0.1.9&#xA;   - introduce deployment.temporalGeometry [0..1], verticalDistanceFromReferenceSurface [0..1]&#xA;   - rename localReferenceSurface to referenceSurface&#xA;   - rename observation.observedVariable to observation.observedProperty &#xA;   - remove xType suffix to manage expectations: many elements are 'Types', i.e., codelist-based&#xA;v0.1.10&#xA;   - rename environment.temporalTopographyBathymetry to topographyBathymetry&#xA;   - add environment.temporalSurfaceRoughness&#xA;   - rename instrumentCapability to instrument&#xA;   - rename instrumet.observableVariable to observedProperty, observableGeometry to observedGeometry.&#xA;v.0.1.11&#xA;   - rename observedDomain to domain&#xA;   - move reporting.officialStatus to deployment.temporalOfficialStatus&#xA;   - remove inline deployment.temporalObservingSchedule as being redundant to the explicit association.&#xA;   - update cardinality of association to deployment.temporalObservingSchedule&#xA;   - model verticalDistanceFromReferenceSurface with &quot;value&quot; and &quot;uom&quot;&#xA;   - update documentation&#xA;v0.1.12&#xA;   - rename observation.domain.domain to observation.domain.domainName"/>
+				<project author="jkl" version="0.1.12" created="2026-03-06 10:35:24" modified="2026-06-18 15:49:09"/>
 				<style1 value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=1;PPgs.cy=1;DocSize.cx=826;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;ShowShape=1;AllDockable=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
-				<style2 value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;SaveTag=E2CDB85D;"/>
-				<swimlanes value="locked=false;orientation=0;width=0;inbar=false;names=false;color=-1;bold=false;fcol=0;tcol=-1;ofCol=-1;ufCol=-1;hl=0;ufh=0;hh=0;cls=0;bw=0;hli=0;SwimlaneFont=lfh:-13,lfw:0,lfi:0,lfu:0,lfs:0,lfface:Calibri,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>
+				<style2 value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;SaveTag=5B37AA18;"/>
+				<swimlanes value="locked=false;orientation=0;width=0;inbar=false;names=false;color=-1;bold=false;fcol=0;tcol=-1;ofCol=-1;ufCol=-1;hl=0;ufh=0;hh=0;cls=0;bw=0;hli=0;SwimlaneFont=lfh:-16,lfw:0,lfi:0,lfu:0,lfs:0,lfface:Calibri,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>
 				<matrixitems value="locked=false;matrixactive=false;swimlanesactive=true;kanbanactive=false;width=1;clrLine=0;"/>
 				<extendedProperties/>
 				<elements>
@@ -2895,7 +2895,7 @@
 				<project author="jkl" version="0.1.4" created="2026-04-13 08:02:41" modified="2026-04-13 08:12:43"/>
 				<style1 value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=1;PPgs.cy=1;DocSize.cx=826;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;ShowShape=1;AllDockable=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
 				<style2 value="SaveTag=2AC9629B;ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;MDGDgm=;STBLDgm=;ShowNotes=0;SPL=S_706C73=3CF6F2:;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;"/>
-				<swimlanes value="locked=false;orientation=0;width=0;inbar=false;names=false;color=-1;bold=false;fcol=0;tcol=-1;ofCol=-1;ufCol=-1;hl=0;ufh=0;hh=0;cls=0;bw=0;hli=0;SwimlaneFont=lfh:-13,lfw:0,lfi:0,lfu:0,lfs:0,lfface:Calibri,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>
+				<swimlanes value="locked=false;orientation=0;width=0;inbar=false;names=false;color=-1;bold=false;fcol=0;tcol=-1;ofCol=-1;ufCol=-1;hl=0;ufh=0;hh=0;cls=0;bw=0;hli=0;SwimlaneFont=lfh:-16,lfw:0,lfi:0,lfu:0,lfs:0,lfface:Calibri,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>
 				<matrixitems value="locked=false;matrixactive=false;swimlanesactive=true;kanbanactive=false;width=1;clrLine=0;"/>
 				<extendedProperties/>
 				<elements>
