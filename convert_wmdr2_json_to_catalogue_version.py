@@ -206,8 +206,8 @@ def instrument_identifier(instrument: dict[str, Any]) -> str:
         "type": instrument.get("type"),
         "title": instrument.get("title"),
         "description": instrument.get("description"),
-        "observableVariables": instrument.get("observableVariables"),
-        "observableGeometry": instrument.get("observableGeometry"),
+        "observedProperty": instrument.get("observedProperty"),
+        "observedGeometry": instrument.get("observedGeometry"),
     }
     human = "--".join(
         _slug(str(part))

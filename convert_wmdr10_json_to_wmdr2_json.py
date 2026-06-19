@@ -13,8 +13,8 @@ Feature.  This replacement implements the June 2026 temporal-history update:
 * facilitySet is replaced by facilitySets references;
 * externalIds is no longer emitted;
 * observation-level program affiliations are emitted as programAffiliations list[str].
-* observations use observedProperty and observedDomain objects.
-* deployments use referenceSurface, optional temporalGeometry, and structured vertical distances.
+* observations use observedProperty and domain objects with domainName.
+* deployments use referenceSurface, optional temporalGeometry, temporalSerialNumber, temporalOfficialStatus, and vertical-distance arrays.
 """
 
 from __future__ import annotations
@@ -1284,24 +1284,6 @@ def _normalize_temporal_program_affiliation(value: Any) -> Optional[List[Dict[st
     return out or None
 
 
-def _normalize_reporting_status_timeline(value: Any) -> Optional[List[Dict[str, Any]]]:
-    out: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        if isinstance(item, str):
-            status = _normalize_code_value(item)
-            if isinstance(status, str) and status and not _is_unknown_token(status):
-                out.append({"reportingStatus": status, "date": ".."})
-            continue
-        if not isinstance(item, dict):
-            continue
-        status = _normalize_code_value(
-            _first_non_empty(item.get("reportingStatus"), item.get("instrumentOperatingStatus"), item.get("value"), item.get("href"))
-        )
-        if isinstance(status, str) and status and not _is_unknown_token(status):
-            out.append({"reportingStatus": status, "date": _temporal_begin_date(item)})
-    out = _uniq_dicts(_clean_none(out))
-    return out or None
-
 
 def _normalize_temporal_instrument_operating_status(value: Any) -> Optional[List[Dict[str, Any]]]:
     out: List[Dict[str, Any]] = []
@@ -1319,6 +1301,122 @@ def _normalize_temporal_instrument_operating_status(value: Any) -> Optional[List
         if isinstance(status, str) and status and not _is_unknown_token(status):
             out.append({"instrumentOperatingStatus": status, "date": _temporal_begin_date(item)})
     out = _uniq_dicts(_clean_none(out))
+    return out or None
+
+
+def _official_status_term(value: Any) -> Optional[str]:
+    """Return compact WMDR2 official-status term.
+
+    WMDR10 XML carries ``wmdr:officialStatus`` as a boolean.  In WMDR2 this is
+    expressed using ObservationStatus-like terms: ``true`` means ``primary``;
+    ``false`` means ``additional``.  Explicit string/code-list values are still
+    compacted when present in already-simplified JSON.
+    """
+    if isinstance(value, dict):
+        value = _first_non_empty(
+            value.get("officialStatus"),
+            value.get("observationStatus"),
+            value.get("status"),
+            value.get("value"),
+            value.get("href"),
+        )
+    parsed = _parse_bool(value)
+    if parsed is True:
+        return "primary"
+    if parsed is False:
+        return "additional"
+    if value in (None, "", [], {}):
+        return None
+    status = _normalize_code_value(value) if isinstance(value, str) else value
+    if isinstance(status, str):
+        if _is_unknown_token(status):
+            return "unknown"
+        return status if status.strip() else None
+    return str(status) if _non_empty(status) else None
+
+
+def _normalize_temporal_official_status(
+    value: Any,
+    *,
+    fallback_date: str = "..",
+    default_unknown: bool = False,
+) -> Optional[List[Dict[str, Any]]]:
+    """Normalize official-status history as temporal objects.
+
+    If the XML/source did not contain ``officialStatus``, emit ``unknown`` when
+    ``default_unknown`` is true.  This distinguishes explicit ``false`` from a
+    genuinely missing status.
+    """
+    if value in (None, "", [], {}):
+        if default_unknown:
+            return [{"officialStatus": "unknown", "date": fallback_date}]
+        return None
+
+    out: List[Dict[str, Any]] = []
+    for item in _as_list(value):
+        if isinstance(item, dict):
+            date = _temporal_begin_date(item) or fallback_date
+            status = _official_status_term(item)
+        else:
+            date = fallback_date
+            status = _official_status_term(item)
+        if status is None:
+            status = "unknown" if default_unknown else None
+        if status:
+            out.append({"officialStatus": status, "date": date})
+    out = _uniq_dicts(_clean_none(out))
+    if not out and default_unknown:
+        return [{"officialStatus": "unknown", "date": fallback_date}]
+    return out or None
+
+
+def _deployment_official_status_source(raw: Dict[str, Any]) -> Optional[List[Dict[str, Any]] | Any]:
+    """Return official-status source entries for a deployment.
+
+    WMDR10 places ``officialStatus`` under
+    ``deployment.dataGeneration[].reporting.officialStatus``.  WMDR2 stores the
+    normalized value at deployment level as ``temporalOfficialStatus``.
+
+    Explicit deployment-level values are still accepted for tests and already
+    simplified intermediate JSON.  If no explicit value is found, the nested
+    reporting entries are harvested and dated with the data-generation/reporting
+    validity begin date.
+    """
+    explicit = _first_non_empty(
+        raw.get("temporalOfficialStatus"),
+        raw.get("officialStatus"),
+        raw.get("observationStatus"),
+    )
+    if _non_empty(explicit):
+        return explicit
+
+    out: List[Dict[str, Any]] = []
+    for data_generation in _as_list(raw.get("dataGeneration")):
+        if not isinstance(data_generation, dict):
+            continue
+        data_generation_start, _ = _extract_interval(data_generation)
+        for reporting in _as_list(data_generation.get("reporting")):
+            if not isinstance(reporting, dict):
+                continue
+            status_value = _first_non_empty(
+                reporting.get("officialStatus"),
+                reporting.get("observationStatus"),
+                reporting.get("status"),
+            )
+            if not _non_empty(status_value):
+                continue
+            reporting_start, _ = _extract_interval(reporting)
+            begin = _normalize_date_value(
+                _first_non_empty(reporting_start, data_generation_start, raw.get("beginPosition"))
+            ) or ".."
+            for item in _as_list(status_value):
+                if isinstance(item, dict):
+                    status_entry = dict(item)
+                    status_entry.setdefault("beginPosition", begin)
+                else:
+                    status_entry = {"officialStatus": item, "beginPosition": begin}
+                out.append(status_entry)
+
     return out or None
 
 
@@ -1488,8 +1586,19 @@ def _normalize_vertical_range(raw: Dict[str, Any]) -> Optional[Dict[str, float]]
     return {"min": min_value, "max": max_value}
 
 
-def _normalize_observable_variables(raw: Dict[str, Any]) -> Optional[List[Any]]:
+def _normalize_instrument_observed_property(raw: Dict[str, Any]) -> Optional[List[Any]]:
+    """Return observed-property capabilities for an instrument.
+
+    The current EA model uses the same terms as observations
+    (``observedProperty`` and ``observedGeometry``) also for the instrument
+    catalogue.  Older converter inputs and intermediate JSON may still use the
+    ``observable*`` names; these remain accepted as aliases but are not emitted.
+    """
     raw_value = _first_non_empty(
+        raw.get("observedProperty"),
+        raw.get("observedProperties"),
+        raw.get("instrumentObservedProperty"),
+        raw.get("instrumentObservedProperties"),
         raw.get("observableVariables"),
         raw.get("observableVariable"),
         raw.get("instrumentObservableVariables"),
@@ -1500,9 +1609,9 @@ def _normalize_observable_variables(raw: Dict[str, Any]) -> Optional[List[Any]]:
         candidate: Any
         if isinstance(item, dict):
             candidate = _first_non_empty(
-                item.get("observableVariable"),
-                item.get("observedVariable"),
                 item.get("observedProperty"),
+                item.get("observedVariable"),
+                item.get("observableVariable"),
                 item.get("variable"),
                 item.get("description"),
                 item.get("value"),
@@ -1519,8 +1628,12 @@ def _normalize_observable_variables(raw: Dict[str, Any]) -> Optional[List[Any]]:
     return _uniq_scalars(values) or None
 
 
-def _normalize_observable_geometry(raw: Dict[str, Any]) -> Optional[str]:
+def _normalize_instrument_observed_geometry(raw: Dict[str, Any]) -> Optional[str]:
     raw_value = _first_non_empty(
+        raw.get("observedGeometry"),
+        raw.get("instrumentObservedGeometry"),
+        raw.get("observedGeometryType"),
+        raw.get("instrumentObservedGeometryType"),
         raw.get("observableGeometry"),
         raw.get("instrumentObservableGeometry"),
         raw.get("observableGeometryType"),
@@ -1528,6 +1641,7 @@ def _normalize_observable_geometry(raw: Dict[str, Any]) -> Optional[str]:
     )
     if isinstance(raw_value, dict):
         raw_value = _first_non_empty(
+            raw_value.get("observedGeometry"),
             raw_value.get("observableGeometry"),
             raw_value.get("geometry"),
             raw_value.get("geometryType"),
@@ -1543,12 +1657,22 @@ def _normalize_observable_geometry(raw: Dict[str, Any]) -> Optional[str]:
     return str(normalized)
 
 
+# Backwards-compatible helper names for older tests/imports.  The emitted JSON
+# fields are still observedProperty/observedGeometry.
+def _normalize_observable_variables(raw: Dict[str, Any]) -> Optional[List[Any]]:
+    return _normalize_instrument_observed_property(raw)
+
+
+def _normalize_observable_geometry(raw: Dict[str, Any]) -> Optional[str]:
+    return _normalize_instrument_observed_geometry(raw)
+
+
 def _deployment_has_instrument(raw: Dict[str, Any]) -> bool:
     manufacturer, model = _instrument_source_values(raw)
     return any(_is_substantive_instrument_value(value) for value in (manufacturer, model)) or (
         _normalize_vertical_range(raw) is not None
-        or _normalize_observable_variables(raw) is not None
-        or _normalize_observable_geometry(raw) is not None
+        or _normalize_instrument_observed_property(raw) is not None
+        or _normalize_instrument_observed_geometry(raw) is not None
     )
 
 
@@ -1557,15 +1681,15 @@ def _instrument_record_id(raw: Dict[str, Any], *, facility_id: str) -> Optional[
         return None
     manufacturer, model = _instrument_source_values(raw)
     vertical_range = _normalize_vertical_range(raw)
-    observable_variables = _normalize_observable_variables(raw)
-    observable_geometry = _normalize_observable_geometry(raw)
+    observed_property = _normalize_instrument_observed_property(raw)
+    observed_geometry = _normalize_instrument_observed_geometry(raw)
     seed_parts = [
         facility_id,
         str(manufacturer or ""),
         str(model or ""),
         json.dumps(vertical_range, sort_keys=True),
-        json.dumps(observable_variables, sort_keys=True),
-        str(observable_geometry or ""),
+        json.dumps(observed_property, sort_keys=True),
+        str(observed_geometry or ""),
     ]
     digest = hashlib.sha1("|".join(seed_parts).encode("utf-8")).hexdigest()[:12]
     return f"instrument:{digest}"
@@ -1576,13 +1700,40 @@ def _instrument_refs_for_deployment(raw: Dict[str, Any], *, facility_id: str) ->
     return [instrument_id] if instrument_id else []
 
 
-def _deployment_serial_numbers(raw: Dict[str, Any]) -> Optional[Dict[str, List[Any]]]:
-    serial_number = raw.get("serialNumber")
-    if not _is_substantive_instrument_value(serial_number):
-        return None
+def _normalize_temporal_serial_number(value: Any, *, fallback_date: str = "..") -> Optional[List[Dict[str, Any]]]:
+    """Normalize instrument serial-number history as temporal objects."""
+    out: List[Dict[str, Any]] = []
+    for item in _as_list(value):
+        if isinstance(item, dict):
+            serial_number = _first_non_empty(
+                item.get("serialNumber"),
+                item.get("serial"),
+                item.get("value"),
+                item.get("href"),
+            )
+            date = _temporal_begin_date(item)
+        else:
+            serial_number = item
+            date = fallback_date
+        if not _is_substantive_instrument_value(serial_number):
+            continue
+        out.append({"serialNumber": str(serial_number), "date": date or fallback_date})
+    out = _uniq_dicts(_clean_none(out))
+    return out or None
+
+
+def _deployment_temporal_serial_number(raw: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
     start, _ = _extract_interval(raw)
-    begin = _normalize_date_value(start) or ".."
-    return {"serialNumber": [serial_number], "dates": [begin]}
+    fallback_date = _normalize_date_value(start) or ".."
+    return _normalize_temporal_serial_number(
+        _first_non_empty(raw.get("temporalSerialNumber"), raw.get("temporalSerialNumbers"), raw.get("serialNumber")),
+        fallback_date=fallback_date,
+    )
+
+
+# Backwards-compatible alias for older imports/tests.
+def _deployment_serial_numbers(raw: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
+    return _deployment_temporal_serial_number(raw)
 
 
 def _normalize_instrument(raw: Dict[str, Any], *, facility_id: str) -> Optional[Dict[str, Any]]:
@@ -1604,8 +1755,8 @@ def _normalize_instrument(raw: Dict[str, Any], *, facility_id: str) -> Optional[
             "manufacturer": manufacturer if _is_substantive_instrument_value(manufacturer) else None,
             "model": model if _is_substantive_instrument_value(model) else None,
             "verticalRange": _normalize_vertical_range(raw),
-            "observableVariables": _normalize_observable_variables(raw),
-            "observableGeometry": _normalize_observable_geometry(raw),
+            "observedProperty": _normalize_instrument_observed_property(raw),
+            "observedGeometry": _normalize_instrument_observed_geometry(raw),
         }
     )
 
@@ -1853,38 +2004,50 @@ def _flatten_deployments_from_observations(observations: Sequence[Dict[str, Any]
     return deployments
 
 
-def _observed_domain_object(raw: Dict[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
-    """Return the WMDR2 observedDomain object for an observation.
+def _domain_object(raw: Dict[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
+    """Return the WMDR2 domain object for an observation.
 
-    WMDR10 currently only lets us derive the broad domain from the observed
-    property code-list branch, e.g. ObservedVariableAtmosphere -> atmosphere.
-    ``domainFeature`` and ``featureName`` are new WMDR2 concepts, so they are
-    only emitted if a future/source JSON record already contains explicit
+    WMDR10 currently only lets us derive the broad domain name from the
+    observed-property code-list branch, e.g. ObservedVariableAtmosphere ->
+    atmosphere. ``domainFeature`` and ``featureName`` are WMDR2 concepts, so
+    they are only emitted when the source JSON record already contains explicit
     values for them.
     """
-    observed_domain = raw.get("observedDomain")
-    domain = _observed_domain_from_observed_variable(observed_property)
+    domain_source = _first_non_empty(raw.get("domain"), raw.get("observedDomain"))
+    domain_name = _observed_domain_from_observed_variable(observed_property)
     domain_feature = None
     feature_name = None
 
-    if isinstance(observed_domain, dict):
-        domain = _first_non_empty(observed_domain.get("domain"), observed_domain.get("value"), observed_domain.get("href"), domain)
-        domain_feature = _first_non_empty(observed_domain.get("domainFeature"), observed_domain.get("feature"))
-        feature_name = observed_domain.get("featureName")
-    elif _non_empty(observed_domain) and domain is None:
-        domain = observed_domain
+    if isinstance(domain_source, dict):
+        domain_name = _first_non_empty(
+            domain_source.get("domainName"),
+            domain_source.get("domain"),
+            domain_source.get("value"),
+            domain_source.get("href"),
+            domain_name,
+        )
+        domain_feature = _first_non_empty(domain_source.get("domainFeature"), domain_source.get("feature"))
+        feature_name = domain_source.get("featureName")
+    elif _non_empty(domain_source) and domain_name is None:
+        domain_name = domain_source
 
     domain_feature = _first_non_empty(domain_feature, raw.get("domainFeature"), raw.get("observedDomainFeature"))
     feature_name = _first_non_empty(feature_name, raw.get("featureName"), raw.get("observedDomainFeatureName"))
 
     out: Dict[str, Any] = {}
-    if _non_empty(domain):
-        out["domain"] = _normalize_code_value(domain) if isinstance(domain, str) else domain
+    if _non_empty(domain_name):
+        out["domainName"] = _normalize_code_value(domain_name) if isinstance(domain_name, str) else domain_name
     if _non_empty(domain_feature):
         out["domainFeature"] = str(domain_feature)
     if _non_empty(feature_name):
         out["featureName"] = str(feature_name)
     return _clean_none(out) or None
+
+
+# Backwards-compatible private alias for tests or local tooling that imported
+# the previous helper name. Output still uses observation.domain only.
+def _observed_domain_object(raw: Dict[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
+    return _domain_object(raw, observed_property)
 
 
 def _parse_quantity_value(value: Any) -> Any:
@@ -1903,23 +2066,7 @@ def _parse_quantity_value(value: Any) -> Any:
     return value
 
 
-def _normalize_vertical_distance_from_reference_surface(raw: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-    """Return vertical distance as a structured quantity with value/uom.
-
-    WMDR10 commonly carries this as ``heightAboveLocalReferenceSurface`` with
-    ``@uom`` and ``#text`` members.  Older intermediate examples used plain
-    ``verticalDistanceFromReferenceSurface`` or ``distanceFromReferenceSurface``
-    values; these are still accepted as input but normalized to the new object
-    shape.
-    """
-    source = _first_non_empty(
-        raw.get("heightAboveLocalReferenceSurface"),
-        raw.get("verticalDistanceFromReferenceSurface"),
-        raw.get("distanceFromReferenceSurface"),
-    )
-    if source in (None, "", [], {}):
-        return None
-
+def _quantity_from_vertical_distance_source(source: Any) -> Optional[Dict[str, Any]]:
     uom = None
     value: Any = source
     if isinstance(source, dict):
@@ -1934,6 +2081,32 @@ def _normalize_vertical_distance_from_reference_surface(raw: Dict[str, Any]) -> 
     if _non_empty(uom):
         out["uom"] = _compact_wmdr_code_value(uom) if isinstance(uom, str) else uom
     return _clean_none(out)
+
+
+def _normalize_vertical_distance_from_reference_surface(raw: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
+    """Return vertical distance as an array of quantity objects.
+
+    WMDR10 commonly carries this as ``heightAboveLocalReferenceSurface`` with
+    ``@uom`` and ``#text`` members.  Older intermediate examples used plain
+    ``verticalDistanceFromReferenceSurface`` or ``distanceFromReferenceSurface``
+    values; these are still accepted as input but normalized to the array shape
+    used by the current EA model.
+    """
+    source = _first_non_empty(
+        raw.get("heightAboveLocalReferenceSurface"),
+        raw.get("verticalDistanceFromReferenceSurface"),
+        raw.get("distanceFromReferenceSurface"),
+    )
+    if source in (None, "", [], {}):
+        return None
+
+    out: List[Dict[str, Any]] = []
+    for item in _as_list(source):
+        quantity = _quantity_from_vertical_distance_source(item)
+        if quantity:
+            out.append(quantity)
+    out = _uniq_dicts(_clean_none(out))
+    return out or None
 
 
 def _normalize_deployment(
@@ -1959,12 +2132,17 @@ def _normalize_deployment(
         "sourceOfObservation": raw.get("sourceOfObservation"),
         "observingMethod": raw.get("observingMethod"),
         "instrument": _instrument_refs_for_deployment(raw, facility_id=facility_id),
-        "serialNumbers": _deployment_serial_numbers(raw),
+        "temporalSerialNumber": _deployment_temporal_serial_number(raw),
         "exposure": raw.get("exposure"),
         "representativeness": raw.get("representativeness"),
         "referenceSurface": _first_non_empty(raw.get("referenceSurface"), raw.get("localReferenceSurface")),
         "verticalDistanceFromReferenceSurface": _normalize_vertical_distance_from_reference_surface(raw),
         "temporalGeometry": _temporal_geometry_extension(_facility_temporal_geometry_entries(raw)),
+        "temporalOfficialStatus": _normalize_temporal_official_status(
+            _deployment_official_status_source(raw),
+            fallback_date=_normalize_date_value(start) or "..",
+            default_unknown=True,
+        ),
         "temporalInstrumentOperatingStatus": _normalize_temporal_instrument_operating_status(raw.get("instrumentOperatingStatus")),
         "contacts": contacts,
         "keywords": _keywords_from_values(_collect_discovery_values("deployment", raw, "keywords")),
@@ -2017,7 +2195,7 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
         "time": _derive_observation_time(raw, embedded_deployments),
         "observedProperty": observed_variable,
         "observedGeometry": observed_geometry,
-        "observedDomain": _observed_domain_object(raw, observed_variable),
+        "domain": _domain_object(raw, observed_variable),
         "programAffiliations": _normalize_program_affiliations(raw.get("programAffiliation")),
         "contacts": contacts,
         "temporalDataPolicy": _normalize_temporal_data_policy(
@@ -2141,7 +2319,6 @@ def _facility_properties(
         "links": _extract_links(facility, "facility"),
         **_copy_known_facility_properties(facility),
         "temporalProgramAffiliation": _normalize_temporal_program_affiliation(facility.get("programAffiliation")),
-        "temporalReportingStatus": _normalize_reporting_status_timeline(facility.get("reportingStatus")),
         "schedules": list(schedule_registry.values()),
         "observations": normalized_observations,
         "deployments": normalized_deployments,

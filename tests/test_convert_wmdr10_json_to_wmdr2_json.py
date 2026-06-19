@@ -91,8 +91,8 @@ def _observation_with_deployment(*, duplicate_data_generation: bool = False) -> 
                 "manufacturer": "Maker",
                 "model": "Model",
                 "verticalRange": {"min": 0, "max": 30},
-                "observableVariables": [OBSERVED_12006, "local free-text variable"],
-                "observableGeometry": GEOMETRY_POINT,
+                "observedProperty": [OBSERVED_12006, "local free-text variable"],
+                "observedGeometry": GEOMETRY_POINT,
                 "serialNumber": "SN1",
                 "dataGeneration": data_generation,
             }
@@ -179,10 +179,11 @@ def test_build_facility_feature_uses_current_core_model() -> None:
     assert "externalIds" not in props
     assert props["observations"][0]["observedProperty"] == 12006
     assert props["observations"][0]["observedGeometry"] == "point"
-    assert props["observations"][0]["observedDomain"] == {"domain": "atmosphere"}
+    assert props["observations"][0]["domain"] == {"domainName": "atmosphere"}
     assert "description" not in props["observations"][0]
     assert props["deployments"][0]["referenceSurface"] == "localGround"
-    assert props["deployments"][0]["verticalDistanceFromReferenceSurface"] == {"value": 2.0}
+    assert props["deployments"][0]["verticalDistanceFromReferenceSurface"] == [{"value": 2.0}]
+    assert props["deployments"][0]["temporalSerialNumber"] == [{"serialNumber": "SN1", "date": "2020-01-01"}]
     assert props["instruments"][0]["verticalRange"] == {"min": 0.0, "max": 30.0}
 
 
@@ -766,16 +767,41 @@ def test_temporal_program_affiliation_expands_reporting_status_history() -> None
     ]
 
 
-def test_reporting_status_timeline_is_array_of_objects() -> None:
-    assert module._normalize_reporting_status_timeline(
-        {"reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational", "beginPosition": "2020-01-01"}
-    ) == [{"reportingStatus": "operational", "date": "2020-01-01"}]
+def test_facility_reporting_status_is_only_kept_under_program_affiliation() -> None:
+    facility = _minimal_facility() | {
+        "reportingStatus": {
+            "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+            "beginPosition": "2020-01-01",
+        }
+    }
+    record = module.build_facility_feature(
+        facility,
+        [],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    assert "temporalReportingStatus" not in record["properties"]
 
 
 def test_temporal_instrument_operating_status_is_array_of_objects() -> None:
     assert module._normalize_temporal_instrument_operating_status(
         {"instrumentOperatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational", "beginPosition": "2020-01-01"}
     ) == [{"instrumentOperatingStatus": "operational", "date": "2020-01-01"}]
+
+
+def test_temporal_official_status_maps_wmdr10_boolean_values() -> None:
+    assert module._normalize_temporal_official_status(
+        {"officialStatus": True, "beginPosition": "2020-01-01"}
+    ) == [{"officialStatus": "primary", "date": "2020-01-01"}]
+    assert module._normalize_temporal_official_status(
+        {"officialStatus": False, "beginPosition": "2020-01-01"}
+    ) == [{"officialStatus": "additional", "date": "2020-01-01"}]
+    assert module._normalize_temporal_official_status(
+        None,
+        fallback_date="2020-01-01",
+        default_unknown=True,
+    ) == [{"officialStatus": "unknown", "date": "2020-01-01"}]
 
 
 def test_temporal_data_policy_retains_policy_and_attribution_with_dates() -> None:
@@ -847,10 +873,10 @@ def test_normalize_instrument_includes_vertical_range_when_available() -> None:
     assert instrument["verticalRange"] == {"min": 0.0, "max": 30.0}
 
 
-def test_normalize_observable_variables_accepts_codes_and_free_text() -> None:
-    assert module._normalize_observable_variables(
+def test_normalize_instrument_observed_property_accepts_codes_and_free_text() -> None:
+    assert module._normalize_instrument_observed_property(
         {
-            "observableVariables": [
+            "observedProperty": [
                 "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
                 {"href": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"},
                 {"description": "locally defined aerosol metric"},
@@ -859,36 +885,36 @@ def test_normalize_observable_variables_accepts_codes_and_free_text() -> None:
     ) == [12006, "locally defined aerosol metric"]
 
 
-def test_normalize_observable_geometry_compacts_geometry_code() -> None:
-    assert module._normalize_observable_geometry(
-        {"observableGeometry": "http://codes.wmo.int/wmdr/Geometry/point"}
+def test_normalize_instrument_observed_geometry_compacts_geometry_code() -> None:
+    assert module._normalize_instrument_observed_geometry(
+        {"observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point"}
     ) == "point"
-    assert module._normalize_observable_geometry({"observableGeometry": {"href": GEOMETRY_POINT}}) == "point"
+    assert module._normalize_instrument_observed_geometry({"observedGeometry": {"href": GEOMETRY_POINT}}) == "point"
 
 
-def test_normalize_instrument_includes_observable_variables_and_geometry_when_available() -> None:
+def test_normalize_instrument_includes_observed_property_and_geometry_when_available() -> None:
     instrument = module._normalize_instrument(
         {
             "manufacturer": "Maker",
             "model": "Model",
-            "observableVariables": [OBSERVED_12006, "local free-text variable"],
-            "observableGeometry": GEOMETRY_POINT,
+            "observedProperty": [OBSERVED_12006, "local free-text variable"],
+            "observedGeometry": GEOMETRY_POINT,
         },
         facility_id="0-TEST",
     )
     assert instrument is not None
-    assert instrument["observableVariables"] == [12006, "local free-text variable"]
-    assert instrument["observableGeometry"] == "point"
+    assert instrument["observedProperty"] == [12006, "local free-text variable"]
+    assert instrument["observedGeometry"] == "point"
 
 
-def test_observable_variables_alone_are_enough_to_create_an_instrument_record() -> None:
+def test_observed_property_alone_is_enough_to_create_an_instrument_record() -> None:
     instrument = module._normalize_instrument(
-        {"observableVariables": [OBSERVED_12006]},
+        {"observedProperty": [OBSERVED_12006]},
         facility_id="0-TEST",
     )
     assert instrument is not None
     assert instrument["id"].startswith("instrument:")
-    assert instrument["observableVariables"] == [12006]
+    assert instrument["observedProperty"] == [12006]
 
 
 def test_vertical_range_alone_is_enough_to_create_an_instrument_record() -> None:
@@ -901,11 +927,10 @@ def test_vertical_range_alone_is_enough_to_create_an_instrument_record() -> None
     assert instrument["verticalRange"] == {"min": 10.0, "max": 500.0}
 
 
-def test_deployment_serial_numbers_are_temporal_parallel_arrays_by_design() -> None:
-    assert module._deployment_serial_numbers({"serialNumber": "SN1", "beginPosition": "2020-01-01"}) == {
-        "serialNumber": ["SN1"],
-        "dates": ["2020-01-01"],
-    }
+def test_deployment_temporal_serial_number_is_array_of_objects() -> None:
+    assert module._deployment_temporal_serial_number({"serialNumber": "SN1", "beginPosition": "2020-01-01"}) == [
+        {"serialNumber": "SN1", "date": "2020-01-01"}
+    ]
 
 
 def test_jscalendar_schedule_uses_wmo_aggregation_extension() -> None:
@@ -1215,14 +1240,15 @@ def test_catalogues_source_config_key_is_obsolete(tmp_path: Path) -> None:
         module.main(["--config", str(config)])
 
 
-def test_observation_uses_observed_property_and_observed_domain_object() -> None:
+def test_observation_uses_observed_property_and_domain_object() -> None:
     observation = module._normalize_observation(_observation_with_deployment(), index=1, facility_id="0-TEST")
     assert observation["observedProperty"] == OBSERVED_12006
     assert "observedVariable" not in observation
-    assert observation["observedDomain"] == {"domain": "atmosphere"}
+    assert "observedDomain" not in observation
+    assert observation["domain"] == {"domainName": "atmosphere"}
 
 
-def test_observed_domain_object_accepts_future_domain_feature_fields() -> None:
+def test_domain_object_accepts_future_domain_feature_fields() -> None:
     observation = module._normalize_observation(
         {
             "observedProperty": OBSERVED_12006,
@@ -1234,8 +1260,8 @@ def test_observed_domain_object_accepts_future_domain_feature_fields() -> None:
         index=1,
         facility_id="0-TEST",
     )
-    assert observation["observedDomain"] == {
-        "domain": "atmosphere",
+    assert observation["domain"] == {
+        "domainName": "atmosphere",
         "domainFeature": "near-surface-air",
         "featureName": "2 m air",
     }
@@ -1251,7 +1277,33 @@ def test_deployment_vertical_distance_is_quantity_from_height_above_local_refere
         facility_id="0-TEST",
         schedule_registry={},
     )
-    assert deployment["verticalDistanceFromReferenceSurface"] == {"value": 0.0, "uom": "m"}
+    assert deployment["verticalDistanceFromReferenceSurface"] == [{"value": 0.0, "uom": "m"}]
+
+
+def test_deployment_official_status_defaults_to_unknown_when_absent_and_maps_booleans() -> None:
+    missing = module._normalize_deployment(
+        {"id": "dep1", "beginPosition": "2020-01-01"},
+        index=1,
+        facility_id="0-TEST",
+        schedule_registry={},
+    )
+    assert missing["temporalOfficialStatus"] == [{"officialStatus": "unknown", "date": "2020-01-01"}]
+
+    primary = module._normalize_deployment(
+        {"id": "dep1", "beginPosition": "2020-01-01", "officialStatus": True},
+        index=1,
+        facility_id="0-TEST",
+        schedule_registry={},
+    )
+    assert primary["temporalOfficialStatus"] == [{"officialStatus": "primary", "date": "2020-01-01"}]
+
+    additional = module._normalize_deployment(
+        {"id": "dep1", "beginPosition": "2020-01-01", "officialStatus": False},
+        index=1,
+        facility_id="0-TEST",
+        schedule_registry={},
+    )
+    assert additional["temporalOfficialStatus"] == [{"officialStatus": "additional", "date": "2020-01-01"}]
 
 
 def test_deployment_temporal_geometry_uses_same_moving_point_model_as_facility() -> None:

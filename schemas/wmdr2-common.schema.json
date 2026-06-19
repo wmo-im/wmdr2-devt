@@ -407,28 +407,6 @@
       },
       "description": "Environmental context and surroundings of the observing facility that may influence observations."
     },
-    "reportingStatusTimeline": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "required": [
-              "reportingStatus"
-            ],
-            "properties": {
-              "reportingStatus": {
-                "$ref": "#/$defs/codeValue"
-              }
-            }
-          }
-        ]
-      },
-      "description": "Declared reporting or operational status history of an observing facility."
-    },
     "programAffiliationTimeline": {
       "type": "array",
       "items": {
@@ -729,6 +707,13 @@
               "observedGeometryType"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "observedDomain"
+            ]
+          }
         }
       ],
       "properties": {
@@ -751,27 +736,6 @@
         "observedGeometry": {
           "$ref": "#/$defs/codeValue",
           "description": "Observed geometry, based on WMDR geometry terms where possible."
-        },
-        "observedDomain": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "domain": {
-              "$ref": "#/$defs/codeValue",
-              "description": "Observed domain derived from the observed-property code-list branch where possible, e.g. atmosphere."
-            },
-            "domainFeature": {
-              "type": "string",
-              "minLength": 1,
-              "description": "Optional feature type or domain feature associated with the observed domain."
-            },
-            "featureName": {
-              "type": "string",
-              "minLength": 1,
-              "description": "Optional human-readable name of the observed-domain feature."
-            }
-          },
-          "description": "Observed-domain context for the observation. WMDR10 currently only supports deriving the broad domain; domainFeature and featureName are WMDR2 extensions."
         },
         "contacts": {
           "type": "array",
@@ -809,6 +773,30 @@
         "programAffiliations": {
           "$ref": "#/$defs/programAffiliations",
           "description": "Programmes or networks for which the observation is primarily made."
+        },
+        "domain": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "domainName"
+          ],
+          "properties": {
+            "domainName": {
+              "$ref": "#/$defs/codeValue",
+              "description": "Observed domain name derived from the observed-property code-list branch where possible, e.g. atmosphere."
+            },
+            "domainFeature": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional feature type or domain feature associated with the observed domain."
+            },
+            "featureName": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional human-readable name of the observed-domain feature."
+            }
+          },
+          "description": "Domain context for the observation. WMDR10 currently only supports deriving the broad domainName; domainFeature and featureName are WMDR2 extensions."
         }
       },
       "description": "Observation metadata for an observed variable, including geometry, reporting, data policy, and deployment references."
@@ -875,6 +863,13 @@
               "localReferenceSurface"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "serialNumbers"
+            ]
+          }
         }
       ],
       "properties": {
@@ -909,29 +904,33 @@
           "description": "Specified reference surface for the vertical distance of the sensor."
         },
         "verticalDistanceFromReferenceSurface": {
-          "type": "object",
-          "required": [
-            "value"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "value": {
-              "anyOf": [
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "string"
-                }
-              ],
-              "description": "Vertical distance from the specified reference surface."
-            },
-            "uom": {
-              "$ref": "#/$defs/codeValue",
-              "description": "Unit of measure for the vertical distance, e.g. m."
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "Vertical distance from the specified reference surface."
+              },
+              "uom": {
+                "$ref": "#/$defs/codeValue",
+                "description": "Unit of measure for the vertical distance, e.g. m."
+              }
             }
           },
-          "description": "Vertical distance of the sensor from the specified reference surface, represented as a quantity with value and optional unit. Positive values indicate above the reference surface; negative values indicate below it."
+          "description": "Vertical distance of the sensor from the specified reference surface, represented as one or more quantities with value and optional unit. Positive values indicate above the reference surface; negative values indicate below it."
         },
         "temporalGeometry": {
           "$ref": "#/$defs/temporalGeometry",
@@ -973,34 +972,17 @@
           },
           "description": "References to instruments used for this deployment."
         },
-        "serialNumbers": {
-          "type": "object",
-          "required": [
-            "serialNumber",
-            "dates"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "serialNumber": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "type": "string"
-              }
-            },
-            "dates": {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "$ref": "#/$defs/dateOrOpen"
-              }
-            }
-          },
-          "description": "Serial-number history for the deployed equipment."
-        },
         "temporalObservingSchedule": {
           "$ref": "#/$defs/temporalObservingScheduleRefs",
           "description": "References to observing schedules that apply to the deployment."
+        },
+        "temporalSerialNumber": {
+          "$ref": "#/$defs/temporalSerialNumber",
+          "description": "Serial-number history for the deployed equipment."
+        },
+        "temporalOfficialStatus": {
+          "$ref": "#/$defs/temporalOfficialStatus",
+          "description": "Official observation-status history for the deployment."
         }
       },
       "description": "Deployment metadata describing equipment deployment, time period, and configuration for generating observations."
@@ -1051,9 +1033,9 @@
             }
           }
         },
-        "observableVariables": {
+        "observedProperty": {
           "type": "array",
-          "description": "Variables observable by the instrument. Values should use compact terms from http://codes.wmo.int/wmdr/ObservedVariable where possible, or free-text descriptions when no code-list value is available.",
+          "description": "Observed-property capabilities of the instrument. Values should use compact terms from http://codes.wmo.int/wmdr/ObservedVariable where possible, or free-text descriptions when no code-list value is available.",
           "minItems": 1,
           "items": {
             "anyOf": [
@@ -1066,9 +1048,9 @@
             ]
           }
         },
-        "observableGeometry": {
+        "observedGeometry": {
           "type": "string",
-          "description": "Observable geometry of the instrument, expressed as a compact term from http://codes.wmo.int/wmdr/Geometry."
+          "description": "Observed-geometry capability of the instrument, expressed as a compact term from http://codes.wmo.int/wmdr/Geometry."
         }
       },
       "allOf": [
@@ -1076,6 +1058,20 @@
           "not": {
             "required": [
               "serialNumbers"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observableVariables"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observableGeometry"
             ]
           }
         }
@@ -1251,6 +1247,51 @@
         }
       },
       "description": "Topographic or bathymetric context of the observing facility."
+    },
+    "temporalSerialNumber": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "serialNumber"
+            ],
+            "properties": {
+              "serialNumber": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        ]
+      },
+      "description": "Serial-number history for the deployed equipment."
+    },
+    "temporalOfficialStatus": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/temporalObjectBase"
+          },
+          {
+            "type": "object",
+            "required": [
+              "officialStatus"
+            ],
+            "properties": {
+              "officialStatus": {
+                "$ref": "#/$defs/codeValue"
+              }
+            }
+          }
+        ]
+      },
+      "description": "Official observation-status history for the deployment."
     }
   }
 }

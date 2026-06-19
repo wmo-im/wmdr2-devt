@@ -175,6 +175,13 @@
               "temporalTopographyBathymetry"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalReportingStatus"
+            ]
+          }
         }
       ],
       "properties": {
@@ -250,10 +257,6 @@
         "temporalProgramAffiliation": {
           "$ref": "wmdr2-common.schema.json#/$defs/temporalProgramAffiliation",
           "description": "Program/network affiliations of the observing facility, including programme-specific identifiers, titles, and reporting status where available."
-        },
-        "temporalReportingStatus": {
-          "$ref": "wmdr2-common.schema.json#/$defs/reportingStatusTimeline",
-          "description": "Declared reporting or operational status history of the observing facility."
         },
         "observations": {
           "type": "array",

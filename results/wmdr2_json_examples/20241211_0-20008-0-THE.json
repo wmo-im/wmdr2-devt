@@ -283,8 +283,8 @@
         },
         "observedProperty": 263,
         "observedGeometry": "totalColumn",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "domain": {
+          "domainName": "atmosphere"
         },
         "programAffiliations": [
           "GAWregional"
@@ -322,8 +322,8 @@
         "title": "domain: atmosphere; geometry: totalColumn; variable: 314",
         "observedProperty": 314,
         "observedGeometry": "totalColumn",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "domain": {
+          "domainName": "atmosphere"
         },
         "programAffiliations": [
           "AERONET"
@@ -334,8 +334,8 @@
         "title": "domain: atmosphere; geometry: totalColumn; variable: 325",
         "observedProperty": 325,
         "observedGeometry": "totalColumn",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "domain": {
+          "domainName": "atmosphere"
         },
         "programAffiliations": [
           "AERONET"
@@ -352,8 +352,8 @@
         },
         "observedProperty": 359,
         "observedGeometry": "area",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "domain": {
+          "domainName": "atmosphere"
         },
         "programAffiliations": [
           "GAWregional"
@@ -373,8 +373,8 @@
         },
         "observedProperty": 572,
         "observedGeometry": "point",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "domain": {
+          "domainName": "atmosphere"
         },
         "programAffiliations": [
           "GAWregional"
@@ -394,8 +394,8 @@
         },
         "observedProperty": 573,
         "observedGeometry": "area",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "domain": {
+          "domainName": "atmosphere"
         },
         "programAffiliations": [
           "GAWregional"
@@ -436,8 +436,8 @@
         "title": "domain: atmosphere; geometry: totalColumn; variable: 12150",
         "observedProperty": 12150,
         "observedGeometry": "totalColumn",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "domain": {
+          "domainName": "atmosphere"
         },
         "programAffiliations": [
           "AERONET"
@@ -448,8 +448,8 @@
         "title": "domain: atmosphere; geometry: totalColumn; variable: 12151",
         "observedProperty": 12151,
         "observedGeometry": "totalColumn",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "domain": {
+          "domainName": "atmosphere"
         },
         "programAffiliations": [
           "AERONET"
@@ -460,8 +460,8 @@
         "title": "domain: atmosphere; geometry: totalColumn; variable: 12153",
         "observedProperty": 12153,
         "observedGeometry": "totalColumn",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "domain": {
+          "domainName": "atmosphere"
         },
         "programAffiliations": [
           "AERONET"
@@ -472,8 +472,8 @@
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 12159",
         "observedProperty": 12159,
         "observedGeometry": "verticalProfile",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "domain": {
+          "domainName": "atmosphere"
         },
         "programAffiliations": [
           "GALION"
@@ -491,6 +491,12 @@
         },
         "sourceOfObservation": "automaticReading",
         "observingMethod": 78,
+        "temporalOfficialStatus": [
+          {
+            "officialStatus": "unknown",
+            "date": "1982-03-13"
+          }
+        ],
         "keywords": [
           "automaticReading"
         ],
@@ -509,7 +515,13 @@
             ".."
           ]
         },
-        "observingMethod": 268
+        "observingMethod": 268,
+        "temporalOfficialStatus": [
+          {
+            "officialStatus": "unknown",
+            "date": "1993-08-26"
+          }
+        ]
       },
       {
         "id": "deployment:id_f5f50866-9c93-4e3a-9c0e-c13d32c342e6",
@@ -527,10 +539,12 @@
         "exposure": "class1",
         "representativeness": "toposcale",
         "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 20.0,
-          "uom": "m"
-        },
+        "verticalDistanceFromReferenceSurface": [
+          {
+            "value": 20.0,
+            "uom": "m"
+          }
+        ],
         "temporalGeometry": {
           "type": "MovingPoint",
           "coordinates": [
@@ -549,6 +563,12 @@
             ]
           ]
         },
+        "temporalOfficialStatus": [
+          {
+            "officialStatus": "unknown",
+            "date": "2016-04-01"
+          }
+        ],
         "keywords": [
           "Kipp&Zonen",
           "CHP 1",
@@ -571,10 +591,12 @@
         "exposure": "class1",
         "representativeness": "toposcale",
         "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 20.0,
-          "uom": "m"
-        },
+        "verticalDistanceFromReferenceSurface": [
+          {
+            "value": 20.0,
+            "uom": "m"
+          }
+        ],
         "temporalGeometry": {
           "type": "MovingPoint",
           "coordinates": [
@@ -593,6 +615,12 @@
             ]
           ]
         },
+        "temporalOfficialStatus": [
+          {
+            "officialStatus": "unknown",
+            "date": "1992-05-27"
+          }
+        ],
         "temporalInstrumentOperatingStatus": [
           {
             "instrumentOperatingStatus": "operational",

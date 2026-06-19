@@ -156,7 +156,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "time": {"interval": ["2016-04-29", ".."]},
                     "observedProperty": 179,
                     "observedGeometry": "point",
-                    "observedDomain": {"domain": "atmosphere"},
+                    "domain": {"domainName": "atmosphere"},
                     "programAffiliations": ["GAWregional"],
                     "reporting": {
                         "internationalExchange": [True, False],
@@ -174,12 +174,14 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "time": {"interval": ["2016-04-29", ".."]},
                     "observingMethod": "automatic",
                     "referenceSurface": "localGround",
-                    "verticalDistanceFromReferenceSurface": {"value": 2.0, "uom": "m"},
+                    "verticalDistanceFromReferenceSurface": [{"value": 2.0, "uom": "m"}],
                     "instrument": ["instrument:example"],
-                    "serialNumbers": {
-                        "serialNumber": ["ABC123"],
-                        "dates": [".."],
-                    },
+                    "temporalSerialNumber": [
+                        {"serialNumber": "ABC123", "date": ".."}
+                    ],
+                    "temporalOfficialStatus": [
+                        {"officialStatus": "primary", "date": ".."}
+                    ],
                     "temporalObservingSchedule": [
                         {"observingSchedule": "schedule_daily_12", "date": "2025-01-01"},
                     ],
@@ -193,8 +195,8 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "manufacturer": "Vaisala",
                     "model": "ExampleModel",
                     "verticalRange": {"min": 0, "max": 30},
-                    "observableVariables": [179, "free text variable"],
-                    "observableGeometry": "point",
+                    "observedProperty": [179, "free text variable"],
+                    "observedGeometry": "point",
                 }
             ],
         },
@@ -234,6 +236,14 @@ def test_facility_temporal_program_affiliation_remains_temporal() -> None:
         }
     ]
     assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_facility_temporal_reporting_status_is_not_part_of_current_core_model() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["temporalReportingStatus"] = [
+        {"reportingStatus": "operational", "date": "2020-01-01"}
+    ]
+    assert not _is_valid(RECORD_SCHEMA, instance)
 
 
 def test_record_time_allows_null_when_unknown() -> None:
@@ -393,11 +403,27 @@ def test_deployment_title_and_manufacturer_are_invalid() -> None:
 
 def test_deployment_vertical_distance_accepts_structured_quantity() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = {
-        "value": 2.0,
-        "uom": "m",
-    }
+    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = [
+        {"value": 2.0, "uom": "m"}
+    ]
     assert _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_deployment_temporal_serial_number_and_official_status_are_valid() -> None:
+    instance = _valid_facility_record_feature()
+    deployment = instance["properties"]["deployments"][0]
+    deployment["temporalSerialNumber"] = [{"serialNumber": "XYZ", "date": "2024-01-01"}]
+    deployment["temporalOfficialStatus"] = [{"officialStatus": "primary", "date": "2024-01-01"}]
+    assert _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_deployment_serial_numbers_parallel_array_is_invalid() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["serialNumbers"] = {
+        "serialNumber": ["ABC123"],
+        "dates": [".."],
+    }
+    assert not _is_valid(RECORD_SCHEMA, instance)
 
 
 def test_instrument_title_and_description_are_schema_properties() -> None:
@@ -424,27 +450,27 @@ def test_instrument_vertical_range_min_and_max_are_numeric() -> None:
     assert any("'0' is not of type 'number'" in message for message in _validate(RECORD_SCHEMA, instance))
 
 
-def test_instrument_observable_variables_accept_code_values_and_free_text() -> None:
+def test_instrument_observed_property_accept_code_values_and_free_text() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["instruments"][0]["observableVariables"] = [179, "free text variable"]
+    instance["properties"]["instruments"][0]["observedProperty"] = [179, "free text variable"]
     assert _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_instrument_observable_variables_must_be_array_of_strings_or_integers() -> None:
+def test_instrument_observed_property_must_be_array_of_strings_or_integers() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["instruments"][0]["observableVariables"] = [{"observedProperty": 179}]
+    instance["properties"]["instruments"][0]["observedProperty"] = [{"observedProperty": 179}]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_instrument_observable_geometry_is_schema_property() -> None:
+def test_instrument_observed_geometry_is_schema_property() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["instruments"][0]["observableGeometry"] = "point"
+    instance["properties"]["instruments"][0]["observedGeometry"] = "point"
     assert _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_instrument_observable_geometry_must_be_string() -> None:
+def test_instrument_observed_geometry_must_be_string() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["instruments"][0]["observableGeometry"] = {"href": "point"}
+    instance["properties"]["instruments"][0]["observedGeometry"] = {"href": "point"}
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
@@ -486,14 +512,21 @@ def test_observation_uses_observed_property_not_observed_variable() -> None:
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_observed_domain_accepts_domain_feature_and_feature_name() -> None:
+def test_domain_accepts_domain_feature_and_feature_name() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observations"][0]["observedDomain"] = {
-        "domain": "atmosphere",
+    instance["properties"]["observations"][0]["domain"] = {
+        "domainName": "atmosphere",
         "domainFeature": "near-surface-air",
         "featureName": "2 m air",
     }
     assert _validate(RECORD_SCHEMA, instance) == []
+
+
+def test_observed_domain_is_not_part_of_current_core_model() -> None:
+    instance = _valid_facility_record_feature()
+    observation = instance["properties"]["observations"][0]
+    observation["observedDomain"] = observation.pop("domain")
+    assert not _is_valid(RECORD_SCHEMA, instance)
 
 
 def test_deployment_uses_reference_surface_not_local_reference_surface() -> None:
@@ -510,7 +543,7 @@ def test_deployment_vertical_distance_requires_quantity_object_with_value() -> N
     assert not _is_valid(RECORD_SCHEMA, instance)
 
     instance = _valid_facility_record_feature()
-    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = {"uom": "m"}
+    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = [{"uom": "m"}]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
