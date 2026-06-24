@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
-"""
-convert_wmdr10_json_to_wmdr2_json.py
+"""Convert simplified WMDR 1.0 JSON records into facility-centric WMDR2 JSON.
 
-Convert simplified WMDR 1.0 JSON records into a facility-centric WMDR2 JSON
-Feature.  This replacement implements the June 2026 temporal-history update:
+WMDR v0.2.2 implementation notes
+---------------------------------
 
-* root temporalGeometry remains the only aligned-array temporal object;
-* every other temporal* member is emitted as an array of objects;
-* environmental histories are grouped under properties.environment;
-* temporalPopulationDensities is obsolete;
-* topography/bathymetry context is emitted as environment.topographyBathymetry;
-* facilitySet is replaced by facilitySets references;
-* externalIds is no longer emitted;
-* observation-level program affiliations are emitted as programAffiliations list[str].
-* observations use observedProperty and domain objects with domainName.
-* deployments use referenceSurface, optional temporalGeometry, temporalSerialNumber, temporalOfficialStatus, and vertical-distance arrays.
+* ``temporalGeometry`` remains the trajectory-style aligned-array object.
+* Ordinary history is represented as arrays of objects with singular ``date``.
+* ``historicalEnvironment`` is emitted directly under ``properties``.
+* ``observedFeature`` uses ``domain``, ``domainFeature`` and ``featureName``.
+* ``historicalDeployments`` and ``historicalReporting`` are nested under each
+  observation because they are observation-specific dated states.
+* Reusable JSCalendar schedule objects are emitted under ``properties.schedules``;
+  observations refer to them through ``observingSchedules`` entries of the form
+  ``{"date": "YYYY-MM-DD", "schedule": "schedule_..."}``.
+* Root-level ``properties.deployments`` is no longer emitted.
 """
 
 from __future__ import annotations
@@ -27,7 +26,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 try:
     import yaml  # type: ignore
@@ -46,181 +45,18 @@ EMPTY_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
     "observation": {"keywords": [], "links": []},
     "deployment": {"keywords": [], "links": []},
 }
+
 DEFAULT_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
-    "facility": {
-        "keywords": ["identifier", "name"],
-        "links": ["onlineResource"],
-    },
-    "observation": {
-        "keywords": [],
-        "links": [],
-    },
+    "facility": {"keywords": ["identifier", "name"], "links": ["onlineResource"]},
+    "observation": {"keywords": [], "links": []},
     "deployment": {
-        "keywords": [
-            "manufacturer",
-            "model",
-            "serialNumber",
-            "sourceOfObservation",
-            "observingMethod",
-        ],
+        "keywords": ["manufacturer", "model", "serialNumber", "sourceOfObservation", "observingMethod"],
         "links": [],
     },
 }
+
 DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
 CODE_LIST_LABELS: Dict[str, Dict[str, str]] = {}
-
-# ---------------------------------------------------------------------------
-# Config / file handling
-# ---------------------------------------------------------------------------
-
-
-def _load_config(path: Path) -> Dict[str, Any]:
-    if yaml is None:
-        raise SystemExit(
-            f"Cannot read config file {path}: PyYAML is not installed. "
-            "Install pyyaml or pass --source/--target explicitly."
-        )
-    try:
-        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    except Exception as exc:  # pragma: no cover - defensive CLI path
-        raise SystemExit(f"Cannot read config file {path}: {exc}") from exc
-    if not isinstance(data, dict):
-        raise SystemExit(f"Config file {path} must contain a top-level YAML mapping.")
-    return data
-
-
-def _walk_up_for_config(start: Path) -> List[Path]:
-    base = start if start.is_dir() else start.parent
-    candidates: List[Path] = []
-    for folder in (base, *base.parents):
-        candidates.append(folder / "config.yaml")
-        candidates.append(folder / "config.yml")
-    return candidates
-
-
-def _discover_config_path(explicit: Optional[Path] = None) -> Optional[Path]:
-    if explicit is not None:
-        explicit_path = explicit.expanduser()
-        return explicit_path if explicit_path.is_absolute() else (Path.cwd() / explicit_path)
-
-    candidates: List[Path] = []
-    candidates.extend(_walk_up_for_config(Path.cwd()))
-    candidates.extend(_walk_up_for_config(Path(__file__).resolve().parent))
-
-    seen: set[Path] = set()
-    for candidate in candidates:
-        try:
-            resolved = candidate.resolve()
-        except Exception:
-            resolved = candidate.absolute()
-        if resolved in seen:
-            continue
-        seen.add(resolved)
-        if candidate.exists() and candidate.is_file():
-            return candidate
-    return None
-
-
-def _cfg_section(cfg: Dict[str, Any]) -> Dict[str, Any]:
-    section = cfg.get("convert_wmdr10_json_to_wmdr2_json")
-    if isinstance(section, dict):
-        return section
-    legacy = cfg.get("convert_wmdr10_json_to_wmdr2_geojson")
-    return legacy if isinstance(legacy, dict) else {}
-
-
-def _format_loaded_config_hint(config_path: Optional[Path], section: Dict[str, Any]) -> str:
-    if config_path is None:
-        return "No config file found; using CLI arguments only."
-    keys = sorted(section.keys()) if section else []
-    key_text = ", ".join(keys) if keys else "no converter section keys"
-    return f"Using config: {config_path} ({key_text})"
-
-
-def _normalize_discovery_policy(section: Dict[str, Any]) -> Dict[str, Dict[str, List[str]]]:
-    """Return keyword/link extraction policy from the converter config section.
-
-    If no ``discovery`` block is configured, keep the built-in defaults for a
-    convenient command-line conversion.  As soon as a ``discovery`` block is
-    present, treat it as authoritative: omitted buckets and empty lists disable
-    extraction for that entity/bucket.  This makes a config such as
-    ``discovery: {facility: {keywords: []}}`` actually suppress facility
-    keywords instead of silently falling back to defaults.
-    """
-    raw = section.get("discovery")
-    if not isinstance(raw, dict):
-        return copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
-
-    policy = copy.deepcopy(EMPTY_DISCOVERY_POLICY)
-    for entity in ("facility", "observation", "deployment"):
-        entity_cfg = raw.get(entity)
-        if not isinstance(entity_cfg, dict):
-            continue
-        for bucket in ("keywords", "links"):
-            values = entity_cfg.get(bucket)
-            if isinstance(values, list):
-                policy[entity][bucket] = [
-                    str(v).strip() for v in values if isinstance(v, str) and str(v).strip()
-                ]
-    return policy
-
-
-def _iter_json_files(root: Path, *, pattern: str = DEFAULT_PATTERN, recursive: bool = True) -> List[Path]:
-    if root.is_file():
-        return [root] if root.suffix.lower() == ".json" else []
-    if not root.is_dir():
-        return []
-    walker = root.rglob if recursive else root.glob
-    return sorted(p for p in walker(pattern) if p.is_file() and p.suffix.lower() == ".json")
-
-
-def _load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def _write_json(path: Path, payload: Dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-
-def _detect_kind(path: Path, payload: Any) -> str:
-    stem = path.stem.lower()
-    if stem.endswith("_facility"):
-        return "facility"
-    if stem.endswith("_header"):
-        return "header"
-    if stem.endswith("_observations"):
-        return "observations"
-    if stem.endswith("_deployments"):
-        return "deployments"
-    if isinstance(payload, dict):
-        if any(k in payload for k in ("facility", "observations", "deployments", "header")):
-            return "full"
-        if any(k in payload for k in ("observedVariable", "observedProperty", "resultTime")):
-            return "observations"
-        if any(k in payload for k in ("sourceOfObservation", "manufacturer", "serialNumber")):
-            return "deployments"
-        if any(k in payload for k in ("fileDateTime", "recordOwner")):
-            return "header"
-        if any(k in payload for k in ("identifier", "name", "geospatialLocation")):
-            return "facility"
-    if isinstance(payload, list):
-        first = next((x for x in payload if isinstance(x, dict)), None)
-        if not first:
-            return "unknown"
-        if any(k in first for k in ("observedVariable", "observedProperty", "resultTime")):
-            return "observations"
-        if any(k in first for k in ("sourceOfObservation", "manufacturer", "serialNumber")):
-            return "deployments"
-    return "unknown"
-
-
-def _part_group_key(path: Path) -> str:
-    stem = path.stem
-    for suffix in ("_header", "_facility", "_observations", "_deployments"):
-        if stem.lower().endswith(suffix):
-            return stem[: -len(suffix)]
-    return stem
 
 
 # ---------------------------------------------------------------------------
@@ -246,28 +82,27 @@ def _non_empty(value: Any) -> bool:
 
 def _first_non_empty(*values: Any) -> Any:
     for value in values:
-        if _non_empty(value):
+        if _non_empty(value) or isinstance(value, bool):
             return value
     return None
 
 
 def _clean_none(obj: Any, *, _path: Tuple[str, ...] = ()) -> Any:
-    """Remove empty object members, but preserve nulls inside arrays.
+    """Remove empty dictionary members and empty list members.
 
-    ``temporalGeometry.methods`` is an aligned array whose items are lists of
-    geopositioning-method terms. Empty inner lists are meaningful there: they
-    mean that no method is declared for the corresponding coordinate/date.
+    Empty inner lists are preserved for ``temporalGeometry.methods`` because
+    they are positional companions to ``coordinates`` and ``dates``.
     """
 
     def preserve_empty_list(path: Tuple[str, ...]) -> bool:
         return len(path) >= 2 and path[-2:] == ("temporalGeometry", "methods")
 
     if isinstance(obj, dict):
-        cleaned = {k: _clean_none(v, _path=_path + (k,)) for k, v in obj.items()}
-        return {k: v for k, v in cleaned.items() if v not in (None, "", [], {})}
+        cleaned = {key: _clean_none(value, _path=_path + (key,)) for key, value in obj.items()}
+        return {key: value for key, value in cleaned.items() if value not in (None, "", [], {})}
     if isinstance(obj, list):
-        cleaned = [_clean_none(v, _path=_path) for v in obj]
-        return [v for v in cleaned if v not in ("", {}) and (v != [] or preserve_empty_list(_path))]
+        cleaned = [_clean_none(value, _path=_path) for value in obj]
+        return [value for value in cleaned if value not in ("", {}) and (value != [] or preserve_empty_list(_path))]
     return obj
 
 
@@ -291,18 +126,44 @@ def _restore_null_sentinel(obj: Any) -> Any:
     return obj
 
 
-def _sanitize_id(text: str) -> str:
-    text = text.strip()
-    text = re.sub(r"\s+", "-", text)
-    text = re.sub(r"[^A-Za-z0-9._:/#-]+", "-", text)
-    return text.strip("-") or "record"
+def _uniq_dicts(items: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    out: List[Dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in items:
+        payload = json.dumps(item, sort_keys=True, ensure_ascii=False, default=str)
+        if payload in seen:
+            continue
+        seen.add(payload)
+        out.append(item)
+    return out
 
 
-def _slug(text: str) -> str:
-    text = text.strip().lower()
-    text = re.sub(r"[^a-z0-9]+", "-", text)
-    text = re.sub(r"-{2,}", "-", text).strip("-")
-    return text or "value"
+def _uniq_scalars(items: Iterable[Any]) -> List[Any]:
+    out: List[Any] = []
+    seen: set[str] = set()
+    for item in items:
+        if item in (None, "", [], {}):
+            continue
+        key = json.dumps(item, sort_keys=True, ensure_ascii=False, default=str) if isinstance(item, (dict, list)) else str(item)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(item)
+    return out
+
+
+def _sanitize_id(text: Any) -> str:
+    raw = str(text).strip()
+    raw = re.sub(r"\s+", "-", raw)
+    raw = re.sub(r"[^A-Za-z0-9._:/#-]+", "-", raw)
+    return raw.strip("-") or "record"
+
+
+def _slug(text: Any) -> str:
+    raw = str(text).strip().lower()
+    raw = re.sub(r"[^a-z0-9]+", "-", raw)
+    raw = re.sub(r"-{2,}", "-", raw).strip("-")
+    return raw or "value"
 
 
 def _is_unknown_token(value: Any) -> bool:
@@ -334,6 +195,8 @@ def _last_segment(value: Any) -> Optional[str]:
 
 
 def _normalize_code_value(value: Any) -> Any:
+    if isinstance(value, dict):
+        value = _first_non_empty(value.get("href"), value.get("url"), value.get("value"), value.get("#text"), value.get("text"))
     if not isinstance(value, str):
         return value
     text = value.strip()
@@ -351,25 +214,20 @@ def _normalize_code_value(value: Any) -> Any:
 
 
 def _compact_wmdr_code_value(value: Any) -> Any:
-    if not isinstance(value, str):
-        return value
-    text = value.strip()
-    if text.startswith(("http://codes.wmo.int/wmdr/", "https://codes.wmo.int/wmdr/")):
-        return _normalize_code_value(text)
+    if isinstance(value, dict):
+        value = _first_non_empty(value.get("href"), value.get("url"), value.get("value"), value.get("#text"), value.get("text"))
+    if isinstance(value, str) and value.strip().startswith(("http://codes.wmo.int/wmdr/", "https://codes.wmo.int/wmdr/")):
+        return _normalize_code_value(value)
     return value
 
 
 def _finalize_wmdr2_value(value: Any, *, key: Optional[str] = None) -> Any:
     if isinstance(value, dict):
-        if set(value.keys()) == {"interval"}:
-            interval = value.get("interval")
-            if interval == ["..", ".."] or interval == "unknown":
-                return None
+        if set(value.keys()) == {"interval"} and value.get("interval") == ["..", ".."]:
+            return None
         return {
             child_key: (
-                child_value
-                if child_key in {"href", "url"}
-                else _finalize_wmdr2_value(child_value, key=child_key)
+                child_value if child_key in {"href", "url"} else _finalize_wmdr2_value(child_value, key=child_key)
             )
             for child_key, child_value in value.items()
         }
@@ -383,7 +241,7 @@ def _finalize_wmdr2_value(value: Any, *, key: Optional[str] = None) -> Any:
 def _drop_source_metadata(obj: Any) -> Any:
     metadata_keys = {"@gml:id", "gml:id", "@id", "@xmlns", "xmlns", "schemaLocation"}
     if isinstance(obj, dict):
-        return {k: _drop_source_metadata(v) for k, v in obj.items() if k not in metadata_keys}
+        return {key: _drop_source_metadata(value) for key, value in obj.items() if key not in metadata_keys}
     if isinstance(obj, list):
         return [_drop_source_metadata(item) for item in obj]
     return obj
@@ -392,9 +250,7 @@ def _drop_source_metadata(obj: Any) -> Any:
 def _normalize_display_text(value: Any) -> Optional[str]:
     if value is None:
         return None
-    if not isinstance(value, str):
-        value = str(value)
-    text = value.strip()
+    text = str(value).strip()
     if not text:
         return None
     if _is_unknown_token(text):
@@ -405,42 +261,11 @@ def _normalize_display_text(value: Any) -> Optional[str]:
 def _normalize_description_value(value: Any) -> Any:
     if isinstance(value, dict):
         cleaned = _drop_source_metadata(value)
-        text = _first_non_empty(
-            cleaned.get("description"),
-            cleaned.get("value"),
-            cleaned.get("#text"),
-            cleaned.get("text"),
-        )
+        text = _first_non_empty(cleaned.get("description"), cleaned.get("value"), cleaned.get("#text"), cleaned.get("text"))
         if text:
             return _normalize_display_text(text)
         return _clean_none(cleaned)
     return _normalize_display_text(value)
-
-
-def _uniq_dicts(items: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    out: List[Dict[str, Any]] = []
-    seen: set[str] = set()
-    for item in items:
-        payload = json.dumps(item, sort_keys=True, ensure_ascii=False, default=str)
-        if payload in seen:
-            continue
-        seen.add(payload)
-        out.append(item)
-    return out
-
-
-def _uniq_scalars(items: Iterable[Any]) -> List[Any]:
-    out: List[Any] = []
-    seen: set[str] = set()
-    for item in items:
-        if item in (None, "", [], {}):
-            continue
-        key = json.dumps(item, sort_keys=True, ensure_ascii=False, default=str) if isinstance(item, (dict, list)) else str(item)
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(item)
-    return out
 
 
 def _extract_scalar_values(value: Any) -> List[Any]:
@@ -494,20 +319,20 @@ def _normalize_record_datetime(value: Any) -> Optional[str]:
     text = str(value).strip()
     if not text:
         return None
-    match = re.match(r"^(\d{4})(\d{2})(\d{2})(?:_|$)", text)
-    if match:
-        y, m, d = match.groups()
-        return f"{y}-{m}-{d}T00:00:00Z"
-    if re.fullmatch(r"\d{8}", text):
-        return f"{text[0:4]}-{text[4:6]}-{text[6:8]}T00:00:00Z"
-    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
-        return f"{text}T00:00:00Z"
-    if re.fullmatch(r"\d{4}-\d{2}-\d{2}Z", text):
-        return f"{text[:-1]}T00:00:00Z"
-    return text
+    # Preserve explicit date-times. _normalize_date_value intentionally reduces
+    # temporal history markers to date resolution, but record timestamps are
+    # OGC Record timestamps and should keep their time component.
+    if re.match(r"^\d{4}-\d{2}-\d{2}T", text):
+        return text if text.endswith("Z") else f"{text}Z"
+    date = _normalize_date_value(text)
+    if not date or date == "..":
+        return None
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
+        return f"{date}T00:00:00Z"
+    return None
 
 
-def _record_timestamps(header: Dict[str, Any], *, source_name: Optional[str] = None) -> Dict[str, str]:
+def _record_timestamps(header: Mapping[str, Any], *, source_name: Optional[str] = None) -> Dict[str, str]:
     created = _normalize_record_datetime(
         _first_non_empty(
             header.get("created"),
@@ -548,7 +373,7 @@ def _time_interval(start: Any, end: Any, *, resolution: Optional[str] = None) ->
     return out
 
 
-def _extract_interval(obj: Dict[str, Any]) -> Tuple[Any, Any]:
+def _extract_interval(obj: Mapping[str, Any]) -> Tuple[Any, Any]:
     time_obj = obj.get("time")
     if isinstance(time_obj, dict):
         interval = time_obj.get("interval")
@@ -556,24 +381,26 @@ def _extract_interval(obj: Dict[str, Any]) -> Tuple[Any, Any]:
             start = interval[0] if len(interval) > 0 else None
             end = interval[1] if len(interval) > 1 else None
             return start, end
-        return time_obj.get("date") or time_obj.get("timestamp"), None
+        return _first_non_empty(time_obj.get("date"), time_obj.get("timestamp")), None
     return (
-        _first_non_empty(obj.get("beginPosition"), obj.get("begin"), obj.get("start"), obj.get("dateEstablished")),
+        _first_non_empty(obj.get("beginPosition"), obj.get("begin"), obj.get("start"), obj.get("dateEstablished"), obj.get("date")),
         _first_non_empty(obj.get("endPosition"), obj.get("end"), obj.get("stop"), obj.get("dateClosed")),
     )
 
 
-def _temporal_begin_date(item: Any) -> str:
+def _entry_date(item: Any, fallback: str = "..") -> str:
     if isinstance(item, dict):
         return (
             _normalize_date_value(
-                _first_non_empty(
-                    item.get("beginPosition"), item.get("begin"), item.get("start"), item.get("date")
-                )
+                _first_non_empty(item.get("date"), item.get("beginPosition"), item.get("begin"), item.get("from"), item.get("start"))
             )
-            or ".."
+            or fallback
         )
-    return ".."
+    return fallback
+
+
+def _temporal_begin_date(item: Any) -> str:
+    return _entry_date(item, "..")
 
 
 def _parse_pos_lon_lat_z(raw: Any) -> Optional[List[Any]]:
@@ -602,6 +429,7 @@ def _parse_pos_lon_lat_z(raw: Any) -> Optional[List[Any]]:
             continue
     if len(nums) < 2:
         return None
+    # WMDR/GML pos is lat lon [height]; GeoJSON is lon lat [height].
     lat, lon = nums[0], nums[1]
     coords: List[Any] = [lon, lat]
     if len(nums) >= 3:
@@ -611,27 +439,20 @@ def _parse_pos_lon_lat_z(raw: Any) -> Optional[List[Any]]:
 
 
 def _geopositioning_methods(item: Any) -> List[str]:
-    """Return compact WMDR geopositioning method terms for a location item."""
     if not isinstance(item, dict):
         return []
     raw = item.get("geopositioningMethod")
     if raw in (None, "", [], {}):
         return []
-
-    values = raw if isinstance(raw, list) else [raw]
     methods: List[str] = []
-    for value in values:
-        if isinstance(value, dict):
-            value = _first_non_empty(value.get("href"), value.get("value"), value.get("#text"), value.get("text"))
-        if not isinstance(value, str):
-            continue
+    for value in _as_list(raw):
         compact = _compact_wmdr_code_value(value)
         if isinstance(compact, str) and compact.strip():
             methods.append(compact.strip())
     return sorted(dict.fromkeys(methods))
 
 
-def _facility_temporal_geometry_entries(facility: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _facility_temporal_geometry_entries(source: Mapping[str, Any]) -> List[Dict[str, Any]]:
     entries: List[Tuple[str, str, Dict[str, Any]]] = []
 
     def add(item: Any) -> None:
@@ -645,9 +466,9 @@ def _facility_temporal_geometry_entries(facility: Dict[str, Any]) -> List[Dict[s
             entry["methods"] = methods
         entries.append((date, json.dumps(coords, sort_keys=True), entry))
 
-    for item in _as_list(facility.get("geospatialLocation") or facility.get("geometry")):
+    for item in _as_list(source.get("geospatialLocation") or source.get("geometry")):
         add(item)
-    for item in _as_list(facility.get("geospatialLocationHistory") or facility.get("geometryHistory")):
+    for item in _as_list(source.get("geospatialLocationHistory") or source.get("geometryHistory") or source.get("historicalLocation")):
         add(item)
 
     out: List[Dict[str, Any]] = []
@@ -670,17 +491,12 @@ def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[
         if "coordinates" not in entry:
             continue
         coordinates.append(entry["coordinates"])
-        raw_date: object = entry.get("date")
-        if isinstance(raw_date, str):
-            dates.append(raw_date)
-        else:
-            dates.append("..")
+        dates.append(str(entry.get("date") or ".."))
         raw_methods = entry.get("methods")
-        entry_methods = raw_methods if isinstance(raw_methods, list) else []
-        method_terms = [method for method in entry_methods if isinstance(method, str) and method.strip()]
-        if method_terms:
+        entry_methods = [method for method in raw_methods if isinstance(method, str)] if isinstance(raw_methods, list) else []
+        if entry_methods:
             has_methods = True
-        methods.append(method_terms)
+        methods.append(entry_methods)
     if not coordinates:
         return None
     if len(coordinates) == 1 and not has_methods:
@@ -699,7 +515,16 @@ def _facility_geometry_from_entries(entries: Sequence[Dict[str, Any]]) -> Option
     return None
 
 
+def _point_geometry_from_entry(entry: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
+    coordinates = entry.get("coordinates")
+    if isinstance(coordinates, list) and len(coordinates) >= 2:
+        return {"type": "Point", "coordinates": coordinates}
+    return None
+
+
 def _extract_code_list_ref(value: Any) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+    if isinstance(value, dict):
+        value = _first_non_empty(value.get("href"), value.get("url"), value.get("value"), value.get("#text"))
     if not isinstance(value, str):
         return None, None, None
     text = value.strip().strip("<>")
@@ -752,7 +577,146 @@ def _format_observation_title(value: Any, geometry_type: Any = None) -> Optional
 
 
 # ---------------------------------------------------------------------------
-# Discovery, contact and link helpers
+# Config / file handling
+# ---------------------------------------------------------------------------
+
+
+def _load_config(path: Path) -> Dict[str, Any]:
+    if yaml is None:
+        raise SystemExit(
+            f"Cannot read config file {path}: PyYAML is not installed. Install pyyaml or pass --source/--target explicitly."
+        )
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:  # pragma: no cover - defensive CLI path
+        raise SystemExit(f"Cannot read config file {path}: {exc}") from exc
+    if not isinstance(data, dict):
+        raise SystemExit(f"Config file {path} must contain a top-level YAML mapping.")
+    return data
+
+
+def _walk_up_for_config(start: Path) -> List[Path]:
+    base = start if start.is_dir() else start.parent
+    candidates: List[Path] = []
+    for folder in (base, *base.parents):
+        candidates.append(folder / "config.yaml")
+        candidates.append(folder / "config.yml")
+    return candidates
+
+
+def _discover_config_path(explicit: Optional[Path] = None) -> Optional[Path]:
+    if explicit is not None:
+        explicit_path = explicit.expanduser()
+        return explicit_path if explicit_path.is_absolute() else (Path.cwd() / explicit_path)
+    candidates: List[Path] = []
+    candidates.extend(_walk_up_for_config(Path.cwd()))
+    candidates.extend(_walk_up_for_config(Path(__file__).resolve().parent))
+    seen: set[Path] = set()
+    for candidate in candidates:
+        try:
+            resolved = candidate.resolve()
+        except Exception:
+            resolved = candidate.absolute()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        if candidate.exists() and candidate.is_file():
+            return candidate
+    return None
+
+
+def _cfg_section(cfg: Mapping[str, Any]) -> Dict[str, Any]:
+    section = cfg.get("convert_wmdr10_json_to_wmdr2_json")
+    if isinstance(section, dict):
+        return section
+    legacy = cfg.get("convert_wmdr10_json_to_wmdr2_geojson")
+    return legacy if isinstance(legacy, dict) else {}
+
+
+def _format_loaded_config_hint(config_path: Optional[Path], section: Mapping[str, Any]) -> str:
+    if config_path is None:
+        return "No config file found; using CLI arguments only."
+    keys = sorted(section.keys()) if section else []
+    key_text = ", ".join(keys) if keys else "no converter section keys"
+    return f"Using config: {config_path} ({key_text})"
+
+
+def _normalize_discovery_policy(section: Mapping[str, Any]) -> Dict[str, Dict[str, List[str]]]:
+    raw = section.get("discovery")
+    if not isinstance(raw, dict):
+        return copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
+    policy = copy.deepcopy(EMPTY_DISCOVERY_POLICY)
+    for entity in ("facility", "observation", "deployment"):
+        entity_cfg = raw.get(entity)
+        if not isinstance(entity_cfg, dict):
+            continue
+        for bucket in ("keywords", "links"):
+            values = entity_cfg.get(bucket)
+            if isinstance(values, list):
+                policy[entity][bucket] = [str(v).strip() for v in values if isinstance(v, str) and str(v).strip()]
+    return policy
+
+
+def _iter_json_files(root: Path, *, pattern: str = DEFAULT_PATTERN, recursive: bool = True) -> List[Path]:
+    if root.is_file():
+        return [root] if root.suffix.lower() == ".json" else []
+    if not root.is_dir():
+        return []
+    walker = root.rglob if recursive else root.glob
+    return sorted(p for p in walker(pattern) if p.is_file() and p.suffix.lower() == ".json")
+
+
+def _load_json(path: Path) -> Any:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _write_json(path: Path, payload: Mapping[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _detect_kind(path: Path, payload: Any) -> str:
+    stem = path.stem.lower()
+    if stem.endswith("_facility"):
+        return "facility"
+    if stem.endswith("_header"):
+        return "header"
+    if stem.endswith("_observations"):
+        return "observations"
+    if stem.endswith("_deployments"):
+        return "deployments"
+    if isinstance(payload, dict):
+        if any(k in payload for k in ("facility", "observations", "deployments", "header")):
+            return "full"
+        if any(k in payload for k in ("observedVariable", "observedProperty", "resultTime")):
+            return "observations"
+        if any(k in payload for k in ("sourceOfObservation", "manufacturer", "serialNumber")):
+            return "deployments"
+        if any(k in payload for k in ("fileDateTime", "recordOwner")):
+            return "header"
+        if any(k in payload for k in ("identifier", "name", "geospatialLocation")):
+            return "facility"
+    if isinstance(payload, list):
+        first = next((x for x in payload if isinstance(x, dict)), None)
+        if not first:
+            return "unknown"
+        if any(k in first for k in ("observedVariable", "observedProperty", "resultTime")):
+            return "observations"
+        if any(k in first for k in ("sourceOfObservation", "manufacturer", "serialNumber")):
+            return "deployments"
+    return "unknown"
+
+
+def _part_group_key(path: Path) -> str:
+    stem = path.stem
+    for suffix in ("_header", "_facility", "_observations", "_deployments"):
+        if stem.lower().endswith(suffix):
+            return stem[: -len(suffix)]
+    return stem
+
+
+# ---------------------------------------------------------------------------
+# Discovery, contacts and links
 # ---------------------------------------------------------------------------
 
 
@@ -762,22 +726,21 @@ def _keywords_from_values(values: Iterable[Any]) -> List[str]:
     for raw in values:
         if raw is None:
             continue
-        if isinstance(raw, str):
-            candidate = _normalize_code_value(_last_segment(raw) or raw)
-            if not isinstance(candidate, str):
-                continue
-            candidate = candidate.replace("_", " ").strip()
-            if not candidate or _is_unknown_token(candidate):
-                continue
-            key = candidate.lower()
-            if key in seen:
-                continue
-            seen.add(key)
-            out.append(candidate)
+        candidate = _normalize_code_value(_last_segment(raw) or raw) if isinstance(raw, str) else raw
+        if not isinstance(candidate, str):
+            continue
+        candidate = candidate.replace("_", " ").strip()
+        if not candidate or _is_unknown_token(candidate):
+            continue
+        key = candidate.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(candidate)
     return out
 
 
-def _collect_discovery_values(entity_type: str, source: Dict[str, Any], bucket: str) -> List[Any]:
+def _collect_discovery_values(entity_type: str, source: Mapping[str, Any], bucket: str) -> List[Any]:
     values: List[Any] = []
     for key in DISCOVERY_POLICY.get(entity_type, {}).get(bucket, []):
         for item in _as_list(source.get(key)):
@@ -795,7 +758,7 @@ def _about_link(href: str, *, title: Optional[str] = None, media_type: str = "te
     return link
 
 
-def _extract_links(source: Dict[str, Any], entity_type: str) -> List[Dict[str, Any]]:
+def _extract_links(source: Mapping[str, Any], entity_type: str) -> List[Dict[str, Any]]:
     links: List[Dict[str, Any]] = []
     for key in DISCOVERY_POLICY.get(entity_type, {}).get("links", []):
         for item in _as_list(source.get(key)):
@@ -873,20 +836,15 @@ def _normalize_contact(raw: Any) -> Tuple[Optional[Dict[str, Any]], Optional[Dic
         value = payload.get(src_key)
         if isinstance(value, str) and value.strip():
             contact[dst_key] = value.strip()
+
     info = _as_dict(payload.get("contactInfo"))
     phone_obj = _as_dict(info.get("phone"))
-    phones = [
-        {"value": voice.strip()}
-        for voice in _as_list(phone_obj.get("voice"))
-        if isinstance(voice, str) and voice.strip()
-    ]
+    phones = [{"value": voice.strip()} for voice in _as_list(phone_obj.get("voice")) if isinstance(voice, str) and voice.strip()]
     if phones:
         contact["phones"] = phones
     address_obj = _as_dict(info.get("address"))
     emails = [
-        {"value": email.strip()}
-        for email in _as_list(address_obj.get("electronicMailAddress"))
-        if isinstance(email, str) and "@" in email
+        {"value": email.strip()} for email in _as_list(address_obj.get("electronicMailAddress")) if isinstance(email, str) and "@" in email
     ]
     if emails:
         contact["emails"] = emails
@@ -931,69 +889,134 @@ def _collect_contacts(*groups: Any) -> Tuple[List[Dict[str, Any]], List[Dict[str
 
 
 # ---------------------------------------------------------------------------
-# WMDR-specific temporal histories
+# Quantity, booleans and status helpers
 # ---------------------------------------------------------------------------
 
 
-def _temporal_object_from_item(
-    item: Any,
-    *,
-    output_key: str,
-    value_keys: Sequence[str],
-    allow_structured_fallback: bool = False,
-) -> Optional[Dict[str, Any]]:
-    if isinstance(item, str):
-        value = _normalize_code_value(item)
-        if value in (None, "") or _is_unknown_token(value):
+def _parse_bool(value: Any) -> Optional[bool]:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        low = value.strip().lower()
+        if low in {"true", "1", "yes", "y"}:
+            return True
+        if low in {"false", "0", "no", "n"}:
+            return False
+    return None
+
+
+def _normalize_official_status(value: Any) -> Optional[str]:
+    """Normalize WMDR10 officialStatus to WMDR v0.2.2 observation status.
+
+    The WMDR10 XML uses a boolean officialStatus.  The agreed mapping is:
+    true -> primary, false -> additional.  String values are compacted but not
+    otherwise remapped, except common boolean strings.
+    """
+
+    parsed = _parse_bool(value)
+    if parsed is True:
+        return "primary"
+    if parsed is False:
+        return "additional"
+    compact = _compact_wmdr_code_value(value)
+    if isinstance(compact, str):
+        text = compact.strip()
+        if not text or _is_unknown_token(text):
             return None
-        return {output_key: value, "date": ".."}
-    if not isinstance(item, dict):
-        if _non_empty(item):
-            return {output_key: item, "date": ".."}
+        return text
+    if compact in (None, "", [], {}):
         return None
-    cleaned = _drop_source_metadata(item)
-    if not isinstance(cleaned, dict):
+    return str(compact)
+
+
+def _normalize_quantity_value(value: Any) -> Any:
+    if isinstance(value, bool) or value in (None, ""):
         return None
-    raw_value = _first_non_empty(*(cleaned.get(key) for key in value_keys))
-    if raw_value is None and allow_structured_fallback:
-        raw_value = {
-            key: val
-            for key, val in cleaned.items()
-            if key not in {"beginPosition", "endPosition", "begin", "end", "start", "date"}
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None
+        try:
+            return float(text)
+        except ValueError:
+            return text
+    return value
+
+
+def _quantity_from_source(source: Any) -> Optional[Dict[str, Any]]:
+    uom = None
+    value: Any = source
+    if isinstance(source, dict):
+        value = _first_non_empty(source.get("#text"), source.get("text"), source.get("value"))
+        uom = _first_non_empty(source.get("@uom"), source.get("uom"), source.get("unit"))
+    parsed_value = _normalize_quantity_value(value)
+    if parsed_value in (None, "", [], {}):
+        return None
+    out: Dict[str, Any] = {"value": parsed_value}
+    if _non_empty(uom):
+        out["uom"] = _compact_wmdr_code_value(uom) if isinstance(uom, str) else uom
+    return _clean_none(out)
+
+
+def _normalize_vertical_distance_from_reference_surface(raw: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
+    source = _first_non_empty(
+        raw.get("heightAboveLocalReferenceSurface"),
+        raw.get("verticalDistanceFromReferenceSurface"),
+        raw.get("distanceFromReferenceSurface"),
+    )
+    if source in (None, "", [], {}):
+        return None
+    if isinstance(source, list):
+        for item in source:
+            quantity = _quantity_from_source(item)
+            if quantity:
+                return quantity
+        return None
+    return _quantity_from_source(source)
+
+
+# ---------------------------------------------------------------------------
+# Facility history and environment
+# ---------------------------------------------------------------------------
+
+
+def _entry_value(item: Any, preferred_key: str) -> Any:
+    if isinstance(item, dict):
+        if preferred_key in item:
+            return item.get(preferred_key)
+        rest = {
+            key: value
+            for key, value in item.items()
+            if key not in {"date", "beginPosition", "endPosition", "from", "start", "to", "end", "begin"}
         }
-    value = _normalize_code_value(raw_value) if isinstance(raw_value, str) else raw_value
+        if len(rest) == 1:
+            return next(iter(rest.values()))
+        return rest or None
+    return item
+
+
+def _temporal_object_from_item(item: Any, *, output_key: str, value_keys: Sequence[str]) -> Optional[Dict[str, Any]]:
+    if isinstance(item, dict):
+        raw_value = _first_non_empty(*(item.get(key) for key in value_keys))
+        value = _normalize_code_value(raw_value) if isinstance(raw_value, str) else raw_value
+        if value in (None, "", [], {}) or _is_unknown_token(value):
+            return None
+        return {"date": _entry_date(item), output_key: value}
+    value = _normalize_code_value(item) if isinstance(item, str) else item
     if value in (None, "", [], {}) or _is_unknown_token(value):
         return None
-    return {output_key: value, "date": _temporal_begin_date(item)}
+    return {"date": "..", output_key: value}
 
 
-def _normalize_temporal_values(
-    value: Any,
-    *,
-    output_key: str,
-    value_keys: Sequence[str],
-    allow_structured_fallback: bool = False,
-) -> Optional[List[Dict[str, Any]]]:
+def _normalize_temporal_values(value: Any, *, output_key: str, value_keys: Sequence[str]) -> Optional[List[Dict[str, Any]]]:
     out: List[Dict[str, Any]] = []
     for item in _as_list(value):
-        record = _temporal_object_from_item(
-            item,
-            output_key=output_key,
-            value_keys=value_keys,
-            allow_structured_fallback=allow_structured_fallback,
-        )
+        record = _temporal_object_from_item(item, output_key=output_key, value_keys=value_keys)
         if record:
             out.append(record)
-    out = _uniq_dicts(_clean_none(out))
-    return out or None
-
-
-def _normalize_temporal_territory(value: Any) -> Optional[List[Dict[str, Any]]]:
-    return _normalize_temporal_values(
-        value,
-        output_key="territory",
-        value_keys=("territoryName", "territory", "value", "href"),
-    )
+    return _uniq_dicts(_clean_none(out)) or None
 
 
 def _normalize_temporal_climate_zone(value: Any) -> Optional[List[Dict[str, Any]]]:
@@ -1001,25 +1024,130 @@ def _normalize_temporal_climate_zone(value: Any) -> Optional[List[Dict[str, Any]
 
 
 def _normalize_temporal_surface_cover(value: Any) -> Optional[List[Dict[str, Any]]]:
-    out: List[Dict[str, Any]] = []
+    records = _normalize_temporal_values(value, output_key="surfaceCover", value_keys=("surfaceCover", "value", "href")) or []
+    source_items = _as_list(value)
+    for record, item in zip(records, source_items):
+        if isinstance(item, Mapping):
+            classification = _first_non_empty(item.get("surfaceClassification"), item.get("classification"))
+            if isinstance(classification, Mapping):
+                classification = _first_non_empty(classification.get("href"), classification.get("value"), classification.get("surfaceClassification"))
+            if _non_empty(classification):
+                record["surfaceClassification"] = _compact_wmdr_code_value(classification) if isinstance(classification, str) else classification
+    return _uniq_dicts(_clean_none(records)) or None
+
+
+def _parse_two_value_perimeter_array(value: Any) -> List[Optional[float]]:
+    parsed = _parse_two_value_number_array(value) or [10.0, 50.0]
+    if parsed[0] is None:
+        parsed[0] = 10.0
+    if parsed[1] is None:
+        parsed[1] = 50.0
+    return parsed
+
+
+def _normalize_temporal_population(value: Any) -> Optional[List[Dict[str, Any]]]:
+    records: List[Dict[str, Any]] = []
     for item in _as_list(value):
-        record = _temporal_object_from_item(item, output_key="surfaceCover", value_keys=("surfaceCover", "value", "href"))
-        if not record:
-            continue
+        date = _entry_date(item, fallback="..")
+        if isinstance(item, Mapping):
+            population = _parse_two_value_number_array(_first_non_empty(item.get("population"), item.get("value"), item.get("href")))
+            perimeter = _parse_two_value_perimeter_array(_first_non_empty(item.get("perimeter_km"), item.get("perimeterKm"), item.get("perimeter")))
+        else:
+            population = _parse_two_value_number_array(item)
+            perimeter = [10.0, 50.0]
+        if population is not None:
+            records.append({"population": population, "perimeter_km": perimeter, "dates": [date, ".."]})
+    return _uniq_dicts(_clean_none(records)) or None
+
+
+def _normalize_temporal_surface_roughness(value: Any) -> Optional[List[Dict[str, Any]]]:
+    return _normalize_temporal_values(value, output_key="surfaceRoughness", value_keys=("surfaceRoughness", "roughness", "value", "href"))
+
+
+def _normalize_temporal_instrument_operating_status(value: Any) -> Optional[List[Dict[str, Any]]]:
+    records = []
+    for item in _normalize_operating_status(value if isinstance(value, Mapping) else {"instrumentOperatingStatus": value}):
+        if "operatingStatus" in item:
+            records.append({"date": item.get("date"), "instrumentOperatingStatus": item.get("operatingStatus")})
+    return _uniq_dicts(_clean_none(records)) or None
+
+
+def _normalize_temporal_official_status(value: Any, *, fallback_date: str = "..", default_unknown: bool = False) -> Optional[List[Dict[str, Any]]]:
+    if value is None and default_unknown:
+        return [{"date": fallback_date, "officialStatus": "unknown"}]
+    return _normalize_historical_official_status(value if isinstance(value, Mapping) else {"officialStatus": value}, fallback_date=fallback_date)
+
+
+def _normalize_program_affiliations(value: Any) -> Optional[List[Any]]:
+    values: List[Any] = []
+    for item in _as_list(value):
         if isinstance(item, dict):
-            for extra_key in ("surfaceCoverClassification", "surfaceClassification"):
-                extra = _first_non_empty(_as_dict(item.get(extra_key)).get("href"), item.get(extra_key))
-                if _non_empty(extra):
-                    record[extra_key] = _normalize_code_value(extra)
-        out.append(record)
-    out = _uniq_dicts(_clean_none(out))
-    return out or None
+            raw = _first_non_empty(item.get("programAffiliation"), item.get("program"), item.get("href"), item.get("value"))
+        else:
+            raw = item
+        if _non_empty(raw):
+            values.append(_compact_wmdr_code_value(raw) if isinstance(raw, str) else raw)
+    return _uniq_scalars(values) or None
+
+
+def _program_affiliation_values(value: Any) -> Optional[List[Any]]:
+    return _normalize_program_affiliations(value)
+
+
+def _normalize_historical_program_affiliation(value: Any, *, fallback_date: str) -> Optional[List[Dict[str, Any]]]:
+    records: List[Dict[str, Any]] = []
+
+    def add_record(item: Mapping[str, Any], reporting_status: Any = None, *, status_date: Any = None) -> None:
+        record: Dict[str, Any] = {"date": _entry_date(item, fallback=fallback_date) if status_date is None else (_normalize_date_value(status_date) or fallback_date)}
+        program = _first_non_empty(item.get("programAffiliation"), item.get("programAffiliations"), item.get("program"), item.get("href"), item.get("value"))
+        if _non_empty(program):
+            record["programAffiliation"] = _compact_wmdr_code_value(program) if isinstance(program, str) else program
+        program_id = _first_non_empty(item.get("programSpecificFacilityId"), item.get("programSpecificFacilityIds"))
+        if _non_empty(program_id):
+            record["programSpecificFacilityId"] = program_id
+        program_title = _first_non_empty(item.get("programSpecificFacilityTitle"), item.get("programSpecificFacilityTitles"))
+        if _non_empty(program_title):
+            record["programSpecificFacilityTitle"] = program_title
+        status = reporting_status if reporting_status is not None else _first_non_empty(item.get("reportingStatus"), item.get("declaredReportingStatus"))
+        if _non_empty(status):
+            record["reportingStatus"] = _compact_wmdr_code_value(status) if isinstance(status, str) else status
+        if len(record) > 1:
+            records.append(record)
+
+    for item in _as_list(value):
+        if isinstance(item, Mapping):
+            statuses = _as_list(_first_non_empty(item.get("reportingStatus"), item.get("declaredReportingStatus")))
+            dict_statuses = [status for status in statuses if isinstance(status, Mapping)]
+            if dict_statuses:
+                for status_item in dict_statuses:
+                    status_value = _first_non_empty(status_item.get("reportingStatus"), status_item.get("declaredReportingStatus"), status_item.get("status"), status_item.get("value"), status_item.get("href"))
+                    add_record(item, status_value, status_date=_entry_date(status_item, fallback=_entry_date(item, fallback=fallback_date)))
+            else:
+                add_record(item)
+        elif _non_empty(item):
+            records.append({"date": fallback_date, "programAffiliation": _compact_wmdr_code_value(item) if isinstance(item, str) else item})
+    return _uniq_dicts(_clean_none(records)) or None
+
+
+def _normalize_temporal_program_affiliation(value: Any, *, fallback_date: str = "..") -> Optional[List[Dict[str, Any]]]:
+    return _normalize_historical_program_affiliation(value, fallback_date=fallback_date)
+
+def _normalize_historical_territory(value: Any, *, fallback_date: str) -> Optional[List[Dict[str, Any]]]:
+    records: List[Dict[str, Any]] = []
+    for item in _as_list(value):
+        if isinstance(item, dict):
+            territory = _first_non_empty(item.get("territory"), item.get("territoryName"), item.get("href"), item.get("value"))
+            date = _entry_date(item, fallback=fallback_date)
+        else:
+            territory = item
+            date = fallback_date
+        if _non_empty(territory):
+            records.append({"date": date, "territory": _compact_wmdr_code_value(territory) if isinstance(territory, str) else territory})
+    return _uniq_dicts(_clean_none(records)) or None
 
 
 def _parse_nullable_number(value: Any) -> Optional[float]:
-    if value in (None, "", [], {}):
-        return None
-    if isinstance(value, bool):
+    if value in (None, "", [], {}) or isinstance(value, bool):
         return None
     if isinstance(value, (int, float)):
         return float(value)
@@ -1037,7 +1165,6 @@ def _parse_nullable_number(value: Any) -> Optional[float]:
 def _parse_two_value_number_array(value: Any) -> Optional[List[Optional[float]]]:
     if value in (None, "", [], {}):
         return None
-
     if isinstance(value, list):
         values = [_parse_nullable_number(item) for item in value[:2]]
     elif isinstance(value, str):
@@ -1045,481 +1172,296 @@ def _parse_two_value_number_array(value: Any) -> Optional[List[Optional[float]]]
         values = [_parse_nullable_number(part) for part in parts[:2]]
     else:
         values = [_parse_nullable_number(value)]
-
     while len(values) < 2:
         values.append(None)
-
     values = values[:2]
     if all(item is None for item in values):
         return None
     return values
 
 
-def _parse_two_value_perimeter_array(value: Any) -> List[float]:
+def _normalize_population_value(value: Any) -> Any:
+    if isinstance(value, dict):
+        raw_population = _first_non_empty(value.get("population"), value.get("value"), value.get("href"))
+        population = _parse_two_value_number_array(raw_population)
+        if population is None:
+            return raw_population
+        raw_perimeter = _first_non_empty(value.get("perimeter_km"), value.get("perimeterKm"), value.get("perimeter"))
+        perimeter = _parse_two_value_number_array(raw_perimeter) or [10.0, 50.0]
+        return {"population": population, "perimeter_km": perimeter}
     parsed = _parse_two_value_number_array(value)
-    if parsed is None:
-        return [10.0, 50.0]
-
-    out: List[float] = []
-    for fallback, item in zip((10.0, 50.0), parsed):
-        out.append(float(item) if item is not None else fallback)
-    return out
+    return parsed if parsed is not None else value
 
 
-def _normalize_temporal_population(value: Any) -> Optional[List[Dict[str, Any]]]:
-    out: List[Dict[str, Any]] = []
-
-    for item in _as_list(value):
-        if isinstance(item, dict):
-            raw_population = _first_non_empty(
-                item.get("population"),
-                item.get("value"),
-                item.get("href"),
-            )
-            population = _parse_two_value_number_array(raw_population)
-            if population is None:
-                continue
-
-            raw_perimeter = _first_non_empty(
-                item.get("perimeter_km"),
-                item.get("perimeterKm"),
-                item.get("perimeter"),
-            )
-            start, end = _extract_interval(item)
-            dates = [
-                _normalize_date_value(start) or _temporal_begin_date(item),
-                _normalize_date_value(end) or "..",
-            ]
-
-            out.append(
-                {
-                    "population": population,
-                    "perimeter_km": _parse_two_value_perimeter_array(raw_perimeter),
-                    "dates": dates,
-                }
-            )
-            continue
-
-        population = _parse_two_value_number_array(item)
-        if population is not None:
-            out.append(
-                {
-                    "population": population,
-                    "perimeter_km": [10.0, 50.0],
-                    "dates": ["..", ".."],
-                }
-            )
-
-    out = _uniq_dicts(_clean_none(_preserve_nulls(out)))
-    out = _restore_null_sentinel(out)
-    return out or None
-
-
-def _normalize_temporal_surface_roughness(value: Any) -> Optional[List[Dict[str, Any]]]:
-    return _normalize_temporal_values(
-        value,
-        output_key="surfaceRoughness",
-        value_keys=("surfaceRoughness", "roughness", "value", "href"),
-    )
-
-
-def _topography_items(facility: Dict[str, Any], target_key: str) -> List[Any]:
-    out: List[Any] = []
-    out.extend(_as_list(facility.get(target_key)))
-    for container_key in ("topographyBathymetry", "topography", "bathymetry"):
-        for container in _as_list(facility.get(container_key)):
-            if isinstance(container, dict) and _non_empty(container.get(target_key)):
-                source = dict(container)
-                value = source.get(target_key)
-                if isinstance(value, dict):
-                    merged = dict(value)
-                    for temporal_key in ("beginPosition", "endPosition", "begin", "end", "start", "date"):
-                        if temporal_key in source and temporal_key not in merged:
-                            merged[temporal_key] = source[temporal_key]
-                    out.append(merged)
-                else:
-                    out.append({target_key: value, "beginPosition": source.get("beginPosition"), "date": source.get("date")})
-    return out
-
-
-def _normalize_topography_bathymetry(facility: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+def _topography_object(source: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
     out: Dict[str, Any] = {}
-
-    for source_key in (
-        "localTopography",
-        "relativeElevation",
-        "topographicContext",
-        "altitudeOrDepth",
-    ):
-        values = _topography_items(facility, source_key)
-        temporal_values = _normalize_temporal_values(
-            values,
-            output_key=source_key,
-            value_keys=(source_key, "value", "href"),
-        )
-        if not temporal_values:
-            continue
-
-        # The WMDR2 target is non-temporal here. Use the latest normalized value
-        # as the current topography/bathymetry context value.
-        value = temporal_values[-1].get(source_key)
-        if _non_empty(value):
-            out[source_key] = value
-
+    container = _as_dict(source.get("topographyBathymetry") or source.get("topography") or source.get("bathymetry"))
+    merged: Dict[str, Any] = dict(container)
+    for key in ("localTopography", "relativeElevation", "topographicContext", "altitudeOrDepth"):
+        if key in source and key not in merged:
+            merged[key] = source[key]
+    for key in ("localTopography", "relativeElevation", "topographicContext", "altitudeOrDepth"):
+        value = merged.get(key)
+        if isinstance(value, Mapping):
+            value = _first_non_empty(value.get("value"), value.get("href"), value.get("#text"), value.get("text"))
+        if _non_empty(value) or isinstance(value, (int, float, bool)):
+            out[key] = _compact_wmdr_code_value(value) if isinstance(value, str) else value
     return _clean_none(out) or None
 
 
-def _normalize_environment(facility: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-    environment: Dict[str, Any] = {}
+def _normalize_historical_environment(facility: Mapping[str, Any], *, fallback_date: str) -> Optional[List[Dict[str, Any]]]:
+    env_sources: List[Mapping[str, Any]] = []
+    if isinstance(facility.get("environment"), dict):
+        env_sources.append(facility["environment"])
+    env_sources.append(facility)
 
-    temporal_climate_zone = _normalize_temporal_climate_zone(facility.get("climateZone"))
-    if temporal_climate_zone:
-        environment["temporalClimateZone"] = temporal_climate_zone
+    by_date: Dict[str, Dict[str, Any]] = {}
 
-    temporal_surface_cover = _normalize_temporal_surface_cover(facility.get("surfaceCover"))
-    if temporal_surface_cover:
-        environment["temporalSurfaceCover"] = temporal_surface_cover
+    def add(date: str, key: str, value: Any) -> None:
+        if not (_non_empty(value) or isinstance(value, bool)):
+            return
+        record = by_date.setdefault(date, {"date": date})
+        record[key] = value
 
-    temporal_population = _normalize_temporal_population(facility.get("population"))
-    if temporal_population:
-        environment["temporalPopulation"] = temporal_population
-
-    temporal_surface_roughness = _normalize_temporal_surface_roughness(
-        _first_non_empty(facility.get("surfaceRoughness"), facility.get("roughness"))
-    )
-    if temporal_surface_roughness:
-        environment["temporalSurfaceRoughness"] = temporal_surface_roughness
-
-    topography_bathymetry = _normalize_topography_bathymetry(facility)
-    if topography_bathymetry:
-        environment["topographyBathymetry"] = topography_bathymetry
-
-    return _clean_none(environment) or None
-
-
-def _program_affiliation_values(item: Any) -> List[str]:
-    if isinstance(item, str):
-        value = _normalize_code_value(item)
-        return [value] if isinstance(value, str) and value and not _is_unknown_token(value) else []
-    if not isinstance(item, dict):
-        return []
-    values = [
-        _normalize_code_value(raw)
-        for raw in _as_list(item.get("programAffiliation") or item.get("href") or item.get("value"))
-        if isinstance(raw, str) and raw.strip() and not _is_unknown_token(raw)
-    ]
-    return [value for value in values if isinstance(value, str) and value]
-
-
-def _normalize_program_affiliations(value: Any) -> Optional[List[str]]:
-    """Normalize non-temporal observation-level program affiliations.
-
-    Facility-level program affiliation remains temporal because it can carry
-    reporting-status and program-specific facility metadata. Observation-level
-    affiliation is a compact set of code values only.
-    """
-    out: List[str] = []
-    seen: set[str] = set()
-    for item in _as_list(value):
-        for affiliation in _program_affiliation_values(item):
-            if affiliation in seen:
-                continue
-            seen.add(affiliation)
-            out.append(affiliation)
-    return out or None
-
-
-def _reporting_status_events(value: Any, *, fallback_date: str = "..") -> List[Tuple[str, str]]:
-    rows: List[Tuple[str, str]] = []
-    for item in _as_list(value):
-        if isinstance(item, str):
-            status = _normalize_code_value(item)
-            if isinstance(status, str) and status and not _is_unknown_token(status):
-                rows.append((fallback_date, status))
-            continue
-        if not isinstance(item, dict):
-            continue
-        status = _normalize_code_value(
-            _first_non_empty(item.get("reportingStatus"), item.get("instrumentOperatingStatus"), item.get("value"), item.get("href"))
-        )
-        if isinstance(status, str) and status and not _is_unknown_token(status):
-            rows.append((_temporal_begin_date(item) or fallback_date, status))
-    return rows
-
-
-def _normalize_temporal_program_affiliation(value: Any) -> Optional[List[Dict[str, Any]]]:
-    out: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        affiliations = _program_affiliation_values(item)
-        if not affiliations:
-            continue
-        item_begin = _temporal_begin_date(item) if isinstance(item, dict) else ".."
-        status_events = _reporting_status_events(item.get("reportingStatus"), fallback_date=item_begin) if isinstance(item, dict) else []
-        psf_id = None
-        psf_title = None
-        if isinstance(item, dict):
-            psf_id = _first_non_empty(item.get("programSpecificFacilityId"), item.get("programSpecificIdentifier"))
-            psf_title = _first_non_empty(
-                item.get("programSpecificFacilityTitle"),
-                item.get("programSpecificFacilityName"),
-                item.get("programSpecificTitle"),
-            )
-        for affiliation in affiliations:
-            if status_events:
-                for begin, status in status_events:
-                    record: Dict[str, Any] = {"programAffiliation": affiliation, "reportingStatus": status, "date": begin}
-                    if psf_id:
-                        record["programSpecificFacilityId"] = str(psf_id)
-                    if psf_title:
-                        record["programSpecificFacilityTitle"] = str(psf_title)
-                    out.append(record)
+    def add_history(source_value: Any, key: str, value_keys: Sequence[str], *, transform: Optional[Any] = None) -> None:
+        for item in _as_list(source_value):
+            date = _entry_date(item, fallback=fallback_date)
+            if isinstance(item, dict):
+                raw_value = _first_non_empty(*(item.get(k) for k in value_keys))
+                if raw_value is None and key in item:
+                    raw_value = item.get(key)
             else:
-                record = {"programAffiliation": affiliation, "date": item_begin}
-                if psf_id:
-                    record["programSpecificFacilityId"] = str(psf_id)
-                if psf_title:
-                    record["programSpecificFacilityTitle"] = str(psf_title)
-                out.append(record)
-    out = _uniq_dicts(_clean_none(sorted(out, key=lambda row: (row.get("date") == "..", str(row.get("date")), str(row.get("programAffiliation"))))))
-    return out or None
-
-
-
-def _normalize_temporal_instrument_operating_status(value: Any) -> Optional[List[Dict[str, Any]]]:
-    out: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        if isinstance(item, str):
-            status = _normalize_code_value(item)
-            if isinstance(status, str) and status and not _is_unknown_token(status):
-                out.append({"instrumentOperatingStatus": status, "date": ".."})
-            continue
-        if not isinstance(item, dict):
-            continue
-        status = _normalize_code_value(
-            _first_non_empty(item.get("instrumentOperatingStatus"), item.get("status"), item.get("value"), item.get("href"))
-        )
-        if isinstance(status, str) and status and not _is_unknown_token(status):
-            out.append({"instrumentOperatingStatus": status, "date": _temporal_begin_date(item)})
-    out = _uniq_dicts(_clean_none(out))
-    return out or None
-
-
-def _official_status_term(value: Any) -> Optional[str]:
-    """Return compact WMDR2 official-status term.
-
-    WMDR10 XML carries ``wmdr:officialStatus`` as a boolean.  In WMDR2 this is
-    expressed using ObservationStatus-like terms: ``true`` means ``primary``;
-    ``false`` means ``additional``.  Explicit string/code-list values are still
-    compacted when present in already-simplified JSON.
-    """
-    if isinstance(value, dict):
-        value = _first_non_empty(
-            value.get("officialStatus"),
-            value.get("observationStatus"),
-            value.get("status"),
-            value.get("value"),
-            value.get("href"),
-        )
-    parsed = _parse_bool(value)
-    if parsed is True:
-        return "primary"
-    if parsed is False:
-        return "additional"
-    if value in (None, "", [], {}):
-        return None
-    status = _normalize_code_value(value) if isinstance(value, str) else value
-    if isinstance(status, str):
-        if _is_unknown_token(status):
-            return "unknown"
-        return status if status.strip() else None
-    return str(status) if _non_empty(status) else None
-
-
-def _normalize_temporal_official_status(
-    value: Any,
-    *,
-    fallback_date: str = "..",
-    default_unknown: bool = False,
-) -> Optional[List[Dict[str, Any]]]:
-    """Normalize official-status history as temporal objects.
-
-    If the XML/source did not contain ``officialStatus``, emit ``unknown`` when
-    ``default_unknown`` is true.  This distinguishes explicit ``false`` from a
-    genuinely missing status.
-    """
-    if value in (None, "", [], {}):
-        if default_unknown:
-            return [{"officialStatus": "unknown", "date": fallback_date}]
-        return None
-
-    out: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        if isinstance(item, dict):
-            date = _temporal_begin_date(item) or fallback_date
-            status = _official_status_term(item)
-        else:
-            date = fallback_date
-            status = _official_status_term(item)
-        if status is None:
-            status = "unknown" if default_unknown else None
-        if status:
-            out.append({"officialStatus": status, "date": date})
-    out = _uniq_dicts(_clean_none(out))
-    if not out and default_unknown:
-        return [{"officialStatus": "unknown", "date": fallback_date}]
-    return out or None
-
-
-def _deployment_official_status_source(raw: Dict[str, Any]) -> Optional[List[Dict[str, Any]] | Any]:
-    """Return official-status source entries for a deployment.
-
-    WMDR10 places ``officialStatus`` under
-    ``deployment.dataGeneration[].reporting.officialStatus``.  WMDR2 stores the
-    normalized value at deployment level as ``temporalOfficialStatus``.
-
-    Explicit deployment-level values are still accepted for tests and already
-    simplified intermediate JSON.  If no explicit value is found, the nested
-    reporting entries are harvested and dated with the data-generation/reporting
-    validity begin date.
-    """
-    explicit = _first_non_empty(
-        raw.get("temporalOfficialStatus"),
-        raw.get("officialStatus"),
-        raw.get("observationStatus"),
-    )
-    if _non_empty(explicit):
-        return explicit
-
-    out: List[Dict[str, Any]] = []
-    for data_generation in _as_list(raw.get("dataGeneration")):
-        if not isinstance(data_generation, dict):
-            continue
-        data_generation_start, _ = _extract_interval(data_generation)
-        for reporting in _as_list(data_generation.get("reporting")):
-            if not isinstance(reporting, dict):
+                raw_value = item
+            if raw_value in (None, "", [], {}):
                 continue
-            status_value = _first_non_empty(
-                reporting.get("officialStatus"),
-                reporting.get("observationStatus"),
-                reporting.get("status"),
-            )
-            if not _non_empty(status_value):
-                continue
-            reporting_start, _ = _extract_interval(reporting)
-            begin = _normalize_date_value(
-                _first_non_empty(reporting_start, data_generation_start, raw.get("beginPosition"))
-            ) or ".."
-            for item in _as_list(status_value):
+            if transform is not None:
+                transform_input = item if key == "population" and isinstance(item, dict) else raw_value
+                value = transform(transform_input)
+            else:
+                value = _compact_wmdr_code_value(raw_value) if isinstance(raw_value, str) else raw_value
+            if key == "population" and isinstance(value, dict):
+                for sub_key, sub_value in value.items():
+                    add(date, sub_key, sub_value)
+            else:
+                add(date, key, value)
+
+    for source in env_sources:
+        for name in ("temporalClimateZone", "historicalClimateZone", "climateZone"):
+            add_history(source.get(name), "climateZone", ("climateZone", "value", "href"))
+        for name in ("temporalPopulation", "historicalPopulation", "population"):
+            add_history(source.get(name), "population", ("population", "value", "href"), transform=_normalize_population_value)
+        for name in ("temporalSurfaceCover", "historicalSurfaceCover", "surfaceCover"):
+            add_history(source.get(name), "surfaceCover", ("surfaceCover", "value", "href"))
+        for name in ("temporalSurfaceRoughness", "historicalSurfaceRoughness", "surfaceRoughness"):
+            add_history(source.get(name), "surfaceRoughness", ("surfaceRoughness", "roughness", "value", "href"))
+        for name in ("historicalEnvironment",):
+            for item in _as_list(source.get(name)):
                 if isinstance(item, dict):
-                    status_entry = dict(item)
-                    status_entry.setdefault("beginPosition", begin)
-                else:
-                    status_entry = {"officialStatus": item, "beginPosition": begin}
-                out.append(status_entry)
+                    date = _entry_date(item, fallback=fallback_date)
+                    record = by_date.setdefault(date, {"date": date})
+                    for key, value in item.items():
+                        if key == "date":
+                            continue
+                        if _non_empty(value) or isinstance(value, bool):
+                            record[key] = value
+        topo = _topography_object(source)
+        if topo:
+            date = _entry_date(source, fallback=fallback_date)
+            add(date, "topographyBathymetry", topo)
 
-    return out or None
+    return _uniq_dicts(_clean_none([by_date[key] for key in sorted(by_date)])) or None
 
 
-def _normalize_temporal_data_policy(value: Any) -> List[Dict[str, Any]]:
-    out: List[Dict[str, Any]] = []
+def _normalize_environment(facility: Mapping[str, Any]) -> Optional[List[Dict[str, Any]]]:
+    """Compatibility helper returning the v0.2.2 historicalEnvironment array.
+
+    Older local tests called ``_normalize_environment`` and expected an
+    ``environment`` wrapper. The v0.2.2 model has no wrapper; the returned
+    value is meant to be assigned directly to ``properties.historicalEnvironment``.
+    """
+
+    start, _ = _extract_interval(facility)
+    return _normalize_historical_environment(facility, fallback_date=_normalize_date_value(start) or "..")
+
+
+def _normalize_temporal_data_policy(value: Any, *, fallback_date: str = "..") -> Optional[List[Dict[str, Any]]]:
+    records: List[Dict[str, Any]] = []
     for item in _as_list(value):
-        if isinstance(item, str):
-            policy = _normalize_code_value(item)
-            if isinstance(policy, str) and not _is_unknown_token(policy):
-                out.append({"dataPolicy": policy, "date": ".."})
+        if not isinstance(item, Mapping):
+            if _non_empty(item):
+                records.append({"date": fallback_date, "dataPolicy": _compact_wmdr_code_value(item)})
             continue
-        if not isinstance(item, dict):
+        raw_policy = _first_non_empty(item.get("dataPolicy"), item.get("policy"), item.get("href"), item.get("value"))
+        if not _non_empty(raw_policy):
             continue
-        record = _drop_source_metadata(item)
-        if not isinstance(record, dict):
-            continue
-        policy = _first_non_empty(record.get("dataPolicy"), record.get("policy"), record.get("value"), record.get("href"))
-        if isinstance(policy, str):
-            record["dataPolicy"] = _normalize_code_value(policy)
-        for key in ("policy", "value", "href", "beginPosition", "endPosition", "begin", "end", "start"):
-            if key != "dataPolicy":
-                record.pop(key, None)
-        record["date"] = _temporal_begin_date(item)
-        if record:
-            out.append(record)
-    return _uniq_dicts(_clean_none(out))
-
-
-# ---------------------------------------------------------------------------
-# Facility sets
-# ---------------------------------------------------------------------------
-
-
-def _facility_set_title(value: Any) -> Optional[str]:
-    if isinstance(value, dict):
-        title = _first_non_empty(value.get("title"), value.get("name"), value.get("label"), value.get("facilitySet"), value.get("value"), value.get("href"))
-        return str(_normalize_code_value(title)) if _non_empty(title) else None
-    if _non_empty(value):
-        normalized = _normalize_code_value(value) if isinstance(value, str) else value
-        return str(normalized) if _non_empty(normalized) else None
-    return None
-
-
-def _facility_set_id(value: Any) -> Optional[str]:
-    if isinstance(value, dict):
-        raw = _first_non_empty(value.get("id"), value.get("identifier"), value.get("href"), value.get("facilitySet"), value.get("value"), value.get("title"), value.get("name"))
-    else:
-        raw = value
-    if not _non_empty(raw):
-        return None
-    compact = _normalize_code_value(raw) if isinstance(raw, str) else raw
-    text = str(compact).strip()
-    if not text:
-        return None
-    if text.startswith("facilitySet:"):
-        return text
-    return f"facilitySet:{_sanitize_id(text)}"
+        record: Dict[str, Any] = {
+            "date": _entry_date(item, fallback=fallback_date),
+            "dataPolicy": _compact_wmdr_code_value(raw_policy) if isinstance(raw_policy, str) else raw_policy,
+        }
+        if _non_empty(item.get("attribution")):
+            record["attribution"] = _preserve_nulls(item.get("attribution"))
+        records.append(record)
+    return _uniq_dicts(_clean_none(records)) or None
 
 
 def _facility_set_refs(value: Any) -> Optional[List[str]]:
     refs: List[str] = []
     for item in _as_list(value):
-        ref = _facility_set_id(item)
-        if ref:
-            refs.append(ref)
-    refs = _uniq_scalars(refs)
-    return refs or None
+        if isinstance(item, dict):
+            raw = _first_non_empty(
+                item.get("facilitySet"),
+                item.get("facilitySets"),
+                item.get("href"),
+                item.get("value"),
+                item.get("identifier"),
+                item.get("id"),
+            )
+        else:
+            raw = item
+        if not _non_empty(raw):
+            continue
+        refs.append(f"facilitySet:{_sanitize_id(_compact_wmdr_code_value(raw))}")
+    return _uniq_scalars(refs) or None
 
 
-def facility_set_catalog_entry(value: Any, *, description: str = "") -> Optional[Dict[str, Any]]:
-    """Return a facility-set catalogue object for a source facilitySet value."""
-    ref = _facility_set_id(value)
-    title = _facility_set_title(value)
-    if not ref or not title:
+def facility_set_catalog_entry(value: Any, *, description: Optional[str] = None) -> Dict[str, Any]:
+    code = _sanitize_id(_compact_wmdr_code_value(value))
+    entry: Dict[str, Any] = {"id": f"facilitySet:{code}", "title": code}
+    if _non_empty(description):
+        entry["description"] = str(description)
+    return entry
+
+
+def facility_set_catalog(values: Any) -> Dict[str, Any]:
+    entries = [facility_set_catalog_entry(ref.removeprefix("facilitySet:")) for ref in (_facility_set_refs(values) or [])]
+    return {"facilitySets": entries}
+
+
+def _copy_known_facility_properties(facility: Mapping[str, Any]) -> Dict[str, Any]:
+    out: Dict[str, Any] = {}
+    for key in ("facilityType", "wmoRegion", "surfaceCoverClassification", "timeZone", "regionOfOrigin"):
+        value = facility.get(key)
+        if _non_empty(value):
+            out[key] = value
+    facility_sets = _facility_set_refs(facility.get("facilitySet") or facility.get("facilitySets"))
+    if facility_sets:
+        out["facilitySets"] = facility_sets
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Instruments, schedules, reporting and deployments
+# ---------------------------------------------------------------------------
+
+
+def _deployment_source_identifier(raw: Mapping[str, Any], *, index: int, facility_id: str) -> str:
+    raw_id = _first_non_empty(raw.get("identifier"), raw.get("id"), raw.get("@gml:id"), raw.get("@id"), raw.get("uuid"))
+    if raw_id:
+        return _sanitize_id(raw_id)
+    seed = json.dumps(_clean_none(dict(raw)), sort_keys=True, ensure_ascii=False, default=str)
+    digest = hashlib.sha1(seed.encode("utf-8")).hexdigest()[:12]
+    return _sanitize_id(f"{facility_id}:deployment:{index}:{digest}")
+
+
+
+def _normalize_instrument_observed_property(raw: Mapping[str, Any]) -> Optional[List[Any]]:
+    """Normalize instrument observedProperty values.
+
+    WMDR observed-variable URIs are compacted to numeric code values, while
+    local/free-text variables are preserved as strings.
+    """
+
+    value = _first_non_empty(raw.get("observedProperty"), raw.get("observedVariable"), raw.get("observableVariable"))
+    values: List[Any] = []
+    for item in _as_list(value):
+        if isinstance(item, dict):
+            raw_value = _first_non_empty(
+                item.get("observedProperty"),
+                item.get("observedVariable"),
+                item.get("href"),
+                item.get("value"),
+                item.get("description"),
+                item.get("label"),
+                item.get("name"),
+            )
+        else:
+            raw_value = item
+        compact = _compact_wmdr_code_value(raw_value) if isinstance(raw_value, (str, dict)) else raw_value
+        if _non_empty(compact) or isinstance(compact, (int, float, bool)):
+            values.append(compact)
+    return _uniq_scalars(values) or None
+
+
+def _normalize_instrument_observed_geometry(raw: Mapping[str, Any]) -> Optional[Any]:
+    value = _first_non_empty(raw.get("observedGeometry"), raw.get("observedGeometryType"), raw.get("observableGeometry"))
+    compact = _compact_wmdr_code_value(value) if isinstance(value, (str, dict)) else value
+    return compact if _non_empty(compact) else None
+
+
+def _normalize_vertical_range(raw: Mapping[str, Any]) -> Optional[Dict[str, float]]:
+    source = _first_non_empty(raw.get("verticalRange"), raw.get("observableVerticalRange"))
+    if isinstance(source, Mapping):
+        minimum = _normalize_quantity_value(_first_non_empty(source.get("min"), source.get("minimum"), source.get("lower")))
+        maximum = _normalize_quantity_value(_first_non_empty(source.get("max"), source.get("maximum"), source.get("upper")))
+    else:
+        minimum = _normalize_quantity_value(_first_non_empty(raw.get("verticalRangeMin"), raw.get("verticalRangeMinimum"), raw.get("minimumVerticalRange")))
+        maximum = _normalize_quantity_value(_first_non_empty(raw.get("verticalRangeMax"), raw.get("verticalRangeMaximum"), raw.get("maximumVerticalRange")))
+    if minimum is None or maximum is None:
         return None
-    return _clean_none({"id": ref, "title": title, "description": description})
+    return {"min": float(minimum), "max": float(maximum)}
+
+def _instrument_source_values(raw: Mapping[str, Any]) -> Tuple[Any, Any]:
+    instrument = _as_dict(raw.get("instrument") or raw.get("equipment"))
+    manufacturer = _first_non_empty(raw.get("manufacturer"), instrument.get("manufacturer"), instrument.get("make"))
+    model = _first_non_empty(raw.get("model"), instrument.get("model"), instrument.get("type"))
+    return manufacturer, model
 
 
-def facility_set_catalog(values: Iterable[Any]) -> Dict[str, List[Dict[str, Any]]]:
-    """Build a catalogue payload matching schemas/wmdr2-facility-sets.schema.json."""
-    entries = [entry for value in values for entry in [facility_set_catalog_entry(value)] if entry]
-    return {"facilitySets": _uniq_dicts(entries)}
-
-
-# ---------------------------------------------------------------------------
-# Instruments, deployments, schedules and observations
-# ---------------------------------------------------------------------------
-
-
-def _deployment_source_identifier(raw: Dict[str, Any], *, index: int, facility_id: str) -> str:
-    dep_id = _first_non_empty(
-        raw.get("identifier"),
-        raw.get("@gml:id"),
-        raw.get("@id"),
-        raw.get("id"),
-        raw.get("serialNumber"),
-        f"{facility_id}:deployment:{index}",
+def _instrument_record_id(raw: Mapping[str, Any], *, facility_id: str) -> Optional[str]:
+    instrument = _as_dict(raw.get("instrument") or raw.get("equipment"))
+    raw_id = _first_non_empty(
+        instrument.get("id"),
+        instrument.get("identifier"),
+        instrument.get("@gml:id"),
+        raw.get("instrument"),
+        raw.get("equipment"),
     )
-    return _sanitize_id(str(dep_id))
+    if isinstance(raw_id, str) and raw_id.startswith("instrument:"):
+        return raw_id
+    if isinstance(raw_id, str) and raw_id.strip() and not raw_id.strip().startswith(("http://", "https://")):
+        return f"instrument:{_sanitize_id(raw_id)}"
+    manufacturer, model = _instrument_source_values(raw)
+    serial = _first_serial_number(raw)
+    observed_property = _normalize_instrument_observed_property(raw)
+    observed_geometry = _normalize_instrument_observed_geometry(raw)
+    vertical_range = _normalize_vertical_range(raw)
+    if not any(_is_substantive_instrument_value(value) for value in (manufacturer, model, serial, observed_property, observed_geometry, vertical_range)):
+        return None
+    seed = "|".join(str(_first_non_empty(value, "")) for value in (facility_id, manufacturer, model, serial, observed_property, observed_geometry, vertical_range))
+    digest = hashlib.sha1(seed.encode("utf-8")).hexdigest()[:12]
+    return f"instrument:{_sanitize_id(facility_id)}:{digest}"
 
 
-def _deployment_record_id(raw: Dict[str, Any], *, index: int, facility_id: str) -> str:
-    return f"deployment:{_deployment_source_identifier(raw, index=index, facility_id=facility_id)}"
+def _instrument_ref_for_deployment(raw: Mapping[str, Any], *, facility_id: str) -> Optional[str]:
+    return _instrument_record_id(raw, facility_id=facility_id)
+
+
+def _scalar_reference(value: Any) -> Optional[str]:
+    """Return one scalar identifier/reference from a scalar-or-list value.
+
+    WMDR2 v0.2.x reusable deployment records use a single instrument
+    reference, not a one-element list.  This guard keeps the base converter
+    aligned with the catalogue externalizer even if an upstream helper or
+    legacy input provides a list-shaped reference.
+    """
+
+    if isinstance(value, str) and value.strip():
+        return value
+    if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):
+        for item in value:
+            if isinstance(item, str) and item.strip():
+                return item
+    return None
 
 
 def _is_substantive_instrument_value(value: Any) -> bool:
@@ -1530,223 +1472,14 @@ def _is_substantive_instrument_value(value: Any) -> bool:
     return True
 
 
-def _instrument_source_values(raw: Dict[str, Any]) -> Tuple[Any, Any]:
-    return raw.get("manufacturer"), raw.get("model")
-
-
-def _to_float(value: Any) -> Optional[float]:
-    if isinstance(value, bool) or value in (None, ""):
-        return None
-    if isinstance(value, (int, float)):
-        return float(value)
-    if isinstance(value, str):
-        try:
-            return float(value.strip())
-        except ValueError:
-            return None
-    return None
-
-
-def _normalize_vertical_range(raw: Dict[str, Any]) -> Optional[Dict[str, float]]:
-    vertical_range = raw.get("verticalRange")
-    if isinstance(vertical_range, dict):
-        raw_min = _first_non_empty(
-            vertical_range.get("min"),
-            vertical_range.get("minimum"),
-            vertical_range.get("lower"),
-            vertical_range.get("lowerLimit"),
-        )
-        raw_max = _first_non_empty(
-            vertical_range.get("max"),
-            vertical_range.get("maximum"),
-            vertical_range.get("upper"),
-            vertical_range.get("upperLimit"),
-        )
-    elif isinstance(vertical_range, (list, tuple)) and len(vertical_range) >= 2:
-        raw_min, raw_max = vertical_range[0], vertical_range[1]
-    else:
-        raw_min = _first_non_empty(
-            raw.get("verticalRangeMin"),
-            raw.get("verticalRangeMinimum"),
-            raw.get("minimumVerticalRange"),
-            raw.get("lowerVerticalRange"),
-            raw.get("verticalRangeLowerLimit"),
-        )
-        raw_max = _first_non_empty(
-            raw.get("verticalRangeMax"),
-            raw.get("verticalRangeMaximum"),
-            raw.get("maximumVerticalRange"),
-            raw.get("upperVerticalRange"),
-            raw.get("verticalRangeUpperLimit"),
-        )
-    min_value = _to_float(raw_min)
-    max_value = _to_float(raw_max)
-    if min_value is None or max_value is None:
-        return None
-    return {"min": min_value, "max": max_value}
-
-
-def _normalize_instrument_observed_property(raw: Dict[str, Any]) -> Optional[List[Any]]:
-    """Return observed-property capabilities for an instrument.
-
-    The current EA model uses the same terms as observations
-    (``observedProperty`` and ``observedGeometry``) also for the instrument
-    catalogue.  Older converter inputs and intermediate JSON may still use the
-    ``observable*`` names; these remain accepted as aliases but are not emitted.
-    """
-    raw_value = _first_non_empty(
-        raw.get("observedProperty"),
-        raw.get("observedProperties"),
-        raw.get("instrumentObservedProperty"),
-        raw.get("instrumentObservedProperties"),
-        raw.get("observableVariables"),
-        raw.get("observableVariable"),
-        raw.get("instrumentObservableVariables"),
-        raw.get("instrumentObservableVariable"),
-    )
-    values: List[Any] = []
-    for item in _as_list(raw_value):
-        candidate: Any
-        if isinstance(item, dict):
-            candidate = _first_non_empty(
-                item.get("observedProperty"),
-                item.get("observedVariable"),
-                item.get("observableVariable"),
-                item.get("variable"),
-                item.get("description"),
-                item.get("value"),
-                item.get("href"),
-                item.get("#text"),
-            )
-        else:
-            candidate = item
-        if not _is_substantive_instrument_value(candidate):
-            continue
-        normalized = _compact_wmdr_code_value(candidate) if isinstance(candidate, str) else candidate
-        if _is_substantive_instrument_value(normalized):
-            values.append(normalized)
-    return _uniq_scalars(values) or None
-
-
-def _normalize_instrument_observed_geometry(raw: Dict[str, Any]) -> Optional[str]:
-    raw_value = _first_non_empty(
-        raw.get("observedGeometry"),
-        raw.get("instrumentObservedGeometry"),
-        raw.get("observedGeometryType"),
-        raw.get("instrumentObservedGeometryType"),
-        raw.get("observableGeometry"),
-        raw.get("instrumentObservableGeometry"),
-        raw.get("observableGeometryType"),
-        raw.get("instrumentObservableGeometryType"),
-    )
-    if isinstance(raw_value, dict):
-        raw_value = _first_non_empty(
-            raw_value.get("observedGeometry"),
-            raw_value.get("observableGeometry"),
-            raw_value.get("geometry"),
-            raw_value.get("geometryType"),
-            raw_value.get("value"),
-            raw_value.get("href"),
-            raw_value.get("#text"),
-        )
-    if not _is_substantive_instrument_value(raw_value):
-        return None
-    normalized = _compact_wmdr_code_value(raw_value) if isinstance(raw_value, str) else raw_value
-    if not _is_substantive_instrument_value(normalized):
-        return None
-    return str(normalized)
-
-
-# Backwards-compatible helper names for older tests/imports.  The emitted JSON
-# fields are still observedProperty/observedGeometry.
-def _normalize_observable_variables(raw: Dict[str, Any]) -> Optional[List[Any]]:
-    return _normalize_instrument_observed_property(raw)
-
-
-def _normalize_observable_geometry(raw: Dict[str, Any]) -> Optional[str]:
-    return _normalize_instrument_observed_geometry(raw)
-
-
-def _deployment_has_instrument(raw: Dict[str, Any]) -> bool:
-    manufacturer, model = _instrument_source_values(raw)
-    return any(_is_substantive_instrument_value(value) for value in (manufacturer, model)) or (
-        _normalize_vertical_range(raw) is not None
-        or _normalize_instrument_observed_property(raw) is not None
-        or _normalize_instrument_observed_geometry(raw) is not None
-    )
-
-
-def _instrument_record_id(raw: Dict[str, Any], *, facility_id: str) -> Optional[str]:
-    if not _deployment_has_instrument(raw):
-        return None
-    manufacturer, model = _instrument_source_values(raw)
-    vertical_range = _normalize_vertical_range(raw)
-    observed_property = _normalize_instrument_observed_property(raw)
-    observed_geometry = _normalize_instrument_observed_geometry(raw)
-    seed_parts = [
-        facility_id,
-        str(manufacturer or ""),
-        str(model or ""),
-        json.dumps(vertical_range, sort_keys=True),
-        json.dumps(observed_property, sort_keys=True),
-        str(observed_geometry or ""),
-    ]
-    digest = hashlib.sha1("|".join(seed_parts).encode("utf-8")).hexdigest()[:12]
-    return f"instrument:{digest}"
-
-
-def _instrument_refs_for_deployment(raw: Dict[str, Any], *, facility_id: str) -> List[str]:
-    instrument_id = _instrument_record_id(raw, facility_id=facility_id)
-    return [instrument_id] if instrument_id else []
-
-
-def _normalize_temporal_serial_number(value: Any, *, fallback_date: str = "..") -> Optional[List[Dict[str, Any]]]:
-    """Normalize instrument serial-number history as temporal objects."""
-    out: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        if isinstance(item, dict):
-            serial_number = _first_non_empty(
-                item.get("serialNumber"),
-                item.get("serial"),
-                item.get("value"),
-                item.get("href"),
-            )
-            date = _temporal_begin_date(item)
-        else:
-            serial_number = item
-            date = fallback_date
-        if not _is_substantive_instrument_value(serial_number):
-            continue
-        out.append({"serialNumber": str(serial_number), "date": date or fallback_date})
-    out = _uniq_dicts(_clean_none(out))
-    return out or None
-
-
-def _deployment_temporal_serial_number(raw: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    start, _ = _extract_interval(raw)
-    fallback_date = _normalize_date_value(start) or ".."
-    return _normalize_temporal_serial_number(
-        _first_non_empty(raw.get("temporalSerialNumber"), raw.get("temporalSerialNumbers"), raw.get("serialNumber")),
-        fallback_date=fallback_date,
-    )
-
-
-# Backwards-compatible alias for older imports/tests.
-def _deployment_serial_numbers(raw: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    return _deployment_temporal_serial_number(raw)
-
-
-def _normalize_instrument(raw: Dict[str, Any], *, facility_id: str) -> Optional[Dict[str, Any]]:
+def _normalize_instrument(raw: Mapping[str, Any], *, facility_id: str) -> Optional[Dict[str, Any]]:
     instrument_id = _instrument_record_id(raw, facility_id=facility_id)
     if not instrument_id:
         return None
+    instrument = _as_dict(raw.get("instrument") or raw.get("equipment"))
     manufacturer, model = _instrument_source_values(raw)
-    title = _normalize_description_value(
-        _first_non_empty(raw.get("instrumentTitle"), raw.get("equipmentTitle"), raw.get("title"), raw.get("name"))
-    )
-    description = _normalize_description_value(
-        _first_non_empty(raw.get("instrumentDescription"), raw.get("equipmentDescription"))
-    )
+    title = _normalize_description_value(_first_non_empty(instrument.get("title"), raw.get("instrumentTitle"), raw.get("equipmentTitle"), raw.get("title"), raw.get("name")))
+    description = _normalize_description_value(_first_non_empty(instrument.get("description"), raw.get("instrumentDescription"), raw.get("equipmentDescription")))
     return _clean_none(
         {
             "id": instrument_id,
@@ -1754,18 +1487,17 @@ def _normalize_instrument(raw: Dict[str, Any], *, facility_id: str) -> Optional[
             "description": description,
             "manufacturer": manufacturer if _is_substantive_instrument_value(manufacturer) else None,
             "model": model if _is_substantive_instrument_value(model) else None,
-            "verticalRange": _normalize_vertical_range(raw),
+            "serialNumber": _first_serial_number(raw),
             "observedProperty": _normalize_instrument_observed_property(raw),
             "observedGeometry": _normalize_instrument_observed_geometry(raw),
+            "verticalRange": _normalize_vertical_range(raw),
         }
     )
 
 
-def _normalize_instruments(deployments: Sequence[Dict[str, Any]], *, facility_id: str) -> List[Dict[str, Any]]:
+def _normalize_instruments(deployments: Sequence[Mapping[str, Any]], *, facility_id: str) -> List[Dict[str, Any]]:
     by_id: Dict[str, Dict[str, Any]] = {}
     for dep in deployments:
-        if not isinstance(dep, dict):
-            continue
         instrument = _normalize_instrument(dep, facility_id=facility_id)
         if not instrument:
             continue
@@ -1773,18 +1505,6 @@ def _normalize_instruments(deployments: Sequence[Dict[str, Any]], *, facility_id
         if isinstance(instrument_id, str) and instrument_id not in by_id:
             by_id[instrument_id] = instrument
     return list(by_id.values())
-
-
-def _parse_bool(value: Any) -> Optional[bool]:
-    if isinstance(value, bool):
-        return value
-    if isinstance(value, str):
-        low = value.strip().lower()
-        if low in {"true", "1", "yes"}:
-            return True
-        if low in {"false", "0", "no"}:
-            return False
-    return None
 
 
 def _normalize_diurnal_time(value: Any) -> Optional[str]:
@@ -1802,7 +1522,7 @@ def _normalize_diurnal_time(value: Any) -> Optional[str]:
     return f"{h:02d}:{m:02d}:{s:02d}"
 
 
-def _schedule_start_datetime(raw: Dict[str, Any]) -> str:
+def _schedule_start_datetime(raw: Mapping[str, Any]) -> str:
     def as_int(value: Any, default: int = 0) -> int:
         try:
             return int(value)
@@ -1823,19 +1543,19 @@ def _iso_duration(value: Any) -> Optional[str]:
     return text if re.match(r"^P", text) else None
 
 
-def _schedule_uid_from_event(event_without_uid: Dict[str, Any]) -> str:
+def _schedule_uid_from_event(event_without_uid: Mapping[str, Any]) -> str:
     seed = json.dumps(event_without_uid, sort_keys=True, ensure_ascii=False, default=str)
     digest = hashlib.sha1(seed.encode("utf-8")).hexdigest()[:12]
     return f"schedule_{digest}"
 
 
-def _flatten_schedule_candidates(value: Any, *, context: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+def _flatten_schedule_candidates(value: Any, *, context: Optional[Mapping[str, Any]] = None) -> List[Dict[str, Any]]:
     context = context or {}
     out: List[Dict[str, Any]] = []
     for item in _as_list(value):
         if not isinstance(item, dict):
             continue
-        merged = dict(context)
+        merged: Dict[str, Any] = dict(context)
         merged.update(item)
         coverage = item.get("coverage") or item.get("Coverage")
         if isinstance(coverage, dict):
@@ -1847,12 +1567,32 @@ def _flatten_schedule_candidates(value: Any, *, context: Optional[Dict[str, Any]
             samp = dict(merged)
             samp.update(sampling)
             out.append(samp)
-        if any(k in item for k in ("temporalSamplingInterval", "samplingInterval", "temporalAggregate", "startHour", "diurnalBaseTime")):
+        if any(
+            k in item
+            for k in (
+                "temporalSamplingInterval",
+                "samplingInterval",
+                "sampleInterval",
+                "temporalAggregate",
+                "temporalReportingInterval",
+                "reportingInterval",
+                "internationalExchange",
+                "uom",
+                "dataPolicy",
+                "levelOfData",
+                "timeliness",
+                "startHour",
+                "diurnalBaseTime",
+                "reporting",
+            )
+        ):
             out.append(merged)
     return out
 
 
-def _jscalendar_observing_schedule(raw: Dict[str, Any], *, time_zone: str = "UTC") -> Optional[Dict[str, Any]]:
+def _jscalendar_observing_schedule(raw: Mapping[str, Any], *, time_zone: str = "UTC") -> Optional[Dict[str, Any]]:
+    reporting_value = raw.get("reporting")
+    reporting = reporting_value if isinstance(reporting_value, dict) else {}
     interval = _iso_duration(
         _first_non_empty(
             raw.get("temporalSamplingInterval"),
@@ -1860,11 +1600,14 @@ def _jscalendar_observing_schedule(raw: Dict[str, Any], *, time_zone: str = "UTC
             raw.get("sampleInterval"),
             raw.get("interval"),
             raw.get("temporalAggregate"),
+            reporting.get("temporalAggregate"),
+            reporting.get("temporalReportingInterval"),
         )
     )
     has_window = any(_non_empty(raw.get(k)) for k in ("startMonth", "endMonth", "startWeekday", "endWeekday", "startHour", "endHour", "startMinute", "endMinute"))
     if not interval and not has_window:
         return None
+
     rule: Dict[str, Any] = {"@type": "RecurrenceRule", "frequency": "daily"}
     if interval:
         if m := re.fullmatch(r"PT(\d+)M", interval):
@@ -1879,6 +1622,7 @@ def _jscalendar_observing_schedule(raw: Dict[str, Any], *, time_zone: str = "UTC
             rule = {"@type": "RecurrenceRule", "frequency": "secondly"}
             if int(m.group(1)) != 1:
                 rule["interval"] = int(m.group(1))
+
     event_without_uid: Dict[str, Any] = {
         "@type": "Event",
         "start": _schedule_start_datetime(raw),
@@ -1887,20 +1631,7 @@ def _jscalendar_observing_schedule(raw: Dict[str, Any], *, time_zone: str = "UTC
         "recurrenceRules": [rule],
     }
     aggregation: Dict[str, Any] = {}
-    raw_mapping: Dict[str, Any] = dict(raw)
-    reporting_value: object = raw_mapping.get("reporting")
-    reporting: Dict[str, Any]
-    if isinstance(reporting_value, dict):
-        reporting = reporting_value
-    else:
-        reporting = {}
-    temporal_aggregate = _iso_duration(
-        _first_non_empty(
-            raw_mapping.get("temporalAggregate"),
-            reporting.get("temporalAggregate"),
-            reporting.get("temporalReportingInterval"),
-        )
-    )
+    temporal_aggregate = _iso_duration(_first_non_empty(raw.get("temporalAggregate"), reporting.get("temporalAggregate"), reporting.get("temporalReportingInterval")))
     if temporal_aggregate:
         aggregation["temporalAggregate"] = temporal_aggregate
     diurnal = _normalize_diurnal_time(raw.get("diurnalBaseTime"))
@@ -1927,116 +1658,341 @@ def _register_observing_schedule_refs(
                 continue
             uid = str(event["uid"])
             schedule_registry.setdefault(uid, event)
-            refs.append({"observingSchedule": uid, "date": _temporal_begin_date(candidate)})
-    refs = _uniq_dicts(_clean_none(refs))
-    return refs or None
+            refs.append({"date": _temporal_begin_date(candidate), "schedule": uid})
+    return _uniq_dicts(_clean_none(refs)) or None
 
 
-def _normalize_observation_reporting(*sources: Any) -> Optional[Dict[str, List[Any]]]:
-    records: List[Dict[str, Any]] = []
-    dates: List[str] = []
-    for source in sources:
-        for candidate in _flatten_schedule_candidates(source):
-            reporting = candidate.get("reporting") if isinstance(candidate.get("reporting"), dict) else candidate
-            if not isinstance(reporting, dict):
-                continue
-            record: Dict[str, Any] = {}
-            for source_key, target_key in (
-                ("internationalExchange", "internationalExchange"),
-                ("temporalReportingInterval", "temporalAggregate"),
-                ("temporalAggregate", "temporalAggregate"),
-                ("uom", "uom"),
-                ("dataPolicy", "dataPolicy"),
-                ("levelOfData", "levelOfData"),
-                ("referenceDatum", "referenceDatum"),
-                ("timeliness", "timeliness"),
-            ):
-                if source_key not in reporting:
-                    continue
-                value = reporting.get(source_key)
-                if source_key == "internationalExchange":
-                    parsed = _parse_bool(value)
-                    value = parsed if parsed is not None else value
-                if _non_empty(value) or isinstance(value, bool):
-                    record[target_key] = _preserve_nulls(value)
-            if record:
-                records.append(record)
-                dates.append(_temporal_begin_date(candidate))
-    if not records:
-        return None
-    deduped_records: List[Dict[str, Any]] = []
-    deduped_dates: List[str] = []
-    seen: set[str] = set()
-    for record, date in zip(records, dates):
-        marker = json.dumps(record, sort_keys=True, ensure_ascii=False, default=str)
-        if marker in seen:
-            continue
-        seen.add(marker)
-        deduped_records.append(record)
-        deduped_dates.append(date)
-    preferred_order = ["internationalExchange", "temporalAggregate", "uom", "dataPolicy", "levelOfData", "referenceDatum"]
-    extra_keys = sorted(key for record in deduped_records for key in record if key not in preferred_order and key != "timeliness")
-    reporting_out: Dict[str, Any] = {}
-    for key in preferred_order + extra_keys:
-        if any(key in record for record in deduped_records):
-            reporting_out[key] = [record.get(key) for record in deduped_records]
-    if any("timeliness" in record for record in deduped_records):
-        reporting_out["temporalTimeliness"] = [
-            {"timeliness": record.get("timeliness"), "date": date}
-            for record, date in zip(deduped_records, deduped_dates)
-            if "timeliness" in record
-        ]
-    return reporting_out or None
+def _normalize_reporting_value(source_key: str, value: Any) -> Any:
+    if source_key == "internationalExchange":
+        parsed = _parse_bool(value)
+        return parsed if parsed is not None else value
+    if source_key == "dataPolicy":
+        if isinstance(value, Mapping):
+            policy = _first_non_empty(value.get("dataPolicy"), value.get("policy"), value.get("href"), value.get("value"))
+            out: Dict[str, Any] = {}
+            if _non_empty(policy):
+                out["dataPolicy"] = _compact_wmdr_code_value(policy) if isinstance(policy, str) else policy
+            if "attribution" in value:
+                out["attribution"] = _preserve_nulls(value.get("attribution"))
+            return _clean_none(out)
+        return _compact_wmdr_code_value(value) if isinstance(value, str) else value
+    if source_key in {"uom", "levelOfData", "referenceDatum", "referenceTimeSource", "timeStampMeaning", "dataFormat", "timeliness", "aggregation"}:
+        return _compact_wmdr_code_value(value) if isinstance(value, str) else value
+    return value
 
 
-def _flatten_deployments_from_observations(observations: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    deployments: List[Dict[str, Any]] = []
-    seen: set[str] = set()
-    for obs in observations:
-        for dep in _as_list(obs.get("deployments")):
-            if not isinstance(dep, dict):
-                continue
-            dep_id = str(_first_non_empty(dep.get("@gml:id"), dep.get("@id"), dep.get("serialNumber"), dep.get("model"), id(dep)))
-            if dep_id in seen:
-                continue
-            seen.add(dep_id)
-            deployments.append(dep)
-    return deployments
+REPORTING_DEFINITION_FIELDS: Tuple[Tuple[str, str], ...] = (
+    ("internationalExchange", "internationalExchange"),
+    ("temporalReportingInterval", "temporalAggregate"),
+    ("temporalAggregate", "temporalAggregate"),
+    ("aggregation", "aggregation"),
+    ("dataPolicy", "dataPolicy"),
+    ("levelOfData", "levelOfData"),
+    ("referenceDatum", "referenceDatum"),
+    ("referenceTimeSource", "referenceTimeSource"),
+    ("timeStampMeaning", "timeStampMeaning"),
+    ("numberOfObservationsInReportingInterval", "numberOfObservationsInReportingInterval"),
+    ("dataFormat", "dataFormat"),
+    ("timeliness", "timeliness"),
+)
 
 
-def _domain_object(raw: Dict[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
-    """Return the WMDR2 domain object for an observation.
+def _reporting_definition_id(definition: Mapping[str, Any]) -> str:
+    seed = json.dumps(_restore_null_sentinel(_clean_none(dict(definition))), sort_keys=True, ensure_ascii=False, default=str)
+    digest = hashlib.sha1(seed.encode("utf-8")).hexdigest()[:12]
+    return f"reporting:{digest}"
 
-    WMDR10 currently only lets us derive the broad domain name from the
-    observed-property code-list branch, e.g. ObservedVariableAtmosphere ->
-    atmosphere. ``domainFeature`` and ``featureName`` are WMDR2 concepts, so
-    they are only emitted when the source JSON record already contains explicit
-    values for them.
+
+def _reporting_parts(candidate: Mapping[str, Any]) -> Optional[Tuple[Dict[str, Any], Dict[str, Any]]]:
+    """Split one WMDR10 reporting source into reusable and historical parts.
+
+    The reusable definition is stored once under ``properties.reporting``.  The
+    historical part remains attached to an observation and carries the date, a
+    reference to that reusable definition, and observation-specific items such as
+    unit of measure and links.
     """
-    domain_source = _first_non_empty(raw.get("domain"), raw.get("observedDomain"))
-    domain_name = _observed_domain_from_observed_variable(observed_property)
+
+    reporting_value = candidate.get("reporting")
+    reporting = reporting_value if isinstance(reporting_value, dict) else candidate
+    if not isinstance(reporting, dict):
+        return None
+
+    definition: Dict[str, Any] = {}
+    for source_key, target_key in REPORTING_DEFINITION_FIELDS:
+        if source_key not in reporting:
+            continue
+        value = _normalize_reporting_value(source_key, reporting.get(source_key))
+        if _non_empty(value) or isinstance(value, bool):
+            definition[target_key] = _preserve_nulls(value)
+
+    historical: Dict[str, Any] = {"date": _temporal_begin_date(candidate)}
+    if "uom" in reporting:
+        uom = _normalize_reporting_value("uom", reporting.get("uom"))
+        if _non_empty(uom) or uom is None:
+            historical["uom"] = _preserve_nulls(uom)
+    links = _extract_links(reporting, "observation")
+    if links:
+        historical["links"] = links
+
+    definition = _restore_null_sentinel(_clean_none(definition))
+    historical = _restore_null_sentinel(_clean_none(historical))
+    if not definition and len(historical) <= 1:
+        return None
+    return definition, historical
+
+
+def _register_reporting_refs(
+    groups: Sequence[Any],
+    *,
+    reporting_registry: Dict[str, Dict[str, Any]],
+) -> Optional[List[Dict[str, Any]]]:
+    refs: List[Dict[str, Any]] = []
+    for group in groups:
+        for candidate in _flatten_schedule_candidates(group):
+            parts = _reporting_parts(candidate)
+            if parts is None:
+                continue
+            definition, historical = parts
+            if definition:
+                reporting_id = _reporting_definition_id(definition)
+                reporting_registry.setdefault(reporting_id, {"id": reporting_id, **definition})
+                historical["reporting"] = reporting_id
+            if len(historical) > 1:
+                refs.append(historical)
+    return _restore_null_sentinel(_uniq_dicts(_clean_none(refs))) or None
+
+
+def _normalize_observation_reporting(
+    *sources: Any,
+    reporting_registry: Optional[Dict[str, Dict[str, Any]]] = None,
+) -> Optional[List[Dict[str, Any]]]:
+    """Normalize reporting history.
+
+    When a registry is supplied, reusable reporting definitions are registered
+    there and the returned historical records contain references.  Without a
+    registry, a local temporary registry is used so helper-level callers see the
+    same v0.2.3-style structure.
+    """
+
+    registry = reporting_registry if reporting_registry is not None else {}
+    return _register_reporting_refs(list(sources), reporting_registry=registry)
+
+
+def _first_serial_number(raw: Mapping[str, Any]) -> Optional[str]:
+    source = raw.get("serialNumber")
+    for item in _as_list(source):
+        if isinstance(item, dict):
+            value = _first_non_empty(item.get("serialNumber"), item.get("value"), item.get("#text"), item.get("text"))
+        else:
+            value = item
+        if _non_empty(value):
+            return str(value)
+    return None
+
+
+def _deployment_temporal_serial_number(raw: Mapping[str, Any]) -> List[Dict[str, Any]]:
+    out: List[Dict[str, Any]] = []
+    for item in _as_list(raw.get("serialNumber")):
+        if isinstance(item, dict):
+            value = _first_non_empty(item.get("serialNumber"), item.get("value"), item.get("#text"), item.get("text"))
+            date = _entry_date(item, fallback=_entry_date(raw))
+        else:
+            value = item
+            date = _entry_date(raw)
+        if _non_empty(value):
+            out.append({"date": date, "serialNumber": str(value)})
+    return _uniq_dicts(_clean_none(out))
+
+
+def _normalize_operating_status(raw: Mapping[str, Any]) -> List[Dict[str, Any]]:
+    source = _first_non_empty(raw.get("instrumentOperatingStatus"), raw.get("operatingStatus"), raw.get("status"))
+    records: List[Dict[str, Any]] = []
+    for item in _as_list(source):
+        if isinstance(item, dict):
+            value = _first_non_empty(item.get("operatingStatus"), item.get("instrumentOperatingStatus"), item.get("status"), item.get("value"), item.get("href"))
+            date = _entry_date(item, fallback=_entry_date(raw))
+        else:
+            value = item
+            date = _entry_date(raw)
+        if _non_empty(value):
+            records.append({"date": date, "operatingStatus": _compact_wmdr_code_value(value) if isinstance(value, str) else value})
+    return _uniq_dicts(_clean_none(records))
+
+
+def _deployment_official_status_source(raw: Mapping[str, Any]) -> Any:
+    reporting_items = raw.get("dataGeneration") or raw.get("reportingSchedule")
+    for item in _as_list(reporting_items):
+        if not isinstance(item, dict):
+            continue
+        reporting = _as_dict(item.get("reporting"))
+        value = _first_non_empty(reporting.get("officialStatus"), item.get("officialStatus"), reporting.get("declaredStatus"), item.get("declaredStatus"))
+        if value is not None:
+            return value
+    return _first_non_empty(raw.get("officialStatus"), raw.get("declaredStatus"))
+
+
+def _normalize_historical_official_status(*sources: Mapping[str, Any], fallback_date: str = "..") -> Optional[List[Dict[str, Any]]]:
+    records: List[Dict[str, Any]] = []
+    for source in sources:
+        explicit = source.get("historicalOfficialStatus")
+        for item in _as_list(explicit):
+            if isinstance(item, dict):
+                status = _normalize_official_status(_first_non_empty(item.get("officialStatus"), item.get("status"), item.get("value")))
+                if status:
+                    records.append({"date": _entry_date(item, fallback=fallback_date), "officialStatus": status})
+        for value_key in ("officialStatus", "declaredStatus"):
+            if value_key in source:
+                status = _normalize_official_status(source.get(value_key))
+                if status:
+                    records.append({"date": _entry_date(source, fallback=fallback_date), "officialStatus": status})
+        dep_status = _normalize_official_status(_deployment_official_status_source(source))
+        if dep_status:
+            records.append({"date": _entry_date(source, fallback=fallback_date), "officialStatus": dep_status})
+    return _uniq_dicts(_clean_none(records)) or None
+
+
+def _deployment_record_id(raw: Mapping[str, Any], *, index: int, facility_id: str) -> str:
+    """Return the reusable deployment/instrument-instance identifier."""
+
+    source_identifier = _deployment_source_identifier(raw, index=index, facility_id=facility_id)
+    if source_identifier.startswith("deployment:"):
+        return source_identifier
+    return f"deployment:{source_identifier}"
+
+
+def _normalize_deployment_record(
+    raw: Mapping[str, Any],
+    *,
+    index: int,
+    facility_id: str,
+) -> Optional[Dict[str, Any]]:
+    """Normalize a reusable deployment / instrument-instance record.
+
+    The dated observation-to-deployment relationship is represented separately
+    in ``historicalDeployment`` objects.  This reusable object holds the stable
+    instrument-instance identity and references the reusable instrument record.
+    """
+
+    instrument_ref = _scalar_reference(_instrument_ref_for_deployment(raw, facility_id=facility_id))
+    serial_number = _first_serial_number(raw)
+    deployment_id = _deployment_record_id(raw, index=index, facility_id=facility_id)
+    record = _clean_none(
+        {
+            "id": deployment_id,
+            "instrument": instrument_ref,
+            "serialNumber": serial_number,
+            "links": _extract_links(raw, "deployment"),
+        }
+    )
+    # Keep a deployment if it has at least one substantive instance property.
+    if any(key in record for key in ("instrument", "serialNumber", "links")):
+        return record
+    return {"id": deployment_id}
+
+
+def _normalize_deployments(
+    deployments: Sequence[Mapping[str, Any]],
+    *,
+    facility_id: str,
+) -> List[Dict[str, Any]]:
+    by_id: Dict[str, Dict[str, Any]] = {}
+    for index, dep in enumerate(deployments, start=1):
+        record = _normalize_deployment_record(dep, index=index, facility_id=facility_id)
+        if not record:
+            continue
+        dep_id = record.get("id")
+        if isinstance(dep_id, str) and dep_id not in by_id:
+            by_id[dep_id] = record
+    return list(by_id.values())
+
+
+def _normalize_deployment(
+    raw: Mapping[str, Any],
+    *,
+    index: int,
+    facility_id: str,
+    schedule_registry: Optional[Dict[str, Dict[str, Any]]] = None,
+) -> List[Dict[str, Any]]:
+    """Normalize dated observation-to-deployment history entries.
+
+    ``historicalDeployment`` now references the reusable deployment record, in
+    the same way that ``historicalReporting`` references a reusable reporting
+    definition.
+    """
+
+    del schedule_registry
+    start, _ = _extract_interval(raw)
+    fallback_date = _normalize_date_value(start) or ".."
+    source_identifier = _deployment_source_identifier(raw, index=index, facility_id=facility_id)
+    deployment_id = _deployment_record_id(raw, index=index, facility_id=facility_id)
+    base: Dict[str, Any] = _clean_none(
+        {
+            "id": f"historicalDeployment:{source_identifier}",
+            "deployment": deployment_id,
+            "exposure": raw.get("exposure"),
+            "links": _extract_links(raw, "deployment"),
+        }
+    )
+    by_date: Dict[str, Dict[str, Any]] = {}
+
+    def add(date: Any, **values: Any) -> None:
+        normalized_date = _normalize_date_value(date) or fallback_date
+        record = by_date.setdefault(normalized_date, {"date": normalized_date})
+        for key, value in values.items():
+            if _non_empty(value) or isinstance(value, bool):
+                record[key] = value
+
+    has_state = False
+    for item in _normalize_operating_status(raw):
+        has_state = True
+        add(item.get("date"), operatingStatus=item.get("operatingStatus"))
+    for entry in _facility_temporal_geometry_entries(raw):
+        geometry = _point_geometry_from_entry(entry)
+        if geometry:
+            has_state = True
+            add(entry.get("date"), geometry=geometry)
+
+    # Always create at least one dated observation-to-deployment relation.
+    # Do not create a redundant fallback entry when all relevant state already
+    # has explicit dated records, but do anchor exposure/links if present.
+    if not has_state or any(key in base for key in ("exposure", "links")):
+        add(fallback_date)
+
+    out: List[Dict[str, Any]] = []
+    for date in sorted(by_date, key=lambda value: (value == "..", value)):
+        record = dict(base)
+        record.update(by_date[date])
+        out.append(_clean_none(record))
+    return _uniq_dicts(out)
+
+
+# ---------------------------------------------------------------------------
+# Observation helpers
+# ---------------------------------------------------------------------------
+
+
+def _domain_object(raw: Mapping[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
+    """Return v0.2.2 observedFeature object.
+
+    The output key is ``domain``.  ``domainName`` is accepted only as legacy
+    input from earlier intermediate JSON, never emitted.
+    """
+
+    domain_source = _first_non_empty(raw.get("observedFeature"), raw.get("domain"), raw.get("observedDomain"))
+    domain = _observed_domain_from_observed_variable(observed_property)
     domain_feature = None
     feature_name = None
-
     if isinstance(domain_source, dict):
-        domain_name = _first_non_empty(
-            domain_source.get("domainName"),
-            domain_source.get("domain"),
-            domain_source.get("value"),
-            domain_source.get("href"),
-            domain_name,
-        )
+        domain = _first_non_empty(domain_source.get("domain"), domain_source.get("domainName"), domain_source.get("value"), domain_source.get("href"), domain)
         domain_feature = _first_non_empty(domain_source.get("domainFeature"), domain_source.get("feature"))
         feature_name = domain_source.get("featureName")
-    elif _non_empty(domain_source) and domain_name is None:
-        domain_name = domain_source
-
+    elif _non_empty(domain_source) and domain is None:
+        domain = domain_source
     domain_feature = _first_non_empty(domain_feature, raw.get("domainFeature"), raw.get("observedDomainFeature"))
     feature_name = _first_non_empty(feature_name, raw.get("featureName"), raw.get("observedDomainFeatureName"))
-
     out: Dict[str, Any] = {}
-    if _non_empty(domain_name):
-        out["domainName"] = _normalize_code_value(domain_name) if isinstance(domain_name, str) else domain_name
+    if _non_empty(domain):
+        out["domain"] = _normalize_code_value(domain) if isinstance(domain, str) else domain
     if _non_empty(domain_feature):
         out["domainFeature"] = str(domain_feature)
     if _non_empty(feature_name):
@@ -2044,117 +2000,12 @@ def _domain_object(raw: Dict[str, Any], observed_property: Any) -> Optional[Dict
     return _clean_none(out) or None
 
 
-# Backwards-compatible private alias for tests or local tooling that imported
-# the previous helper name. Output still uses observation.domain only.
-def _observed_domain_object(raw: Dict[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
+# Backwards-compatible private alias for tests or local tooling.
+def _observed_domain_object(raw: Mapping[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
     return _domain_object(raw, observed_property)
 
 
-def _parse_quantity_value(value: Any) -> Any:
-    if isinstance(value, bool) or value in (None, ""):
-        return None
-    if isinstance(value, (int, float)):
-        return float(value)
-    if isinstance(value, str):
-        text = value.strip()
-        if not text:
-            return None
-        try:
-            return float(text)
-        except ValueError:
-            return text
-    return value
-
-
-def _quantity_from_vertical_distance_source(source: Any) -> Optional[Dict[str, Any]]:
-    uom = None
-    value: Any = source
-    if isinstance(source, dict):
-        value = _first_non_empty(source.get("#text"), source.get("text"), source.get("value"))
-        uom = _first_non_empty(source.get("@uom"), source.get("uom"), source.get("unit"))
-
-    parsed_value = _parse_quantity_value(value)
-    if parsed_value in (None, "", [], {}):
-        return None
-
-    out: Dict[str, Any] = {"value": parsed_value}
-    if _non_empty(uom):
-        out["uom"] = _compact_wmdr_code_value(uom) if isinstance(uom, str) else uom
-    return _clean_none(out)
-
-
-def _normalize_vertical_distance_from_reference_surface(raw: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    """Return vertical distance as an array of quantity objects.
-
-    WMDR10 commonly carries this as ``heightAboveLocalReferenceSurface`` with
-    ``@uom`` and ``#text`` members.  Older intermediate examples used plain
-    ``verticalDistanceFromReferenceSurface`` or ``distanceFromReferenceSurface``
-    values; these are still accepted as input but normalized to the array shape
-    used by the current EA model.
-    """
-    source = _first_non_empty(
-        raw.get("heightAboveLocalReferenceSurface"),
-        raw.get("verticalDistanceFromReferenceSurface"),
-        raw.get("distanceFromReferenceSurface"),
-    )
-    if source in (None, "", [], {}):
-        return None
-
-    out: List[Dict[str, Any]] = []
-    for item in _as_list(source):
-        quantity = _quantity_from_vertical_distance_source(item)
-        if quantity:
-            out.append(quantity)
-    out = _uniq_dicts(_clean_none(out))
-    return out or None
-
-
-def _normalize_deployment(
-    raw: Dict[str, Any],
-    *,
-    index: int,
-    facility_id: str,
-    schedule_registry: Dict[str, Dict[str, Any]],
-    time_zone: str = "UTC",
-) -> Dict[str, Any]:
-    record_id = _deployment_record_id(raw, index=index, facility_id=facility_id)
-    start, end = _extract_interval(raw)
-    contacts, _ = _collect_contacts(raw.get("contact"), raw.get("contacts"), raw.get("responsibleParty"))
-    observing_schedule = _register_observing_schedule_refs(
-        [raw.get("dataGeneration"), raw.get("coverage"), raw.get("sampling"), raw.get("observingSchedule")],
-        schedule_registry=schedule_registry,
-        time_zone=time_zone,
-    )
-    payload: Dict[str, Any] = {
-        "id": record_id,
-        "time": _time_interval(start, end),
-        "description": _normalize_description_value(raw.get("description")),
-        "sourceOfObservation": raw.get("sourceOfObservation"),
-        "observingMethod": raw.get("observingMethod"),
-        "instrument": _instrument_refs_for_deployment(raw, facility_id=facility_id),
-        "temporalSerialNumber": _deployment_temporal_serial_number(raw),
-        "exposure": raw.get("exposure"),
-        "representativeness": raw.get("representativeness"),
-        "referenceSurface": _first_non_empty(raw.get("referenceSurface"), raw.get("localReferenceSurface")),
-        "verticalDistanceFromReferenceSurface": _normalize_vertical_distance_from_reference_surface(raw),
-        "temporalGeometry": _temporal_geometry_extension(_facility_temporal_geometry_entries(raw)),
-        "temporalOfficialStatus": _normalize_temporal_official_status(
-            _deployment_official_status_source(raw),
-            fallback_date=_normalize_date_value(start) or "..",
-            default_unknown=True,
-        ),
-        "temporalInstrumentOperatingStatus": _normalize_temporal_instrument_operating_status(raw.get("instrumentOperatingStatus")),
-        "contacts": contacts,
-        "keywords": _keywords_from_values(_collect_discovery_values("deployment", raw, "keywords")),
-        "links": _extract_links(raw, "deployment"),
-    }
-    cleaned = _clean_none(payload)
-    if observing_schedule:
-        cleaned["temporalObservingSchedule"] = observing_schedule
-    return cleaned
-
-
-def _derive_observation_time(observation: Dict[str, Any], deployments: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+def _derive_observation_time(observation: Mapping[str, Any], deployments: Sequence[Mapping[str, Any]]) -> Optional[Dict[str, Any]]:
     intervals: List[List[Any]] = []
     for dep in deployments:
         start, end = _extract_interval(dep)
@@ -2169,47 +2020,137 @@ def _derive_observation_time(observation: Dict[str, Any], deployments: Sequence[
     return _time_interval(observation.get("beginPosition"), observation.get("endPosition"))
 
 
-def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str) -> Dict[str, Any]:
-    embedded_deployments = [item for item in _as_list(raw.get("deployments")) if isinstance(item, dict)]
-    observed_variable = raw.get("observedVariable") or raw.get("observedProperty")
+def _first_from_dicts(items: Sequence[Mapping[str, Any]], *keys: str) -> Any:
+    for item in items:
+        for key in keys:
+            value = item.get(key)
+            if _non_empty(value) or isinstance(value, bool):
+                return value
+    return None
+
+
+def _first_vertical_distance_from_sources(raw: Mapping[str, Any], deployments: Sequence[Mapping[str, Any]]) -> Any:
+    value = _normalize_vertical_distance_from_reference_surface(raw)
+    if _non_empty(value):
+        return value
+    for dep in deployments:
+        value = _normalize_vertical_distance_from_reference_surface(dep)
+        if _non_empty(value):
+            return value
+    return None
+
+
+def _deployment_identity(raw: Mapping[str, Any]) -> str:
+    return str(_first_non_empty(raw.get("identifier"), raw.get("id"), raw.get("@gml:id"), raw.get("@id"), raw.get("uuid"), raw.get("serialNumber"), id(raw)))
+
+
+def _flatten_deployments_from_observations(observations: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+    deployments: List[Dict[str, Any]] = []
+    seen: set[str] = set()
+    for obs in observations:
+        for dep in _as_list(obs.get("deployments")):
+            if not isinstance(dep, dict):
+                continue
+            dep_id = _deployment_identity(dep)
+            if dep_id in seen:
+                continue
+            seen.add(dep_id)
+            deployments.append(dep)
+    return deployments
+
+
+def _deployment_lookup(deployments: Sequence[Mapping[str, Any]]) -> Dict[str, Mapping[str, Any]]:
+    lookup: Dict[str, Mapping[str, Any]] = {}
+    for dep in deployments:
+        for key in ("identifier", "id", "@gml:id", "@id", "uuid"):
+            value = dep.get(key)
+            if _non_empty(value):
+                lookup[str(value)] = dep
+                lookup[_sanitize_id(value)] = dep
+    return lookup
+
+
+def _observation_deployment_sources(
+    obs: Mapping[str, Any],
+    *,
+    all_deployments: Sequence[Mapping[str, Any]],
+    all_observations_count: int,
+) -> List[Mapping[str, Any]]:
+    embedded: List[Mapping[str, Any]] = [item for item in _as_list(obs.get("deployments")) if isinstance(item, dict)]
+    if embedded:
+        return embedded
+    refs = [item for item in _as_list(obs.get("deployments")) if isinstance(item, str)]
+    if refs:
+        lookup = _deployment_lookup(all_deployments)
+        found = [lookup[ref] for ref in refs if ref in lookup]
+        if found:
+            return found
+    if all_observations_count == 1:
+        return list(all_deployments)
+    return []
+
+
+def _normalize_observation(
+    raw: Mapping[str, Any],
+    *,
+    index: int,
+    facility_id: str,
+    schedule_registry: Optional[Dict[str, Dict[str, Any]]] = None,
+    reporting_registry: Optional[Dict[str, Dict[str, Any]]] = None,
+    deployment_sources: Optional[Sequence[Mapping[str, Any]]] = None,
+    time_zone: str = "UTC",
+) -> Dict[str, Any]:
+    if schedule_registry is None:
+        schedule_registry = {}
+    if reporting_registry is None:
+        reporting_registry = {}
+    if deployment_sources is None:
+        deployment_sources = [item for item in _as_list(raw.get("deployments")) if isinstance(item, dict)]
+    observed_property = raw.get("observedProperty") or raw.get("observedVariable")
     explicit_obs_id = _first_non_empty(raw.get("identifier"), raw.get("@gml:id"), raw.get("@id"), raw.get("id"))
-    obs_id = _first_non_empty(explicit_obs_id, _compact_wmdr_code_value(observed_variable), f"{facility_id}:observation:{index}")
+    obs_id = _first_non_empty(explicit_obs_id, _compact_wmdr_code_value(observed_property), f"{facility_id}:observation:{index}")
     source_id = _sanitize_id(str(obs_id))
-    observed_geometry = raw.get("observedGeometry") or raw.get("observedGeometryType") or raw.get("geometryType") or raw.get("type")
-    title = _first_non_empty(
-        _format_observation_title(observed_variable, observed_geometry),
-        raw.get("title"),
-        raw.get("name"),
-        f"Observation {index}",
-    )
+    observed_geometry = _first_non_empty(raw.get("observedGeometry"), raw.get("observedGeometryType"), raw.get("geometryType"), raw.get("type"))
+    title = _first_non_empty(_format_observation_title(observed_property, observed_geometry), raw.get("title"), raw.get("name"), f"Observation {index}")
     contacts, _ = _collect_contacts(raw.get("contact"), raw.get("contacts"), raw.get("responsibleParty"))
-    reporting_sources: List[Any] = [raw.get("dataGeneration"), raw.get("reportingSchedule")]
-    reporting_sources.extend(dep.get("dataGeneration") or dep.get("reportingSchedule") for dep in embedded_deployments)
-    deployment_refs = [
-        _deployment_record_id(dep, index=dep_index, facility_id=facility_id)
-        for dep_index, dep in enumerate(embedded_deployments, start=1)
-    ]
+
+    reporting_sources: List[Any] = [raw.get("dataGeneration"), raw.get("reportingSchedule"), raw.get("reporting")]
+    reporting_sources.extend(dep.get("dataGeneration") or dep.get("reportingSchedule") for dep in deployment_sources)
+
+    observing_schedule_sources: List[Any] = [raw.get("dataGeneration"), raw.get("coverage"), raw.get("sampling"), raw.get("observingSchedule")]
+    for dep in deployment_sources:
+        observing_schedule_sources.extend([dep.get("dataGeneration"), dep.get("coverage"), dep.get("sampling"), dep.get("observingSchedule")])
+
+    historical_deployments: List[Dict[str, Any]] = []
+    for dep_index, dep in enumerate(deployment_sources, start=1):
+        historical_deployments.extend(_normalize_deployment(dep, index=dep_index, facility_id=facility_id))
+
+    reference_surface = _first_non_empty(raw.get("referenceSurface"), raw.get("localReferenceSurface"), _first_from_dicts(deployment_sources, "referenceSurface", "localReferenceSurface"))
+    fallback_date = _entry_date(raw)
+    official_sources: List[Mapping[str, Any]] = [raw, *deployment_sources]
+
     payload: Dict[str, Any] = {
-        "id": f"observation:{source_id}",
+        "id": f"observations:{source_id}",
         "title": title,
-        "time": _derive_observation_time(raw, embedded_deployments),
-        "observedProperty": observed_variable,
+        "time": _derive_observation_time(raw, deployment_sources),
+        "applicationArea": raw.get("applicationArea"),
+        "observedProperty": observed_property,
         "observedGeometry": observed_geometry,
-        "domain": _domain_object(raw, observed_variable),
+        "observedFeature": _domain_object(raw, observed_property),
         "programAffiliations": _normalize_program_affiliations(raw.get("programAffiliation")),
         "contacts": contacts,
-        "temporalDataPolicy": _normalize_temporal_data_policy(
-            raw.get("temporalDataPolicy") or raw.get("dataPolicy") or raw.get("dataPolicyHistory")
-        ),
-        "deployments": deployment_refs,
+        "sourceOfObservation": _first_non_empty(raw.get("sourceOfObservation"), _first_from_dicts(deployment_sources, "sourceOfObservation")),
+        "referenceSurface": reference_surface,
+        "representativeness": _first_non_empty(raw.get("representativeness"), _first_from_dicts(deployment_sources, "representativeness")),
+        "verticalDistanceFromReferenceSurface": _first_vertical_distance_from_sources(raw, deployment_sources),
+        "historicalOfficialStatus": _normalize_historical_official_status(*official_sources, fallback_date=fallback_date),
+        "observingSchedules": _register_observing_schedule_refs(observing_schedule_sources, schedule_registry=schedule_registry, time_zone=time_zone),
+        "historicalDeployments": historical_deployments,
+        "historicalReporting": _preserve_nulls(_normalize_observation_reporting(*reporting_sources, reporting_registry=reporting_registry)),
         "keywords": _keywords_from_values(_collect_discovery_values("observation", raw, "keywords")),
         "links": _extract_links(raw, "observation"),
     }
-    cleaned = _clean_none(payload)
-    reporting = _normalize_observation_reporting(*reporting_sources)
-    if reporting:
-        cleaned["reporting"] = reporting
-    return cleaned
+    return _restore_null_sentinel(_clean_none(payload))
 
 
 # ---------------------------------------------------------------------------
@@ -2217,7 +2158,7 @@ def _normalize_observation(raw: Dict[str, Any], *, index: int, facility_id: str)
 # ---------------------------------------------------------------------------
 
 
-def _facility_identifier(facility: Dict[str, Any], header: Optional[Dict[str, Any]] = None) -> str:
+def _facility_identifier(facility: Mapping[str, Any], header: Optional[Mapping[str, Any]] = None) -> str:
     header = header or {}
     raw = _first_non_empty(
         facility.get("identifier"),
@@ -2233,77 +2174,73 @@ def _facility_identifier(facility: Dict[str, Any], header: Optional[Dict[str, An
     return str(raw)
 
 
-def _facility_title(facility: Dict[str, Any]) -> str:
+def _facility_title(facility: Mapping[str, Any]) -> str:
     return str(_first_non_empty(facility.get("name"), facility.get("title"), facility.get("identifier"), "facility"))
 
 
-def _copy_known_facility_properties(facility: Dict[str, Any]) -> Dict[str, Any]:
-    out: Dict[str, Any] = {}
-    for key in ("facilityType", "wmoRegion", "surfaceCoverClassification", "timeZone", "regionOfOrigin"):
-        if _non_empty(facility.get(key)):
-            out[key] = facility[key]
-    facility_sets = _facility_set_refs(facility.get("facilitySet") or facility.get("facilitySets"))
-    if facility_sets:
-        out["facilitySets"] = facility_sets
-    temporal_territory = _normalize_temporal_territory(_first_non_empty(facility.get("territory"), facility.get("territoryName")))
-    if temporal_territory:
-        out["temporalTerritory"] = temporal_territory
-    environment = _normalize_environment(facility)
-    if environment:
-        out["environment"] = environment
-    return out
-
-
-def _facility_time(
-    facility: Dict[str, Any],
-    observations: Sequence[Dict[str, Any]],
-    deployments: Sequence[Dict[str, Any]],
-) -> Dict[str, Any]:
+def _facility_time(facility: Mapping[str, Any], observations: Sequence[Mapping[str, Any]], deployments: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
     del observations, deployments
     return _time_interval(facility.get("dateEstablished"), facility.get("dateClosed")) or {"interval": ["..", ".."]}
 
 
 def _facility_properties(
-    facility: Dict[str, Any],
-    observations: Sequence[Dict[str, Any]],
-    deployments: Sequence[Dict[str, Any]],
-    header: Optional[Dict[str, Any]] = None,
+    facility: Mapping[str, Any],
+    observations: Sequence[Mapping[str, Any]],
+    deployments: Sequence[Mapping[str, Any]],
+    header: Optional[Mapping[str, Any]] = None,
     source_name: Optional[str] = None,
 ) -> Dict[str, Any]:
     header = header or {}
     facility_id = _facility_identifier(facility, header)
-    contacts, _ = _collect_contacts(
-        facility.get("contact"),
-        facility.get("contacts"),
-        facility.get("responsibleParty"),
-        header.get("recordOwner"),
-    )
+    contacts, _ = _collect_contacts(facility.get("contact"), facility.get("contacts"), facility.get("responsibleParty"), header.get("recordOwner"))
     keywords = _keywords_from_values(_collect_discovery_values("facility", facility, "keywords"))
     schedule_registry: Dict[str, Dict[str, Any]] = {}
+    reporting_registry: Dict[str, Dict[str, Any]] = {}
     facility_time_zone = str(_first_non_empty(facility.get("timeZone"), "UTC"))
+    facility_start, _ = _extract_interval(facility)
+    fallback_date = _normalize_date_value(facility_start) or ".."
 
-    all_deployments: List[Dict[str, Any]] = [dep for dep in deployments if isinstance(dep, dict)]
-    all_deployments.extend(_flatten_deployments_from_observations([obs for obs in observations if isinstance(obs, dict)]))
-
-    normalized_deployments_by_id: Dict[str, Dict[str, Any]] = {}
-    for index, dep in enumerate(all_deployments, start=1):
-        normalized = _normalize_deployment(
-            dep,
-            index=index,
-            facility_id=facility_id,
-            schedule_registry=schedule_registry,
-            time_zone=facility_time_zone,
-        )
-        dep_id = normalized.get("id")
-        if isinstance(dep_id, str) and dep_id not in normalized_deployments_by_id:
-            normalized_deployments_by_id[dep_id] = normalized
-    normalized_deployments = list(normalized_deployments_by_id.values())
+    raw_observations: List[Mapping[str, Any]] = [obs for obs in observations if isinstance(obs, dict)]
+    all_deployments: List[Mapping[str, Any]] = [dep for dep in deployments if isinstance(dep, dict)]
+    all_deployments.extend(_flatten_deployments_from_observations(raw_observations))
     normalized_instruments = _normalize_instruments(all_deployments, facility_id=facility_id)
-    normalized_observations = [
-        _normalize_observation(obs, index=index, facility_id=facility_id)
-        for index, obs in enumerate(observations, start=1)
-        if isinstance(obs, dict)
-    ]
+    normalized_deployments = _normalize_deployments(all_deployments, facility_id=facility_id)
+
+    normalized_observations: List[Dict[str, Any]] = []
+    for index, obs in enumerate(raw_observations, start=1):
+        deployment_sources = _observation_deployment_sources(
+            obs,
+            all_deployments=all_deployments,
+            all_observations_count=len(raw_observations),
+        )
+        normalized_observations.append(
+            _normalize_observation(
+                obs,
+                index=index,
+                facility_id=facility_id,
+                schedule_registry=schedule_registry,
+                reporting_registry=reporting_registry,
+                deployment_sources=deployment_sources,
+                time_zone=facility_time_zone,
+            )
+        )
+
+    # If there are top-level deployments but no observations, still harvest reusable
+    # schedules and instruments.  Deployment records themselves are not emitted at
+    # root level in v0.2.2.
+    if not raw_observations:
+        for dep in all_deployments:
+            _register_observing_schedule_refs(
+                [dep.get("dataGeneration"), dep.get("coverage"), dep.get("sampling"), dep.get("observingSchedule")],
+                schedule_registry=schedule_registry,
+                time_zone=facility_time_zone,
+            )
+            _normalize_observation_reporting(dep.get("dataGeneration"), dep.get("reportingSchedule"), dep.get("reporting"), reporting_registry=reporting_registry)
+
+    copied = _copy_known_facility_properties(facility)
+    historical_program_affiliation = _normalize_historical_program_affiliation(facility.get("programAffiliation"), fallback_date=fallback_date)
+    historical_territory = _normalize_historical_territory(_first_non_empty(facility.get("territory"), facility.get("territoryName")), fallback_date=fallback_date)
+    historical_environment = _normalize_historical_environment(facility, fallback_date=fallback_date)
 
     props: Dict[str, Any] = {
         "type": "facility",
@@ -2317,21 +2254,24 @@ def _facility_properties(
         "contacts": contacts,
         "keywords": keywords,
         "links": _extract_links(facility, "facility"),
-        **_copy_known_facility_properties(facility),
-        "temporalProgramAffiliation": _normalize_temporal_program_affiliation(facility.get("programAffiliation")),
+        **copied,
+        "historicalProgramAffiliation": historical_program_affiliation,
+        "historicalTerritory": historical_territory,
+        "historicalEnvironment": historical_environment,
         "schedules": list(schedule_registry.values()),
-        "observations": normalized_observations,
+        "reporting": list(reporting_registry.values()),
         "deployments": normalized_deployments,
+        "observations": normalized_observations,
         "instruments": normalized_instruments,
     }
     return _clean_none(props)
 
 
 def build_facility_feature(
-    facility: Dict[str, Any],
-    observations: Optional[Sequence[Dict[str, Any]]] = None,
-    deployments: Optional[Sequence[Dict[str, Any]]] = None,
-    header: Optional[Dict[str, Any]] = None,
+    facility: Mapping[str, Any],
+    observations: Optional[Sequence[Mapping[str, Any]]] = None,
+    deployments: Optional[Sequence[Mapping[str, Any]]] = None,
+    header: Optional[Mapping[str, Any]] = None,
     source_name: Optional[str] = None,
 ) -> Dict[str, Any]:
     observations = observations or []
@@ -2365,7 +2305,7 @@ def convert_payload(payload: Any, *, source_name: str = "record") -> Dict[str, A
     raise ValueError(f"Cannot convert {source_name}: unsupported JSON payload shape {type(payload).__name__}")
 
 
-def convert_group(parts: Dict[str, Any], *, source_name: str) -> Dict[str, Any]:
+def convert_group(parts: Mapping[str, Any], *, source_name: str) -> Dict[str, Any]:
     header = _as_dict(parts.get("header"))
     facility = _as_dict(parts.get("facility"))
     observations = [item for item in _as_list(parts.get("observations")) if isinstance(item, dict)]
@@ -2375,7 +2315,12 @@ def convert_group(parts: Dict[str, Any], *, source_name: str) -> Dict[str, Any]:
     return build_facility_feature(facility, observations, deployments, header, source_name=source_name)
 
 
-def _load_code_list_labels(section: Dict[str, Any], *, base_dir: Optional[Path] = None) -> Dict[str, Dict[str, str]]:
+# ---------------------------------------------------------------------------
+# Optional code-list labels
+# ---------------------------------------------------------------------------
+
+
+def _load_code_list_labels(section: Mapping[str, Any], *, base_dir: Optional[Path] = None) -> Dict[str, Dict[str, str]]:
     labels: Dict[str, Dict[str, str]] = {}
     raw = section.get("codeListLabels") or section.get("code_list_labels") or {}
     if not isinstance(raw, dict):
@@ -2423,6 +2368,11 @@ def _load_code_list_labels(section: Dict[str, Any], *, base_dir: Optional[Path] 
     return labels
 
 
+# ---------------------------------------------------------------------------
+# File/tree conversion and optional catalogue post-processing
+# ---------------------------------------------------------------------------
+
+
 def convert_file(
     input_path: Path,
     target_dir: Path,
@@ -2466,9 +2416,7 @@ def convert_tree(
     for path in files:
         payload = _load_json(path)
         kind = _detect_kind(path, payload)
-        if kind in {"header", "facility", "observations", "deployments"} and path.stem.lower().endswith(
-            ("_header", "_facility", "_observations", "_deployments")
-        ):
+        if kind in {"header", "facility", "observations", "deployments"} and path.stem.lower().endswith(("_header", "_facility", "_observations", "_deployments")):
             groups.setdefault(_part_group_key(path), {})[kind] = payload
         else:
             full_files.append(path)
@@ -2482,11 +2430,6 @@ def convert_tree(
         _write_json(out, record)
         written.append(out)
     return sorted(written)
-
-
-# ---------------------------------------------------------------------------
-# Optional catalogue post-processing
-# ---------------------------------------------------------------------------
 
 
 def _config_bool(value: Any) -> bool:
@@ -2503,7 +2446,7 @@ def _resolve_config_path_value(value: Any, *, base_dir: Path) -> Path:
 
 
 def _catalogue_paths_from_config(
-    section: Dict[str, Any],
+    section: Mapping[str, Any],
     *,
     base_dir: Path,
     target: Path,
@@ -2515,7 +2458,6 @@ def _catalogue_paths_from_config(
         return None
     if "source" in catalogues:
         raise SystemExit("catalogues.source is obsolete; catalogue input is always the converter target.")
-
     script_dir = Path(__file__).resolve().parent
     if str(script_dir) not in sys.path:
         sys.path.insert(0, str(script_dir))
@@ -2524,20 +2466,9 @@ def _catalogue_paths_from_config(
     default_records_path = target / "catalogue_representation"
     default_contacts_path = target / "catalogues" / "contacts.json"
     default_instruments_path = target / "catalogues" / "instruments.json"
-
-    records_path = _resolve_config_path_value(
-        catalogues.get("records_path") or default_records_path,
-        base_dir=base_dir,
-    )
-    contacts_path = _resolve_config_path_value(
-        catalogues.get("contacts_path") or default_contacts_path,
-        base_dir=base_dir,
-    )
-    instruments_path = _resolve_config_path_value(
-        catalogues.get("instruments_path") or default_instruments_path,
-        base_dir=base_dir,
-    )
-
+    records_path = _resolve_config_path_value(catalogues.get("records_path") or default_records_path, base_dir=base_dir)
+    contacts_path = _resolve_config_path_value(catalogues.get("contacts_path") or default_contacts_path, base_dir=base_dir)
+    instruments_path = _resolve_config_path_value(catalogues.get("instruments_path") or default_instruments_path, base_dir=base_dir)
     return CataloguePaths(
         source=target,
         records_path=records_path,
@@ -2563,9 +2494,7 @@ def _run_catalogue_post_processing(written: Sequence[Path], catalogue_paths: Any
 
 
 def _build_arg_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        description="Convert simplified WMDR1 JSON to facility-centric WMDR2 core JSON Features."
-    )
+    parser = argparse.ArgumentParser(description="Convert simplified WMDR1 JSON to facility-centric WMDR2 core JSON Features.")
     parser.add_argument("--config", type=Path, help="Optional YAML config file.")
     parser.add_argument("--source", type=Path, help="Input JSON file or directory.")
     parser.add_argument("--target", type=Path, help="Output directory for generated .json records.")
@@ -2588,58 +2517,30 @@ def main(argv: Optional[Sequence[str]] = None) -> None:
     if not source_raw:
         loaded = _format_loaded_config_hint(config_path, section)
         available_sections = ", ".join(sorted(cfg.keys())) if cfg else "none"
-        raise SystemExit(
-            "Missing source. Set convert_wmdr10_json_to_wmdr2_json.source "
-            "in config.yaml or pass --source.\n"
-            f"{loaded}\nAvailable top-level config sections: {available_sections}"
-        )
+        raise SystemExit(f"Missing source. {loaded} Available top-level config sections: {available_sections}")
     if not target_raw:
-        loaded = _format_loaded_config_hint(config_path, section)
-        available_sections = ", ".join(sorted(cfg.keys())) if cfg else "none"
-        raise SystemExit(
-            "Missing target. Set convert_wmdr10_json_to_wmdr2_json.target "
-            "in config.yaml or pass --target.\n"
-            f"{loaded}\nAvailable top-level config sections: {available_sections}"
-        )
+        raise SystemExit("Missing target. Pass --target or configure convert_wmdr10_json_to_wmdr2_json.target.")
 
-    source = Path(source_raw).expanduser()
-    target = Path(target_raw).expanduser()
-    if not source.is_absolute():
-        source = base_dir / source
-    if not target.is_absolute():
-        target = base_dir / target
-    pattern = args.pattern or section.get("pattern") or DEFAULT_PATTERN
-    recursive = args.recursive if args.recursive is not None else bool(section.get("recursive", True))
+    source = _resolve_config_path_value(source_raw, base_dir=base_dir)
+    target = _resolve_config_path_value(target_raw, base_dir=base_dir)
+    pattern = str(args.pattern or section.get("pattern") or DEFAULT_PATTERN)
+    recursive = bool(section.get("recursive", True)) if args.recursive is None else bool(args.recursive)
     discovery_policy = _normalize_discovery_policy(section)
     code_list_labels = _load_code_list_labels(section, base_dir=base_dir)
-
-    print(_format_loaded_config_hint(config_path, section))
-    print(f"Source: {source}")
-    print(f"Target: {target}")
-    print(f"Pattern: {pattern}; recursive={recursive}")
     written = convert_tree(
         source,
         target,
-        pattern=str(pattern),
+        pattern=pattern,
         recursive=recursive,
         discovery_policy=discovery_policy,
         code_list_labels=code_list_labels,
     )
-    print(f"Wrote {len(written)} WMDR2 JSON file(s) to {target}")
-
-    catalogue_paths = _catalogue_paths_from_config(
-        section,
-        base_dir=base_dir,
-        target=target,
-        pattern=str(pattern),
-        recursive=recursive,
-    )
+    catalogue_paths = _catalogue_paths_from_config(section, base_dir=base_dir, target=target, pattern=pattern, recursive=recursive)
     if catalogue_paths is not None:
-        externalized = _run_catalogue_post_processing(written, catalogue_paths)
-        print(f"Wrote {len(externalized)} catalogue-based WMDR2 JSON file(s) to {catalogue_paths.records_path}")
-        print(f"Wrote contacts catalogue to {catalogue_paths.contacts_path}")
-        print(f"Wrote instruments catalogue to {catalogue_paths.instruments_path}")
+        written = _run_catalogue_post_processing(written, catalogue_paths)
+    for path in written:
+        print(path)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

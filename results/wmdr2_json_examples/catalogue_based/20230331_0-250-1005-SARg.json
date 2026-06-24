@@ -79,10 +79,18 @@
     ],
     "facilityType": "landOnIce",
     "wmoRegion": "europe",
-    "temporalTerritory": [
+    "historicalProgramAffiliation": [
       {
-        "territory": "FRA",
-        "date": "1949-01-01"
+        "date": "1949-01-01",
+        "programAffiliation": [
+          "nonAffiliated"
+        ]
+      }
+    ],
+    "historicalTerritory": [
+      {
+        "date": "1949-01-01",
+        "territory": "FRA"
       }
     ],
     "schedules": [
@@ -90,22 +98,34 @@
         "@type": "Event",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "P1D",
+        "duration": "PT1H",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
-            "frequency": "daily"
+            "frequency": "hourly"
           }
         ],
         "wmo.int:aggregation": {
           "temporalAggregate": "PT1H"
         },
-        "uid": "schedule_38ade7ec764d"
+        "uid": "schedule_9928d3a502f4"
+      }
+    ],
+    "reporting": [
+      {
+        "id": "reporting:87ff24b4a55a",
+        "internationalExchange": false,
+        "temporalAggregate": "PT1H"
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c"
       }
     ],
     "observations": [
       {
-        "id": "observation:12010",
+        "id": "observations:12010",
         "title": "domain: terrestrial; geometry: unknown; variable: 12010",
         "time": {
           "interval": [
@@ -115,45 +135,29 @@
         },
         "observedProperty": 12010,
         "observedGeometry": "unknown",
-        "domain": {
-          "domainName": "terrestrial"
+        "observedFeature": {
+          "domain": "terrestrial"
         },
         "programAffiliations": [
           "nonAffiliated"
         ],
-        "deployments": [
-          "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT1H"
-          ]
-        }
-      }
-    ],
-    "deployments": [
-      {
-        "id": "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c",
-        "time": {
-          "interval": [
-            "1949-01-01",
-            ".."
-          ]
-        },
-        "observingMethod": "unknown",
-        "temporalOfficialStatus": [
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
+            "date": "1949-01-01",
+            "schedule": "schedule_9928d3a502f4"
+          }
+        ],
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c",
+            "deployment": "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c",
             "date": "1949-01-01"
           }
         ],
-        "temporalObservingSchedule": [
+        "historicalReporting": [
           {
-            "observingSchedule": "schedule_38ade7ec764d",
-            "date": "1949-01-01"
+            "date": "1949-01-01",
+            "reporting": "reporting:87ff24b4a55a"
           }
         ]
       }

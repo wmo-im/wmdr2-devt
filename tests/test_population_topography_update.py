@@ -43,28 +43,22 @@ def test_environment_converter_uses_temporal_population_and_topography_bathymetr
 
     environment = converter._normalize_environment(facility)
 
-    assert environment == {
-        "temporalPopulation": [
-            {
-                "population": [12000.0, None],
-                "perimeter_km": [10.0, 50.0],
-                "dates": ["2020-01-01", ".."],
-            }
-        ],
-        "topographyBathymetry": {
-            "localTopography": "slope",
-            "relativeElevation": "middle",
-            "topographicContext": "rises",
-            "altitudeOrDepth": "veryHighAltitude",
+    assert environment == [
+        {
+            "date": "..",
+            "topographyBathymetry": {
+                "localTopography": "slope",
+                "relativeElevation": "middle",
+                "topographicContext": "rises",
+                "altitudeOrDepth": "veryHighAltitude",
+            },
         },
-    }
-
-    assert "temporalPopulationDensities" not in environment
-    assert "temporalLocalTopography" not in environment
-    assert "temporalRelativeElevation" not in environment
-    assert "temporalTopographicContext" not in environment
-    assert "temporalAltitudeOrDepth" not in environment
-
+        {
+            "date": "2020-01-01",
+            "population": [12000.0, None],
+            "perimeter_km": [10.0, 50.0],
+        },
+    ]
 
 def test_environment_converter_defaults_population_perimeters_and_allows_unknown_second_population() -> None:
     environment = converter._normalize_environment(
@@ -78,36 +72,36 @@ def test_environment_converter_defaults_population_perimeters_and_allows_unknown
         }
     )
 
-    assert environment == {
-        "temporalPopulation": [
-            {
-                "population": [12000.0, None],
-                "perimeter_km": [10.0, 50.0],
-                "dates": ["2020-01-01", ".."],
-            }
-        ]
-    }
-
+    assert environment == [
+        {
+            "date": "2020-01-01",
+            "population": [12000.0, None],
+            "perimeter_km": [10.0, 50.0],
+        }
+    ]
 
 def test_environment_schema_accepts_new_population_and_topography_shape() -> None:
-    payload = {
-        "temporalPopulation": [
-            {
-                "population": [12000, None],
-                "perimeter_km": [10, 50],
-                "dates": ["2020-01-01", ".."],
-            }
-        ],
-        "topographyBathymetry": {
-            "localTopography": "slope",
-            "relativeElevation": "middle",
-            "topographicContext": "rises",
-            "altitudeOrDepth": "veryHighAltitude",
-        },
+    payload = [
+        {
+            "date": "2020-01-01",
+            "population": [12000, None],
+            "perimeter_km": [10, 50],
+            "topographyBathymetry": {
+                "localTopography": "slope",
+                "relativeElevation": "middle",
+                "topographicContext": "rises",
+                "altitudeOrDepth": "veryHighAltitude",
+            },
+        }
+    ]
+
+    common = json.loads((ROOT / "schemas" / "wmdr2-common.schema.json").read_text(encoding="utf-8"))
+    schema = {
+        "$schema": common.get("$schema", "https://json-schema.org/draft/2020-12/schema"),
+        "$defs": common["$defs"],
+        **common["$defs"]["historicalEnvironment"],
     }
-
-    Draft202012Validator(_environment_schema()).validate(payload)
-
+    Draft202012Validator(schema).validate(payload)
 
 @pytest.mark.parametrize(
     "obsolete_name",
@@ -121,5 +115,12 @@ def test_environment_schema_accepts_new_population_and_topography_shape() -> Non
     ],
 )
 def test_environment_schema_rejects_obsolete_environment_names(obsolete_name: str) -> None:
+    common = json.loads((ROOT / "schemas" / "wmdr2-common.schema.json").read_text(encoding="utf-8"))
+    schema = {
+        "$schema": common.get("$schema", "https://json-schema.org/draft/2020-12/schema"),
+        "$defs": common["$defs"],
+        **common["$defs"]["historicalEnvironment"],
+    }
     with pytest.raises(ValidationError):
-        Draft202012Validator(_environment_schema()).validate({obsolete_name: []})
+        Draft202012Validator(schema).validate([{obsolete_name: []}])
+

@@ -1,145 +1,64 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.wmo.int/wmdr/2.0/schemas/wmdr2-common.schema.json",
-  "title": "WMDR2 core common JSON schema definitions",
+  "$id": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json",
+  "title": "WMDR2 common schema definitions",
   "type": "object",
   "$defs": {
-    "uri": {
-      "type": "string",
-      "minLength": 1
-    },
-    "identifier": {
-      "type": "string",
-      "minLength": 1
-    },
     "dateOrOpen": {
       "type": "string",
-      "description": "ISO 8601/RFC 3339 full-date string (YYYY-MM-DD) or the OGC open-interval marker '..'. WMDR2 core records intentionally use date resolution for temporal-history dates and time intervals.",
-      "pattern": "^(\\.\\.|\\d{4}-\\d{2}-\\d{2})$"
-    },
-    "timeInterval": {
-      "type": "object",
-      "additionalProperties": true,
-      "required": [
-        "interval"
-      ],
-      "properties": {
-        "interval": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": {
-            "$ref": "#/$defs/dateOrOpen"
-          }
-        },
-        "resolution": {
-          "type": "string"
-        }
-      }
-    },
-    "nullableTimeInterval": {
+      "description": "ISO date or '..' for open/unknown.",
       "anyOf": [
         {
-          "$ref": "#/$defs/timeInterval"
+          "const": ".."
         },
         {
-          "type": "null"
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
         }
       ]
-    },
-    "pointGeometry": {
-      "type": [
-        "object",
-        "null"
-      ],
-      "required": [
-        "type",
-        "coordinates"
-      ],
-      "additionalProperties": true,
-      "properties": {
-        "type": {
-          "const": "Point"
-        },
-        "coordinates": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 3,
-          "items": {
-            "type": "number"
-          }
-        }
-      }
-    },
-    "temporalGeometry": {
-      "type": "object",
-      "description": "Geospatial location history of the facility or equipment, represented as a WMDR2 MovingPoint with coordinate positions, the dates from which each position is considered valid, and optional geopositioning method terms aligned with those positions. A single-position temporalGeometry is allowed when extra temporal metadata such as methods needs to be preserved for the current position.",
-      "required": [
-        "type",
-        "coordinates",
-        "dates"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "type": {
-          "const": "MovingPoint"
-        },
-        "coordinates": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 3,
-            "items": {
-              "type": "number"
-            }
-          }
-        },
-        "dates": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "$ref": "#/$defs/dateOrOpen"
-          }
-        },
-        "methods": {
-          "type": "array",
-          "description": "Optional geopositioning method terms aligned with temporalGeometry.coordinates and temporalGeometry.dates. Each inner array contains zero, one, or more compact terms from http://codes.wmo.int/wmdr/GeopositioningMethod for the corresponding coordinate/date.",
-          "minItems": 1,
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1
-            },
-            "uniqueItems": true
-          }
-        }
-      }
     },
     "codeValue": {
-      "description": "Compact code-list value. The applicable code list is defined by the property context and checked by a WMDR2 validator.",
+      "description": "Compact codelist value, URI, number, structured value, or null.",
       "type": [
         "string",
-        "integer"
+        "number",
+        "integer",
+        "object",
+        "array",
+        "boolean",
+        "null"
       ]
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "integer",
+            "string"
+          ]
+        },
+        "uom": {
+          "$ref": "#/$defs/codeValue"
+        }
+      }
     },
     "link": {
       "type": "object",
-      "required": [
-        "href",
-        "rel"
-      ],
       "additionalProperties": true,
+      "required": [
+        "href"
+      ],
       "properties": {
         "href": {
-          "type": "string",
-          "minLength": 1
+          "type": "string"
         },
         "rel": {
-          "type": "string",
-          "minLength": 1
+          "type": "string"
         },
         "type": {
           "type": "string"
@@ -153,58 +72,34 @@
       "type": "object",
       "additionalProperties": true,
       "properties": {
-        "id": {
-          "$ref": "#/$defs/identifier"
-        },
         "identifier": {
-          "$ref": "#/$defs/identifier"
-        },
-        "name": {
           "type": "string"
         },
-        "position": {
+        "name": {
           "type": "string"
         },
         "organization": {
           "type": "string"
         },
+        "position": {
+          "type": "string"
+        },
         "roles": {
           "type": "array",
           "items": {
-            "type": "string",
-            "minLength": 1
+            "type": "string"
           }
         },
         "emails": {
           "type": "array",
           "items": {
-            "type": "object",
-            "required": [
-              "value"
-            ],
-            "additionalProperties": true,
-            "properties": {
-              "value": {
-                "type": "string",
-                "minLength": 1
-              }
-            }
+            "type": "object"
           }
         },
         "phones": {
           "type": "array",
           "items": {
-            "type": "object",
-            "required": [
-              "value"
-            ],
-            "additionalProperties": true,
-            "properties": {
-              "value": {
-                "type": "string",
-                "minLength": 1
-              }
-            }
+            "type": "object"
           }
         },
         "addresses": {
@@ -219,111 +114,517 @@
             "$ref": "#/$defs/link"
           }
         }
+      }
+    },
+    "pointGeometry": {
+      "type": "object",
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "properties": {
+        "type": {
+          "const": "Point"
+        },
+        "coordinates": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "temporalGeometry": {
+      "type": "object",
+      "description": "Trajectory-style exception that intentionally uses aligned coordinates/dates arrays.",
+      "required": [
+        "type",
+        "coordinates",
+        "dates"
+      ],
+      "properties": {
+        "type": {
+          "const": "MovingPoint"
+        },
+        "coordinates": {
+          "type": "array",
+          "items": {
+            "type": "array"
+          }
+        },
+        "dates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dateOrOpen"
+          }
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 0,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "observedFeature": {
+      "type": "object",
+      "required": [
+        "domain"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "domain": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "domainFeature": {
+          "type": [
+            "string",
+            "object",
+            "null"
+          ]
+        },
+        "featureName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       },
       "allOf": [
         {
           "not": {
             "required": [
-              "contactInstructions"
+              "domainName"
             ]
           }
         }
       ]
     },
-    "temporalObjectBase": {
+    "historicalObjectBase": {
+      "type": "object",
+      "required": [
+        "date"
+      ],
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
+        }
+      },
+      "additionalProperties": true
+    },
+    "historicalDeployment": {
       "type": "object",
       "required": [
         "date"
       ],
       "additionalProperties": true,
+      "allOf": [
+        {
+          "$ref": "#/$defs/historicalObjectBase"
+        },
+        {
+          "not": {
+            "required": [
+              "dates"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalSerialNumber"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalOfficialStatus"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalInstrumentOperatingStatus"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalObservingSchedule"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalGeometry"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observingSchedule"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "sourceOfObservation"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "referenceSurface"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "verticalDistanceFromReferenceSurface"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "officialStatus"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "serialNumbers"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "instrument"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "serialNumber"
+            ]
+          }
+        }
+      ],
       "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^historicalDeployment:"
+        },
         "date": {
           "$ref": "#/$defs/dateOrOpen"
+        },
+        "operatingStatus": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "exposure": {},
+        "geometry": {
+          "$ref": "#/$defs/pointGeometry"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "deployment": {
+          "type": "string",
+          "pattern": "^deployment:",
+          "description": "Reference to the reusable deployment / instrument instance used for this dated observation state."
         }
       }
     },
-    "temporalTerritory": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
+    "historicalReportingEntry": {
+      "type": "object",
+      "required": [
+        "date"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "$ref": "#/$defs/historicalObjectBase"
+        },
+        {
+          "not": {
             "required": [
-              "territory"
-            ],
-            "properties": {
-              "territory": {
-                "$ref": "#/$defs/codeValue"
-              }
-            }
+              "internationalExchange"
+            ]
           }
-        ]
+        },
+        {
+          "not": {
+            "required": [
+              "temporalReportingInterval"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalAggregate"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "aggregation"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "dataFormat"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "dataPolicy"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "levelOfData"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "numberOfObservationsInReportingInterval"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "referenceDatum"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "referenceTimeSource"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "timeliness"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "timeStampMeaning"
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
+        },
+        "reporting": {
+          "type": "string",
+          "pattern": "^reporting:"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "uom": {
+          "$ref": "#/$defs/codeValue"
+        }
       }
     },
-    "temporalClimateZone": {
+    "historicalReporting": {
       "type": "array",
       "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "required": [
-              "climateZone"
-            ],
-            "properties": {
-              "climateZone": {
-                "$ref": "#/$defs/codeValue"
-              }
-            }
-          }
-        ]
-      },
-      "description": "Climate-zone history for the facility. Each entry is valid from its date until the next climate-zone entry."
+        "$ref": "#/$defs/historicalReportingEntry"
+      }
     },
-    "temporalSurfaceCover": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "required": [
-              "surfaceCover"
-            ],
-            "properties": {
-              "surfaceCover": {
-                "$ref": "#/$defs/codeValue"
-              },
-              "surfaceCoverClassification": {
-                "$ref": "#/$defs/codeValue"
-              },
-              "surfaceClassification": {
-                "$ref": "#/$defs/codeValue"
-              }
-            }
-          }
-        ]
-      },
-      "description": "Surface-cover history for the facility. Each entry is valid from its date until the next surface-cover entry."
-    },
-    "temporalPopulation": {
+    "historicalOfficialStatus": {
       "type": "array",
       "items": {
         "type": "object",
         "required": [
-          "population",
-          "perimeter_km",
-          "dates"
+          "date",
+          "officialStatus"
         ],
-        "additionalProperties": false,
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "$ref": "#/$defs/historicalObjectBase"
+          }
+        ],
         "properties": {
+          "date": {
+            "$ref": "#/$defs/dateOrOpen"
+          },
+          "officialStatus": {
+            "$ref": "#/$defs/codeValue"
+          }
+        }
+      }
+    },
+    "scheduleReference": {
+      "type": "object",
+      "required": [
+        "date",
+        "schedule"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
+        },
+        "schedule": {
+          "type": "string",
+          "pattern": "^schedule_"
+        }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "required": [
+        "@type",
+        "uid"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "@type": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string",
+          "pattern": "^schedule_"
+        },
+        "start": {
+          "type": "string"
+        },
+        "timeZone": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "recurrenceRules": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "historicalEnvironment": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "$ref": "#/$defs/historicalObjectBase"
+          },
+          {
+            "not": {
+              "required": [
+                "temporalPopulationDensities"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "temporalLocalTopography"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "temporalRelativeElevation"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "temporalTopographicContext"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "temporalAltitudeOrDepth"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "temporalTopographyBathymetry"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "temporalPopulation"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "topographyBathymetryTimeline"
+              ]
+            }
+          }
+        ],
+        "properties": {
+          "date": {
+            "$ref": "#/$defs/dateOrOpen"
+          },
+          "climateZone": {},
           "population": {
             "type": "array",
             "minItems": 2,
@@ -333,357 +634,193 @@
                 "number",
                 "null"
               ]
-            },
-            "description": "Population estimates aligned with perimeter_km. Use null where one perimeter-specific estimate is unknown."
+            }
           },
+          "surfaceCover": {},
+          "surfaceRoughness": {},
+          "topographyBathymetry": {},
           "perimeter_km": {
             "type": "array",
             "minItems": 2,
             "maxItems": 2,
             "items": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "description": "Environmental context of the facility as dated historical state objects."
+    },
+    "historicalProgramAffiliation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "$ref": "#/$defs/historicalObjectBase"
+          }
+        ],
+        "properties": {
+          "date": {
+            "$ref": "#/$defs/dateOrOpen"
+          },
+          "programAffiliation": {
+            "type": [
+              "array",
+              "string",
+              "object",
+              "null"
+            ]
+          },
+          "programSpecificFacilityId": {
+            "type": [
+              "array",
+              "string",
+              "object",
+              "null"
+            ]
+          },
+          "reportingStatus": {
+            "$ref": "#/$defs/codeValue"
+          }
+        }
+      }
+    },
+    "historicalTerritory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "date",
+          "territory"
+        ],
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "$ref": "#/$defs/historicalObjectBase"
+          }
+        ],
+        "properties": {
+          "date": {
+            "$ref": "#/$defs/dateOrOpen"
+          },
+          "territory": {
+            "$ref": "#/$defs/codeValue"
+          }
+        }
+      }
+    },
+    "instrument": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^instrument:"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "manufacturer": {
+          "description": "Manufacturer of the equipment or instrument."
+        },
+        "model": {},
+        "serialNumber": {
+          "type": "string"
+        },
+        "observedProperty": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "observedGeometry": {
+          "type": "string"
+        },
+        "verticalRange": {
+          "type": "object",
+          "required": [
+            "min",
+            "max"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "min": {
               "type": "number"
             },
-            "description": "Perimeters in kilometres for which the corresponding population estimates are valid."
-          },
-          "dates": {
-            "type": "array",
-            "minItems": 2,
-            "maxItems": 2,
-            "items": {
-              "$ref": "#/$defs/dateOrOpen"
-            },
-            "description": "Validity interval for this population statement."
-          }
-        }
-      },
-      "description": "Population history around the observing facility. Each entry contains two population estimates aligned with two perimeter_km values and a two-date validity interval."
-    },
-    "temporalSurfaceRoughness": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "required": [
-              "surfaceRoughness"
-            ],
-            "properties": {
-              "surfaceRoughness": {
-                "$ref": "#/$defs/codeValue"
-              }
+            "max": {
+              "type": "number"
             }
           }
-        ]
-      },
-      "description": "Surface-roughness history for the facility."
-    },
-    "environment": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "temporalClimateZone": {
-          "$ref": "#/$defs/temporalClimateZone",
-          "description": "Type of climate zone at the facility, with dates from which values apply."
-        },
-        "temporalSurfaceCover": {
-          "$ref": "#/$defs/temporalSurfaceCover",
-          "description": "Biophysical cover on the earth surface near observations, with dates from which values apply."
-        },
-        "temporalPopulation": {
-          "$ref": "#/$defs/temporalPopulation",
-          "description": "Population in the vicinity of the observing facility, with validity dates."
-        },
-        "temporalSurfaceRoughness": {
-          "$ref": "#/$defs/temporalSurfaceRoughness",
-          "description": "Surface roughness at the facility, with dates from which values apply."
-        },
-        "topographyBathymetry": {
-          "$ref": "#/$defs/topographyBathymetry",
-          "description": "Topographic or bathymetric context of the observing facility."
         }
-      },
-      "description": "Environmental context and surroundings of the observing facility that may influence observations."
-    },
-    "programAffiliationTimeline": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "required": [
-              "programAffiliation"
-            ],
-            "properties": {
-              "programAffiliation": {
-                "$ref": "#/$defs/codeValue"
-              },
-              "reportingStatus": {
-                "anyOf": [
-                  {
-                    "$ref": "#/$defs/codeValue"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "programSpecificFacilityId": {
-                "type": "string"
-              },
-              "programSpecificFacilityTitle": {
-                "type": "string"
-              }
-            }
-          }
-        ]
       }
-    },
-    "temporalProgramAffiliation": {
-      "$ref": "#/$defs/programAffiliationTimeline",
-      "description": "Programme/network affiliation history for the observing facility, including programme-specific identifiers and reporting status where available."
-    },
-    "temporalObservingScheduleRefs": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "required": [
-              "observingSchedule"
-            ],
-            "properties": {
-              "observingSchedule": {
-                "type": "string",
-                "minLength": 1
-              }
-            }
-          }
-        ]
-      }
-    },
-    "temporalInstrumentOperatingStatus": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "required": [
-              "instrumentOperatingStatus"
-            ],
-            "properties": {
-              "instrumentOperatingStatus": {
-                "$ref": "#/$defs/codeValue"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "temporalDataPolicy": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "dataPolicy": {
-                "$ref": "#/$defs/codeValue"
-              }
-            }
-          }
-        ]
-      },
-      "description": "History of data-policy details relating to use limitations imposed by the supervising organization."
-    },
-    "temporalTimeliness": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "required": [
-              "timeliness"
-            ],
-            "properties": {
-              "timeliness": {}
-            }
-          }
-        ]
-      },
-      "description": "History of typical reporting timeliness, i.e. the time between completion of an observation and availability to users."
-    },
-    "reporting": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "array"
-      },
-      "allOf": [
-        {
-          "not": {
-            "required": [
-              "id"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "interval"
-            ]
-          }
-        }
-      ],
-      "properties": {
-        "internationalExchange": {
-          "type": "array",
-          "items": {
-            "type": [
-              "boolean",
-              "null"
-            ]
-          },
-          "description": "Whether observations are internationally exchanged."
-        },
-        "temporalReportingInterval": {
-          "type": "array",
-          "items": {
-            "type": [
-              "string",
-              "null"
-            ]
-          }
-        },
-        "temporalAggregate": {
-          "type": "array",
-          "items": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "description": "Time interval over which individual samples or observations are aggregated."
-        },
-        "uom": {
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/codeValue"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "description": "Measurement unit used for reporting."
-        },
-        "referenceDatum": {
-          "type": "array",
-          "items": {
-            "type": [
-              "object",
-              "null"
-            ]
-          }
-        },
-        "dataPolicy": {
-          "type": "array",
-          "items": {
-            "type": [
-              "object",
-              "string",
-              "null"
-            ],
-            "additionalProperties": true
-          },
-          "description": "Details relating to the use and limitations surrounding data imposed by the supervising organization."
-        },
-        "levelOfData": {
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "$ref": "#/$defs/codeValue"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "description": "Level of data processing."
-        },
-        "temporalTimeliness": {
-          "$ref": "#/$defs/temporalTimeliness",
-          "description": "Typical time between completion of an observation and availability to users."
-        }
-      },
-      "description": "Details of reporting procedures for an observed variable."
     },
     "observation": {
       "type": "object",
       "required": [
-        "id",
-        "observedProperty"
+        "id"
       ],
       "additionalProperties": true,
       "allOf": [
         {
           "not": {
             "required": [
-              "themes"
+              "deployments"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "wmdr2"
+              "reporting"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "type"
+              "domain"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "internationalReportingSchedule"
+              "domainName"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "description"
+              "observedDomain"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "temporalObservingSchedule"
+              "temporalDataPolicy"
             ]
           }
         },
@@ -704,6 +841,13 @@
         {
           "not": {
             "required": [
+              "localReferenceSurface"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
               "observedGeometryType"
             ]
           }
@@ -711,7 +855,7 @@
         {
           "not": {
             "required": [
-              "observedDomain"
+              "description"
             ]
           }
         }
@@ -719,23 +863,29 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^observation:"
+          "pattern": "^observations?:"
         },
         "title": {
-          "type": "string",
-          "description": "Human-readable observation title derived from domain, geometry, variable code, and label where available."
+          "type": "string"
         },
         "time": {
-          "$ref": "#/$defs/nullableTimeInterval",
-          "description": "Time interval over which the observation metadata applies."
+          "type": [
+            "object",
+            "null"
+          ]
         },
-        "observedProperty": {
-          "$ref": "#/$defs/codeValue",
-          "description": "Observed property code or compact value, based on WMDR ObservedVariable terms where possible."
+        "applicationArea": {
+          "type": [
+            "array",
+            "string",
+            "object",
+            "null"
+          ]
         },
-        "observedGeometry": {
-          "$ref": "#/$defs/codeValue",
-          "description": "Observed geometry, based on WMDR geometry terms where possible."
+        "observedProperty": {},
+        "observedGeometry": {},
+        "observedFeature": {
+          "$ref": "#/$defs/observedFeature"
         },
         "contacts": {
           "type": "array",
@@ -743,20 +893,33 @@
             "$ref": "#/$defs/contact"
           }
         },
-        "reporting": {
-          "$ref": "#/$defs/reporting",
-          "description": "Details of reporting procedures, including exchange, aggregation interval, unit, timeliness, policy, and level of data."
+        "sourceOfObservation": {
+          "$ref": "#/$defs/codeValue"
         },
-        "temporalDataPolicy": {
-          "$ref": "#/$defs/temporalDataPolicy"
+        "referenceSurface": {
+          "$ref": "#/$defs/codeValue"
         },
-        "deployments": {
+        "representativeness": {},
+        "verticalDistanceFromReferenceSurface": {
+          "$ref": "#/$defs/quantity"
+        },
+        "historicalOfficialStatus": {
+          "$ref": "#/$defs/historicalOfficialStatus"
+        },
+        "observingSchedules": {
           "type": "array",
           "items": {
-            "type": "string",
-            "pattern": "^deployment:"
-          },
-          "description": "References to deployments used to generate this observation."
+            "$ref": "#/$defs/scheduleReference"
+          }
+        },
+        "historicalDeployments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/historicalDeployment"
+          }
+        },
+        "historicalReporting": {
+          "$ref": "#/$defs/historicalReporting"
         },
         "keywords": {
           "type": "array",
@@ -771,35 +934,103 @@
           }
         },
         "programAffiliations": {
-          "$ref": "#/$defs/programAffiliations",
-          "description": "Programmes or networks for which the observation is primarily made."
-        },
-        "domain": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "domainName"
-          ],
-          "properties": {
-            "domainName": {
-              "$ref": "#/$defs/codeValue",
-              "description": "Observed domain name derived from the observed-property code-list branch where possible, e.g. atmosphere."
-            },
-            "domainFeature": {
-              "type": "string",
-              "minLength": 1,
-              "description": "Optional feature type or domain feature associated with the observed domain."
-            },
-            "featureName": {
-              "type": "string",
-              "minLength": 1,
-              "description": "Optional human-readable name of the observed-domain feature."
-            }
-          },
-          "description": "Domain context for the observation. WMDR10 currently only supports deriving the broad domainName; domainFeature and featureName are WMDR2 extensions."
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
         }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "deprecated": true,
+      "additionalProperties": false,
+      "description": "Deprecated pre-v0.2.2 wrapper. Kept only for transition tests; use properties.historicalEnvironment instead.",
+      "properties": {
+        "temporalPopulation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "topographyBathymetry": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "reporting": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^reporting:"
+        },
+        "internationalExchange": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "temporalReportingInterval": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "temporalAggregate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "aggregation": {},
+        "dataFormat": {},
+        "dataPolicy": {},
+        "levelOfData": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "numberOfObservationsInReportingInterval": {
+          "type": [
+            "integer",
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "referenceDatum": {},
+        "referenceTimeSource": {},
+        "timeliness": {},
+        "timeStampMeaning": {}
       },
-      "description": "Observation metadata for an observed variable, including geometry, reporting, data policy, and deployment references."
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "date"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "uom"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "links"
+            ]
+          }
+        }
+      ]
     },
     "deployment": {
       "type": "object",
@@ -807,67 +1038,61 @@
         "id"
       ],
       "additionalProperties": true,
+      "description": "Reusable deployment / instrument-instance definition. Dated observation-specific deployment state is represented by historicalDeployment objects.",
       "allOf": [
         {
           "not": {
             "required": [
-              "themes"
+              "temporalSerialNumber"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "wmdr2"
+              "temporalOfficialStatus"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "type"
+              "temporalInstrumentOperatingStatus"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "title"
+              "temporalObservingSchedule"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "manufacturer"
+              "temporalGeometry"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "model"
+              "officialStatus"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "serialNumber"
+              "operatingStatus"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "localReferenceSurface"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "serialNumbers"
+              "geometry"
             ]
           }
         }
@@ -877,421 +1102,31 @@
           "type": "string",
           "pattern": "^deployment:"
         },
-        "time": {
-          "$ref": "#/$defs/nullableTimeInterval",
-          "description": "Period for which the deployment configuration was or is in place."
-        },
-        "description": {
-          "type": "string",
-          "description": "Description of the deployment configuration."
-        },
-        "sourceOfObservation": {
-          "$ref": "#/$defs/codeValue",
-          "description": "Source of the observation, such as manual, automatic, or visual."
-        },
-        "observingMethod": {
-          "$ref": "#/$defs/codeValue",
-          "description": "Method of measurement or observation."
-        },
-        "exposure": {
-          "description": "Degree to which an instrument is affected by external influences according to the CIMO classification."
-        },
-        "representativeness": {
-          "description": "Assessment of the representativeness of the observations."
-        },
-        "referenceSurface": {
-          "$ref": "#/$defs/codeValue",
-          "description": "Specified reference surface for the vertical distance of the sensor."
-        },
-        "verticalDistanceFromReferenceSurface": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "object",
-            "required": [
-              "value"
-            ],
-            "additionalProperties": false,
-            "properties": {
-              "value": {
-                "anyOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ],
-                "description": "Vertical distance from the specified reference surface."
-              },
-              "uom": {
-                "$ref": "#/$defs/codeValue",
-                "description": "Unit of measure for the vertical distance, e.g. m."
-              }
+        "instrument": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^instrument:"
+            },
+            {
+              "type": "null"
             }
-          },
-          "description": "Vertical distance of the sensor from the specified reference surface, represented as one or more quantities with value and optional unit. Positive values indicate above the reference surface; negative values indicate below it."
+          ],
+          "description": "Reference to the reusable instrument record for this deployed instrument instance."
         },
-        "temporalGeometry": {
-          "$ref": "#/$defs/temporalGeometry",
-          "description": "Optional geospatial location history of the deployed equipment or instrument, using the same MovingPoint structure as facility temporalGeometry."
-        },
-        "instrumentOperatingStatus": {
-          "type": "array",
-          "items": {
-            "type": "object"
-          }
-        },
-        "temporalInstrumentOperatingStatus": {
-          "$ref": "#/$defs/temporalInstrumentOperatingStatus",
-          "description": "Operational-status history of the instrument when deployed."
-        },
-        "contacts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/contact"
-          }
-        },
-        "keywords": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        "serialNumber": {
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "links": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/link"
           }
-        },
-        "instrument": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^instrument:"
-          },
-          "description": "References to instruments used for this deployment."
-        },
-        "temporalObservingSchedule": {
-          "$ref": "#/$defs/temporalObservingScheduleRefs",
-          "description": "References to observing schedules that apply to the deployment."
-        },
-        "temporalSerialNumber": {
-          "$ref": "#/$defs/temporalSerialNumber",
-          "description": "Serial-number history for the deployed equipment."
-        },
-        "temporalOfficialStatus": {
-          "$ref": "#/$defs/temporalOfficialStatus",
-          "description": "Official observation-status history for the deployment."
         }
-      },
-      "description": "Deployment metadata describing equipment deployment, time period, and configuration for generating observations."
-    },
-    "instrument": {
-      "type": "object",
-      "required": [
-        "id"
-      ],
-      "additionalProperties": true,
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^instrument:"
-        },
-        "title": {
-          "type": "string",
-          "description": "Title or name of the equipment or instrument, when available."
-        },
-        "description": {
-          "type": "string",
-          "description": "Non-formalized information about the equipment or instrument that may influence observations."
-        },
-        "manufacturer": {
-          "type": "string",
-          "description": "Manufacturer of the equipment."
-        },
-        "model": {
-          "type": "string",
-          "description": "Model number of the equipment."
-        },
-        "verticalRange": {
-          "type": "object",
-          "description": "Vertical range covered by the instrument. This is promoted from the WMDR 1.0 observable-range JSON pattern when source content is available.",
-          "required": [
-            "min",
-            "max"
-          ],
-          "additionalProperties": false,
-          "properties": {
-            "min": {
-              "type": "number",
-              "description": "Minimum vertical limit covered by the instrument."
-            },
-            "max": {
-              "type": "number",
-              "description": "Maximum vertical limit covered by the instrument."
-            }
-          }
-        },
-        "observedProperty": {
-          "type": "array",
-          "description": "Observed-property capabilities of the instrument. Values should use compact terms from http://codes.wmo.int/wmdr/ObservedVariable where possible, or free-text descriptions when no code-list value is available.",
-          "minItems": 1,
-          "items": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "string"
-              }
-            ]
-          }
-        },
-        "observedGeometry": {
-          "type": "string",
-          "description": "Observed-geometry capability of the instrument, expressed as a compact term from http://codes.wmo.int/wmdr/Geometry."
-        }
-      },
-      "allOf": [
-        {
-          "not": {
-            "required": [
-              "serialNumbers"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "observableVariables"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "observableGeometry"
-            ]
-          }
-        }
-      ],
-      "description": "Equipment or instrument used to make observations."
-    },
-    "jscalendarEvent": {
-      "type": "object",
-      "required": [
-        "@type",
-        "uid",
-        "start"
-      ],
-      "additionalProperties": true,
-      "properties": {
-        "@type": {
-          "const": "Event"
-        },
-        "uid": {
-          "type": "string",
-          "description": "JSCalendar Id. WMDR2 schedule UIDs use only ASCII letters, digits, underscore and hyphen; no URI-style colon prefix.",
-          "pattern": "^[A-Za-z0-9_-]+$"
-        },
-        "start": {
-          "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$"
-        },
-        "timeZone": {
-          "type": "string",
-          "minLength": 1
-        },
-        "duration": {
-          "type": "string",
-          "pattern": "^P"
-        },
-        "recurrenceRules": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": [
-              "@type"
-            ],
-            "additionalProperties": true,
-            "properties": {
-              "@type": {
-                "const": "RecurrenceRule"
-              }
-            }
-          }
-        },
-        "recurrenceOverrides": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "object",
-            "additionalProperties": true
-          }
-        },
-        "wmo.int:sampling": {
-          "type": [
-            "string",
-            "number",
-            "object",
-            "null"
-          ]
-        },
-        "wmo.int:aggregation": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "temporalAggregate": {
-              "type": [
-                "string",
-                "null"
-              ],
-              "pattern": "^(P|$)"
-            },
-            "spatialResolution": {
-              "description": "Optional spatial resolution. Prefer numeric metres when available, following the dcat:spatialResolutionInMeters convention.",
-              "type": [
-                "number",
-                "string",
-                "object",
-                "null"
-              ]
-            },
-            "diurnalBaseTime": {
-              "description": "Optional WMDR diurnal base time used for aggregate alignment, normalized to HH:MM:SS.",
-              "type": [
-                "string",
-                "null"
-              ],
-              "pattern": "^(\\d{2}:\\d{2}:\\d{2})?$"
-            },
-            "statistics": {
-              "description": "Optional aggregate statistic(s) represented by this schedule aggregation.",
-              "oneOf": [
-                {
-                  "enum": [
-                    "mean",
-                    "median",
-                    "min",
-                    "max",
-                    "sum",
-                    null
-                  ]
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "enum": [
-                      "mean",
-                      "median",
-                      "min",
-                      "max",
-                      "sum"
-                    ]
-                  },
-                  "uniqueItems": true
-                }
-              ]
-            }
-          }
-        }
-      },
-      "propertyNames": {
-        "allOf": [
-          {
-            "not": {
-              "pattern": "^wmdr2\\.wmo\\.int:"
-            }
-          },
-          {
-            "not": {
-              "pattern": "^wmo\\.int:diurnalBaseTime$"
-            }
-          },
-          {
-            "not": {
-              "pattern": "^wmo\\.int:aggregating$"
-            }
-          },
-          {
-            "not": {
-              "pattern": "^wmo\\.int:archiving$"
-            }
-          }
-        ]
       }
-    },
-    "programAffiliations": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/codeValue"
-      },
-      "uniqueItems": true
-    },
-    "topographyBathymetry": {
-      "type": "object",
-      "additionalProperties": false,
-      "minProperties": 1,
-      "properties": {
-        "localTopography": {
-          "$ref": "#/$defs/codeValue"
-        },
-        "relativeElevation": {
-          "$ref": "#/$defs/codeValue"
-        },
-        "topographicContext": {
-          "$ref": "#/$defs/codeValue"
-        },
-        "altitudeOrDepth": {
-          "$ref": "#/$defs/codeValue"
-        }
-      },
-      "description": "Topographic or bathymetric context of the observing facility."
-    },
-    "temporalSerialNumber": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "required": [
-              "serialNumber"
-            ],
-            "properties": {
-              "serialNumber": {
-                "type": "string",
-                "minLength": 1
-              }
-            }
-          }
-        ]
-      },
-      "description": "Serial-number history for the deployed equipment."
-    },
-    "temporalOfficialStatus": {
-      "type": "array",
-      "items": {
-        "allOf": [
-          {
-            "$ref": "#/$defs/temporalObjectBase"
-          },
-          {
-            "type": "object",
-            "required": [
-              "officialStatus"
-            ],
-            "properties": {
-              "officialStatus": {
-                "$ref": "#/$defs/codeValue"
-              }
-            }
-          }
-        ]
-      },
-      "description": "Official observation-status history for the deployment."
     }
   }
 }

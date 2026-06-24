@@ -72,26 +72,26 @@
     ],
     "facilityType": "landOnIce",
     "wmoRegion": "asia",
-    "temporalTerritory": [
+    "historicalProgramAffiliation": [
       {
-        "territory": "CHN",
-        "date": "2015-09-01"
+        "date": "2020-09-24",
+        "programAffiliation": [
+          "GCWCryoNet"
+        ],
+        "programSpecificFacilityId": "181",
+        "reportingStatus": "operational"
       }
     ],
-    "environment": {
-      "temporalClimateZone": [
-        {
-          "climateZone": "steppeColdArid",
-          "date": "2015-09-01"
-        }
-      ]
-    },
-    "temporalProgramAffiliation": [
+    "historicalTerritory": [
       {
-        "programAffiliation": "GCWCryoNet",
-        "reportingStatus": "operational",
-        "date": "2020-09-24",
-        "programSpecificFacilityId": "181"
+        "date": "2015-09-01",
+        "territory": "CHN"
+      }
+    ],
+    "historicalEnvironment": [
+      {
+        "date": "2015-09-01",
+        "climateZone": "steppeColdArid"
       }
     ],
     "schedules": [
@@ -115,7 +115,7 @@
         "@type": "Event",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "P1D",
+        "duration": "P12M",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
@@ -125,12 +125,44 @@
         "wmo.int:aggregation": {
           "temporalAggregate": "P12M"
         },
-        "uid": "schedule_561ed5cdb2a8"
+        "uid": "schedule_15bc877e29a7"
+      }
+    ],
+    "reporting": [
+      {
+        "id": "reporting:02b0477ef130",
+        "internationalExchange": true,
+        "temporalAggregate": "P1D"
+      },
+      {
+        "id": "reporting:7700a97a6a05",
+        "internationalExchange": true,
+        "temporalAggregate": "P12M"
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_7c5d7088-da2b-4864-998f-73afdba26a0f"
+      },
+      {
+        "id": "deployment:id_34430073-dd46-4e1c-be3b-bec291ed8ff6"
+      },
+      {
+        "id": "deployment:id_e9d2e39e-678d-4235-88c2-4c4d34e276e1"
+      },
+      {
+        "id": "deployment:id_ec92bd42-8dbe-432c-87b6-a47ad681c4f2"
+      },
+      {
+        "id": "deployment:cca8c9b3-6c0b-23ea-e053-148ef98d1a71"
+      },
+      {
+        "id": "deployment:id_7ba77526-f550-4f53-aa92-7e90ef299d89"
       }
     ],
     "observations": [
       {
-        "id": "observation:224",
+        "id": "observations:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
@@ -140,26 +172,34 @@
         },
         "observedProperty": 224,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "GCWCryoNet"
         ],
-        "deployments": [
-          "deployment:id_7c5d7088-da2b-4864-998f-73afdba26a0f"
+        "observingSchedules": [
+          {
+            "date": "2015-09-01",
+            "schedule": "schedule_54cfff315b3d"
+          }
         ],
-        "reporting": {
-          "internationalExchange": [
-            true
-          ],
-          "temporalAggregate": [
-            "P1D"
-          ]
-        }
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_7c5d7088-da2b-4864-998f-73afdba26a0f",
+            "deployment": "deployment:id_7c5d7088-da2b-4864-998f-73afdba26a0f",
+            "date": "2015-09-01"
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2015-09-01",
+            "reporting": "reporting:02b0477ef130"
+          }
+        ]
       },
       {
-        "id": "observation:12249",
+        "id": "observations:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
         "time": {
           "interval": [
@@ -169,26 +209,34 @@
         },
         "observedProperty": 12249,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "GCWCryoNet"
         ],
-        "deployments": [
-          "deployment:id_34430073-dd46-4e1c-be3b-bec291ed8ff6"
+        "observingSchedules": [
+          {
+            "date": "2015-09-01",
+            "schedule": "schedule_54cfff315b3d"
+          }
         ],
-        "reporting": {
-          "internationalExchange": [
-            true
-          ],
-          "temporalAggregate": [
-            "P1D"
-          ]
-        }
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_34430073-dd46-4e1c-be3b-bec291ed8ff6",
+            "deployment": "deployment:id_34430073-dd46-4e1c-be3b-bec291ed8ff6",
+            "date": "2015-09-01"
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2015-09-01",
+            "reporting": "reporting:02b0477ef130"
+          }
+        ]
       },
       {
-        "id": "observation:10103",
+        "id": "observations:10103",
         "title": "domain: terrestrial; geometry: totalColumn; variable: 10103",
         "time": {
           "interval": [
@@ -198,26 +246,34 @@
         },
         "observedProperty": 10103,
         "observedGeometry": "totalColumn",
-        "domain": {
-          "domainName": "terrestrial"
+        "observedFeature": {
+          "domain": "terrestrial"
         },
         "programAffiliations": [
           "GCWCryoNet"
         ],
-        "deployments": [
-          "deployment:id_e9d2e39e-678d-4235-88c2-4c4d34e276e1"
+        "observingSchedules": [
+          {
+            "date": "2015-09-01",
+            "schedule": "schedule_15bc877e29a7"
+          }
         ],
-        "reporting": {
-          "internationalExchange": [
-            true
-          ],
-          "temporalAggregate": [
-            "P12M"
-          ]
-        }
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_e9d2e39e-678d-4235-88c2-4c4d34e276e1",
+            "deployment": "deployment:id_e9d2e39e-678d-4235-88c2-4c4d34e276e1",
+            "date": "2015-09-01"
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2015-09-01",
+            "reporting": "reporting:7700a97a6a05"
+          }
+        ]
       },
       {
-        "id": "observation:12005",
+        "id": "observations:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
         "time": {
           "interval": [
@@ -227,26 +283,34 @@
         },
         "observedProperty": 12005,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "GCWCryoNet"
         ],
-        "deployments": [
-          "deployment:id_ec92bd42-8dbe-432c-87b6-a47ad681c4f2"
+        "observingSchedules": [
+          {
+            "date": "2015-09-01",
+            "schedule": "schedule_54cfff315b3d"
+          }
         ],
-        "reporting": {
-          "internationalExchange": [
-            true
-          ],
-          "temporalAggregate": [
-            "P1D"
-          ]
-        }
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_ec92bd42-8dbe-432c-87b6-a47ad681c4f2",
+            "deployment": "deployment:id_ec92bd42-8dbe-432c-87b6-a47ad681c4f2",
+            "date": "2015-09-01"
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2015-09-01",
+            "reporting": "reporting:02b0477ef130"
+          }
+        ]
       },
       {
-        "id": "observation:12006",
+        "id": "observations:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
         "time": {
           "interval": [
@@ -256,26 +320,34 @@
         },
         "observedProperty": 12006,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "GCWCryoNet"
         ],
-        "deployments": [
-          "deployment:cca8c9b3-6c0b-23ea-e053-148ef98d1a71"
+        "observingSchedules": [
+          {
+            "date": "2015-09-01",
+            "schedule": "schedule_54cfff315b3d"
+          }
         ],
-        "reporting": {
-          "internationalExchange": [
-            true
-          ],
-          "temporalAggregate": [
-            "P1D"
-          ]
-        }
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:cca8c9b3-6c0b-23ea-e053-148ef98d1a71",
+            "deployment": "deployment:cca8c9b3-6c0b-23ea-e053-148ef98d1a71",
+            "date": "2015-09-01"
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2015-09-01",
+            "reporting": "reporting:02b0477ef130"
+          }
+        ]
       },
       {
-        "id": "observation:12010",
+        "id": "observations:12010",
         "title": "domain: terrestrial; geometry: totalColumn; variable: 12010",
         "time": {
           "interval": [
@@ -285,155 +357,29 @@
         },
         "observedProperty": 12010,
         "observedGeometry": "totalColumn",
-        "domain": {
-          "domainName": "terrestrial"
+        "observedFeature": {
+          "domain": "terrestrial"
         },
         "programAffiliations": [
           "GCWCryoNet"
         ],
-        "deployments": [
-          "deployment:id_7ba77526-f550-4f53-aa92-7e90ef299d89"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            true
-          ],
-          "temporalAggregate": [
-            "P12M"
-          ]
-        }
-      }
-    ],
-    "deployments": [
-      {
-        "id": "deployment:id_7c5d7088-da2b-4864-998f-73afdba26a0f",
-        "time": {
-          "interval": [
-            "2015-09-01",
-            ".."
-          ]
-        },
-        "observingMethod": 183,
-        "temporalOfficialStatus": [
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
+            "date": "2015-09-01",
+            "schedule": "schedule_15bc877e29a7"
+          }
+        ],
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_7ba77526-f550-4f53-aa92-7e90ef299d89",
+            "deployment": "deployment:id_7ba77526-f550-4f53-aa92-7e90ef299d89",
             "date": "2015-09-01"
           }
         ],
-        "temporalObservingSchedule": [
+        "historicalReporting": [
           {
-            "observingSchedule": "schedule_54cfff315b3d",
-            "date": "2015-09-01"
-          }
-        ]
-      },
-      {
-        "id": "deployment:id_34430073-dd46-4e1c-be3b-bec291ed8ff6",
-        "time": {
-          "interval": [
-            "2015-09-01",
-            ".."
-          ]
-        },
-        "observingMethod": 183,
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2015-09-01"
-          }
-        ],
-        "temporalObservingSchedule": [
-          {
-            "observingSchedule": "schedule_54cfff315b3d",
-            "date": "2015-09-01"
-          }
-        ]
-      },
-      {
-        "id": "deployment:id_e9d2e39e-678d-4235-88c2-4c4d34e276e1",
-        "time": {
-          "interval": [
-            "2015-09-01",
-            ".."
-          ]
-        },
-        "observingMethod": 183,
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2015-09-01"
-          }
-        ],
-        "temporalObservingSchedule": [
-          {
-            "observingSchedule": "schedule_561ed5cdb2a8",
-            "date": "2015-09-01"
-          }
-        ]
-      },
-      {
-        "id": "deployment:id_ec92bd42-8dbe-432c-87b6-a47ad681c4f2",
-        "time": {
-          "interval": [
-            "2015-09-01",
-            ".."
-          ]
-        },
-        "observingMethod": 183,
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2015-09-01"
-          }
-        ],
-        "temporalObservingSchedule": [
-          {
-            "observingSchedule": "schedule_54cfff315b3d",
-            "date": "2015-09-01"
-          }
-        ]
-      },
-      {
-        "id": "deployment:cca8c9b3-6c0b-23ea-e053-148ef98d1a71",
-        "time": {
-          "interval": [
-            "2015-09-01",
-            ".."
-          ]
-        },
-        "observingMethod": 183,
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2015-09-01"
-          }
-        ],
-        "temporalObservingSchedule": [
-          {
-            "observingSchedule": "schedule_54cfff315b3d",
-            "date": "2015-09-01"
-          }
-        ]
-      },
-      {
-        "id": "deployment:id_7ba77526-f550-4f53-aa92-7e90ef299d89",
-        "time": {
-          "interval": [
-            "2015-09-01",
-            ".."
-          ]
-        },
-        "observingMethod": 183,
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2015-09-01"
-          }
-        ],
-        "temporalObservingSchedule": [
-          {
-            "observingSchedule": "schedule_561ed5cdb2a8",
-            "date": "2015-09-01"
+            "date": "2015-09-01",
+            "reporting": "reporting:7700a97a6a05"
           }
         ]
       }

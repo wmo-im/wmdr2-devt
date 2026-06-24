@@ -143,30 +143,32 @@
     ],
     "facilityType": "landOnIce",
     "wmoRegion": "antarctica",
-    "temporalTerritory": [
+    "historicalProgramAffiliation": [
       {
-        "territory": "USA",
-        "date": "2006-01-13"
-      }
-    ],
-    "environment": {
-      "temporalClimateZone": [
-        {
-          "climateZone": "polarFrost",
-          "date": "2006-01-13"
-        }
-      ]
-    },
-    "temporalProgramAffiliation": [
-      {
-        "programAffiliation": "RBON",
-        "reportingStatus": "operational",
-        "date": "2006-01-13"
+        "date": "2006-01-13",
+        "programAffiliation": [
+          "RBON"
+        ],
+        "reportingStatus": "operational"
       },
       {
-        "programAffiliation": "GBON",
-        "reportingStatus": "operational",
-        "date": "2022-06-07"
+        "date": "2022-06-07",
+        "programAffiliation": [
+          "GBON"
+        ],
+        "reportingStatus": "operational"
+      }
+    ],
+    "historicalTerritory": [
+      {
+        "date": "2006-01-13",
+        "territory": "USA"
+      }
+    ],
+    "historicalEnvironment": [
+      {
+        "date": "2006-01-13",
+        "climateZone": "polarFrost"
       }
     ],
     "schedules": [
@@ -174,22 +176,52 @@
         "@type": "Event",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "P1D",
+        "duration": "PT3H",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
-            "frequency": "daily"
+            "frequency": "hourly",
+            "interval": 3
           }
         ],
         "wmo.int:aggregation": {
           "temporalAggregate": "PT3H"
         },
-        "uid": "schedule_d643a3b71998"
+        "uid": "schedule_7856dcc44982"
+      }
+    ],
+    "reporting": [
+      {
+        "id": "reporting:febc7e89e1ff",
+        "internationalExchange": false,
+        "temporalAggregate": "PT3H"
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
+        "instrument": "instrument:0-840-11502-KominkoSlade:559b14aa2b21"
+      },
+      {
+        "id": "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
+        "instrument": "instrument:0-840-11502-KominkoSlade:b2c93dfaf8d5"
+      },
+      {
+        "id": "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
+        "instrument": "instrument:0-840-11502-KominkoSlade:607330a26caf"
+      },
+      {
+        "id": "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
+        "instrument": "instrument:0-840-11502-KominkoSlade:4a52955cfb18"
+      },
+      {
+        "id": "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
+        "instrument": "instrument:0-840-11502-KominkoSlade:4a52955cfb18"
       }
     ],
     "observations": [
       {
-        "id": "observation:216",
+        "id": "observations:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
         "time": {
           "interval": [
@@ -199,39 +231,57 @@
         },
         "observedProperty": 216,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "RBON",
           "GBON"
         ],
-        "deployments": [
-          "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f"
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
+        },
+        "observingSchedules": [
+          {
+            "date": "2006-01-13",
+            "schedule": "schedule_7856dcc44982"
+          }
         ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT3H"
-          ],
-          "uom": [
-            "hPa"
-          ],
-          "dataPolicy": [
-            {
-              "attribution": {
-                "originator": {
-                  "role": null
-                }
-              }
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
+            "deployment": "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
+            "exposure": "class1",
+            "date": "2006-01-13"
+          },
+          {
+            "id": "historicalDeployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
+            "deployment": "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
+            "exposure": "class1",
+            "date": "2011-12-17",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -112.106,
+                -79.466,
+                1801
+              ]
             }
-          ]
-        }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2006-01-13",
+            "uom": "hPa",
+            "reporting": "reporting:febc7e89e1ff"
+          }
+        ]
       },
       {
-        "id": "observation:224",
+        "id": "observations:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
@@ -241,39 +291,57 @@
         },
         "observedProperty": 224,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "RBON",
           "GBON"
         ],
-        "deployments": [
-          "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97"
+        "sourceOfObservation": "humanObservation",
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
+        },
+        "observingSchedules": [
+          {
+            "date": "2006-01-13",
+            "schedule": "schedule_7856dcc44982"
+          }
         ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT3H"
-          ],
-          "uom": [
-            "degC"
-          ],
-          "dataPolicy": [
-            {
-              "attribution": {
-                "originator": {
-                  "role": null
-                }
-              }
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
+            "deployment": "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
+            "exposure": "class2",
+            "date": "2006-01-13"
+          },
+          {
+            "id": "historicalDeployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
+            "deployment": "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
+            "exposure": "class2",
+            "date": "2011-12-17",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -112.106,
+                -79.466,
+                1801
+              ]
             }
-          ]
-        }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2006-01-13",
+            "uom": "degC",
+            "reporting": "reporting:febc7e89e1ff"
+          }
+        ]
       },
       {
-        "id": "observation:12249",
+        "id": "observations:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
         "time": {
           "interval": [
@@ -283,39 +351,57 @@
         },
         "observedProperty": 12249,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "RBON",
           "GBON"
         ],
-        "deployments": [
-          "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba"
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
+        },
+        "observingSchedules": [
+          {
+            "date": "2006-01-13",
+            "schedule": "schedule_7856dcc44982"
+          }
         ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT3H"
-          ],
-          "uom": [
-            "percent"
-          ],
-          "dataPolicy": [
-            {
-              "attribution": {
-                "originator": {
-                  "role": null
-                }
-              }
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
+            "deployment": "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
+            "exposure": "class2",
+            "date": "2006-01-13"
+          },
+          {
+            "id": "historicalDeployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
+            "deployment": "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
+            "exposure": "class2",
+            "date": "2011-12-17",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -112.106,
+                -79.466,
+                1801
+              ]
             }
-          ]
-        }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2006-01-13",
+            "uom": "percent",
+            "reporting": "reporting:febc7e89e1ff"
+          }
+        ]
       },
       {
-        "id": "observation:12005",
+        "id": "observations:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
         "time": {
           "interval": [
@@ -325,39 +411,57 @@
         },
         "observedProperty": 12005,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "RBON",
           "GBON"
         ],
-        "deployments": [
-          "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0"
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 3.0,
+          "uom": "m"
+        },
+        "observingSchedules": [
+          {
+            "date": "2006-01-13",
+            "schedule": "schedule_7856dcc44982"
+          }
         ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT3H"
-          ],
-          "uom": [
-            "deg"
-          ],
-          "dataPolicy": [
-            {
-              "attribution": {
-                "originator": {
-                  "role": null
-                }
-              }
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
+            "deployment": "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
+            "exposure": "class2",
+            "date": "2006-01-13"
+          },
+          {
+            "id": "historicalDeployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
+            "deployment": "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
+            "exposure": "class2",
+            "date": "2011-12-17",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -112.106,
+                -79.466,
+                1801
+              ]
             }
-          ]
-        }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2006-01-13",
+            "uom": "deg",
+            "reporting": "reporting:febc7e89e1ff"
+          }
+        ]
       },
       {
-        "id": "observation:12006",
+        "id": "observations:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
         "time": {
           "interval": [
@@ -367,286 +471,74 @@
         },
         "observedProperty": 12006,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "RBON",
           "GBON"
         ],
-        "deployments": [
-          "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd"
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 3.0,
+          "uom": "m"
+        },
+        "observingSchedules": [
+          {
+            "date": "2006-01-13",
+            "schedule": "schedule_7856dcc44982"
+          }
         ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT3H"
-          ],
-          "uom": [
-            "m.s-1"
-          ],
-          "dataPolicy": [
-            {
-              "attribution": {
-                "originator": {
-                  "role": null
-                }
-              }
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
+            "deployment": "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
+            "exposure": "class2",
+            "date": "2006-01-13"
+          },
+          {
+            "id": "historicalDeployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
+            "deployment": "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
+            "exposure": "class2",
+            "date": "2011-12-17",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -112.106,
+                -79.466,
+                1801
+              ]
             }
-          ]
-        }
-      }
-    ],
-    "deployments": [
-      {
-        "id": "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        },
-        "sourceOfObservation": "automaticReading",
-        "observingMethod": 111,
-        "instrument": [
-          "instrument:a0581aff5850"
-        ],
-        "exposure": "class1",
-        "referenceSurface": "naturalGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 2.0,
-            "uom": "m"
           }
         ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              -112.106,
-              -79.466,
-              1801
-            ]
-          ],
-          "dates": [
-            "2011-12-17"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
-        },
-        "temporalOfficialStatus": [
+        "historicalReporting": [
           {
-            "officialStatus": "unknown",
-            "date": "2006-01-13"
-          }
-        ],
-        "keywords": [
-          "PAROSCIENTIFIC",
-          "Series 2000 Absolute and Gauge Pressure Transducers - 215A-102",
-          "automaticReading"
-        ],
-        "temporalObservingSchedule": [
-          {
-            "observingSchedule": "schedule_d643a3b71998",
-            "date": "2006-01-13"
-          }
-        ]
-      },
-      {
-        "id": "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        },
-        "sourceOfObservation": "humanObservation",
-        "observingMethod": 188,
-        "instrument": [
-          "instrument:58dae3563565"
-        ],
-        "exposure": "class2",
-        "referenceSurface": "naturalGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 2.0,
-            "uom": "m"
-          }
-        ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              -112.106,
-              -79.466,
-              1801
-            ]
-          ],
-          "dates": [
-            "2011-12-17"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
-        },
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2006-01-13"
-          }
-        ],
-        "keywords": [
-          "Weed Instrument",
-          "Platinum resistance thermometer (PRT)",
-          "humanObservation"
-        ],
-        "temporalObservingSchedule": [
-          {
-            "observingSchedule": "schedule_d643a3b71998",
-            "date": "2006-01-13"
-          }
-        ]
-      },
-      {
-        "id": "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        },
-        "sourceOfObservation": "automaticReading",
-        "observingMethod": 250,
-        "instrument": [
-          "instrument:19cc91763467"
-        ],
-        "exposure": "class2",
-        "referenceSurface": "naturalGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 2.0,
-            "uom": "m"
-          }
-        ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              -112.106,
-              -79.466,
-              1801
-            ]
-          ],
-          "dates": [
-            "2011-12-17"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
-        },
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2006-01-13"
-          }
-        ],
-        "keywords": [
-          "Vaisala Oyj",
-          "VAISALA HMP45A",
-          "automaticReading"
-        ],
-        "temporalObservingSchedule": [
-          {
-            "observingSchedule": "schedule_d643a3b71998",
-            "date": "2006-01-13"
-          }
-        ]
-      },
-      {
-        "id": "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        },
-        "sourceOfObservation": "automaticReading",
-        "observingMethod": 65,
-        "instrument": [
-          "instrument:2765597f156e"
-        ],
-        "exposure": "class2",
-        "referenceSurface": "naturalGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 3.0,
-            "uom": "m"
-          }
-        ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              -112.106,
-              -79.466,
-              1801
-            ]
-          ],
-          "dates": [
-            "2011-12-17"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
-        },
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2006-01-13"
-          }
-        ],
-        "keywords": [
-          "RM Young",
-          "Wind Monitor HD-Alpine 05108-45",
-          "automaticReading"
-        ],
-        "temporalObservingSchedule": [
-          {
-            "observingSchedule": "schedule_d643a3b71998",
-            "date": "2006-01-13"
+            "date": "2006-01-13",
+            "uom": "m.s-1",
+            "reporting": "reporting:febc7e89e1ff"
           }
         ]
       }
     ],
     "instruments": [
       {
-        "id": "instrument:a0581aff5850",
+        "id": "instrument:0-840-11502-KominkoSlade:559b14aa2b21",
         "manufacturer": "PAROSCIENTIFIC",
         "model": "Series 2000 Absolute and Gauge Pressure Transducers - 215A-102"
       },
       {
-        "id": "instrument:58dae3563565",
+        "id": "instrument:0-840-11502-KominkoSlade:b2c93dfaf8d5",
         "manufacturer": "Weed Instrument",
         "model": "Platinum resistance thermometer (PRT)"
       },
       {
-        "id": "instrument:19cc91763467",
+        "id": "instrument:0-840-11502-KominkoSlade:607330a26caf",
         "manufacturer": "Vaisala Oyj",
         "model": "VAISALA_HMP45A"
       },
       {
-        "id": "instrument:2765597f156e",
+        "id": "instrument:0-840-11502-KominkoSlade:4a52955cfb18",
         "manufacturer": "RM Young",
         "model": "Wind Monitor HD-Alpine 05108-45"
       }

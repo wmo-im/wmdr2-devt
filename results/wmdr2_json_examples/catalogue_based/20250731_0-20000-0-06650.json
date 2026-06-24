@@ -89,22 +89,26 @@
     ],
     "facilityType": "landFixed",
     "wmoRegion": "europe",
-    "temporalTerritory": [
+    "historicalProgramAffiliation": [
       {
-        "territory": "CHE",
-        "date": "1864-01-01"
-      }
-    ],
-    "temporalProgramAffiliation": [
-      {
-        "programAffiliation": "GOSGeneral",
-        "reportingStatus": "operational",
-        "date": "1864-01-01"
+        "date": "1864-01-01",
+        "programAffiliation": [
+          "GOSGeneral"
+        ],
+        "reportingStatus": "operational"
       },
       {
-        "programAffiliation": "GBON",
-        "reportingStatus": "operational",
-        "date": "2022-09-08"
+        "date": "2022-09-08",
+        "programAffiliation": [
+          "GBON"
+        ],
+        "reportingStatus": "operational"
+      }
+    ],
+    "historicalTerritory": [
+      {
+        "date": "1864-01-01",
+        "territory": "CHE"
       }
     ],
     "schedules": [
@@ -112,1118 +116,861 @@
         "@type": "Event",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "P1D",
+        "duration": "PT6H",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
-            "frequency": "daily"
+            "frequency": "hourly",
+            "interval": 6
           }
         ],
         "wmo.int:aggregation": {
           "temporalAggregate": "PT6H",
           "diurnalBaseTime": "06:00:00"
         },
-        "uid": "schedule_ce4e69df0a76"
+        "uid": "schedule_d49bdb25de27"
       },
       {
         "@type": "Event",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "P1D",
+        "duration": "PT6H",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
-            "frequency": "daily"
+            "frequency": "hourly",
+            "interval": 6
+          }
+        ],
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT6H"
+        },
+        "uid": "schedule_9d5decc5a094"
+      },
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT1H",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "hourly"
           }
         ],
         "wmo.int:aggregation": {
           "temporalAggregate": "PT1H",
           "diurnalBaseTime": "00:00:00"
         },
-        "uid": "schedule_2bb1a98fc0c3"
+        "uid": "schedule_cea7aabe8837"
       },
       {
         "@type": "Event",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "P1D",
+        "duration": "PT1H",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
-            "frequency": "daily"
+            "frequency": "hourly"
+          }
+        ],
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT1H"
+        },
+        "uid": "schedule_9928d3a502f4"
+      },
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT10M",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "minutely",
+            "interval": 10
           }
         ],
         "wmo.int:aggregation": {
           "temporalAggregate": "PT10M",
           "diurnalBaseTime": "00:00:00"
         },
-        "uid": "schedule_87aa82256d31"
+        "uid": "schedule_dceb90217ff0"
+      },
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT10M",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "minutely",
+            "interval": 10
+          }
+        ],
+        "wmo.int:aggregation": {
+          "temporalAggregate": "PT10M"
+        },
+        "uid": "schedule_d82c3b74df95"
       }
     ],
-    "observations": [
+    "reporting": [
       {
-        "id": "observation:179",
-        "title": "domain: atmosphere; geometry: point; variable: 179",
-        "time": {
-          "interval": [
-            "1998-03-10",
-            "2006-06-12"
-          ]
-        },
-        "observedProperty": 179,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-179-dg3-inc5-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT6H"
-          ],
-          "uom": [
-            "percent"
-          ]
-        }
+        "id": "reporting:92465033129c",
+        "internationalExchange": false,
+        "temporalAggregate": "PT6H"
       },
       {
-        "id": "observation:179",
-        "title": "domain: atmosphere; geometry: point; variable: 179",
-        "time": {
-          "interval": [
-            "1981-01-01",
-            "1998-03-09"
-          ]
-        },
-        "observedProperty": 179,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-179-dg3-inc4-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT6H"
-          ],
-          "uom": [
-            "percent"
-          ]
-        }
+        "id": "reporting:01a1842ad5f0",
+        "internationalExchange": true,
+        "temporalAggregate": "PT1H"
       },
       {
-        "id": "observation:179",
-        "title": "domain: atmosphere; geometry: point; variable: 179",
-        "time": {
-          "interval": [
-            "1970-09-25",
-            "1980-12-31"
-          ]
-        },
-        "observedProperty": 179,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-179-dg3-inc3-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT6H"
-          ],
-          "uom": [
-            "percent"
-          ]
-        }
-      },
-      {
-        "id": "observation:179",
-        "title": "domain: atmosphere; geometry: point; variable: 179",
-        "time": {
-          "interval": [
-            "1919-05-01",
-            "1970-09-24"
-          ]
-        },
-        "observedProperty": 179,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-179-dg3-inc2-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT6H"
-          ],
-          "uom": [
-            "percent"
-          ]
-        }
-      },
-      {
-        "id": "observation:179",
-        "title": "domain: atmosphere; geometry: point; variable: 179",
-        "time": {
-          "interval": [
-            "1864-01-01",
-            "1919-04-30"
-          ]
-        },
-        "observedProperty": 179,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-179-dg3-inc1-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT6H"
-          ],
-          "uom": [
-            "percent"
-          ]
-        }
-      },
-      {
-        "id": "observation:224",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "2006-06-12",
-            ".."
-          ]
-        },
-        "observedProperty": 224,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GBON"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-224-dg5-inc2-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            true,
-            false
-          ],
-          "temporalAggregate": [
-            "PT1H",
-            "PT10M"
-          ],
-          "uom": [
-            "unknown",
-            "degC"
-          ]
-        }
-      },
-      {
-        "id": "observation:224",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "2006-06-12",
-            ".."
-          ]
-        },
-        "observedProperty": 224,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GBON"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-224-dg5-inc7-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            true,
-            false
-          ],
-          "temporalAggregate": [
-            "PT1H",
-            "PT10M"
-          ],
-          "uom": [
-            "unknown",
-            "degC"
-          ]
-        }
-      },
-      {
-        "id": "observation:224",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "1981-01-01",
-            "2006-06-12"
-          ]
-        },
-        "observedProperty": 224,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GBON"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-224-dg5-inc1-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT10M"
-          ],
-          "uom": [
-            "degC"
-          ]
-        }
-      },
-      {
-        "id": "observation:224",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "1981-01-01",
-            "2006-06-12"
-          ]
-        },
-        "observedProperty": 224,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GBON"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-224-dg5-inc6-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT10M"
-          ],
-          "uom": [
-            "degC"
-          ]
-        }
-      },
-      {
-        "id": "observation:224",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "1970-09-25",
-            "1980-12-31"
-          ]
-        },
-        "observedProperty": 224,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GBON"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-224-dg3-inc5-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT6H"
-          ],
-          "uom": [
-            "degC"
-          ]
-        }
-      },
-      {
-        "id": "observation:224",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "1919-05-01",
-            "1970-09-24"
-          ]
-        },
-        "observedProperty": 224,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GBON"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-224-dg3-inc4-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT6H"
-          ],
-          "uom": [
-            "degC"
-          ]
-        }
-      },
-      {
-        "id": "observation:224",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "1864-01-01",
-            "1919-04-30"
-          ]
-        },
-        "observedProperty": 224,
-        "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
-        },
-        "programAffiliations": [
-          "GBON"
-        ],
-        "deployments": [
-          "deployment:id-metch-68-224-dg3-inc3-depl"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT6H"
-          ],
-          "uom": [
-            "degC"
-          ]
-        }
+        "id": "reporting:d69da07f92a8",
+        "internationalExchange": false,
+        "temporalAggregate": "PT10M"
       }
     ],
     "deployments": [
       {
         "id": "deployment:id-metch-68-179-dg3-inc5-depl",
+        "instrument": "instrument:0-20000-0-06650:28542fed7720",
+        "serialNumber": "id-metch-sn-00004992"
+      },
+      {
+        "id": "deployment:id-metch-68-179-dg3-inc4-depl",
+        "instrument": "instrument:0-20000-0-06650:4bd07ce3bfdf",
+        "serialNumber": "id-metch-sn-00004991"
+      },
+      {
+        "id": "deployment:id-metch-68-179-dg3-inc3-depl",
+        "instrument": "instrument:0-20000-0-06650:74fd4362807c",
+        "serialNumber": "id-metch-sn-00004990"
+      },
+      {
+        "id": "deployment:id-metch-68-179-dg3-inc2-depl",
+        "instrument": "instrument:0-20000-0-06650:806944752c70",
+        "serialNumber": "id-metch-sn-00004989"
+      },
+      {
+        "id": "deployment:id-metch-68-179-dg3-inc1-depl",
+        "instrument": "instrument:0-20000-0-06650:0210b2e0c563",
+        "serialNumber": "id-metch-sn-00004988"
+      },
+      {
+        "id": "deployment:id-metch-68-224-dg5-inc2-depl",
+        "instrument": "instrument:0-20000-0-06650:cd2378b11a8e",
+        "serialNumber": "id-metch-sn-00005010"
+      },
+      {
+        "id": "deployment:id-metch-68-224-dg5-inc7-depl",
+        "instrument": "instrument:0-20000-0-06650:6e849968360b",
+        "serialNumber": "id-metch-sn-00005015"
+      },
+      {
+        "id": "deployment:id-metch-68-224-dg5-inc1-depl",
+        "instrument": "instrument:0-20000-0-06650:70168b329dee",
+        "serialNumber": "id-metch-sn-00005009"
+      },
+      {
+        "id": "deployment:id-metch-68-224-dg5-inc6-depl",
+        "instrument": "instrument:0-20000-0-06650:28cf9e32c2b2",
+        "serialNumber": "id-metch-sn-00005014"
+      },
+      {
+        "id": "deployment:id-metch-68-224-dg3-inc5-depl",
+        "instrument": "instrument:0-20000-0-06650:ff3533243084",
+        "serialNumber": "id-metch-sn-00005013"
+      },
+      {
+        "id": "deployment:id-metch-68-224-dg3-inc4-depl",
+        "instrument": "instrument:0-20000-0-06650:44ff8ef7ce8c",
+        "serialNumber": "id-metch-sn-00005012"
+      },
+      {
+        "id": "deployment:id-metch-68-224-dg3-inc3-depl",
+        "instrument": "instrument:0-20000-0-06650:aae7f560eb4b",
+        "serialNumber": "id-metch-sn-00005011"
+      }
+    ],
+    "observations": [
+      {
+        "id": "observations:179",
+        "title": "domain: atmosphere; geometry: point; variable: 179",
         "time": {
           "interval": [
             "1998-03-10",
             "2006-06-12"
           ]
         },
-        "sourceOfObservation": "humanObservation",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00004992",
-            "date": "1998-03-10"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.308403,
-              47.040886,
-              445
-            ]
-          ],
-          "dates": [
-            "1998-03-10"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 179,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "sourceOfObservation": "humanObservation",
+        "referenceSurface": "localGround",
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
-            "date": "1998-03-10"
+            "date": "1998-03-10",
+            "schedule": "schedule_d49bdb25de27"
+          },
+          {
+            "date": "1998-03-10",
+            "schedule": "schedule_9d5decc5a094"
           }
         ],
-        "keywords": [
-          "id-metch-sn-00004992",
-          "humanObservation"
-        ],
-        "temporalObservingSchedule": [
+        "historicalDeployments": [
           {
-            "observingSchedule": "schedule_ce4e69df0a76",
-            "date": "1998-03-10"
+            "id": "historicalDeployment:id-metch-68-179-dg3-inc5-depl",
+            "deployment": "deployment:id-metch-68-179-dg3-inc5-depl",
+            "date": "1998-03-10",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.308403,
+                47.040886,
+                445
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "1998-03-10",
+            "uom": "percent",
+            "reporting": "reporting:92465033129c"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-179-dg3-inc4-depl",
+        "id": "observations:179",
+        "title": "domain: atmosphere; geometry: point; variable: 179",
         "time": {
           "interval": [
             "1981-01-01",
             "1998-03-09"
           ]
         },
-        "sourceOfObservation": "humanObservation",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00004991",
-            "date": "1981-01-01"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.3007,
-              47.036536,
-              456
-            ]
-          ],
-          "dates": [
-            "1981-01-01"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 179,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "sourceOfObservation": "humanObservation",
+        "referenceSurface": "localGround",
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
-            "date": "1981-01-01"
+            "date": "1981-01-01",
+            "schedule": "schedule_d49bdb25de27"
+          },
+          {
+            "date": "1981-01-01",
+            "schedule": "schedule_9d5decc5a094"
           }
         ],
-        "keywords": [
-          "id-metch-sn-00004991",
-          "humanObservation"
-        ],
-        "temporalObservingSchedule": [
+        "historicalDeployments": [
           {
-            "observingSchedule": "schedule_ce4e69df0a76",
-            "date": "1981-01-01"
+            "id": "historicalDeployment:id-metch-68-179-dg3-inc4-depl",
+            "deployment": "deployment:id-metch-68-179-dg3-inc4-depl",
+            "date": "1981-01-01",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.3007,
+                47.036536,
+                456
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "1981-01-01",
+            "uom": "percent",
+            "reporting": "reporting:92465033129c"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-179-dg3-inc3-depl",
+        "id": "observations:179",
+        "title": "domain: atmosphere; geometry: point; variable: 179",
         "time": {
           "interval": [
             "1970-09-25",
             "1980-12-31"
           ]
         },
-        "sourceOfObservation": "humanObservation",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00004990",
-            "date": "1970-09-25"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.319214,
-              47.042153,
-              436.5
-            ]
-          ],
-          "dates": [
-            "1970-09-25"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 179,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "sourceOfObservation": "humanObservation",
+        "referenceSurface": "localGround",
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
-            "date": "1970-09-25"
+            "date": "1970-09-25",
+            "schedule": "schedule_d49bdb25de27"
+          },
+          {
+            "date": "1970-09-25",
+            "schedule": "schedule_9d5decc5a094"
           }
         ],
-        "keywords": [
-          "id-metch-sn-00004990",
-          "humanObservation"
-        ],
-        "temporalObservingSchedule": [
+        "historicalDeployments": [
           {
-            "observingSchedule": "schedule_ce4e69df0a76",
-            "date": "1970-09-25"
+            "id": "historicalDeployment:id-metch-68-179-dg3-inc3-depl",
+            "deployment": "deployment:id-metch-68-179-dg3-inc3-depl",
+            "date": "1970-09-25",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.319214,
+                47.042153,
+                436.5
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "1970-09-25",
+            "uom": "percent",
+            "reporting": "reporting:92465033129c"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-179-dg3-inc2-depl",
+        "id": "observations:179",
+        "title": "domain: atmosphere; geometry: point; variable: 179",
         "time": {
           "interval": [
             "1919-05-01",
             "1970-09-24"
           ]
         },
-        "sourceOfObservation": "humanObservation",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00004989",
-            "date": "1919-05-01"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.313344,
-              47.061539,
-              498
-            ]
-          ],
-          "dates": [
-            "1919-05-01"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 179,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
+        "sourceOfObservation": "humanObservation",
+        "referenceSurface": "localGround",
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
-            "date": "1919-05-01"
+            "date": "1919-05-01",
+            "schedule": "schedule_d49bdb25de27"
+          },
+          {
+            "date": "1919-05-01",
+            "schedule": "schedule_9d5decc5a094"
           }
         ],
-        "keywords": [
-          "id-metch-sn-00004989",
-          "humanObservation"
-        ],
-        "temporalObservingSchedule": [
+        "historicalDeployments": [
           {
-            "observingSchedule": "schedule_ce4e69df0a76",
-            "date": "1919-05-01"
+            "id": "historicalDeployment:id-metch-68-179-dg3-inc2-depl",
+            "deployment": "deployment:id-metch-68-179-dg3-inc2-depl",
+            "date": "1919-05-01",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.313344,
+                47.061539,
+                498
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "1919-05-01",
+            "uom": "percent",
+            "reporting": "reporting:92465033129c"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-179-dg3-inc1-depl",
+        "id": "observations:179",
+        "title": "domain: atmosphere; geometry: point; variable: 179",
         "time": {
           "interval": [
             "1864-01-01",
             "1919-04-30"
           ]
         },
+        "observedProperty": 179,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliations": [
+          "GOSGeneral"
+        ],
         "sourceOfObservation": "humanObservation",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00004988",
-            "date": "1864-01-01"
-          }
-        ],
         "referenceSurface": "localGround",
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.306517,
-              47.054394,
-              451
-            ]
-          ],
-          "dates": [
-            "1864-01-01"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
-        },
-        "temporalOfficialStatus": [
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
-            "date": "1864-01-01"
+            "date": "1864-01-01",
+            "schedule": "schedule_d49bdb25de27"
+          },
+          {
+            "date": "1864-01-01",
+            "schedule": "schedule_9d5decc5a094"
           }
         ],
-        "keywords": [
-          "id-metch-sn-00004988",
-          "humanObservation"
-        ],
-        "temporalObservingSchedule": [
+        "historicalDeployments": [
           {
-            "observingSchedule": "schedule_ce4e69df0a76",
-            "date": "1864-01-01"
+            "id": "historicalDeployment:id-metch-68-179-dg3-inc1-depl",
+            "deployment": "deployment:id-metch-68-179-dg3-inc1-depl",
+            "date": "1864-01-01",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.306517,
+                47.054394,
+                451
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "1864-01-01",
+            "uom": "percent",
+            "reporting": "reporting:92465033129c"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-224-dg5-inc2-depl",
+        "id": "observations:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
             "2006-06-12",
             ".."
           ]
         },
-        "sourceOfObservation": "automaticReading",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00005010",
-            "date": "2006-06-12"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 0.05,
-            "uom": "m"
-          }
-        ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.300933,
-              47.036392,
-              454.46
-            ]
-          ],
-          "dates": [
-            "2006-06-12"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 224,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2006-06-12"
-          }
+        "programAffiliations": [
+          "GBON"
         ],
-        "keywords": [
-          "id-metch-sn-00005010",
-          "automaticReading"
-        ],
-        "temporalObservingSchedule": [
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 0.05,
+          "uom": "m"
+        },
+        "observingSchedules": [
           {
-            "observingSchedule": "schedule_2bb1a98fc0c3",
-            "date": "2006-06-12"
+            "date": "2006-06-12",
+            "schedule": "schedule_cea7aabe8837"
           },
           {
-            "observingSchedule": "schedule_87aa82256d31",
-            "date": "2006-06-12"
+            "date": "2006-06-12",
+            "schedule": "schedule_9928d3a502f4"
+          },
+          {
+            "date": "2006-06-12",
+            "schedule": "schedule_dceb90217ff0"
+          },
+          {
+            "date": "2006-06-12",
+            "schedule": "schedule_d82c3b74df95"
+          }
+        ],
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id-metch-68-224-dg5-inc2-depl",
+            "deployment": "deployment:id-metch-68-224-dg5-inc2-depl",
+            "date": "2006-06-12",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.300933,
+                47.036392,
+                454.46
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2006-06-12",
+            "uom": "unknown",
+            "reporting": "reporting:01a1842ad5f0"
+          },
+          {
+            "date": "2006-06-12",
+            "uom": "degC",
+            "reporting": "reporting:d69da07f92a8"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-224-dg5-inc7-depl",
+        "id": "observations:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
             "2006-06-12",
             ".."
           ]
         },
-        "sourceOfObservation": "automaticReading",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00005015",
-            "date": "2006-06-12"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 2.0,
-            "uom": "m"
-          }
-        ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.30095,
-              47.036419,
-              454.32
-            ]
-          ],
-          "dates": [
-            "2006-06-12"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 224,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2006-06-12"
-          }
+        "programAffiliations": [
+          "GBON"
         ],
-        "keywords": [
-          "id-metch-sn-00005015",
-          "automaticReading"
-        ],
-        "temporalObservingSchedule": [
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
+        },
+        "observingSchedules": [
           {
-            "observingSchedule": "schedule_2bb1a98fc0c3",
-            "date": "2006-06-12"
+            "date": "2006-06-12",
+            "schedule": "schedule_cea7aabe8837"
           },
           {
-            "observingSchedule": "schedule_87aa82256d31",
-            "date": "2006-06-12"
+            "date": "2006-06-12",
+            "schedule": "schedule_9928d3a502f4"
+          },
+          {
+            "date": "2006-06-12",
+            "schedule": "schedule_dceb90217ff0"
+          },
+          {
+            "date": "2006-06-12",
+            "schedule": "schedule_d82c3b74df95"
+          }
+        ],
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id-metch-68-224-dg5-inc7-depl",
+            "deployment": "deployment:id-metch-68-224-dg5-inc7-depl",
+            "date": "2006-06-12",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.30095,
+                47.036419,
+                454.32
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "2006-06-12",
+            "uom": "unknown",
+            "reporting": "reporting:01a1842ad5f0"
+          },
+          {
+            "date": "2006-06-12",
+            "uom": "degC",
+            "reporting": "reporting:d69da07f92a8"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-224-dg5-inc1-depl",
+        "id": "observations:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
             "1981-01-01",
             "2006-06-12"
           ]
         },
-        "sourceOfObservation": "automaticReading",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00005009",
-            "date": "1981-01-01"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 0.05,
-            "uom": "m"
-          }
-        ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.3007,
-              47.036536,
-              456
-            ]
-          ],
-          "dates": [
-            "1981-01-01"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 224,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
+        "programAffiliations": [
+          "GBON"
+        ],
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 0.05,
+          "uom": "m"
+        },
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
-            "date": "1981-01-01"
+            "date": "1981-01-01",
+            "schedule": "schedule_dceb90217ff0"
+          },
+          {
+            "date": "1981-01-01",
+            "schedule": "schedule_d82c3b74df95"
           }
         ],
-        "keywords": [
-          "id-metch-sn-00005009",
-          "automaticReading"
-        ],
-        "temporalObservingSchedule": [
+        "historicalDeployments": [
           {
-            "observingSchedule": "schedule_87aa82256d31",
-            "date": "1981-01-01"
+            "id": "historicalDeployment:id-metch-68-224-dg5-inc1-depl",
+            "deployment": "deployment:id-metch-68-224-dg5-inc1-depl",
+            "date": "1981-01-01",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.3007,
+                47.036536,
+                456
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "1981-01-01",
+            "uom": "degC",
+            "reporting": "reporting:d69da07f92a8"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-224-dg5-inc6-depl",
+        "id": "observations:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
             "1981-01-01",
             "2006-06-12"
           ]
         },
-        "sourceOfObservation": "automaticReading",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00005014",
-            "date": "1981-01-01"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 2.0,
-            "uom": "m"
-          }
-        ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.3007,
-              47.036536,
-              456
-            ]
-          ],
-          "dates": [
-            "1981-01-01"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 224,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
+        "programAffiliations": [
+          "GBON"
+        ],
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
+        },
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
-            "date": "1981-01-01"
+            "date": "1981-01-01",
+            "schedule": "schedule_dceb90217ff0"
+          },
+          {
+            "date": "1981-01-01",
+            "schedule": "schedule_d82c3b74df95"
           }
         ],
-        "keywords": [
-          "id-metch-sn-00005014",
-          "automaticReading"
-        ],
-        "temporalObservingSchedule": [
+        "historicalDeployments": [
           {
-            "observingSchedule": "schedule_87aa82256d31",
-            "date": "1981-01-01"
+            "id": "historicalDeployment:id-metch-68-224-dg5-inc6-depl",
+            "deployment": "deployment:id-metch-68-224-dg5-inc6-depl",
+            "date": "1981-01-01",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.3007,
+                47.036536,
+                456
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "1981-01-01",
+            "uom": "degC",
+            "reporting": "reporting:d69da07f92a8"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-224-dg3-inc5-depl",
+        "id": "observations:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
             "1970-09-25",
             "1980-12-31"
           ]
         },
-        "sourceOfObservation": "manualReading",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00005013",
-            "date": "1970-09-25"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 2.0,
-            "uom": "m"
-          }
-        ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.319214,
-              47.042153,
-              436.5
-            ]
-          ],
-          "dates": [
-            "1970-09-25"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 224,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
+        "programAffiliations": [
+          "GBON"
+        ],
+        "sourceOfObservation": "manualReading",
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
+        },
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
-            "date": "1970-09-25"
+            "date": "1970-09-25",
+            "schedule": "schedule_d49bdb25de27"
+          },
+          {
+            "date": "1970-09-25",
+            "schedule": "schedule_9d5decc5a094"
           }
         ],
-        "keywords": [
-          "id-metch-sn-00005013",
-          "manualReading"
-        ],
-        "temporalObservingSchedule": [
+        "historicalDeployments": [
           {
-            "observingSchedule": "schedule_ce4e69df0a76",
-            "date": "1970-09-25"
+            "id": "historicalDeployment:id-metch-68-224-dg3-inc5-depl",
+            "deployment": "deployment:id-metch-68-224-dg3-inc5-depl",
+            "date": "1970-09-25",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.319214,
+                47.042153,
+                436.5
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "1970-09-25",
+            "uom": "degC",
+            "reporting": "reporting:92465033129c"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-224-dg3-inc4-depl",
+        "id": "observations:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
             "1919-05-01",
             "1970-09-24"
           ]
         },
-        "sourceOfObservation": "manualReading",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00005012",
-            "date": "1919-05-01"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 2.0,
-            "uom": "m"
-          }
-        ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.313344,
-              47.061539,
-              498
-            ]
-          ],
-          "dates": [
-            "1919-05-01"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 224,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
+        "programAffiliations": [
+          "GBON"
+        ],
+        "sourceOfObservation": "manualReading",
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
+        },
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
-            "date": "1919-05-01"
+            "date": "1919-05-01",
+            "schedule": "schedule_d49bdb25de27"
+          },
+          {
+            "date": "1919-05-01",
+            "schedule": "schedule_9d5decc5a094"
           }
         ],
-        "keywords": [
-          "id-metch-sn-00005012",
-          "manualReading"
-        ],
-        "temporalObservingSchedule": [
+        "historicalDeployments": [
           {
-            "observingSchedule": "schedule_ce4e69df0a76",
-            "date": "1919-05-01"
+            "id": "historicalDeployment:id-metch-68-224-dg3-inc4-depl",
+            "deployment": "deployment:id-metch-68-224-dg3-inc4-depl",
+            "date": "1919-05-01",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.313344,
+                47.061539,
+                498
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "1919-05-01",
+            "uom": "degC",
+            "reporting": "reporting:92465033129c"
           }
         ]
       },
       {
-        "id": "deployment:id-metch-68-224-dg3-inc3-depl",
+        "id": "observations:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
             "1864-01-01",
             "1919-04-30"
           ]
         },
-        "sourceOfObservation": "manualReading",
-        "observingMethod": "unknown",
-        "temporalSerialNumber": [
-          {
-            "serialNumber": "id-metch-sn-00005011",
-            "date": "1864-01-01"
-          }
-        ],
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": [
-          {
-            "value": 2.0,
-            "uom": "m"
-          }
-        ],
-        "temporalGeometry": {
-          "type": "MovingPoint",
-          "coordinates": [
-            [
-              8.306517,
-              47.054394,
-              451
-            ]
-          ],
-          "dates": [
-            "1864-01-01"
-          ],
-          "methods": [
-            [
-              "gps"
-            ]
-          ]
+        "observedProperty": 224,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
         },
-        "temporalOfficialStatus": [
+        "programAffiliations": [
+          "GBON"
+        ],
+        "sourceOfObservation": "manualReading",
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
+        },
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
-            "date": "1864-01-01"
+            "date": "1864-01-01",
+            "schedule": "schedule_d49bdb25de27"
+          },
+          {
+            "date": "1864-01-01",
+            "schedule": "schedule_9d5decc5a094"
           }
         ],
-        "keywords": [
-          "id-metch-sn-00005011",
-          "manualReading"
-        ],
-        "temporalObservingSchedule": [
+        "historicalDeployments": [
           {
-            "observingSchedule": "schedule_ce4e69df0a76",
-            "date": "1864-01-01"
+            "id": "historicalDeployment:id-metch-68-224-dg3-inc3-depl",
+            "deployment": "deployment:id-metch-68-224-dg3-inc3-depl",
+            "date": "1864-01-01",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                8.306517,
+                47.054394,
+                451
+              ]
+            }
+          }
+        ],
+        "historicalReporting": [
+          {
+            "date": "1864-01-01",
+            "uom": "degC",
+            "reporting": "reporting:92465033129c"
           }
         ]
       }

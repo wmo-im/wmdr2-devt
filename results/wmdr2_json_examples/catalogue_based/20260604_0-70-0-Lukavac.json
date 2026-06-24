@@ -97,30 +97,35 @@
     ],
     "facilityType": "underwaterFixed",
     "wmoRegion": "europe",
-    "temporalTerritory": [
+    "historicalProgramAffiliation": [
       {
-        "territory": "BIH",
-        "date": "2019-08-05"
+        "date": "2019-08-05",
+        "programAffiliation": [
+          "WHYCOS"
+        ],
+        "reportingStatus": "operational"
       }
     ],
-    "environment": {
-      "temporalClimateZone": [
-        {
-          "climateZone": "snowFullyHumidWarmSummer",
-          "date": "2019-08-05"
-        }
-      ]
-    },
-    "temporalProgramAffiliation": [
+    "historicalTerritory": [
       {
-        "programAffiliation": "WHYCOS",
-        "reportingStatus": "operational",
-        "date": "2019-08-05"
+        "date": "2019-08-05",
+        "territory": "BIH"
+      }
+    ],
+    "historicalEnvironment": [
+      {
+        "date": "2019-08-05",
+        "climateZone": "snowFullyHumidWarmSummer"
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_8ca504be-eb29-43a4-9ef0-a3e7a81f1ab3"
       }
     ],
     "observations": [
       {
-        "id": "observation:166",
+        "id": "observations:166",
         "title": "domain: terrestrial; geometry: point; variable: 166",
         "time": {
           "interval": [
@@ -130,30 +135,16 @@
         },
         "observedProperty": 166,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "terrestrial"
+        "observedFeature": {
+          "domain": "terrestrial"
         },
         "programAffiliations": [
           "WHYCOS"
         ],
-        "deployments": [
-          "deployment:id_8ca504be-eb29-43a4-9ef0-a3e7a81f1ab3"
-        ]
-      }
-    ],
-    "deployments": [
-      {
-        "id": "deployment:id_8ca504be-eb29-43a4-9ef0-a3e7a81f1ab3",
-        "time": {
-          "interval": [
-            "2019-08-05",
-            ".."
-          ]
-        },
-        "observingMethod": 356,
-        "temporalOfficialStatus": [
+        "historicalDeployments": [
           {
-            "officialStatus": "unknown",
+            "id": "historicalDeployment:id_8ca504be-eb29-43a4-9ef0-a3e7a81f1ab3",
+            "deployment": "deployment:id_8ca504be-eb29-43a4-9ef0-a3e7a81f1ab3",
             "date": "2019-08-05"
           }
         ]

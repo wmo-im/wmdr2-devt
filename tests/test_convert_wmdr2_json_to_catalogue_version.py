@@ -43,7 +43,8 @@ def test_externalize_contacts_and_instruments(tmp_path: Path):
                     "phones": [{"value": "+41 1 234 56 78"}],
                 }
             ],
-            "deployments": [{"id": "deployment:a", "instrument": ["instrument:thermo-49i"]}],
+            "deployments": [{"id": "deployment:a", "instrument": "instrument:thermo-49i"}],
+            "observations": [{"id": "observations:a", "historicalDeployments": [{"date": "2020-01-01", "deployment": "deployment:a"}]}],
             "instruments": [{"id": "instrument:thermo-49i", "manufacturer": "Thermo", "model": "49i"}],
         },
     }
@@ -60,7 +61,8 @@ def test_externalize_contacts_and_instruments(tmp_path: Path):
                 },
                 {"name": "No Email", "organization": "Example Org"},
             ],
-            "deployments": [{"id": "deployment:b", "instrument": ["instrument:thermo-49i"]}],
+            "deployments": [{"id": "deployment:b", "instrument": "instrument:thermo-49i"}],
+            "observations": [{"id": "observations:b", "historicalDeployments": [{"date": "2020-01-01", "deployment": "deployment:b"}]}],
             "instruments": [{"id": "instrument:thermo-49i", "manufacturer": "Thermo", "model": "49i"}],
         },
     }
@@ -103,7 +105,8 @@ def test_externalize_contacts_and_instruments(tmp_path: Path):
     }
     assert "phones" not in inline_contact
     assert "instruments" not in rewritten["properties"]
-    assert rewritten["properties"]["deployments"][0]["instrument"] == ["instrument:thermo-49i"]
+    assert rewritten["properties"]["deployments"][0]["instrument"] == "instrument:thermo-49i"
+    assert rewritten["properties"]["observations"][0]["historicalDeployments"][0]["deployment"] == "deployment:a"
 
 
 
@@ -135,7 +138,8 @@ def test_externalize_preserves_temporal_geometry_methods_alignment(tmp_path: Pat
                     "emails": [{"value": "jane.smith@example.org"}],
                 }
             ],
-            "deployments": [{"id": "deployment:a", "instrument": ["instrument:thermo-49i"]}],
+            "deployments": [{"id": "deployment:a", "instrument": "instrument:thermo-49i"}],
+            "observations": [{"id": "observations:a", "historicalDeployments": [{"date": "2020-01-01", "deployment": "deployment:a"}]}],
             "instruments": [{"id": "instrument:thermo-49i", "manufacturer": "Thermo", "model": "49i"}],
         },
     }

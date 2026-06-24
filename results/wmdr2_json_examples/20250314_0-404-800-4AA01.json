@@ -99,17 +99,19 @@
     ],
     "facilityType": "lakeRiverFixed",
     "wmoRegion": "africa",
-    "temporalTerritory": [
+    "historicalProgramAffiliation": [
       {
-        "territory": "KEN",
-        "date": "1947-09-01"
+        "date": "1947-09-01",
+        "programAffiliation": [
+          "WHYCOS"
+        ],
+        "reportingStatus": "operational"
       }
     ],
-    "temporalProgramAffiliation": [
+    "historicalTerritory": [
       {
-        "programAffiliation": "WHYCOS",
-        "reportingStatus": "operational",
-        "date": "1947-09-01"
+        "date": "1947-09-01",
+        "territory": "KEN"
       }
     ],
     "schedules": [
@@ -117,22 +119,37 @@
         "@type": "Event",
         "start": "0001-01-01T00:00:00",
         "timeZone": "UTC",
-        "duration": "P1D",
+        "duration": "PT1H",
         "recurrenceRules": [
           {
             "@type": "RecurrenceRule",
-            "frequency": "daily"
+            "frequency": "hourly"
           }
         ],
         "wmo.int:aggregation": {
           "temporalAggregate": "PT1H"
         },
-        "uid": "schedule_38ade7ec764d"
+        "uid": "schedule_9928d3a502f4"
+      }
+    ],
+    "reporting": [
+      {
+        "id": "reporting:0a7fabf5614c",
+        "internationalExchange": false,
+        "temporalAggregate": "PT1H",
+        "dataPolicy": {
+          "dataPolicy": "unknown"
+        }
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb"
       }
     ],
     "observations": [
       {
-        "id": "observation:12252",
+        "id": "observations:12252",
         "title": "domain: ocean; geometry: verticalProfile; variable: 12252",
         "time": {
           "interval": [
@@ -142,58 +159,30 @@
         },
         "observedProperty": 12252,
         "observedGeometry": "verticalProfile",
-        "domain": {
-          "domainName": "ocean"
+        "observedFeature": {
+          "domain": "ocean"
         },
         "programAffiliations": [
           "WHYCOS"
         ],
-        "deployments": [
-          "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb"
-        ],
-        "reporting": {
-          "internationalExchange": [
-            false
-          ],
-          "temporalAggregate": [
-            "PT1H"
-          ],
-          "uom": [
-            "m"
-          ],
-          "dataPolicy": [
-            {
-              "dataPolicy": "unknown",
-              "attribution": {
-                "originator": {
-                  "role": null
-                }
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "deployments": [
-      {
-        "id": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
-        "time": {
-          "interval": [
-            "1947-09-01",
-            ".."
-          ]
-        },
-        "observingMethod": 356,
-        "temporalOfficialStatus": [
+        "observingSchedules": [
           {
-            "officialStatus": "unknown",
+            "date": "1947-09-01",
+            "schedule": "schedule_9928d3a502f4"
+          }
+        ],
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
+            "deployment": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
             "date": "1947-09-01"
           }
         ],
-        "temporalObservingSchedule": [
+        "historicalReporting": [
           {
-            "observingSchedule": "schedule_38ade7ec764d",
-            "date": "1947-09-01"
+            "date": "1947-09-01",
+            "uom": "m",
+            "reporting": "reporting:0a7fabf5614c"
           }
         ]
       }

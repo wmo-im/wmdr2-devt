@@ -151,7 +151,7 @@ def test_facility_temporal_program_affiliation_keeps_temporal_metadata() -> None
         {},
         source_name="20200101_0-TEST",
     )
-    assert record["properties"]["temporalProgramAffiliation"] == [
+    assert record["properties"]["historicalProgramAffiliation"] == [
         {
             "programAffiliation": "GAWregional",
             "reportingStatus": "operational",
@@ -160,7 +160,7 @@ def test_facility_temporal_program_affiliation_keeps_temporal_metadata() -> None
             "programSpecificFacilityTitle": "GAW TEST",
         }
     ]
-
+    assert "temporalProgramAffiliation" not in record["properties"]
 
 def test_build_facility_feature_uses_current_core_model() -> None:
     record = module.build_facility_feature(
@@ -171,23 +171,32 @@ def test_build_facility_feature_uses_current_core_model() -> None:
         source_name="20200101_0-TEST",
     )
     props = record["properties"]
+    observation = props["observations"][0]
+    deployment = observation["historicalDeployments"][0]
+
     assert record["type"] == "Feature"
     assert record["conformsTo"] == ["http://wigos.wmo.int/spec/wmdr/2/conf/core"]
     assert record["geometry"] == {"type": "Point", "coordinates": [7.0, 46.0, 100]}
     assert "wmdr2" not in props
     assert "themes" not in props
     assert "externalIds" not in props
-    assert props["observations"][0]["observedProperty"] == 12006
-    assert props["observations"][0]["observedGeometry"] == "point"
-    assert props["observations"][0]["domain"] == {"domainName": "atmosphere"}
-    assert "description" not in props["observations"][0]
-    assert props["deployments"][0]["referenceSurface"] == "localGround"
-    assert props["deployments"][0]["verticalDistanceFromReferenceSurface"] == [{"value": 2.0}]
-    assert props["deployments"][0]["temporalSerialNumber"] == [{"serialNumber": "SN1", "date": "2020-01-01"}]
+    assert props["deployments"]
+    assert observation["observedProperty"] == 12006
+    assert observation["observedGeometry"] == "point"
+    assert observation["observedFeature"] == {"domain": "atmosphere"}
+    assert "domain" not in observation
+    assert "description" not in observation
+    assert observation["referenceSurface"] == "localGround"
+    assert observation["verticalDistanceFromReferenceSurface"] == {"value": 2.0}
+    assert props["deployments"][0]["serialNumber"] == "SN1"
+    assert props["deployments"][0]["instrument"].startswith("instrument:")
+    assert deployment["date"] == "2020-01-01"
+    assert deployment["deployment"] == props["deployments"][0]["id"]
+    assert "serialNumber" not in deployment
+    assert "instrument" not in deployment
     assert props["instruments"][0]["verticalRange"] == {"min": 0.0, "max": 30.0}
 
-
-def test_reporting_arrays_preserve_policy_attribution_and_level_of_data() -> None:
+def test_reporting_is_reusable_and_history_keeps_date_reference_and_uom() -> None:
     record = module.build_facility_feature(
         _minimal_facility(),
         [_observation_with_deployment()],
@@ -195,21 +204,24 @@ def test_reporting_arrays_preserve_policy_attribution_and_level_of_data() -> Non
         {},
         source_name="20200101_0-TEST",
     )
-    reporting = record["properties"]["observations"][0]["reporting"]
-    assert reporting["internationalExchange"] == [True]
-    assert reporting["temporalAggregate"] == ["PT1H"]
-    assert reporting["temporalTimeliness"] == [
-        {"timeliness": "PT30M", "date": "2020-01-01"}
-    ]
-    assert reporting["uom"] == ["mm"]
-    assert reporting["levelOfData"] == ["level1"]
-    assert reporting["dataPolicy"] == [
-        {
-            "dataPolicy": "noLimitation",
-            "attribution": {"originator": {"role": None}},
-        }
-    ]
+    props = record["properties"]
+    reporting_defs = props["reporting"]
+    reporting_history = props["observations"][0]["historicalReporting"]
 
+    assert len(reporting_defs) == 1
+    reporting_id = reporting_defs[0]["id"]
+    assert reporting_id.startswith("reporting:")
+    assert reporting_defs[0] == {
+        "id": reporting_id,
+        "internationalExchange": True,
+        "temporalAggregate": "PT1H",
+        "timeliness": "PT30M",
+        "levelOfData": "level1",
+        "dataPolicy": {"dataPolicy": "noLimitation"},
+    }
+    assert reporting_history == [
+        {"date": "2020-01-01", "uom": "mm", "reporting": reporting_id}
+    ]
 
 def test_duplicate_temporal_observing_schedule_references_are_removed() -> None:
     record = module.build_facility_feature(
@@ -220,13 +232,10 @@ def test_duplicate_temporal_observing_schedule_references_are_removed() -> None:
         source_name="20200101_0-TEST",
     )
     schedules = record["properties"]["schedules"]
-    temporal_schedule = record["properties"]["deployments"][0]["temporalObservingSchedule"]
-    assert len(schedules) == 2
-    assert temporal_schedule == [
-        {"observingSchedule": schedules[0]["uid"], "date": "2020-01-01"},
-        {"observingSchedule": schedules[1]["uid"], "date": "2020-01-01"},
-    ]
-
+    schedule_refs = record["properties"]["observations"][0]["observingSchedules"]
+    assert schedules
+    assert len(schedule_refs) == len({tuple(sorted(ref.items())) for ref in schedule_refs})
+    assert all(ref["schedule"] in {schedule["uid"] for schedule in schedules} for ref in schedule_refs)
 
 def test_facility_environment_wraps_environmental_histories_as_arrays_of_objects() -> None:
     facility = _minimal_facility() | {
@@ -259,26 +268,18 @@ def test_facility_environment_wraps_environmental_histories_as_arrays_of_objects
         source_name="20200101_0-TEST",
     )
     props = record["properties"]
-    environment = props["environment"]
+    environment = props["historicalEnvironment"]
+    assert "environment" not in props
     assert "temporalClimateZone" not in props
     assert "temporalSurfaceCover" not in props
     assert "localTopography" not in props
-    assert environment["temporalClimateZone"] == [
-        {"climateZone": "Cfb", "date": "1980-01-01"}
-    ]
-    assert environment["temporalSurfaceCover"] == [
-        {"surfaceCover": "urbanBuiltup", "date": "1981-01-01"}
-    ]
-    assert environment["temporalPopulation"] == [
-        {"population": [100.0, None], "perimeter_km": [10.0, 50.0], "dates": ["1990-01-01", ".."]}
-    ]
-    assert environment["temporalSurfaceRoughness"] == [
-        {"surfaceRoughness": "rough", "date": "1991-01-01"}
-    ]
-    assert environment["topographyBathymetry"] == {"localTopography": "flat"}
-    assert "temporalPopulationDensities" not in environment
-    assert "temporalLocalTopography" not in environment
-    assert "temporalTopographyBathymetry" not in environment
+    assert {item["date"]: item for item in environment} == {
+        "1980-01-01": {"date": "1980-01-01", "climateZone": "Cfb"},
+        "1981-01-01": {"date": "1981-01-01", "surfaceCover": "urbanBuiltup"},
+        "1990-01-01": {"date": "1990-01-01", "population": [100.0, None], "perimeter_km": [10.0, 50.0]},
+        "1991-01-01": {"date": "1991-01-01", "surfaceRoughness": "rough"},
+        "..": {"date": "..", "topographyBathymetry": {"localTopography": "flat"}},
+    }
 
 # ---------------------------------------------------------------------------
 # Additional regression coverage restored for the drop-in package
@@ -711,15 +712,17 @@ def test_environment_uses_topography_bathymetry_object() -> None:
             }
         }
     )
-    assert environment == {
-        "topographyBathymetry": {
-            "localTopography": "flat",
-            "relativeElevation": "ridge",
-            "topographicContext": "valley",
-            "altitudeOrDepth": 123,
+    assert environment == [
+        {
+            "date": "..",
+            "topographyBathymetry": {
+                "localTopography": "flat",
+                "relativeElevation": "ridge",
+                "topographicContext": "valley",
+                "altitudeOrDepth": 123,
+            },
         }
-    }
-
+    ]
 
 def test_program_affiliation_values_accept_program_affiliation_href_and_string() -> None:
     assert module._program_affiliation_values({"programAffiliation": GAW_REGIONAL}) == ["GAWregional"]
@@ -961,10 +964,11 @@ def test_register_observing_schedule_refs_deduplicates_references_and_registry_e
     )
     assert refs is not None
     assert len(refs) == 1
-    assert list(registry) == [refs[0]["observingSchedule"]]
+    assert list(registry) == [refs[0]["schedule"]]
 
 
-def test_normalize_observation_reporting_aligns_reported_arrays_and_temporal_timeliness() -> None:
+def test_normalize_observation_reporting_registers_reusable_definitions() -> None:
+    registry: dict[str, dict[str, Any]] = {}
     reporting = module._normalize_observation_reporting(
         [
             {
@@ -986,21 +990,47 @@ def test_normalize_observation_reporting_aligns_reported_arrays_and_temporal_tim
                     "uom": None,
                 },
             },
-        ]
+        ],
+        reporting_registry=registry,
     )
-    assert reporting == {
-        "internationalExchange": [True, False],
-        "temporalAggregate": ["PT1H", "PT10M"],
-        "uom": ["http://codes.wmo.int/wmdr/unit/mm", None],
-        "temporalTimeliness": [{"timeliness": "PT30M", "date": "2020-01-01"}],
-    }
+    assert reporting is not None
+    assert len(registry) == 2
+    assert reporting[0]["date"] == "2020-01-01"
+    assert reporting[0]["uom"] == "mm"
+    assert reporting[0]["reporting"] in registry
+    assert registry[reporting[0]["reporting"]]["internationalExchange"] is True
+    assert registry[reporting[0]["reporting"]]["temporalAggregate"] == "PT1H"
+    assert registry[reporting[0]["reporting"]]["timeliness"] == "PT30M"
+    assert reporting[1]["date"] == "2021-01-01"
+    assert reporting[1]["reporting"] in registry
+    assert registry[reporting[1]["reporting"]]["internationalExchange"] is False
+    assert registry[reporting[1]["reporting"]]["temporalAggregate"] == "PT10M"
+
+
+def test_two_observations_can_reuse_the_same_reporting_definition() -> None:
+    obs1 = _observation_with_deployment()
+    obs2 = _observation_with_deployment() | {"observedProperty": OBSERVED_179}
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [obs1, obs2],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    props = record["properties"]
+    assert len(props["reporting"]) == 1
+    reporting_id = props["reporting"][0]["id"]
+    assert all(
+        observation["historicalReporting"][0]["reporting"] == reporting_id
+        for observation in props["observations"]
+    )
 
 
 def test_normalize_observation_links_to_embedded_deployments_by_id() -> None:
     observation = module._normalize_observation(_observation_with_deployment(), index=1, facility_id="0-TEST")
-    assert observation["deployments"] == ["deployment:dep1"]
+    assert "deployments" not in observation
+    assert observation["historicalDeployments"][0]["id"] == "historicalDeployment:dep1"
     assert observation["programAffiliations"] == ["GAWregional", "GBON"]
-
 
 def test_convert_payload_accepts_split_payload_shape() -> None:
     converted = module.convert_payload(
@@ -1184,8 +1214,6 @@ def test_main_runs_catalogue_post_processing_when_enabled(tmp_path: Path) -> Non
     )
 
     module.main(["--config", str(config)])
-    # Run twice to ensure integrated post-processing only uses the freshly
-    # written converter outputs and does not reprocess previous catalogue files.
     module.main(["--config", str(config)])
 
     embedded = json.loads((target / "record.json").read_text(encoding="utf-8"))
@@ -1213,8 +1241,9 @@ def test_main_runs_catalogue_post_processing_when_enabled(tmp_path: Path) -> Non
     assert [contact["identifier"] for contact in contacts] == ["contact:jane.smith@example.org"]
     assert contacts[0]["phones"] == [{"value": "+41 1 234 56 78"}]
     assert len(instruments) == 1
-    assert rewritten["properties"]["deployments"][0]["instrument"] == [instruments[0]["id"]]
-
+    historical_deployment = rewritten["properties"]["observations"][0]["historicalDeployments"][0]
+    assert rewritten["properties"]["deployments"][0]["instrument"] == instruments[0]["id"]
+    assert historical_deployment["deployment"] == rewritten["properties"]["deployments"][0]["id"]
 
 def test_catalogues_source_config_key_is_obsolete(tmp_path: Path) -> None:
     source = tmp_path / "wmdr10"
@@ -1245,8 +1274,8 @@ def test_observation_uses_observed_property_and_domain_object() -> None:
     assert observation["observedProperty"] == OBSERVED_12006
     assert "observedVariable" not in observation
     assert "observedDomain" not in observation
-    assert observation["domain"] == {"domainName": "atmosphere"}
-
+    assert observation["observedFeature"] == {"domain": "atmosphere"}
+    assert "domain" not in observation
 
 def test_domain_object_accepts_future_domain_feature_fields() -> None:
     observation = module._normalize_observation(
@@ -1260,54 +1289,49 @@ def test_domain_object_accepts_future_domain_feature_fields() -> None:
         index=1,
         facility_id="0-TEST",
     )
-    assert observation["domain"] == {
-        "domainName": "atmosphere",
+    assert observation["observedFeature"] == {
+        "domain": "atmosphere",
         "domainFeature": "near-surface-air",
         "featureName": "2 m air",
     }
 
-
 def test_deployment_vertical_distance_is_quantity_from_height_above_local_reference_surface() -> None:
-    deployment = module._normalize_deployment(
+    observation = module._normalize_observation(
         {
-            "id": "dep1",
-            "heightAboveLocalReferenceSurface": {"@uom": "m", "#text": "0.0"},
+            "observedProperty": OBSERVED_12006,
+            "deployments": [
+                {
+                    "id": "dep1",
+                    "heightAboveLocalReferenceSurface": {"@uom": "m", "#text": "0.0"},
+                }
+            ],
         },
         index=1,
         facility_id="0-TEST",
-        schedule_registry={},
     )
-    assert deployment["verticalDistanceFromReferenceSurface"] == [{"value": 0.0, "uom": "m"}]
-
+    assert observation["verticalDistanceFromReferenceSurface"] == {"value": 0.0, "uom": "m"}
 
 def test_deployment_official_status_defaults_to_unknown_when_absent_and_maps_booleans() -> None:
-    missing = module._normalize_deployment(
-        {"id": "dep1", "beginPosition": "2020-01-01"},
-        index=1,
-        facility_id="0-TEST",
-        schedule_registry={},
+    missing = module._normalize_historical_official_status(
+        {},
+        fallback_date="2020-01-01",
     )
-    assert missing["temporalOfficialStatus"] == [{"officialStatus": "unknown", "date": "2020-01-01"}]
+    assert missing is None
 
-    primary = module._normalize_deployment(
+    primary = module._normalize_historical_official_status(
         {"id": "dep1", "beginPosition": "2020-01-01", "officialStatus": True},
-        index=1,
-        facility_id="0-TEST",
-        schedule_registry={},
+        fallback_date="2020-01-01",
     )
-    assert primary["temporalOfficialStatus"] == [{"officialStatus": "primary", "date": "2020-01-01"}]
+    assert primary == [{"officialStatus": "primary", "date": "2020-01-01"}]
 
-    additional = module._normalize_deployment(
+    additional = module._normalize_historical_official_status(
         {"id": "dep1", "beginPosition": "2020-01-01", "officialStatus": False},
-        index=1,
-        facility_id="0-TEST",
-        schedule_registry={},
+        fallback_date="2020-01-01",
     )
-    assert additional["temporalOfficialStatus"] == [{"officialStatus": "additional", "date": "2020-01-01"}]
-
+    assert additional == [{"officialStatus": "additional", "date": "2020-01-01"}]
 
 def test_deployment_temporal_geometry_uses_same_moving_point_model_as_facility() -> None:
-    deployment = module._normalize_deployment(
+    deployments = module._normalize_deployment(
         {
             "id": "dep1",
             "geospatialLocation": {
@@ -1320,13 +1344,14 @@ def test_deployment_temporal_geometry_uses_same_moving_point_model_as_facility()
         facility_id="0-TEST",
         schedule_registry={},
     )
-    assert deployment["temporalGeometry"] == {
-        "type": "MovingPoint",
-        "coordinates": [[7.0, 46.0, 100]],
-        "dates": ["2021-01-01"],
-        "methods": [["gps"]],
-    }
-
+    assert deployments == [
+        {
+            "id": "historicalDeployment:dep1",
+            "date": "2021-01-01",
+            "deployment": "deployment:dep1",
+            "geometry": {"type": "Point", "coordinates": [7.0, 46.0, 100]},
+        }
+    ]
 
 def test_observation_accepts_legacy_observed_geometry_type_but_outputs_observed_geometry() -> None:
     record = module.build_facility_feature(

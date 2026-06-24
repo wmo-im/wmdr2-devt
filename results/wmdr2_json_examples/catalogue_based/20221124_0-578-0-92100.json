@@ -90,27 +90,45 @@
     ],
     "facilityType": "landOnIce",
     "wmoRegion": "antarctica",
-    "temporalTerritory": [
+    "historicalProgramAffiliation": [
       {
-        "territory": "NOR",
-        "date": "2007-01-01"
-      }
-    ],
-    "temporalProgramAffiliation": [
-      {
-        "programAffiliation": "GOSGeneral",
-        "reportingStatus": "operational",
-        "date": "2022-11-22"
+        "date": "2022-11-22",
+        "programAffiliation": [
+          "GOSGeneral"
+        ],
+        "reportingStatus": "operational"
       },
       {
-        "programAffiliation": "nonAffiliated",
-        "reportingStatus": "operational",
-        "date": "2022-11-22"
+        "date": "2022-11-22",
+        "programAffiliation": [
+          "nonAffiliated"
+        ],
+        "reportingStatus": "operational"
+      }
+    ],
+    "historicalTerritory": [
+      {
+        "date": "2007-01-01",
+        "territory": "NOR"
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_98af3b44-3633-4017-b16a-8dfb89707c55"
+      },
+      {
+        "id": "deployment:id_1c5901b1-da2a-46dd-9d48-6afb6a876cb4"
+      },
+      {
+        "id": "deployment:id_86c6bc2c-7e41-4c5e-b8db-7f6147d34c68"
+      },
+      {
+        "id": "deployment:id_1219f00c-7af8-432b-be2a-9a442a76e14a"
       }
     ],
     "observations": [
       {
-        "id": "observation:216",
+        "id": "observations:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
         "time": {
           "interval": [
@@ -120,19 +138,23 @@
         },
         "observedProperty": 216,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "nonAffiliated",
           "GOSGeneral"
         ],
-        "deployments": [
-          "deployment:id_98af3b44-3633-4017-b16a-8dfb89707c55"
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_98af3b44-3633-4017-b16a-8dfb89707c55",
+            "deployment": "deployment:id_98af3b44-3633-4017-b16a-8dfb89707c55",
+            "date": "2007-01-01"
+          }
         ]
       },
       {
-        "id": "observation:224",
+        "id": "observations:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
@@ -142,19 +164,23 @@
         },
         "observedProperty": 224,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "nonAffiliated",
           "GOSGeneral"
         ],
-        "deployments": [
-          "deployment:id_1c5901b1-da2a-46dd-9d48-6afb6a876cb4"
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_1c5901b1-da2a-46dd-9d48-6afb6a876cb4",
+            "deployment": "deployment:id_1c5901b1-da2a-46dd-9d48-6afb6a876cb4",
+            "date": "2007-01-01"
+          }
         ]
       },
       {
-        "id": "observation:12249",
+        "id": "observations:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
         "time": {
           "interval": [
@@ -164,19 +190,23 @@
         },
         "observedProperty": 12249,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "nonAffiliated",
           "GOSGeneral"
         ],
-        "deployments": [
-          "deployment:id_86c6bc2c-7e41-4c5e-b8db-7f6147d34c68"
+        "historicalDeployments": [
+          {
+            "id": "historicalDeployment:id_86c6bc2c-7e41-4c5e-b8db-7f6147d34c68",
+            "deployment": "deployment:id_86c6bc2c-7e41-4c5e-b8db-7f6147d34c68",
+            "date": "2022-11-22"
+          }
         ]
       },
       {
-        "id": "observation:12005",
+        "id": "observations:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
         "time": {
           "interval": [
@@ -186,79 +216,17 @@
         },
         "observedProperty": 12005,
         "observedGeometry": "point",
-        "domain": {
-          "domainName": "atmosphere"
+        "observedFeature": {
+          "domain": "atmosphere"
         },
         "programAffiliations": [
           "nonAffiliated",
           "GOSGeneral"
         ],
-        "deployments": [
-          "deployment:id_1219f00c-7af8-432b-be2a-9a442a76e14a"
-        ]
-      }
-    ],
-    "deployments": [
-      {
-        "id": "deployment:id_98af3b44-3633-4017-b16a-8dfb89707c55",
-        "time": {
-          "interval": [
-            "2007-01-01",
-            ".."
-          ]
-        },
-        "observingMethod": 111,
-        "temporalOfficialStatus": [
+        "historicalDeployments": [
           {
-            "officialStatus": "unknown",
-            "date": "2007-01-01"
-          }
-        ]
-      },
-      {
-        "id": "deployment:id_1c5901b1-da2a-46dd-9d48-6afb6a876cb4",
-        "time": {
-          "interval": [
-            "2007-01-01",
-            ".."
-          ]
-        },
-        "observingMethod": 188,
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2007-01-01"
-          }
-        ]
-      },
-      {
-        "id": "deployment:id_86c6bc2c-7e41-4c5e-b8db-7f6147d34c68",
-        "time": {
-          "interval": [
-            "2022-11-22",
-            ".."
-          ]
-        },
-        "observingMethod": 254,
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
-            "date": "2022-11-22"
-          }
-        ]
-      },
-      {
-        "id": "deployment:id_1219f00c-7af8-432b-be2a-9a442a76e14a",
-        "time": {
-          "interval": [
-            "2007-01-01",
-            ".."
-          ]
-        },
-        "observingMethod": 63,
-        "temporalOfficialStatus": [
-          {
-            "officialStatus": "unknown",
+            "id": "historicalDeployment:id_1219f00c-7af8-432b-be2a-9a442a76e14a",
+            "deployment": "deployment:id_1219f00c-7af8-432b-be2a-9a442a76e14a",
             "date": "2007-01-01"
           }
         ]

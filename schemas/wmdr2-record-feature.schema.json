@@ -1,15 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.wmo.int/wmdr/2.0/schemas/wmdr2-record-feature.schema.json",
-  "title": "WMDR2 core facility-centric record Feature",
-  "description": "Facility-centric WMDR2 core JSON representation using a GeoJSON/OGC Records Feature envelope.",
+  "$id": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-record-feature.schema.json",
+  "title": "WMDR2 facility-centric Feature",
   "type": "object",
   "required": [
     "type",
     "id",
-    "geometry",
-    "time",
-    "conformsTo",
     "properties"
   ],
   "additionalProperties": true,
@@ -22,24 +18,48 @@
       "pattern": "^facility:"
     },
     "geometry": {
-      "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry"
+      "anyOf": [
+        {
+          "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "temporalGeometry": {
+      "$ref": "wmdr2-common.schema.json#/$defs/temporalGeometry"
     },
     "time": {
-      "$ref": "wmdr2-common.schema.json#/$defs/nullableTimeInterval"
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "interval": {
+              "type": "array",
+              "items": {
+                "$ref": "wmdr2-common.schema.json#/$defs/dateOrOpen"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "required": [
+            "interval"
+          ],
+          "additionalProperties": true
+        },
+        {
+          "type": "null"
+        }
+      ]
     },
     "conformsTo": {
       "type": "array",
-      "description": "Conformance declaration for the WMDR2 core profile. The only allowed conformance class URI is the WMDR2 core conformance class identifier.",
       "minItems": 1,
       "maxItems": 1,
       "items": {
         "const": "http://wigos.wmo.int/spec/wmdr/2/conf/core"
-      }
-    },
-    "links": {
-      "type": "array",
-      "items": {
-        "$ref": "wmdr2-common.schema.json#/$defs/link"
       }
     },
     "properties": {
@@ -53,42 +73,28 @@
         {
           "not": {
             "required": [
-              "wmdr2"
+              "environment"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "themes"
+              "temporalProgramAffiliation"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "temporalContacts"
+              "temporalTerritory"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "dateEstablished"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "dateClosed"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalGeometry"
+              "temporalReportingStatus"
             ]
           }
         },
@@ -130,13 +136,6 @@
         {
           "not": {
             "required": [
-              "temporalPopulationDensities"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
               "temporalSurfaceRoughness"
             ]
           }
@@ -144,42 +143,7 @@
         {
           "not": {
             "required": [
-              "temporalLocalTopography"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalRelativeElevation"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalTopographicContext"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalAltitudeOrDepth"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalTopographyBathymetry"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalReportingStatus"
+              "temporalGeometry"
             ]
           }
         }
@@ -189,18 +153,16 @@
           "const": "facility"
         },
         "title": {
-          "type": "string",
-          "minLength": 1
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
         },
         "created": {
           "type": "string"
         },
         "updated": {
           "type": "string"
-        },
-        "description": {
-          "type": "string",
-          "description": "Non-formalized information about the observing facility or its surroundings that may influence observations."
         },
         "contacts": {
           "type": "array",
@@ -225,70 +187,48 @@
           "items": {
             "type": "string",
             "pattern": "^facilitySet:"
-          },
-          "description": "References to sets of associated observing facilities; association criteria may vary and may be programme- or network-specific."
+          }
         },
-        "facilityType": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue",
-          "description": "Type of the observing facility from the WMDR facility type code list."
+        "historicalProgramAffiliation": {
+          "$ref": "wmdr2-common.schema.json#/$defs/historicalProgramAffiliation"
         },
-        "wmoRegion": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue",
-          "description": "WMO region in which the observing facility is located."
+        "historicalTerritory": {
+          "$ref": "wmdr2-common.schema.json#/$defs/historicalTerritory"
         },
-        "surfaceCoverClassification": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue",
-          "description": "Reference to the surface-cover classification type, applicable when surface cover is specified."
+        "historicalEnvironment": {
+          "$ref": "wmdr2-common.schema.json#/$defs/historicalEnvironment"
         },
-        "timeZone": {
-          "description": "Time zone of the observing facility."
-        },
-        "regionOfOrigin": {
-          "$ref": "wmdr2-common.schema.json#/$defs/codeValue"
-        },
-        "temporalTerritory": {
-          "$ref": "wmdr2-common.schema.json#/$defs/temporalTerritory",
-          "description": "Territory history for the observing facility. Each entry is valid from its date until the next entry."
-        },
-        "environment": {
-          "$ref": "wmdr2-common.schema.json#/$defs/environment",
-          "description": "Environmental context and surroundings of the observing facility that may influence observations."
-        },
-        "temporalProgramAffiliation": {
-          "$ref": "wmdr2-common.schema.json#/$defs/temporalProgramAffiliation",
-          "description": "Program/network affiliations of the observing facility, including programme-specific identifiers, titles, and reporting status where available."
+        "schedules": {
+          "type": "array",
+          "items": {
+            "$ref": "wmdr2-common.schema.json#/$defs/schedule"
+          }
         },
         "observations": {
           "type": "array",
           "items": {
             "$ref": "wmdr2-common.schema.json#/$defs/observation"
-          },
-          "description": "Observations made by the facility."
-        },
-        "deployments": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/deployment"
-          },
-          "description": "Deployments describing which equipment is deployed, during which time period, and in which configuration, for generating observations."
+          }
         },
         "instruments": {
           "type": "array",
           "items": {
             "$ref": "wmdr2-common.schema.json#/$defs/instrument"
-          },
-          "description": "Equipment or instruments used to make observations."
+          }
         },
-        "schedules": {
+        "reporting": {
           "type": "array",
           "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/jscalendarEvent"
+            "$ref": "wmdr2-common.schema.json#/$defs/reporting"
+          }
+        },
+        "deployments": {
+          "type": "array",
+          "items": {
+            "$ref": "wmdr2-common.schema.json#/$defs/deployment"
           }
         }
       }
-    },
-    "temporalGeometry": {
-      "$ref": "wmdr2-common.schema.json#/$defs/temporalGeometry"
     }
   }
 }
