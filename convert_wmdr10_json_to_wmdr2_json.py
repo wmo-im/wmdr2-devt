@@ -1,19 +1,30 @@
 #!/usr/bin/env python3
 """Convert simplified WMDR 1.0 JSON records into facility-centric WMDR2 JSON.
 
-WMDR v0.2.2 implementation notes
+WMDR v0.2.4 implementation notes
 ---------------------------------
 
-* ``temporalGeometry`` remains the trajectory-style aligned-array object.
-* Ordinary history is represented as arrays of objects with singular ``date``.
-* ``historicalEnvironment`` is emitted directly under ``properties``.
+* The output is a facility-centric GeoJSON-like ``Feature``.
+* ``temporalGeometry`` remains the trajectory-style aligned-array ``MovingPoint``
+  object.
+* Other time-varying model elements use v0.2.4 class/property names and are
+  represented as arrays of dated objects, for example ``environment``,
+  ``programAffiliation``, ``territory``, ``deployments``, ``reporting`` and
+  ``officialStatus``.
+* ``properties.observationSeries`` contains observation-series records.  The
+  converter still accepts the legacy input key ``observations`` and maps it to
+  ``observationSeries`` output.
+* Reusable reporting definitions are emitted under ``properties.reporting``;
+  ``observationSeries[*].reporting`` contains dated ReportingProcedure references
+  plus observation-series-specific values such as ``uom`` and ``links``.
+* Reusable deployment / instrument-instance states are emitted under
+  ``properties.deployments``. ``observationSeries[*].deployments`` references
+  those deployment identifiers.
+* Reusable JSCalendar-like schedule objects are emitted under
+  ``properties.schedules``; observation series refer to them through
+  dated ``observingProcedures`` records. Each ObservingProcedure carries a
+  strategy and one or more ``observingSchedules`` schedule identifiers.
 * ``observedFeature`` uses ``domain``, ``domainFeature`` and ``featureName``.
-* ``historicalDeployments`` and ``historicalReporting`` are nested under each
-  observation because they are observation-specific dated states.
-* Reusable JSCalendar schedule objects are emitted under ``properties.schedules``;
-  observations refer to them through ``observingSchedules`` entries of the form
-  ``{"date": "YYYY-MM-DD", "schedule": "schedule_..."}``.
-* Root-level ``properties.deployments`` is no longer emitted.
 """
 
 from __future__ import annotations
@@ -682,14 +693,14 @@ def _detect_kind(path: Path, payload: Any) -> str:
     if stem.endswith("_header"):
         return "header"
     if stem.endswith("_observations"):
-        return "observations"
+        return "observationSeries"
     if stem.endswith("_deployments"):
         return "deployments"
     if isinstance(payload, dict):
-        if any(k in payload for k in ("facility", "observations", "deployments", "header")):
+        if any(k in payload for k in ("facility", "observationSeries", "deployments", "header")):
             return "full"
         if any(k in payload for k in ("observedVariable", "observedProperty", "resultTime")):
-            return "observations"
+            return "observationSeries"
         if any(k in payload for k in ("sourceOfObservation", "manufacturer", "serialNumber")):
             return "deployments"
         if any(k in payload for k in ("fileDateTime", "recordOwner")):
@@ -701,7 +712,7 @@ def _detect_kind(path: Path, payload: Any) -> str:
         if not first:
             return "unknown"
         if any(k in first for k in ("observedVariable", "observedProperty", "resultTime")):
-            return "observations"
+            return "observationSeries"
         if any(k in first for k in ("sourceOfObservation", "manufacturer", "serialNumber")):
             return "deployments"
     return "unknown"
@@ -906,7 +917,7 @@ def _parse_bool(value: Any) -> Optional[bool]:
 
 
 def _normalize_official_status(value: Any) -> Optional[str]:
-    """Normalize WMDR10 officialStatus to WMDR v0.2.2 observation status.
+    """Normalize WMDR10 officialStatus to WMDR v0.2.4 observation-series status.
 
     The WMDR10 XML uses a boolean officialStatus.  The agreed mapping is:
     true -> primary, false -> additional.  String values are compacted but not
@@ -1099,15 +1110,12 @@ def _normalize_historical_program_affiliation(value: Any, *, fallback_date: str)
 
     def add_record(item: Mapping[str, Any], reporting_status: Any = None, *, status_date: Any = None) -> None:
         record: Dict[str, Any] = {"date": _entry_date(item, fallback=fallback_date) if status_date is None else (_normalize_date_value(status_date) or fallback_date)}
-        program = _first_non_empty(item.get("programAffiliation"), item.get("programAffiliations"), item.get("program"), item.get("href"), item.get("value"))
+        program = _first_non_empty(item.get("programAffiliation"), item.get("programAffiliation"), item.get("program"), item.get("href"), item.get("value"))
         if _non_empty(program):
             record["programAffiliation"] = _compact_wmdr_code_value(program) if isinstance(program, str) else program
         program_id = _first_non_empty(item.get("programSpecificFacilityId"), item.get("programSpecificFacilityIds"))
         if _non_empty(program_id):
             record["programSpecificFacilityId"] = program_id
-        program_title = _first_non_empty(item.get("programSpecificFacilityTitle"), item.get("programSpecificFacilityTitles"))
-        if _non_empty(program_title):
-            record["programSpecificFacilityTitle"] = program_title
         status = reporting_status if reporting_status is not None else _first_non_empty(item.get("reportingStatus"), item.get("declaredReportingStatus"))
         if _non_empty(status):
             record["reportingStatus"] = _compact_wmdr_code_value(status) if isinstance(status, str) else status
@@ -1254,7 +1262,7 @@ def _normalize_historical_environment(facility: Mapping[str, Any], *, fallback_d
             add_history(source.get(name), "surfaceCover", ("surfaceCover", "value", "href"))
         for name in ("temporalSurfaceRoughness", "historicalSurfaceRoughness", "surfaceRoughness"):
             add_history(source.get(name), "surfaceRoughness", ("surfaceRoughness", "roughness", "value", "href"))
-        for name in ("historicalEnvironment",):
+        for name in ("environment",):
             for item in _as_list(source.get(name)):
                 if isinstance(item, dict):
                     date = _entry_date(item, fallback=fallback_date)
@@ -1273,11 +1281,10 @@ def _normalize_historical_environment(facility: Mapping[str, Any], *, fallback_d
 
 
 def _normalize_environment(facility: Mapping[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    """Compatibility helper returning the v0.2.2 historicalEnvironment array.
+    """Compatibility helper returning the v0.2.4 Environment array.
 
-    Older local tests called ``_normalize_environment`` and expected an
-    ``environment`` wrapper. The v0.2.2 model has no wrapper; the returned
-    value is meant to be assigned directly to ``properties.historicalEnvironment``.
+    Older local code may still call ``_normalize_environment`` directly.  The
+    returned value is meant to be assigned directly to ``properties.environment``.
     """
 
     start, _ = _extract_interval(facility)
@@ -1630,15 +1637,28 @@ def _jscalendar_observing_schedule(raw: Mapping[str, Any], *, time_zone: str = "
         "duration": interval or "P1D",
         "recurrenceRules": [rule],
     }
-    aggregation: Dict[str, Any] = {}
-    temporal_aggregate = _iso_duration(_first_non_empty(raw.get("temporalAggregate"), reporting.get("temporalAggregate"), reporting.get("temporalReportingInterval")))
-    if temporal_aggregate:
-        aggregation["temporalAggregate"] = temporal_aggregate
-    diurnal = _normalize_diurnal_time(raw.get("diurnalBaseTime"))
-    if diurnal:
-        aggregation["diurnalBaseTime"] = diurnal
-    if aggregation:
-        event_without_uid["wmo.int:aggregation"] = aggregation
+    sampling_frequency = _iso_duration(
+        _first_non_empty(
+            raw.get("temporalSamplingInterval"),
+            raw.get("samplingInterval"),
+            raw.get("sampleInterval"),
+            raw.get("interval"),
+        )
+    )
+    if sampling_frequency:
+        # The v0.2.4 XMI spells this extension property as ``wmi.int:samplingFrequency``.
+        event_without_uid["wmi.int:samplingFrequency"] = sampling_frequency
+
+    aggregation_interval = _iso_duration(
+        _first_non_empty(
+            raw.get("temporalAggregate"),
+            raw.get("temporalReportingInterval"),
+            reporting.get("temporalAggregate"),
+            reporting.get("temporalReportingInterval"),
+        )
+    )
+    if aggregation_interval:
+        event_without_uid["wmo.int:aggregationInterval"] = aggregation_interval
     event = dict(event_without_uid)
     event["uid"] = _schedule_uid_from_event(event_without_uid)
     return event
@@ -1660,6 +1680,48 @@ def _register_observing_schedule_refs(
             schedule_registry.setdefault(uid, event)
             refs.append({"date": _temporal_begin_date(candidate), "schedule": uid})
     return _uniq_dicts(_clean_none(refs)) or None
+
+
+
+def _observing_strategy_from_candidate(candidate: Mapping[str, Any]) -> Any:
+    sampling_value = candidate.get("sampling")
+    sampling: Mapping[str, Any] = sampling_value if isinstance(sampling_value, Mapping) else {}
+    return _normalize_code_value(
+        _first_non_empty(
+            candidate.get("strategy"),
+            candidate.get("observingStrategy"),
+            candidate.get("samplingStrategy"),
+            sampling.get("strategy"),
+            sampling.get("samplingStrategy"),
+            "unknown",
+        )
+    )
+
+
+def _normalize_observing_procedures(
+    groups: Sequence[Any],
+    *,
+    schedule_registry: Dict[str, Dict[str, Any]],
+    time_zone: str = "UTC",
+) -> Optional[List[Dict[str, Any]]]:
+    """Return v0.2.4 ObservingProcedure records for observation-series observing history."""
+
+    procedures: List[Dict[str, Any]] = []
+    for group in groups:
+        for candidate in _flatten_schedule_candidates(group):
+            event = _jscalendar_observing_schedule(candidate, time_zone=time_zone)
+            if not event:
+                continue
+            uid = str(event["uid"])
+            schedule_registry.setdefault(uid, event)
+            procedures.append(
+                {
+                    "date": _temporal_begin_date(candidate),
+                    "strategy": _observing_strategy_from_candidate(candidate),
+                    "observingSchedules": [uid],
+                }
+            )
+    return _uniq_dicts(_clean_none(procedures)) or None
 
 
 def _normalize_reporting_value(source_key: str, value: Any) -> Any:
@@ -1725,7 +1787,18 @@ def _reporting_parts(candidate: Mapping[str, Any]) -> Optional[Tuple[Dict[str, A
         if _non_empty(value) or isinstance(value, bool):
             definition[target_key] = _preserve_nulls(value)
 
-    historical: Dict[str, Any] = {"date": _temporal_begin_date(candidate)}
+    historical: Dict[str, Any] = {
+        "date": _temporal_begin_date(candidate),
+        "strategy": _normalize_code_value(
+            _first_non_empty(
+                reporting.get("strategy"),
+                reporting.get("reportingStrategy"),
+                candidate.get("reportingStrategy"),
+                candidate.get("strategy"),
+                "unknown",
+            )
+        ),
+    }
     if "uom" in reporting:
         uom = _normalize_reporting_value("uom", reporting.get("uom"))
         if _non_empty(uom) or uom is None:
@@ -1771,7 +1844,7 @@ def _normalize_observation_reporting(
     When a registry is supplied, reusable reporting definitions are registered
     there and the returned historical records contain references.  Without a
     registry, a local temporary registry is used so helper-level callers see the
-    same v0.2.3-style structure.
+    same v0.2.4-style structure.
     """
 
     registry = reporting_registry if reporting_registry is not None else {}
@@ -1834,7 +1907,7 @@ def _deployment_official_status_source(raw: Mapping[str, Any]) -> Any:
 def _normalize_historical_official_status(*sources: Mapping[str, Any], fallback_date: str = "..") -> Optional[List[Dict[str, Any]]]:
     records: List[Dict[str, Any]] = []
     for source in sources:
-        explicit = source.get("historicalOfficialStatus")
+        explicit = source.get("officialStatus")
         for item in _as_list(explicit):
             if isinstance(item, dict):
                 status = _normalize_official_status(_first_non_empty(item.get("officialStatus"), item.get("status"), item.get("value")))
@@ -1876,18 +1949,34 @@ def _normalize_deployment_record(
     instrument_ref = _scalar_reference(_instrument_ref_for_deployment(raw, facility_id=facility_id))
     serial_number = _first_serial_number(raw)
     deployment_id = _deployment_record_id(raw, index=index, facility_id=facility_id)
+    start, _ = _extract_interval(raw)
+    fallback_date = _normalize_date_value(start) or ".."
+    operating_status = None
+    for item in _normalize_operating_status(raw):
+        operating_status = item.get("operatingStatus")
+        break
+    geometry = None
+    geometry_date = None
+    for entry in _facility_temporal_geometry_entries(raw):
+        geometry = _point_geometry_from_entry(entry)
+        geometry_date = _normalize_date_value(entry.get("date"))
+        if geometry:
+            break
+    if fallback_date == ".." and geometry_date:
+        fallback_date = geometry_date
     record = _clean_none(
         {
             "id": deployment_id,
+            "date": fallback_date,
             "instrument": instrument_ref,
             "serialNumber": serial_number,
+            "operatingStatus": operating_status,
+            "exposure": raw.get("exposure"),
+            "geometry": geometry,
             "links": _extract_links(raw, "deployment"),
         }
     )
-    # Keep a deployment if it has at least one substantive instance property.
-    if any(key in record for key in ("instrument", "serialNumber", "links")):
-        return record
-    return {"id": deployment_id}
+    return record
 
 
 def _normalize_deployments(
@@ -1913,57 +2002,16 @@ def _normalize_deployment(
     facility_id: str,
     schedule_registry: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> List[Dict[str, Any]]:
-    """Normalize dated observation-to-deployment history entries.
+    """Normalize a v0.2.4 Deployment object.
 
-    ``historicalDeployment`` now references the reusable deployment record, in
-    the same way that ``historicalReporting`` references a reusable reporting
-    definition.
+    Kept as a private helper for tests and local tooling; normal feature assembly
+    stores these objects under ``properties.deployments`` and references them from
+    ``observationSeries[*].deployments``.
     """
 
     del schedule_registry
-    start, _ = _extract_interval(raw)
-    fallback_date = _normalize_date_value(start) or ".."
-    source_identifier = _deployment_source_identifier(raw, index=index, facility_id=facility_id)
-    deployment_id = _deployment_record_id(raw, index=index, facility_id=facility_id)
-    base: Dict[str, Any] = _clean_none(
-        {
-            "id": f"historicalDeployment:{source_identifier}",
-            "deployment": deployment_id,
-            "exposure": raw.get("exposure"),
-            "links": _extract_links(raw, "deployment"),
-        }
-    )
-    by_date: Dict[str, Dict[str, Any]] = {}
-
-    def add(date: Any, **values: Any) -> None:
-        normalized_date = _normalize_date_value(date) or fallback_date
-        record = by_date.setdefault(normalized_date, {"date": normalized_date})
-        for key, value in values.items():
-            if _non_empty(value) or isinstance(value, bool):
-                record[key] = value
-
-    has_state = False
-    for item in _normalize_operating_status(raw):
-        has_state = True
-        add(item.get("date"), operatingStatus=item.get("operatingStatus"))
-    for entry in _facility_temporal_geometry_entries(raw):
-        geometry = _point_geometry_from_entry(entry)
-        if geometry:
-            has_state = True
-            add(entry.get("date"), geometry=geometry)
-
-    # Always create at least one dated observation-to-deployment relation.
-    # Do not create a redundant fallback entry when all relevant state already
-    # has explicit dated records, but do anchor exposure/links if present.
-    if not has_state or any(key in base for key in ("exposure", "links")):
-        add(fallback_date)
-
-    out: List[Dict[str, Any]] = []
-    for date in sorted(by_date, key=lambda value: (value == "..", value)):
-        record = dict(base)
-        record.update(by_date[date])
-        out.append(_clean_none(record))
-    return _uniq_dicts(out)
+    record = _normalize_deployment_record(raw, index=index, facility_id=facility_id)
+    return [record] if record else []
 
 
 # ---------------------------------------------------------------------------
@@ -1972,7 +2020,7 @@ def _normalize_deployment(
 
 
 def _domain_object(raw: Mapping[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
-    """Return v0.2.2 observedFeature object.
+    """Return the v0.2.4 observedFeature object.
 
     The output key is ``domain``.  ``domainName`` is accepted only as legacy
     input from earlier intermediate JSON, never emitted.
@@ -2044,10 +2092,10 @@ def _deployment_identity(raw: Mapping[str, Any]) -> str:
     return str(_first_non_empty(raw.get("identifier"), raw.get("id"), raw.get("@gml:id"), raw.get("@id"), raw.get("uuid"), raw.get("serialNumber"), id(raw)))
 
 
-def _flatten_deployments_from_observations(observations: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+def _flatten_deployments_from_observations(observationSeries: Sequence[Mapping[str, Any]]) -> List[Dict[str, Any]]:
     deployments: List[Dict[str, Any]] = []
     seen: set[str] = set()
-    for obs in observations:
+    for obs in observationSeries:
         for dep in _as_list(obs.get("deployments")):
             if not isinstance(dep, dict):
                 continue
@@ -2121,32 +2169,34 @@ def _normalize_observation(
     for dep in deployment_sources:
         observing_schedule_sources.extend([dep.get("dataGeneration"), dep.get("coverage"), dep.get("sampling"), dep.get("observingSchedule")])
 
-    historical_deployments: List[Dict[str, Any]] = []
+    deployment_refs: List[str] = []
     for dep_index, dep in enumerate(deployment_sources, start=1):
-        historical_deployments.extend(_normalize_deployment(dep, index=dep_index, facility_id=facility_id))
+        dep_id = _deployment_record_id(dep, index=dep_index, facility_id=facility_id)
+        if dep_id not in deployment_refs:
+            deployment_refs.append(dep_id)
 
     reference_surface = _first_non_empty(raw.get("referenceSurface"), raw.get("localReferenceSurface"), _first_from_dicts(deployment_sources, "referenceSurface", "localReferenceSurface"))
     fallback_date = _entry_date(raw)
     official_sources: List[Mapping[str, Any]] = [raw, *deployment_sources]
 
     payload: Dict[str, Any] = {
-        "id": f"observations:{source_id}",
+        "id": f"observationSeries:{source_id}",
         "title": title,
         "time": _derive_observation_time(raw, deployment_sources),
         "applicationArea": raw.get("applicationArea"),
         "observedProperty": observed_property,
         "observedGeometry": observed_geometry,
         "observedFeature": _domain_object(raw, observed_property),
-        "programAffiliations": _normalize_program_affiliations(raw.get("programAffiliation")),
+        "programAffiliation": _normalize_program_affiliations(raw.get("programAffiliation")),
         "contacts": contacts,
         "sourceOfObservation": _first_non_empty(raw.get("sourceOfObservation"), _first_from_dicts(deployment_sources, "sourceOfObservation")),
         "referenceSurface": reference_surface,
         "representativeness": _first_non_empty(raw.get("representativeness"), _first_from_dicts(deployment_sources, "representativeness")),
         "verticalDistanceFromReferenceSurface": _first_vertical_distance_from_sources(raw, deployment_sources),
-        "historicalOfficialStatus": _normalize_historical_official_status(*official_sources, fallback_date=fallback_date),
-        "observingSchedules": _register_observing_schedule_refs(observing_schedule_sources, schedule_registry=schedule_registry, time_zone=time_zone),
-        "historicalDeployments": historical_deployments,
-        "historicalReporting": _preserve_nulls(_normalize_observation_reporting(*reporting_sources, reporting_registry=reporting_registry)),
+        "officialStatus": _normalize_historical_official_status(*official_sources, fallback_date=fallback_date),
+        "observingProcedures": _normalize_observing_procedures(observing_schedule_sources, schedule_registry=schedule_registry, time_zone=time_zone),
+        "deployments": deployment_refs,
+        "reporting": _preserve_nulls(_normalize_observation_reporting(*reporting_sources, reporting_registry=reporting_registry)),
         "keywords": _keywords_from_values(_collect_discovery_values("observation", raw, "keywords")),
         "links": _extract_links(raw, "observation"),
     }
@@ -2178,14 +2228,14 @@ def _facility_title(facility: Mapping[str, Any]) -> str:
     return str(_first_non_empty(facility.get("name"), facility.get("title"), facility.get("identifier"), "facility"))
 
 
-def _facility_time(facility: Mapping[str, Any], observations: Sequence[Mapping[str, Any]], deployments: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
-    del observations, deployments
+def _facility_time(facility: Mapping[str, Any], observationSeries: Sequence[Mapping[str, Any]], deployments: Sequence[Mapping[str, Any]]) -> Dict[str, Any]:
+    del observationSeries, deployments
     return _time_interval(facility.get("dateEstablished"), facility.get("dateClosed")) or {"interval": ["..", ".."]}
 
 
 def _facility_properties(
     facility: Mapping[str, Any],
-    observations: Sequence[Mapping[str, Any]],
+    observationSeries: Sequence[Mapping[str, Any]],
     deployments: Sequence[Mapping[str, Any]],
     header: Optional[Mapping[str, Any]] = None,
     source_name: Optional[str] = None,
@@ -2200,20 +2250,20 @@ def _facility_properties(
     facility_start, _ = _extract_interval(facility)
     fallback_date = _normalize_date_value(facility_start) or ".."
 
-    raw_observations: List[Mapping[str, Any]] = [obs for obs in observations if isinstance(obs, dict)]
+    raw_observationSeries: List[Mapping[str, Any]] = [obs for obs in observationSeries if isinstance(obs, dict)]
     all_deployments: List[Mapping[str, Any]] = [dep for dep in deployments if isinstance(dep, dict)]
-    all_deployments.extend(_flatten_deployments_from_observations(raw_observations))
+    all_deployments.extend(_flatten_deployments_from_observations(raw_observationSeries))
     normalized_instruments = _normalize_instruments(all_deployments, facility_id=facility_id)
     normalized_deployments = _normalize_deployments(all_deployments, facility_id=facility_id)
 
-    normalized_observations: List[Dict[str, Any]] = []
-    for index, obs in enumerate(raw_observations, start=1):
+    normalized_observationSeries: List[Dict[str, Any]] = []
+    for index, obs in enumerate(raw_observationSeries, start=1):
         deployment_sources = _observation_deployment_sources(
             obs,
             all_deployments=all_deployments,
-            all_observations_count=len(raw_observations),
+            all_observations_count=len(raw_observationSeries),
         )
-        normalized_observations.append(
+        normalized_observationSeries.append(
             _normalize_observation(
                 obs,
                 index=index,
@@ -2225,12 +2275,11 @@ def _facility_properties(
             )
         )
 
-    # If there are top-level deployments but no observations, still harvest reusable
-    # schedules and instruments.  Deployment records themselves are not emitted at
-    # root level in v0.2.2.
-    if not raw_observations:
+    # If there are top-level deployments but no observation series, still harvest
+    # reusable schedules, reporting definitions, instruments and deployment records.
+    if not raw_observationSeries:
         for dep in all_deployments:
-            _register_observing_schedule_refs(
+            _normalize_observing_procedures(
                 [dep.get("dataGeneration"), dep.get("coverage"), dep.get("sampling"), dep.get("observingSchedule")],
                 schedule_registry=schedule_registry,
                 time_zone=facility_time_zone,
@@ -2255,13 +2304,13 @@ def _facility_properties(
         "keywords": keywords,
         "links": _extract_links(facility, "facility"),
         **copied,
-        "historicalProgramAffiliation": historical_program_affiliation,
-        "historicalTerritory": historical_territory,
-        "historicalEnvironment": historical_environment,
+        "programAffiliation": historical_program_affiliation,
+        "territory": historical_territory,
+        "environment": historical_environment,
         "schedules": list(schedule_registry.values()),
         "reporting": list(reporting_registry.values()),
         "deployments": normalized_deployments,
-        "observations": normalized_observations,
+        "observationSeries": normalized_observationSeries,
         "instruments": normalized_instruments,
     }
     return _clean_none(props)
@@ -2269,12 +2318,12 @@ def _facility_properties(
 
 def build_facility_feature(
     facility: Mapping[str, Any],
-    observations: Optional[Sequence[Mapping[str, Any]]] = None,
+    observationSeries: Optional[Sequence[Mapping[str, Any]]] = None,
     deployments: Optional[Sequence[Mapping[str, Any]]] = None,
     header: Optional[Mapping[str, Any]] = None,
     source_name: Optional[str] = None,
 ) -> Dict[str, Any]:
-    observations = observations or []
+    observations = observationSeries or []
     deployments = deployments or []
     header = header or {}
     facility_id = _facility_identifier(facility, header)
@@ -2292,10 +2341,10 @@ def build_facility_feature(
 
 
 def convert_payload(payload: Any, *, source_name: str = "record") -> Dict[str, Any]:
-    if isinstance(payload, dict) and any(k in payload for k in ("facility", "observations", "deployments", "header")):
+    if isinstance(payload, dict) and any(k in payload for k in ("facility", "observationSeries", "observations", "deployments", "header")):
         header = _as_dict(payload.get("header"))
         facility = _as_dict(payload.get("facility"))
-        observations = [item for item in _as_list(payload.get("observations")) if isinstance(item, dict)]
+        observations = [item for item in _as_list(_first_non_empty(payload.get("observationSeries"), payload.get("observations"))) if isinstance(item, dict)]
         deployments = [item for item in _as_list(payload.get("deployments")) if isinstance(item, dict)]
         if not facility:
             facility = {"identifier": source_name, "name": source_name}
@@ -2308,7 +2357,7 @@ def convert_payload(payload: Any, *, source_name: str = "record") -> Dict[str, A
 def convert_group(parts: Mapping[str, Any], *, source_name: str) -> Dict[str, Any]:
     header = _as_dict(parts.get("header"))
     facility = _as_dict(parts.get("facility"))
-    observations = [item for item in _as_list(parts.get("observations")) if isinstance(item, dict)]
+    observations = [item for item in _as_list(_first_non_empty(parts.get("observationSeries"), parts.get("observations"))) if isinstance(item, dict)]
     deployments = [item for item in _as_list(parts.get("deployments")) if isinstance(item, dict)]
     if not facility:
         facility = {"identifier": source_name, "name": source_name}
@@ -2416,7 +2465,7 @@ def convert_tree(
     for path in files:
         payload = _load_json(path)
         kind = _detect_kind(path, payload)
-        if kind in {"header", "facility", "observations", "deployments"} and path.stem.lower().endswith(("_header", "_facility", "_observations", "_deployments")):
+        if kind in {"header", "facility", "observationSeries", "deployments"} and path.stem.lower().endswith(("_header", "_facility", "_observations", "_deployments")):
             groups.setdefault(_part_group_key(path), {})[kind] = payload
         else:
             full_files.append(path)

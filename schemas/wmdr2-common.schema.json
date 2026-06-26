@@ -358,7 +358,7 @@
         }
       }
     },
-    "historicalReportingEntry": {
+    "reportingEntry": {
       "type": "object",
       "required": [
         "date"
@@ -472,13 +472,73 @@
         }
       }
     },
-    "historicalReporting": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/historicalReportingEntry"
-      }
+    "reporting": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^reporting:"
+        },
+        "contact": {},
+        "dataFormat": {},
+        "dataPolicy": {},
+        "internationalExchange": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "levelOfData": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "temporalReportingInterval": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "temporalAggregate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "aggregation": {},
+        "referenceDatum": {},
+        "referenceTimeSource": {},
+        "timeliness": {},
+        "timeStampMeaning": {},
+        "numberOfObservationsInReportingInterval": {}
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "date"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "uom"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "links"
+            ]
+          }
+        }
+      ]
     },
-    "historicalOfficialStatus": {
+    "officialStatus": {
       "type": "array",
       "items": {
         "type": "object",
@@ -548,78 +608,46 @@
           "items": {
             "type": "object"
           }
+        },
+        "wmi.int:samplingFrequency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "wmo.int:aggregationInterval": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
-      }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "wmo.int:aggregation"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "diurnalBaseTime"
+            ]
+          }
+        }
+      ]
     },
-    "historicalEnvironment": {
+    "environment": {
       "type": "array",
+      "description": "Environmental context of the facility as dated Environment objects.",
       "items": {
         "type": "object",
         "required": [
           "date"
         ],
         "additionalProperties": true,
-        "allOf": [
-          {
-            "$ref": "#/$defs/historicalObjectBase"
-          },
-          {
-            "not": {
-              "required": [
-                "temporalPopulationDensities"
-              ]
-            }
-          },
-          {
-            "not": {
-              "required": [
-                "temporalLocalTopography"
-              ]
-            }
-          },
-          {
-            "not": {
-              "required": [
-                "temporalRelativeElevation"
-              ]
-            }
-          },
-          {
-            "not": {
-              "required": [
-                "temporalTopographicContext"
-              ]
-            }
-          },
-          {
-            "not": {
-              "required": [
-                "temporalAltitudeOrDepth"
-              ]
-            }
-          },
-          {
-            "not": {
-              "required": [
-                "temporalTopographyBathymetry"
-              ]
-            }
-          },
-          {
-            "not": {
-              "required": [
-                "temporalPopulation"
-              ]
-            }
-          },
-          {
-            "not": {
-              "required": [
-                "topographyBathymetryTimeline"
-              ]
-            }
-          }
-        ],
         "properties": {
           "date": {
             "$ref": "#/$defs/dateOrOpen"
@@ -636,9 +664,6 @@
               ]
             }
           },
-          "surfaceCover": {},
-          "surfaceRoughness": {},
-          "topographyBathymetry": {},
           "perimeter_km": {
             "type": "array",
             "minItems": 2,
@@ -649,12 +674,44 @@
                 "null"
               ]
             }
+          },
+          "surfaceCover": {},
+          "surfaceRoughness": {},
+          "topographyBathymetry": {}
+        },
+        "allOf": [
+          {
+            "not": {
+              "required": [
+                "temporalPopulation"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "topographyBathymetryTimeline"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "temporalPopulationDensities"
+              ]
+            }
+          },
+          {
+            "not": {
+              "required": [
+                "temporalTopographyBathymetry"
+              ]
+            }
           }
-        }
-      },
-      "description": "Environmental context of the facility as dated historical state objects."
+        ]
+      }
     },
-    "historicalProgramAffiliation": {
+    "programAffiliation": {
       "type": "array",
       "items": {
         "type": "object",
@@ -693,7 +750,7 @@
         }
       }
     },
-    "historicalTerritory": {
+    "territory": {
       "type": "array",
       "items": {
         "type": "object",
@@ -781,89 +838,10 @@
         "id"
       ],
       "additionalProperties": true,
-      "allOf": [
-        {
-          "not": {
-            "required": [
-              "deployments"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "reporting"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "domain"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "domainName"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "observedDomain"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalDataPolicy"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "programAffiliation"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "observedVariable"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "localReferenceSurface"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "observedGeometryType"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "description"
-            ]
-          }
-        }
-      ],
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^observations?:"
+          "pattern": "^observationSeries:"
         },
         "title": {
           "type": "string"
@@ -903,23 +881,21 @@
         "verticalDistanceFromReferenceSurface": {
           "$ref": "#/$defs/quantity"
         },
-        "historicalOfficialStatus": {
-          "$ref": "#/$defs/historicalOfficialStatus"
+        "officialStatus": {
+          "$ref": "#/$defs/officialStatus"
         },
-        "observingSchedules": {
+        "deployments": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/scheduleReference"
+            "type": "string",
+            "pattern": "^deployment:"
           }
         },
-        "historicalDeployments": {
+        "reporting": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/historicalDeployment"
+            "$ref": "#/$defs/reportingProcedure"
           }
-        },
-        "historicalReporting": {
-          "$ref": "#/$defs/historicalReporting"
         },
         "keywords": {
           "type": "array",
@@ -933,100 +909,108 @@
             "$ref": "#/$defs/link"
           }
         },
-        "programAffiliations": {
+        "programAffiliation": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/codeValue"
           }
-        }
-      }
-    },
-    "environment": {
-      "type": "object",
-      "deprecated": true,
-      "additionalProperties": false,
-      "description": "Deprecated pre-v0.2.2 wrapper. Kept only for transition tests; use properties.historicalEnvironment instead.",
-      "properties": {
-        "temporalPopulation": {
+        },
+        "observingProcedures": {
           "type": "array",
           "items": {
-            "type": "object",
-            "additionalProperties": true
+            "$ref": "#/$defs/observingProcedure"
           }
-        },
-        "topographyBathymetry": {
-          "type": "object",
-          "additionalProperties": true
         }
-      }
-    },
-    "reporting": {
-      "type": "object",
-      "required": [
-        "id"
-      ],
-      "additionalProperties": true,
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^reporting:"
-        },
-        "internationalExchange": {
-          "type": [
-            "boolean",
-            "null"
-          ]
-        },
-        "temporalReportingInterval": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "temporalAggregate": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "aggregation": {},
-        "dataFormat": {},
-        "dataPolicy": {},
-        "levelOfData": {
-          "$ref": "#/$defs/codeValue"
-        },
-        "numberOfObservationsInReportingInterval": {
-          "type": [
-            "integer",
-            "number",
-            "string",
-            "null"
-          ]
-        },
-        "referenceDatum": {},
-        "referenceTimeSource": {},
-        "timeliness": {},
-        "timeStampMeaning": {}
       },
       "allOf": [
         {
           "not": {
             "required": [
-              "date"
+              "historicalDeployments"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "uom"
+              "historicalReporting"
             ]
           }
         },
         {
           "not": {
             "required": [
-              "links"
+              "historicalOfficialStatus"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "domain"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "domainName"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observedDomain"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "programAffiliations"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observedVariable"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "localReferenceSurface"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observedGeometryType"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "description"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observingSchedules"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "historicalObservingProcedure"
             ]
           }
         }
@@ -1035,10 +1019,50 @@
     "deployment": {
       "type": "object",
       "required": [
-        "id"
+        "id",
+        "date"
       ],
       "additionalProperties": true,
-      "description": "Reusable deployment / instrument-instance definition. Dated observation-specific deployment state is represented by historicalDeployment objects.",
+      "description": "Dated Deployment object. It represents a deployed instrument instance/state and can be referenced by one or more ObservationSeries.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^deployment:"
+        },
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
+        },
+        "instrument": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^instrument:"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "serialNumber": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operatingStatus": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "exposure": {},
+        "geometry": {
+          "$ref": "#/$defs/pointGeometry"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        }
+      },
       "allOf": [
         {
           "not": {
@@ -1057,20 +1081,6 @@
         {
           "not": {
             "required": [
-              "temporalInstrumentOperatingStatus"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalObservingSchedule"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
               "temporalGeometry"
             ]
           }
@@ -1078,53 +1088,329 @@
         {
           "not": {
             "required": [
-              "officialStatus"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "operatingStatus"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "geometry"
+              "serialNumbers"
             ]
           }
         }
+      ]
+    },
+    "datedObjectBase": {
+      "type": "object",
+      "required": [
+        "date"
       ],
       "properties": {
-        "id": {
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
+        }
+      },
+      "additionalProperties": true
+    },
+    "reportingProcedure": {
+      "type": "object",
+      "required": [
+        "date",
+        "strategy",
+        "reporting"
+      ],
+      "additionalProperties": true,
+      "description": "Dated ReportingProcedure object linking an ObservationSeries to a reusable reporting definition.",
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
+        },
+        "reporting": {
           "type": "string",
-          "pattern": "^deployment:"
+          "pattern": "^reporting:"
         },
-        "instrument": {
-          "anyOf": [
-            {
-              "type": "string",
-              "pattern": "^instrument:"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Reference to the reusable instrument record for this deployed instrument instance."
-        },
-        "serialNumber": {
-          "type": [
-            "string",
-            "null"
-          ]
+        "strategy": {
+          "$ref": "#/$defs/codeValue"
         },
         "links": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/link"
           }
+        },
+        "uom": {
+          "$ref": "#/$defs/codeValue"
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "internationalExchange"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "temporalAggregate"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "dataPolicy"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "levelOfData"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "timeliness"
+            ]
+          }
+        }
+      ]
+    },
+    "observationSeries": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^observationSeries:"
+        },
+        "title": {
+          "type": "string"
+        },
+        "time": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "applicationArea": {
+          "type": [
+            "array",
+            "string",
+            "object",
+            "null"
+          ]
+        },
+        "observedProperty": {},
+        "observedGeometry": {},
+        "observedFeature": {
+          "$ref": "#/$defs/observedFeature"
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact"
+          }
+        },
+        "sourceOfObservation": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "referenceSurface": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "representativeness": {},
+        "verticalDistanceFromReferenceSurface": {
+          "$ref": "#/$defs/quantity"
+        },
+        "officialStatus": {
+          "$ref": "#/$defs/officialStatus"
+        },
+        "deployments": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^deployment:"
+          }
+        },
+        "reporting": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reportingProcedure"
+          }
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "programAffiliation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "observingProcedures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observingProcedure"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "historicalDeployments"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "historicalReporting"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "historicalOfficialStatus"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "domain"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "domainName"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observedDomain"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "programAffiliations"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observedVariable"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "localReferenceSurface"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observedGeometryType"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "description"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observingSchedules"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "historicalObservingProcedure"
+            ]
+          }
+        }
+      ]
+    },
+    "observingProcedure": {
+      "type": "object",
+      "required": [
+        "date",
+        "strategy",
+        "observingSchedules"
+      ],
+      "additionalProperties": true,
+      "description": "Dated ObservingProcedure object linking an ObservationSeries to one or more reusable observing schedules.",
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
+        },
+        "strategy": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "observingSchedules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^schedule_"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "observingSchedule"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "schedule"
+            ]
+          }
+        }
+      ]
+    },
+    "procedure": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": true,
+      "description": "Reusable Procedure definition referenced by observation series where the source provides a stable observing procedure concept.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^procedure:"
         }
       }
     }

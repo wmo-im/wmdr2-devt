@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-24T13:49:06.889922+00:00",
+  "generatedAt": "2026-06-26T11:59:30.492755+00:00",
   "description": "Semantic XML leaf values not found in the generated WMDR2 JSON, after applying intentional-loss and code-list-compaction rules.",
   "notes": [
     "This is a coverage heuristic: it checks whether XML leaf values survive somewhere in the WMDR2 JSON.",
@@ -8,16 +8,16 @@
     "Date-times are matched against date-resolution WMDR2 values, e.g. 2025-05-28T00:00:00Z -> 2025-05-28."
   ],
   "summary": {
-    "xml_files": 17,
-    "xml_entries": 6306,
-    "matched_entries": 4026,
-    "lost_entries": 2013,
-    "ignored_entries": 267
+    "xml_files": 19,
+    "xml_entries": 7076,
+    "matched_entries": 4504,
+    "lost_entries": 2268,
+    "ignored_entries": 304
   },
   "files": [
     {
       "xml": "resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
       "summary": {
         "xmlEntries": 348,
         "matched": 202,
@@ -1222,7 +1222,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20201007_0-156-10000-51056.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20201007_0-156-10000-51056.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20201007_0-156-10000-51056.json",
       "summary": {
         "xmlEntries": 151,
         "matched": 84,
@@ -1777,7 +1777,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
       "summary": {
         "xmlEntries": 187,
         "matched": 122,
@@ -2282,7 +2282,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20221124_0-578-0-92100.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20221124_0-578-0-92100.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20221124_0-578-0-92100.json",
       "summary": {
         "xmlEntries": 70,
         "matched": 55,
@@ -2384,7 +2384,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20230331_0-250-1005-SARg.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20230331_0-250-1005-SARg.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20230331_0-250-1005-SARg.json",
       "summary": {
         "xmlEntries": 52,
         "matched": 36,
@@ -2518,7 +2518,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20240806_0-840-11502-KominkoSlade.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20240806_0-840-11502-KominkoSlade.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20240806_0-840-11502-KominkoSlade.json",
       "summary": {
         "xmlEntries": 225,
         "matched": 145,
@@ -3202,11 +3202,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
       "summary": {
         "xmlEntries": 217,
-        "matched": 164,
-        "lost": 42,
+        "matched": 165,
+        "lost": 41,
         "ignored": 11
       },
       "lost": [
@@ -3541,16 +3541,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/processing/Processing/aggregationPeriod/text()",
           "kind": "text",
           "value": "PT1M",
@@ -3612,7 +3602,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250314_0-404-800-4AA01.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20250314_0-404-800-4AA01.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250314_0-404-800-4AA01.json",
       "summary": {
         "xmlEntries": 57,
         "matched": 41,
@@ -3747,7 +3737,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
       "summary": {
         "xmlEntries": 422,
         "matched": 303,
@@ -3859,6 +3849,16 @@
             "Nairobi Dagoretti Corner",
             "http://codes.wmo.int/wmdr/Nairobi Dagoretti Corner",
             "nairobi dagoretti corner"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/programAffiliation[3]/ProgramAffiliation/reportingStatus[2]/ReportingStatus/validPeriod/TimePeriod/endPosition/text()",
+          "kind": "text",
+          "value": "2010-06-10T00:00:00Z",
+          "candidateValues": [
+            "2010-06-10",
+            "2010-06-10T00:00:00Z"
           ]
         },
         {
@@ -4476,6 +4476,16 @@
           ]
         },
         {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2010-06-10T00:00:00Z",
+          "candidateValues": [
+            "2010-06-10",
+            "2010-06-10T00:00:00Z"
+          ]
+        },
+        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL/text()",
           "kind": "text",
@@ -4552,16 +4562,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/processing/Processing/aggregationPeriod/text()",
           "kind": "text",
           "value": "PT1M",
@@ -4633,16 +4633,6 @@
           ]
         },
         {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
           "kind": "text",
@@ -4674,7 +4664,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250529_0-410-0-22184.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20250529_0-410-0-22184.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250529_0-410-0-22184.json",
       "summary": {
         "xmlEntries": 61,
         "matched": 56,
@@ -4727,11 +4717,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20250728_0-756-1-387493.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250728_0-756-1-387493.json",
       "summary": {
         "xmlEntries": 1086,
-        "matched": 685,
-        "lost": 361,
+        "matched": 672,
+        "lost": 374,
         "ignored": 40
       },
       "lost": [
@@ -5071,6 +5061,16 @@
         },
         {
           "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/facilityLog/FacilityLog/logEntry[7]/EventReport/datetime/text()",
+          "kind": "text",
+          "value": "2019-08-08T00:00:00Z",
+          "candidateValues": [
+            "2019-08-08",
+            "2019-08-08T00:00:00Z"
+          ]
+        },
+        {
+          "section": "facility",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/facilityLog/FacilityLog/logEntry[7]/EventReport/author/text()",
           "kind": "text",
           "value": "C. Fierz, 2020-08-05",
@@ -5096,6 +5096,16 @@
             "http://codes.wmo.int/wmdr/EventAtFacility/infrastructureWorks",
             "infrastructureWorks",
             "infrastructureworks"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/facilityLog/FacilityLog/logEntry[7]/EventReport/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2019-08-08T00:00:00Z",
+          "candidateValues": [
+            "2019-08-08",
+            "2019-08-08T00:00:00Z"
           ]
         },
         {
@@ -5183,6 +5193,16 @@
           "value": "46.85172 9.80485 2295.0",
           "candidateValues": [
             "46.85172 9.80485 2295.0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation[1]/GeospatialLocation/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "1997-11-18T00:00:00Z",
+          "candidateValues": [
+            "1997-11-18",
+            "1997-11-18T00:00:00Z"
           ]
         },
         {
@@ -5428,12 +5448,52 @@
         },
         {
           "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/instrumentOperatingStatus/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+            "inactive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2018-10-20T00:00:00Z",
+          "candidateValues": [
+            "2018-10-20",
+            "2018-10-20T00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[3]/InstrumentOperatingStatus/validPeriod/TimePeriod/endPosition/text()",
           "kind": "text",
           "value": "2019-08-07T00:00:00Z",
           "candidateValues": [
             "2019-08-07",
             "2019-08-07T00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[4]/InstrumentOperatingStatus/instrumentOperatingStatus/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+            "inactive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[4]/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2019-08-08T00:00:00Z",
+          "candidateValues": [
+            "2019-08-08",
+            "2019-08-08T00:00:00Z"
           ]
         },
         {
@@ -5563,6 +5623,16 @@
           "value": "46.75271 9.94644 2400.0",
           "candidateValues": [
             "46.75271 9.94644 2400.0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation[1]/GeospatialLocation/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "1903-01-01T00:00:00Z",
+          "candidateValues": [
+            "1903-01-01",
+            "1903-01-01T00:00:00Z"
           ]
         },
         {
@@ -5733,6 +5803,26 @@
         },
         {
           "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/instrumentOperatingStatus/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+            "inactive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2019-08-08T00:00:00Z",
+          "candidateValues": [
+            "2019-08-08",
+            "2019-08-08T00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/endPosition/text()",
           "kind": "text",
           "value": "2019-09-17T00:00:00Z",
@@ -5871,6 +5961,26 @@
           "candidateValues": [
             "2019-08-07",
             "2019-08-07T00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/instrumentOperatingStatus/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+            "inactive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2019-08-08T00:00:00Z",
+          "candidateValues": [
+            "2019-08-08",
+            "2019-08-08T00:00:00Z"
           ]
         },
         {
@@ -6038,6 +6148,26 @@
           "candidateValues": [
             "2019-08-07",
             "2019-08-07T00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/instrumentOperatingStatus/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+            "inactive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2019-08-08T00:00:00Z",
+          "candidateValues": [
+            "2019-08-08",
+            "2019-08-08T00:00:00Z"
           ]
         },
         {
@@ -6653,6 +6783,26 @@
         },
         {
           "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/instrumentOperatingStatus/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+            "inactive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2019-08-08T00:00:00Z",
+          "candidateValues": [
+            "2019-08-08",
+            "2019-08-08T00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/endPosition/text()",
           "kind": "text",
           "value": "2019-09-17T00:00:00Z",
@@ -6856,6 +7006,26 @@
         },
         {
           "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/instrumentOperatingStatus/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+            "inactive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2019-08-08T00:00:00Z",
+          "candidateValues": [
+            "2019-08-08",
+            "2019-08-08T00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/endPosition/text()",
           "kind": "text",
           "value": "2019-09-17T00:00:00Z",
@@ -7041,38 +7211,11 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observableRange/text()",
-          "kind": "text",
-          "value": "unknown",
-          "candidateValues": [
-            "unknown"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/specifiedAbsoluteUncertainty/text()",
-          "kind": "text",
-          "value": "unknown",
-          "candidateValues": [
-            "unknown"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/specifiedRelativeUncertainty/text()",
           "kind": "text",
           "value": "5%",
           "candidateValues": [
             "5%"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/driftPerUnitTime/text()",
-          "kind": "text",
-          "value": "unknown",
-          "candidateValues": [
-            "unknown"
           ]
         },
         {
@@ -7236,6 +7379,26 @@
         },
         {
           "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/instrumentOperatingStatus/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+            "inactive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2019-08-08T00:00:00Z",
+          "candidateValues": [
+            "2019-08-08",
+            "2019-08-08T00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/endPosition/text()",
           "kind": "text",
           "value": "2019-09-17T00:00:00Z",
@@ -7274,15 +7437,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observableRange/text()",
-          "kind": "text",
-          "value": "unknown",
-          "candidateValues": [
-            "unknown"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/specifiedAbsoluteUncertainty/text()",
           "kind": "text",
           "value": "0.3 m/s",
@@ -7297,15 +7451,6 @@
           "value": "7%",
           "candidateValues": [
             "7%"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/driftPerUnitTime/text()",
-          "kind": "text",
-          "value": "unknown",
-          "candidateValues": [
-            "unknown"
           ]
         },
         {
@@ -7469,6 +7614,26 @@
         },
         {
           "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/instrumentOperatingStatus/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+            "inactive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2019-08-08T00:00:00Z",
+          "candidateValues": [
+            "2019-08-08",
+            "2019-08-08T00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus[2]/InstrumentOperatingStatus/validPeriod/TimePeriod/endPosition/text()",
           "kind": "text",
           "value": "2019-09-17T00:00:00Z",
@@ -7556,16 +7721,6 @@
           "value": "01:00:00Z",
           "candidateValues": [
             "01:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[1]/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete",
-          "candidateValues": [
-            "discrete",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
           ]
         },
         {
@@ -7806,16 +7961,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[3]/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete",
-          "candidateValues": [
-            "discrete",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[3]/DataGeneration/sampling/Sampling/samplingTimePeriod/text()",
           "kind": "text",
           "value": "PT20S",
@@ -7943,16 +8088,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete",
-          "candidateValues": [
-            "discrete",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingTimePeriod/text()",
           "kind": "text",
           "value": "P1D",
@@ -8071,16 +8206,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[15]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete",
-          "candidateValues": [
-            "discrete",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[15]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/processing/Processing/dataProcessing/text()",
           "kind": "text",
           "value": "Photogrammetry",
@@ -8102,7 +8227,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
       "summary": {
         "xmlEntries": 419,
         "matched": 263,
@@ -9406,11 +9531,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20251001_0-20008-0-MKN.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20251001_0-20008-0-MKN.json",
       "summary": {
         "xmlEntries": 1120,
-        "matched": 649,
-        "lost": 407,
+        "matched": 660,
+        "lost": 396,
         "ignored": 64
       },
       "lost": [
@@ -9621,16 +9746,6 @@
           ]
         },
         {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
           "kind": "text",
@@ -9747,16 +9862,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
           ]
         },
         {
@@ -10015,16 +10120,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
           ]
         },
         {
@@ -10550,16 +10645,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
           "kind": "attribute",
           "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
@@ -10642,16 +10727,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/communicationMethod/@href",
           "kind": "attribute",
           "value": "http://codes.wmo.int/wmdr/DataCommunicationMethod/dataCellular",
@@ -10696,16 +10771,6 @@
           "value": "+/- 0.2 degC",
           "candidateValues": [
             "+/- 0.2 degC"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
           ]
         },
         {
@@ -11317,16 +11382,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/event",
-          "candidateValues": [
-            "event",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/event"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/applicationArea/@href",
           "kind": "attribute",
           "value": "http://codes.wmo.int/wmdr/ApplicationArea/climateMonitoring",
@@ -11486,16 +11541,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/applicationArea/@href",
           "kind": "attribute",
           "value": "http://codes.wmo.int/wmdr/ApplicationArea/climateApplications",
@@ -11589,12 +11634,12 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[15]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[15]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2024-07-14T00:00:00Z",
           "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+            "2024-07-14",
+            "2024-07-14T00:00:00Z"
           ]
         },
         {
@@ -11677,16 +11722,6 @@
           "value": "59",
           "candidateValues": [
             "59"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[16]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
           ]
         },
         {
@@ -12565,16 +12600,6 @@
           ]
         },
         {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[23]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
-          ]
-        },
-        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[23]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
           "kind": "text",
@@ -12681,16 +12706,6 @@
           "value": "00:00:00Z",
           "candidateValues": [
             "00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[24]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingStrategy/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous",
-          "candidateValues": [
-            "continuous",
-            "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
           ]
         },
         {
@@ -13177,7 +13192,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20251218_0-20000-0-45004.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20251218_0-20000-0-45004.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20251218_0-20000-0-45004.json",
       "summary": {
         "xmlEntries": 473,
         "matched": 333,
@@ -14298,8 +14313,2362 @@
       ]
     },
     {
+      "xml": "resources/wmdr10_xml_examples/20260318_0-20008-0-ARO.xml",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20260318_0-20008-0-ARO.json",
+      "summary": {
+        "xmlEntries": 388,
+        "matched": 233,
+        "lost": 139,
+        "ignored": 16
+      },
+      "lost": [
+        {
+          "section": "contact",
+          "path": "/WIGOSMetadataRecord/headerInformation/Header/recordOwner/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/electronicMailAddress[2]/CharacterString/text()",
+          "kind": "text",
+          "value": "https://oscar.wmo.int/surface/#/feedback",
+          "candidateValues": [
+            "/feedback",
+            "feedback",
+            "https://oscar.wmo.int/surface/#/feedback"
+          ]
+        },
+        {
+          "section": "contact",
+          "path": "/WIGOSMetadataRecord/headerInformation/Header/recordOwner/CI_ResponsibleParty/role/CI_RoleCode/@codeList",
+          "kind": "attribute",
+          "value": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode",
+          "candidateValues": [
+            "CI_RoleCode",
+            "gmxCodelists.xml#CI_RoleCode",
+            "gmxcodelists.xml#ci_rolecode",
+            "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+          ]
+        },
+        {
+          "section": "contact",
+          "path": "/WIGOSMetadataRecord/headerInformation/Header/recordOwner/CI_ResponsibleParty/role/CI_RoleCode/@codeListValue",
+          "kind": "attribute",
+          "value": "custodian",
+          "candidateValues": [
+            "custodian"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[1]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/phone/CI_Telephone/voice[1]/CharacterString/text()",
+          "kind": "text",
+          "value": "+41 (026)  662 6246",
+          "candidateValues": [
+            "+41 (026)  662 6246"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[1]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/phone/CI_Telephone/voice[2]/CharacterString/text()",
+          "kind": "text",
+          "value": "+41 (026)  662 6211",
+          "candidateValues": [
+            "+41 (026)  662 6211"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[1]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/deliveryPoint/CharacterString/text()",
+          "kind": "text",
+          "value": "Station Aérologique\r\nMeteoSchweiz\nLes Invuardes\r\nCase postale 316",
+          "candidateValues": [
+            "Station Aérologique\r\nMeteoSchweiz\nLes Invuardes\r\nCase postale 316"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[1]/GeospatialLocation/geoLocation/Point/pos/text()",
+          "kind": "text",
+          "value": "46.813324 9.844385 1590.0",
+          "candidateValues": [
+            "46.813324 9.844385 1590.0"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation[2]/GeospatialLocation/geoLocation/Point/pos/text()",
+          "kind": "text",
+          "value": "46.78150177 9.6674098969 1840.0",
+          "candidateValues": [
+            "46.78150177 9.6674098969 1840.0"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/description[1]/Description/description/text()",
+          "kind": "text",
+          "value": "Last ozone observing instruments (1 Brewer and 1 Dobson) transferred to Davos (0-20008-0-DAV). The ozone observations continues from there.",
+          "candidateValues": [
+            "Last ozone observing instruments (1 Brewer and 1 Dobson) transferred to Davos (0-20008-0-DAV). The ozone observations continues from there."
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/description[2]/Description/description/text()",
+          "kind": "text",
+          "value": "The ozone observations from Arosa have been transferred to Davos (0-20008-0-DAV). Arosa which is approximately 12 km south-west of Davos and about 200 m higher. The parallel observation period (with instruments of Arosa being temporarily deployed in Davos) started on 22 Nov 2011. 4 of the 6 instruments (2 Brewers 2 Dobsons) were definitively transferred to Davos on 28 Feb 2018. The two remaining instruments (1 Brewer and 1 Dobson) continued observations in Arosa until 18 Feb 2021 when they were also transferred to Davos and the ozone observations at Arosa definitively stopped. Since then, the ozone time series is continued from Davos.",
+          "candidateValues": [
+            "The ozone observations from Arosa have been transferred to Davos (0-20008-0-DAV). Arosa which is approximately 12 km south-west of Davos and about 200 m higher. The parallel observation period (with instruments of Arosa being temporarily deployed in Davos) started on 22 Nov 2011. 4 of the 6 instruments (2 Brewers 2 Dobsons) were definitively transferred to Davos on 28 Feb 2018. The two remaining instruments (1 Brewer and 1 Dobson) continued observations in Arosa until 18 Feb 2021 when they were also transferred to Davos and the ozone observations at Arosa definitively stopped. Since then, the ozone time series is continued from Davos."
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/description[2]/Description/validPeriod/TimePeriod/beginPosition/text()",
+          "kind": "text",
+          "value": "2011-11-22T00:00:00Z",
+          "candidateValues": [
+            "2011-11-22",
+            "2011-11-22T00:00:00Z"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/facilitySet/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/Arosa-Davos",
+          "candidateValues": [
+            "Arosa-Davos",
+            "arosa-davos",
+            "http://codes.wmo.int/wmdr/Arosa-Davos"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/programAffiliation[1]/ProgramAffiliation/reportingStatus[2]/ReportingStatus/validPeriod/TimePeriod/endPosition/text()",
+          "kind": "text",
+          "value": "2021-02-17T00:00:00Z",
+          "candidateValues": [
+            "2021-02-17",
+            "2021-02-17T00:00:00Z"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/programAffiliation[2]/ProgramAffiliation/reportingStatus[2]/ReportingStatus/validPeriod/TimePeriod/endPosition/text()",
+          "kind": "text",
+          "value": "2021-02-17T00:00:00Z",
+          "candidateValues": [
+            "2021-02-17",
+            "2021-02-17T00:00:00Z"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/surfaceCover/SurfaceCover/surfaceCoverClassification/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009",
+          "candidateValues": [
+            "globCover2009",
+            "globcover2009",
+            "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
+          "candidateValues": [
+            "78",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
+          "candidateValues": [
+            "78",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[4]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[6]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
+          "candidateValues": [
+            "78",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[6]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL/text()",
+          "kind": "text",
+          "value": "ftp://ftp.cpc.ncep.noaa.gov/ndacc/station/arosa/ames/dobson/",
+          "candidateValues": [
+            "ftp://ftp.cpc.ncep.noaa.gov/ndacc/station/arosa/ames/dobson/"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/description/CharacterString/text()",
+          "kind": "text",
+          "value": "Archive",
+          "candidateValues": [
+            "Archive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[8]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
+          "candidateValues": [
+            "78",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[8]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        }
+      ]
+    },
+    {
+      "xml": "resources/wmdr10_xml_examples/20260318_0-20008-0-DAV.xml",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20260318_0-20008-0-DAV.json",
+      "summary": {
+        "xmlEntries": 382,
+        "matched": 246,
+        "lost": 115,
+        "ignored": 21
+      },
+      "lost": [
+        {
+          "section": "contact",
+          "path": "/WIGOSMetadataRecord/headerInformation/Header/recordOwner/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/electronicMailAddress[2]/CharacterString/text()",
+          "kind": "text",
+          "value": "https://oscar.wmo.int/surface/#/feedback",
+          "candidateValues": [
+            "/feedback",
+            "feedback",
+            "https://oscar.wmo.int/surface/#/feedback"
+          ]
+        },
+        {
+          "section": "contact",
+          "path": "/WIGOSMetadataRecord/headerInformation/Header/recordOwner/CI_ResponsibleParty/role/CI_RoleCode/@codeList",
+          "kind": "attribute",
+          "value": "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode",
+          "candidateValues": [
+            "CI_RoleCode",
+            "gmxCodelists.xml#CI_RoleCode",
+            "gmxcodelists.xml#ci_rolecode",
+            "http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_RoleCode"
+          ]
+        },
+        {
+          "section": "contact",
+          "path": "/WIGOSMetadataRecord/headerInformation/Header/recordOwner/CI_ResponsibleParty/role/CI_RoleCode/@codeListValue",
+          "kind": "attribute",
+          "value": "custodian",
+          "candidateValues": [
+            "custodian"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[1]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/deliveryPoint/CharacterString/text()",
+          "kind": "text",
+          "value": "PMOD/WRC-WORCC\nDorfstrasse 33",
+          "candidateValues": [
+            "PMOD/WRC-WORCC\nDorfstrasse 33"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[2]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/phone/CI_Telephone/voice[1]/CharacterString/text()",
+          "kind": "text",
+          "value": "+41 (026)  662 6246",
+          "candidateValues": [
+            "+41 (026)  662 6246"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[2]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/phone/CI_Telephone/voice[2]/CharacterString/text()",
+          "kind": "text",
+          "value": "+41 (026)  662 6211",
+          "candidateValues": [
+            "+41 (026)  662 6211"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[2]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/deliveryPoint/CharacterString/text()",
+          "kind": "text",
+          "value": "Station Aérologique\r\nMeteoSchweiz\nLes Invuardes\r\nCase postale 316",
+          "candidateValues": [
+            "Station Aérologique\r\nMeteoSchweiz\nLes Invuardes\r\nCase postale 316"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[4]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/deliveryPoint/CharacterString/text()",
+          "kind": "text",
+          "value": "Physikalisch-Meteorologisches Observatorium Davos, World Radiation Center\nDorfstrasse 33",
+          "candidateValues": [
+            "Physikalisch-Meteorologisches Observatorium Davos, World Radiation Center\nDorfstrasse 33"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
+          "kind": "text",
+          "value": "46.813324 9.844385 1590.0",
+          "candidateValues": [
+            "46.813324 9.844385 1590.0"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/description[1]/Description/description/text()",
+          "kind": "text",
+          "value": "The Physikalisch-Meteorologisches Observatorium is located the northeaster end of the Davos valley in the Swiss alps. The city of Davos is extending to the southwest of the site. [this description has been copied from AERONET Site Information Database of NASA]",
+          "candidateValues": [
+            "The Physikalisch-Meteorologisches Observatorium is located the northeaster end of the Davos valley in the Swiss alps. The city of Davos is extending to the southwest of the site. [this description has been copied from AERONET Site Information Database of NASA]"
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/description[2]/Description/description/text()",
+          "kind": "text",
+          "value": "The ozone observations which started in Arosa (0-20008-0-ARO) in 1926 have been transferred to Davos. Arosa is located approximately 12 km south-west of Davos and about 200 m higher. The parallel observation period (with instruments of Arosa being temporarily deployed in Davos) started on 22 Nov 2011. 4 of the 6 instruments (2 Brewers 2 Dobsons) were definitively transferred to Davos on 28 Feb 2018. The two remaining instruments (1 Brewer and 1 Dobson) continued observations in Arosa until 18 Feb 2021 when they were also transferred to Davos and the ozone observations at Arosa definitively stopped. Since then, the ozone time series is continued from Davos.",
+          "candidateValues": [
+            "The ozone observations which started in Arosa (0-20008-0-ARO) in 1926 have been transferred to Davos. Arosa is located approximately 12 km south-west of Davos and about 200 m higher. The parallel observation period (with instruments of Arosa being temporarily deployed in Davos) started on 22 Nov 2011. 4 of the 6 instruments (2 Brewers 2 Dobsons) were definitively transferred to Davos on 28 Feb 2018. The two remaining instruments (1 Brewer and 1 Dobson) continued observations in Arosa until 18 Feb 2021 when they were also transferred to Davos and the ozone observations at Arosa definitively stopped. Since then, the ozone time series is continued from Davos."
+          ]
+        },
+        {
+          "section": "facility",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/facilitySet/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/Arosa-Davos",
+          "candidateValues": [
+            "Arosa-Davos",
+            "arosa-davos",
+            "http://codes.wmo.int/wmdr/Arosa-Davos"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
+          "candidateValues": [
+            "106",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
+          "candidateValues": [
+            "78",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/210",
+          "candidateValues": [
+            "210",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/210"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/metadata/MD_Metadata/contact/CI_ResponsibleParty/role/CI_RoleCode/@codeListValue",
+          "kind": "attribute",
+          "value": "principalInvestigator",
+          "candidateValues": [
+            "principalInvestigator"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
+          "kind": "text",
+          "value": "46.813324 9.844385 1590.0",
+          "candidateValues": [
+            "46.813324 9.844385 1590.0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/197",
+          "candidateValues": [
+            "197",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/197"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingProcedure/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/SamplingProcedure/inapplicable",
+          "candidateValues": [
+            "http://codes.wmo.int/wmdr/SamplingProcedure/inapplicable",
+            "inapplicable"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[1]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[3]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
+          "candidateValues": [
+            "78",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation[2]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WOUDC",
+          "candidateValues": [
+            "WOUDC"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
+          "kind": "attribute",
+          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265",
+          "candidateValues": [
+            "265",
+            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WRDC",
+          "candidateValues": [
+            "WRDC"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL/text()",
+          "kind": "text",
+          "value": "http://wrdc.mgo.rssi.ru",
+          "candidateValues": [
+            "http://wrdc.mgo.rssi.ru",
+            "wrdc.mgo.rssi.ru"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/description/CharacterString/text()",
+          "kind": "text",
+          "value": "Archive",
+          "candidateValues": [
+            "Archive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WRDC",
+          "candidateValues": [
+            "WRDC"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL/text()",
+          "kind": "text",
+          "value": "http://wrdc.mgo.rssi.ru",
+          "candidateValues": [
+            "http://wrdc.mgo.rssi.ru",
+            "wrdc.mgo.rssi.ru"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/description/CharacterString/text()",
+          "kind": "text",
+          "value": "Archive",
+          "candidateValues": [
+            "Archive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WRDC",
+          "candidateValues": [
+            "WRDC"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL/text()",
+          "kind": "text",
+          "value": "http://wrdc.mgo.rssi.ru",
+          "candidateValues": [
+            "http://wrdc.mgo.rssi.ru",
+            "wrdc.mgo.rssi.ru"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/description/CharacterString/text()",
+          "kind": "text",
+          "value": "Archive",
+          "candidateValues": [
+            "Archive"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
+          "kind": "text",
+          "value": "12",
+          "candidateValues": [
+            "12"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()",
+          "kind": "text",
+          "value": "1",
+          "candidateValues": [
+            "1"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
+          "kind": "text",
+          "value": "7",
+          "candidateValues": [
+            "7"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()",
+          "kind": "text",
+          "value": "23",
+          "candidateValues": [
+            "23"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()",
+          "kind": "text",
+          "value": "0",
+          "candidateValues": [
+            "0"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()",
+          "kind": "text",
+          "value": "59",
+          "candidateValues": [
+            "59"
+          ]
+        },
+        {
+          "section": "deployment",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()",
+          "kind": "text",
+          "value": "00:00:00Z",
+          "candidateValues": [
+            "00:00:00Z"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
+          "kind": "text",
+          "value": "WRDC",
+          "candidateValues": [
+            "WRDC"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL/text()",
+          "kind": "text",
+          "value": "http://wrdc.mgo.rssi.ru",
+          "candidateValues": [
+            "http://wrdc.mgo.rssi.ru",
+            "wrdc.mgo.rssi.ru"
+          ]
+        },
+        {
+          "section": "observation",
+          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/description/CharacterString/text()",
+          "kind": "text",
+          "value": "Archive",
+          "candidateValues": [
+            "Archive"
+          ]
+        }
+      ]
+    },
+    {
       "xml": "resources/wmdr10_xml_examples/20260511_0-434-0-62061.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20260511_0-434-0-62061.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20260511_0-434-0-62061.json",
       "summary": {
         "xmlEntries": 379,
         "matched": 219,
@@ -15636,7 +18005,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20260604_0-70-0-Lukavac.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/20260604_0-70-0-Lukavac.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20260604_0-70-0-Lukavac.json",
       "summary": {
         "xmlEntries": 45,
         "matched": 37,
@@ -15699,7 +18068,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-28/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
       "summary": {
         "xmlEntries": 994,
         "matched": 632,

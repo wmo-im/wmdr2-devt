@@ -87,7 +87,7 @@
     ],
     "facilityType": "landOnIce",
     "wmoRegion": "europe",
-    "historicalProgramAffiliation": [
+    "programAffiliation": [
       {
         "date": "1949-01-01",
         "programAffiliation": [
@@ -95,7 +95,7 @@
         ]
       }
     ],
-    "historicalTerritory": [
+    "territory": [
       {
         "date": "1949-01-01",
         "territory": "FRA"
@@ -113,10 +113,8 @@
             "frequency": "hourly"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT1H"
-        },
-        "uid": "schedule_9928d3a502f4"
+        "wmo.int:aggregationInterval": "PT1H",
+        "uid": "schedule_f253213a5423"
       }
     ],
     "reporting": [
@@ -128,12 +126,13 @@
     ],
     "deployments": [
       {
-        "id": "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c"
+        "id": "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c",
+        "date": "1949-01-01"
       }
     ],
-    "observations": [
+    "observationSeries": [
       {
-        "id": "observations:12010",
+        "id": "observationSeries:12010",
         "title": "domain: terrestrial; geometry: unknown; variable: 12010",
         "time": {
           "interval": [
@@ -146,25 +145,25 @@
         "observedFeature": {
           "domain": "terrestrial"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated"
         ],
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "1949-01-01",
-            "schedule": "schedule_9928d3a502f4"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_f253213a5423"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c",
-            "deployment": "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c",
-            "date": "1949-01-01"
-          }
+        "deployments": [
+          "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "1949-01-01",
+            "strategy": "unknown",
             "reporting": "reporting:87ff24b4a55a"
           }
         ]

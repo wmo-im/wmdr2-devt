@@ -129,7 +129,7 @@
     ],
     "facilityType": "landOnIce",
     "wmoRegion": "antarctica",
-    "historicalProgramAffiliation": [
+    "programAffiliation": [
       {
         "date": "2006-01-13",
         "programAffiliation": [
@@ -145,13 +145,13 @@
         "reportingStatus": "operational"
       }
     ],
-    "historicalTerritory": [
+    "territory": [
       {
         "date": "2006-01-13",
         "territory": "USA"
       }
     ],
-    "historicalEnvironment": [
+    "environment": [
       {
         "date": "2006-01-13",
         "climateZone": "polarFrost"
@@ -170,10 +170,8 @@
             "interval": 3
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT3H"
-        },
-        "uid": "schedule_7856dcc44982"
+        "wmo.int:aggregationInterval": "PT3H",
+        "uid": "schedule_497c60674f6d"
       }
     ],
     "reporting": [
@@ -186,28 +184,78 @@
     "deployments": [
       {
         "id": "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
-        "instrument": "instrument:0-840-11502-KominkoSlade:559b14aa2b21"
+        "date": "2006-01-13",
+        "instrument": "instrument:0-840-11502-KominkoSlade:559b14aa2b21",
+        "exposure": "class1",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -112.106,
+            -79.466,
+            1801
+          ]
+        }
       },
       {
         "id": "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
-        "instrument": "instrument:0-840-11502-KominkoSlade:b2c93dfaf8d5"
+        "date": "2006-01-13",
+        "instrument": "instrument:0-840-11502-KominkoSlade:b2c93dfaf8d5",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -112.106,
+            -79.466,
+            1801
+          ]
+        }
       },
       {
         "id": "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
-        "instrument": "instrument:0-840-11502-KominkoSlade:607330a26caf"
+        "date": "2006-01-13",
+        "instrument": "instrument:0-840-11502-KominkoSlade:607330a26caf",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -112.106,
+            -79.466,
+            1801
+          ]
+        }
       },
       {
         "id": "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
-        "instrument": "instrument:0-840-11502-KominkoSlade:4a52955cfb18"
+        "date": "2006-01-13",
+        "instrument": "instrument:0-840-11502-KominkoSlade:4a52955cfb18",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -112.106,
+            -79.466,
+            1801
+          ]
+        }
       },
       {
         "id": "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
-        "instrument": "instrument:0-840-11502-KominkoSlade:4a52955cfb18"
+        "date": "2006-01-13",
+        "instrument": "instrument:0-840-11502-KominkoSlade:4a52955cfb18",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -112.106,
+            -79.466,
+            1801
+          ]
+        }
       }
     ],
-    "observations": [
+    "observationSeries": [
       {
-        "id": "observations:216",
+        "id": "observationSeries:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
         "time": {
           "interval": [
@@ -220,7 +268,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBON",
           "GBON"
         ],
@@ -230,44 +278,29 @@
           "value": 2.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2006-01-13",
-            "schedule": "schedule_7856dcc44982"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_497c60674f6d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
-            "deployment": "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
-            "exposure": "class1",
-            "date": "2006-01-13"
-          },
-          {
-            "id": "historicalDeployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
-            "deployment": "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
-            "exposure": "class1",
-            "date": "2011-12-17",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -112.106,
-                -79.466,
-                1801
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2006-01-13",
+            "strategy": "unknown",
             "uom": "hPa",
             "reporting": "reporting:febc7e89e1ff"
           }
         ]
       },
       {
-        "id": "observations:224",
+        "id": "observationSeries:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
@@ -280,7 +313,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBON",
           "GBON"
         ],
@@ -290,44 +323,29 @@
           "value": 2.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2006-01-13",
-            "schedule": "schedule_7856dcc44982"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_497c60674f6d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
-            "deployment": "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
-            "exposure": "class2",
-            "date": "2006-01-13"
-          },
-          {
-            "id": "historicalDeployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
-            "deployment": "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
-            "exposure": "class2",
-            "date": "2011-12-17",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -112.106,
-                -79.466,
-                1801
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2006-01-13",
+            "strategy": "unknown",
             "uom": "degC",
             "reporting": "reporting:febc7e89e1ff"
           }
         ]
       },
       {
-        "id": "observations:12249",
+        "id": "observationSeries:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
         "time": {
           "interval": [
@@ -340,7 +358,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBON",
           "GBON"
         ],
@@ -350,44 +368,29 @@
           "value": 2.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2006-01-13",
-            "schedule": "schedule_7856dcc44982"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_497c60674f6d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
-            "deployment": "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
-            "exposure": "class2",
-            "date": "2006-01-13"
-          },
-          {
-            "id": "historicalDeployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
-            "deployment": "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
-            "exposure": "class2",
-            "date": "2011-12-17",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -112.106,
-                -79.466,
-                1801
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2006-01-13",
+            "strategy": "unknown",
             "uom": "percent",
             "reporting": "reporting:febc7e89e1ff"
           }
         ]
       },
       {
-        "id": "observations:12005",
+        "id": "observationSeries:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
         "time": {
           "interval": [
@@ -400,7 +403,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBON",
           "GBON"
         ],
@@ -410,44 +413,29 @@
           "value": 3.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2006-01-13",
-            "schedule": "schedule_7856dcc44982"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_497c60674f6d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
-            "deployment": "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
-            "exposure": "class2",
-            "date": "2006-01-13"
-          },
-          {
-            "id": "historicalDeployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
-            "deployment": "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
-            "exposure": "class2",
-            "date": "2011-12-17",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -112.106,
-                -79.466,
-                1801
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2006-01-13",
+            "strategy": "unknown",
             "uom": "deg",
             "reporting": "reporting:febc7e89e1ff"
           }
         ]
       },
       {
-        "id": "observations:12006",
+        "id": "observationSeries:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
         "time": {
           "interval": [
@@ -460,7 +448,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBON",
           "GBON"
         ],
@@ -470,37 +458,22 @@
           "value": 3.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2006-01-13",
-            "schedule": "schedule_7856dcc44982"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_497c60674f6d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
-            "deployment": "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
-            "exposure": "class2",
-            "date": "2006-01-13"
-          },
-          {
-            "id": "historicalDeployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
-            "deployment": "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
-            "exposure": "class2",
-            "date": "2011-12-17",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -112.106,
-                -79.466,
-                1801
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2006-01-13",
+            "strategy": "unknown",
             "uom": "m.s-1",
             "reporting": "reporting:febc7e89e1ff"
           }

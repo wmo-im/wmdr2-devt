@@ -1,0 +1,868 @@
+{
+  "type": "Feature",
+  "id": "facility:0-20008-0-ARO",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      9.844385,
+      46.813324,
+      1590
+    ]
+  },
+  "temporalGeometry": {
+    "type": "MovingPoint",
+    "coordinates": [
+      [
+        9.6674098969,
+        46.78150177,
+        1840
+      ],
+      [
+        9.844385,
+        46.813324,
+        1590
+      ]
+    ],
+    "dates": [
+      "2011-11-25",
+      "2019-01-01"
+    ]
+  },
+  "time": {
+    "interval": [
+      "1926-01-01",
+      "2021-02-18"
+    ]
+  },
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
+  "properties": {
+    "type": "facility",
+    "title": "Arosa",
+    "created": "2026-03-18T00:00:00Z",
+    "updated": "2026-03-18T00:00:00Z",
+    "description": "[{'description': 'Last ozone observing instruments (1 Brewer and 1 Dobson) transferred to Davos (0-20008-0-DAV). The ozone observations continues from there.', 'beginPosition': '2021-02-18T00:00:00Z', 'endPosition': None}, {'description': 'The ozone observations from Arosa have been transferred to Davos (0-20008-0-DAV). Arosa which is approximately 12 km south-west of Davos and about 200 m higher. The parallel observation period (with instruments of Arosa being temporarily deployed in Davos) started on 22 Nov 2011. 4 of the 6 instruments (2 Brewers 2 Dobsons) were definitively transferred to Davos on 28 Feb 2018. The two remaining instruments (1 Brewer and 1 Dobson) continued observations in Arosa until 18 Feb 2021 when they were also transferred to Davos and the ozone observations at Arosa definitively stopped. Since then, the ozone time series is continued from Davos.', 'beginPosition': '2011-11-22T00:00:00Z', 'endPosition': None}]",
+    "contacts": [
+      {
+        "name": "Jeannet,Pierre,Mr.",
+        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "phones": [
+          {
+            "value": "+41 (026) 662 6246"
+          },
+          {
+            "value": "+41 (026) 662 6211"
+          }
+        ],
+        "emails": [
+          {
+            "value": "pierre.jeannet@meteoswiss.ch"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Station Aérologique MeteoSchweiz Les Invuardes Case postale 316"
+            ],
+            "city": "Payerne",
+            "postalCode": "CH-1530",
+            "country": "CHE"
+          }
+        ],
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "name": "Ruefenacht,Rolf,Dr.",
+        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "rolf.ruefenacht@meteoswiss.ch"
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Payerne",
+            "country": "CHE"
+          }
+        ],
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ]
+      }
+    ],
+    "keywords": [
+      "0-20008-0-ARO",
+      "Arosa"
+    ],
+    "facilityType": "landFixed",
+    "wmoRegion": "europe",
+    "facilitySets": [
+      "facilitySet:Arosa-Davos"
+    ],
+    "programAffiliation": [
+      {
+        "date": "2021-02-18",
+        "programAffiliation": [
+          "GAWregional"
+        ],
+        "programSpecificFacilityId": "ARO",
+        "reportingStatus": "closed"
+      },
+      {
+        "date": "1926-01-01",
+        "programAffiliation": [
+          "GAWregional"
+        ],
+        "programSpecificFacilityId": "ARO",
+        "reportingStatus": "operational"
+      },
+      {
+        "date": "2021-02-18",
+        "programAffiliation": [
+          "NDACC"
+        ],
+        "programSpecificFacilityId": "AROSA",
+        "reportingStatus": "closed"
+      },
+      {
+        "date": "1926-01-01",
+        "programAffiliation": [
+          "NDACC"
+        ],
+        "programSpecificFacilityId": "AROSA",
+        "reportingStatus": "operational"
+      }
+    ],
+    "territory": [
+      {
+        "date": "2011-11-25",
+        "territory": "CHE"
+      }
+    ],
+    "environment": [
+      {
+        "date": "1926-01-01",
+        "topographyBathymetry": {
+          "localTopography": "slope",
+          "relativeElevation": "middle",
+          "topographicContext": "rises",
+          "altitudeOrDepth": "highAltitude"
+        }
+      },
+      {
+        "date": "2011-11-25",
+        "climateZone": "snowFullyHumidCoolSummer"
+      },
+      {
+        "date": "2019-01-01",
+        "climateZone": "polarTundra",
+        "surfaceCover": "mosaicCroplands"
+      }
+    ],
+    "schedules": [
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:aggregationInterval": "P1D",
+        "uid": "schedule_1f99ffca9e0c"
+      },
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1M",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:aggregationInterval": "P1M",
+        "uid": "schedule_efa28317e2c0"
+      }
+    ],
+    "reporting": [
+      {
+        "id": "reporting:02b0477ef130",
+        "internationalExchange": true,
+        "temporalAggregate": "P1D"
+      },
+      {
+        "id": "reporting:825dd8638917",
+        "internationalExchange": false,
+        "temporalAggregate": "P1D",
+        "dataPolicy": {
+          "dataPolicy": "noLimitation"
+        },
+        "levelOfData": "level1"
+      },
+      {
+        "id": "reporting:a3e6caf6f877",
+        "internationalExchange": false,
+        "temporalAggregate": "P1M",
+        "dataPolicy": {
+          "dataPolicy": "noLimitation"
+        },
+        "levelOfData": "level1"
+      },
+      {
+        "id": "reporting:804251cbe0de",
+        "internationalExchange": false,
+        "temporalAggregate": "P1D",
+        "dataPolicy": {
+          "dataPolicy": "noLimitation"
+        },
+        "levelOfData": "level2"
+      },
+      {
+        "id": "reporting:0067762dd67f",
+        "internationalExchange": false,
+        "temporalAggregate": "P1M",
+        "dataPolicy": {
+          "dataPolicy": "noLimitation"
+        },
+        "levelOfData": "level2"
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_170e8c6c-dc94-4c8e-83be-7c9900e87e0e",
+        "date": "2014-01-01"
+      },
+      {
+        "id": "deployment:id_03a5a1b9-8c03-4791-9e88-b22c9bebd721",
+        "date": "2014-01-01"
+      },
+      {
+        "id": "deployment:id_b074e828-5b6e-7937-e053-148ef98d6de4",
+        "date": "2007-04-02"
+      },
+      {
+        "id": "deployment:id_b074e828-5b6b-7937-e053-148ef98d6de4",
+        "date": "2007-04-01"
+      },
+      {
+        "id": "deployment:id_b074e828-5b6f-7937-e053-148ef98d6de4",
+        "date": "1996-12-02"
+      },
+      {
+        "id": "deployment:id_b074e828-5b6c-7937-e053-148ef98d6de4",
+        "date": "1995-01-04"
+      },
+      {
+        "id": "deployment:id_b074e828-5b70-7937-e053-148ef98d6de4",
+        "date": "1990-01-01"
+      },
+      {
+        "id": "deployment:id_b074e828-5b6d-7937-e053-148ef98d6de4",
+        "date": "1988-12-16"
+      },
+      {
+        "id": "deployment:id_b074e828-5b71-7937-e053-148ef98d6de4",
+        "date": "1986-09-01"
+      },
+      {
+        "id": "deployment:id_b074e828-5b72-7937-e053-148ef98d6de4",
+        "date": "1949-09-01"
+      },
+      {
+        "id": "deployment:id_b074e828-5b73-7937-e053-148ef98d6de4",
+        "date": "1926-07-23"
+      },
+      {
+        "id": "deployment:id_b074e828-5b74-7937-e053-148ef98d6de4",
+        "date": "1988-01-03"
+      },
+      {
+        "id": "deployment:id_513fee31-c92f-409a-b086-b207ab966170",
+        "date": "1988-01-01"
+      },
+      {
+        "id": "deployment:id_b074e828-5b75-7937-e053-148ef98d6de4",
+        "date": "1956-01-03"
+      }
+    ],
+    "observationSeries": [
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "2014-01-01",
+            "2021-02-18"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "automaticReading",
+        "observingProcedures": [
+          {
+            "date": "2014-01-01",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_170e8c6c-dc94-4c8e-83be-7c9900e87e0e"
+        ],
+        "reporting": [
+          {
+            "date": "2014-01-01",
+            "strategy": "unknown",
+            "uom": "DU",
+            "reporting": "reporting:02b0477ef130"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "2014-01-01",
+            "2021-02-18"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "automaticReading",
+        "observingProcedures": [
+          {
+            "date": "2014-01-01",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_03a5a1b9-8c03-4791-9e88-b22c9bebd721"
+        ],
+        "reporting": [
+          {
+            "date": "2014-01-01",
+            "strategy": "unknown",
+            "reporting": "reporting:02b0477ef130"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "2007-04-02",
+            "2013-11-07"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "2007-04-02",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b6e-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "2007-04-02",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:825dd8638917"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "2007-04-01",
+            "2013-12-31"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "2007-04-01",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_efa28317e2c0"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b6b-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "2007-04-01",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:a3e6caf6f877"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "1996-12-02",
+            "1997-12-31"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "1996-12-02",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b6f-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "1996-12-02",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:825dd8638917"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "1995-01-04",
+            "1998-07-31"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "1995-01-04",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_efa28317e2c0"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b6c-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "1995-01-04",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:a3e6caf6f877"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "1990-01-01",
+            "2013-11-07"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "1990-01-01",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b70-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "1990-01-01",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:804251cbe0de"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "1988-12-16",
+            "2013-12-31"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "1988-12-16",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_efa28317e2c0"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b6d-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "1988-12-16",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:a3e6caf6f877"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "1986-09-01",
+            "2013-12-01"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "1986-09-01",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b71-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "1986-09-01",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:825dd8638917"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "1949-09-01",
+            "1986-08-31"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "1949-09-01",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b72-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "1949-09-01",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:825dd8638917"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "1926-07-23",
+            "1949-08-31"
+          ]
+        },
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "1926-07-23",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b73-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "1926-07-23",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:825dd8638917"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:264",
+        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
+        "time": {
+          "interval": [
+            "1988-01-03",
+            "2007-12-29"
+          ]
+        },
+        "observedProperty": 264,
+        "observedGeometry": "verticalProfile",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "1988-01-03",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_efa28317e2c0"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b74-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "1988-01-03",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:0067762dd67f"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:264",
+        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
+        "time": {
+          "interval": [
+            "1988-01-01",
+            "2018-09-28"
+          ]
+        },
+        "observedProperty": 264,
+        "observedGeometry": "verticalProfile",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional"
+        ],
+        "observingProcedures": [
+          {
+            "date": "1988-01-01",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_513fee31-c92f-409a-b086-b207ab966170"
+        ],
+        "reporting": [
+          {
+            "date": "1988-01-01",
+            "strategy": "unknown",
+            "reporting": "reporting:02b0477ef130"
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:264",
+        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
+        "time": {
+          "interval": [
+            "1956-01-03",
+            "1987-12-31"
+          ]
+        },
+        "observedProperty": 264,
+        "observedGeometry": "verticalProfile",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional"
+        ],
+        "sourceOfObservation": "unknown",
+        "observingProcedures": [
+          {
+            "date": "1956-01-03",
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_efa28317e2c0"
+            ]
+          }
+        ],
+        "deployments": [
+          "deployment:id_b074e828-5b75-7937-e053-148ef98d6de4"
+        ],
+        "reporting": [
+          {
+            "date": "1956-01-03",
+            "strategy": "unknown",
+            "uom": "unknown",
+            "reporting": "reporting:0067762dd67f"
+          }
+        ]
+      }
+    ]
+  }
+}

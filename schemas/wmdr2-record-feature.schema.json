@@ -73,13 +73,6 @@
         {
           "not": {
             "required": [
-              "environment"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
               "temporalProgramAffiliation"
             ]
           }
@@ -146,6 +139,34 @@
               "temporalGeometry"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "observations"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "historicalEnvironment"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "historicalProgramAffiliation"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "historicalTerritory"
+            ]
+          }
         }
       ],
       "properties": {
@@ -189,14 +210,14 @@
             "pattern": "^facilitySet:"
           }
         },
-        "historicalProgramAffiliation": {
-          "$ref": "wmdr2-common.schema.json#/$defs/historicalProgramAffiliation"
+        "programAffiliation": {
+          "$ref": "wmdr2-common.schema.json#/$defs/programAffiliation"
         },
-        "historicalTerritory": {
-          "$ref": "wmdr2-common.schema.json#/$defs/historicalTerritory"
+        "territory": {
+          "$ref": "wmdr2-common.schema.json#/$defs/territory"
         },
-        "historicalEnvironment": {
-          "$ref": "wmdr2-common.schema.json#/$defs/historicalEnvironment"
+        "environment": {
+          "$ref": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json#/$defs/environment"
         },
         "schedules": {
           "type": "array",
@@ -204,10 +225,10 @@
             "$ref": "wmdr2-common.schema.json#/$defs/schedule"
           }
         },
-        "observations": {
+        "observationSeries": {
           "type": "array",
           "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/observation"
+            "$ref": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json#/$defs/observationSeries"
           }
         },
         "instruments": {
@@ -219,13 +240,19 @@
         "reporting": {
           "type": "array",
           "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/reporting"
+            "$ref": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json#/$defs/reporting"
           }
         },
         "deployments": {
           "type": "array",
           "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/deployment"
+            "$ref": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json#/$defs/deployment"
+          }
+        },
+        "procedures": {
+          "type": "array",
+          "items": {
+            "$ref": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json#/$defs/procedure"
           }
         }
       }

@@ -99,7 +99,7 @@ def test_environment_schema_accepts_new_population_and_topography_shape() -> Non
     schema = {
         "$schema": common.get("$schema", "https://json-schema.org/draft/2020-12/schema"),
         "$defs": common["$defs"],
-        **common["$defs"]["historicalEnvironment"],
+        **common["$defs"]["environment"],
     }
     Draft202012Validator(schema).validate(payload)
 
@@ -119,7 +119,7 @@ def test_environment_schema_rejects_obsolete_environment_names(obsolete_name: st
     schema = {
         "$schema": common.get("$schema", "https://json-schema.org/draft/2020-12/schema"),
         "$defs": common["$defs"],
-        **common["$defs"]["historicalEnvironment"],
+        **common["$defs"]["environment"],
     }
     with pytest.raises(ValidationError):
         Draft202012Validator(schema).validate([{obsolete_name: []}])

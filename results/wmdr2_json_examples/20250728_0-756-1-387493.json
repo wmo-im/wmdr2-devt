@@ -123,7 +123,7 @@
     "facilitySets": [
       "facilitySet:Davos-Integrated-CryoNet-Cluster"
     ],
-    "historicalProgramAffiliation": [
+    "programAffiliation": [
       {
         "date": "2002-10-01",
         "programAffiliation": [
@@ -141,13 +141,13 @@
         "reportingStatus": "operational"
       }
     ],
-    "historicalTerritory": [
+    "territory": [
       {
         "date": "2002-10-01",
         "territory": "CHE"
       }
     ],
-    "historicalEnvironment": [
+    "environment": [
       {
         "date": "2002-10-01",
         "climateZone": "polarTundra",
@@ -174,10 +174,8 @@
             "interval": 10
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT10M"
-        },
-        "uid": "schedule_d82c3b74df95"
+        "wmo.int:aggregationInterval": "PT10M",
+        "uid": "schedule_dea9eeb0b28d"
       },
       {
         "@type": "Event",
@@ -191,46 +189,8 @@
             "interval": 30
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT30M"
-        },
-        "uid": "schedule_ead3c8deba7b"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT30M",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "minutely",
-            "interval": 30
-          }
-        ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT30M",
-          "diurnalBaseTime": "07:00:00"
-        },
-        "uid": "schedule_4288d185b7b7"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT30M",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "minutely",
-            "interval": 30
-          }
-        ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT30M",
-          "diurnalBaseTime": "08:00:00"
-        },
-        "uid": "schedule_97fc1c34468a"
+        "wmo.int:aggregationInterval": "PT30M",
+        "uid": "schedule_e6059433ed54"
       },
       {
         "@type": "Event",
@@ -243,11 +203,8 @@
             "frequency": "hourly"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT1H",
-          "diurnalBaseTime": "01:00:00"
-        },
-        "uid": "schedule_045030178b17"
+        "wmo.int:aggregationInterval": "PT1H",
+        "uid": "schedule_7cc207354147"
       },
       {
         "@type": "Event",
@@ -261,10 +218,9 @@
             "interval": 10
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT1H"
-        },
-        "uid": "schedule_0063ae8f9f52"
+        "wmi.int:samplingFrequency": "PT10M",
+        "wmo.int:aggregationInterval": "PT1H",
+        "uid": "schedule_e9b538b6aae3"
       },
       {
         "@type": "Event",
@@ -277,10 +233,8 @@
             "frequency": "hourly"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT1H"
-        },
-        "uid": "schedule_9928d3a502f4"
+        "wmo.int:aggregationInterval": "PT1H",
+        "uid": "schedule_f253213a5423"
       },
       {
         "@type": "Event",
@@ -293,11 +247,9 @@
             "frequency": "hourly"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT1H",
-          "diurnalBaseTime": "01:00:00"
-        },
-        "uid": "schedule_5fafa65e59ef"
+        "wmi.int:samplingFrequency": "PT1H",
+        "wmo.int:aggregationInterval": "PT1H",
+        "uid": "schedule_e871495a8095"
       },
       {
         "@type": "Event",
@@ -310,11 +262,8 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "P12M",
-          "diurnalBaseTime": "01:00:00"
-        },
-        "uid": "schedule_35f065f5f710"
+        "wmo.int:aggregationInterval": "P12M",
+        "uid": "schedule_ba3fe210837b"
       },
       {
         "@type": "Event",
@@ -327,10 +276,9 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "P12M"
-        },
-        "uid": "schedule_0c079bcb73a8"
+        "wmi.int:samplingFrequency": "P1Y",
+        "wmo.int:aggregationInterval": "P12M",
+        "uid": "schedule_3804819ed9e5"
       },
       {
         "@type": "Event",
@@ -343,10 +291,8 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "P12M"
-        },
-        "uid": "schedule_15bc877e29a7"
+        "wmo.int:aggregationInterval": "P12M",
+        "uid": "schedule_766f5a86f3af"
       },
       {
         "@type": "Event",
@@ -359,10 +305,9 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT1H"
-        },
-        "uid": "schedule_d3c68e2d8c47"
+        "wmi.int:samplingFrequency": "P1Y",
+        "wmo.int:aggregationInterval": "PT1H",
+        "uid": "schedule_0b56f61d63b5"
       }
     ],
     "reporting": [
@@ -475,68 +420,255 @@
     "deployments": [
       {
         "id": "deployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-        "instrument": "instrument:0-756-1-387493:d10aa1f4c532"
+        "date": "2003-11-04",
+        "instrument": "instrument:0-756-1-387493:d10aa1f4c532",
+        "operatingStatus": "operational",
+        "exposure": "class3",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.80485,
+            46.85172,
+            2295
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e829-ea7d-7937-e053-148ef98d6de4",
-        "instrument": "instrument:0-756-1-387493:a18460b4f632"
+        "date": "2019-09-18",
+        "instrument": "instrument:0-756-1-387493:a18460b4f632",
+        "operatingStatus": "operational",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2400
+          ]
+        }
       },
       {
-        "id": "deployment:id_b074e828-92be-7937-e053-148ef98d6de4"
+        "id": "deployment:id_b074e828-92be-7937-e053-148ef98d6de4",
+        "date": "2003-10-10",
+        "operatingStatus": "operational",
+        "exposure": "class3",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.94644,
+            46.75271,
+            2400
+          ]
+        }
       },
       {
-        "id": "deployment:id_b074e829-c6e3-7937-e053-148ef98d6de4"
+        "id": "deployment:id_b074e829-c6e3-7937-e053-148ef98d6de4",
+        "date": "2003-10-10",
+        "operatingStatus": "operational",
+        "exposure": "class3",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2400.5
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e829-c713-7937-e053-148ef98d6de4",
-        "instrument": "instrument:0-756-1-387493:8adcbe7a71d6"
+        "date": "2003-10-10",
+        "instrument": "instrument:0-756-1-387493:8adcbe7a71d6",
+        "operatingStatus": "operational",
+        "exposure": "class3",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2394
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e829-ea7f-7937-e053-148ef98d6de4",
-        "instrument": "instrument:0-756-1-387493:f514f2d5d230"
+        "date": "2019-09-18",
+        "instrument": "instrument:0-756-1-387493:f514f2d5d230",
+        "operatingStatus": "operational",
+        "exposure": "class3",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2400.5
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e829-ea80-7937-e053-148ef98d6de4",
-        "instrument": "instrument:0-756-1-387493:f514f2d5d230"
+        "date": "2019-09-18",
+        "instrument": "instrument:0-756-1-387493:f514f2d5d230",
+        "operatingStatus": "operational",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2400.5
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e829-ea7e-7937-e053-148ef98d6de4",
-        "instrument": "instrument:0-756-1-387493:f514f2d5d230"
+        "date": "2018-09-18",
+        "instrument": "instrument:0-756-1-387493:f514f2d5d230",
+        "operatingStatus": "operational",
+        "exposure": "class3",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2400.5
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e829-ea7b-7937-e053-148ef98d6de4",
-        "instrument": "instrument:0-756-1-387493:f514f2d5d230"
+        "date": "2019-09-18",
+        "instrument": "instrument:0-756-1-387493:f514f2d5d230",
+        "operatingStatus": "operational",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2400.5
+          ]
+        }
       },
       {
-        "id": "deployment:id_b074e829-c714-7937-e053-148ef98d6de4"
+        "id": "deployment:id_b074e829-c714-7937-e053-148ef98d6de4",
+        "date": "2003-10-10",
+        "operatingStatus": "operational",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2400.5
+          ]
+        }
       },
       {
-        "id": "deployment:id_b074e829-ea7c-7937-e053-148ef98d6de4"
+        "id": "deployment:id_b074e829-ea7c-7937-e053-148ef98d6de4",
+        "date": "2018-11-02",
+        "operatingStatus": "operational",
+        "exposure": "class3",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2400.5
+          ]
+        }
       },
       {
-        "id": "deployment:id_b074e829-c715-7937-e053-148ef98d6de4"
+        "id": "deployment:id_b074e829-c715-7937-e053-148ef98d6de4",
+        "date": "2003-10-10",
+        "operatingStatus": "operational",
+        "exposure": "class3",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2400.5
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e828-92c0-7937-e053-148ef98d6de4",
-        "instrument": "instrument:0-756-1-387493:bace9fdc6395"
+        "date": "2003-10-10",
+        "instrument": "instrument:0-756-1-387493:bace9fdc6395",
+        "operatingStatus": "operational",
+        "exposure": "class3",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2401.5
+          ]
+        }
       },
       {
         "id": "deployment:id_b074e828-92c1-7937-e053-148ef98d6de4",
-        "instrument": "instrument:0-756-1-387493:bace9fdc6395"
+        "date": "2003-10-10",
+        "instrument": "instrument:0-756-1-387493:bace9fdc6395",
+        "operatingStatus": "operational",
+        "exposure": "class3",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.946457,
+            46.752729,
+            2401.5
+          ]
+        }
       },
       {
-        "id": "deployment:id_b074e829-edbe-7937-e053-148ef98d6de4"
+        "id": "deployment:id_b074e829-edbe-7937-e053-148ef98d6de4",
+        "date": "2002-10-01",
+        "operatingStatus": "operational",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.94516,
+            46.74792,
+            2394
+          ]
+        }
       },
       {
-        "id": "deployment:1282e819-a245-6658-e063-c35ff98d5acc"
+        "id": "deployment:1282e819-a245-6658-e063-c35ff98d5acc",
+        "date": "2002-10-01",
+        "operatingStatus": "operational",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.94516,
+            46.74792,
+            2394
+          ]
+        }
       },
       {
-        "id": "deployment:1282e819-a241-6658-e063-c35ff98d5acc"
+        "id": "deployment:1282e819-a241-6658-e063-c35ff98d5acc",
+        "date": "2009-08-01",
+        "operatingStatus": "operational",
+        "exposure": "class2",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.95129,
+            46.7465,
+            2399
+          ]
+        }
       }
     ],
-    "observations": [
+    "observationSeries": [
       {
-        "id": "observations:210",
+        "id": "observationSeries:210",
         "title": "domain: atmosphere; geometry: point; variable: 210",
         "time": {
           "interval": [
@@ -549,7 +681,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated",
           "GCWCryoNet"
         ],
@@ -560,105 +692,55 @@
           "value": 6.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-01-17",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           },
           {
             "date": "2009-07-10",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           },
           {
             "date": "2003-11-04",
-            "schedule": "schedule_ead3c8deba7b"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_e6059433ed54"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "1997-11-18",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.80485,
-                46.85172,
-                2295
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-10-10",
-            "operatingStatus": "operational"
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-11-04",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2018-10-20",
-            "operatingStatus": "inactive"
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-01-17",
-            "operatingStatus": "operational"
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-08-08",
-            "operatingStatus": "inactive"
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92bf-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e828-92bf-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-01-17",
+            "strategy": "unknown",
             "uom": "kg.m-2",
             "reporting": "reporting:c3f988f63382"
           },
           {
             "date": "2009-07-10",
+            "strategy": "unknown",
             "uom": "kg.m-2",
             "reporting": "reporting:c3f988f63382"
           },
           {
             "date": "2003-11-04",
+            "strategy": "unknown",
             "uom": "kg.m-2",
             "reporting": "reporting:8ffa1ee8545b"
           }
         ]
       },
       {
-        "id": "observations:216",
+        "id": "observationSeries:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
         "time": {
           "interval": [
@@ -671,7 +753,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GCWCryoNet"
         ],
         "sourceOfObservation": "automaticReading",
@@ -681,45 +763,29 @@
           "value": 6.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-ea7d-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7d-7937-e053-148ef98d6de4",
-            "exposure": "class2",
-            "date": "2003-10-10",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-ea7d-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7d-7937-e053-148ef98d6de4",
-            "exposure": "class2",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e829-ea7d-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-09-18",
+            "strategy": "unknown",
             "uom": "hPa",
             "reporting": "reporting:c3f988f63382"
           }
         ]
       },
       {
-        "id": "observations:224",
+        "id": "observationSeries:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
@@ -732,7 +798,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated",
           "GCWCryoNet"
         ],
@@ -743,76 +809,42 @@
           "value": 6.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           },
           {
             "date": "2003-10-10",
-            "schedule": "schedule_ead3c8deba7b"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_e6059433ed54"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e828-92be-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92be-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "1903-01-01",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.94644,
-                46.75271,
-                2400
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92be-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92be-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-10-10",
-            "operatingStatus": "operational",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92be-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92be-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-08-08",
-            "operatingStatus": "inactive"
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92be-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92be-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e828-92be-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-09-18",
+            "strategy": "unknown",
             "uom": "degC",
             "reporting": "reporting:c3f988f63382"
           },
           {
             "date": "2003-10-10",
+            "strategy": "unknown",
             "uom": "degC",
             "reporting": "reporting:8ffa1ee8545b"
           }
         ]
       },
       {
-        "id": "observations:12249",
+        "id": "observationSeries:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
         "time": {
           "interval": [
@@ -825,7 +857,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated",
           "GCWCryoNet"
         ],
@@ -836,53 +868,29 @@
           "value": 6.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2003-10-10",
-            "schedule": "schedule_ead3c8deba7b"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_e6059433ed54"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-c6e3-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-c6e3-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-10-10",
-            "operatingStatus": "operational",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-c6e3-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-c6e3-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-08-08",
-            "operatingStatus": "inactive"
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-c6e3-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-c6e3-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e829-c6e3-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2003-10-10",
+            "strategy": "unknown",
             "uom": "percent",
             "reporting": "reporting:8ffa1ee8545b"
           }
         ]
       },
       {
-        "id": "observations:389",
+        "id": "observationSeries:389",
         "title": "domain: terrestrial; geometry: point; variable: 389",
         "time": {
           "interval": [
@@ -895,7 +903,7 @@
         "observedFeature": {
           "domain": "terrestrial"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated",
           "GCWCryoNet"
         ],
@@ -906,62 +914,42 @@
           "value": 0.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           },
           {
             "date": "2003-10-10",
-            "schedule": "schedule_ead3c8deba7b"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_e6059433ed54"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-c713-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-c713-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-10-10",
-            "operatingStatus": "operational",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2394
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-c713-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-c713-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-08-08",
-            "operatingStatus": "inactive"
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-c713-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-c713-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e829-c713-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-09-18",
+            "strategy": "unknown",
             "uom": "degC",
             "reporting": "reporting:c3f988f63382"
           },
           {
             "date": "2003-10-10",
+            "strategy": "unknown",
             "uom": "degC",
             "reporting": "reporting:8ffa1ee8545b"
           }
         ]
       },
       {
-        "id": "observations:566",
+        "id": "observationSeries:566",
         "title": "domain: atmosphere; geometry: point; variable: 566",
         "time": {
           "interval": [
@@ -974,7 +962,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GCWCryoNet"
         ],
         "sourceOfObservation": "automaticReading",
@@ -984,45 +972,29 @@
           "value": 6.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-ea7f-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7f-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-10-10",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-ea7f-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7f-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e829-ea7f-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-09-18",
+            "strategy": "unknown",
             "uom": "W.m-2",
             "reporting": "reporting:7fa3652836ab"
           }
         ]
       },
       {
-        "id": "observations:567",
+        "id": "observationSeries:567",
         "title": "domain: atmosphere; geometry: point; variable: 567",
         "time": {
           "interval": [
@@ -1035,7 +1007,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GCWCryoNet"
         ],
         "sourceOfObservation": "automaticReading",
@@ -1045,45 +1017,29 @@
           "value": 6.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-ea80-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea80-7937-e053-148ef98d6de4",
-            "exposure": "class2",
-            "date": "2003-10-10",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-ea80-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea80-7937-e053-148ef98d6de4",
-            "exposure": "class2",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e829-ea80-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-09-18",
+            "strategy": "unknown",
             "uom": "W.m-2",
             "reporting": "reporting:7fa3652836ab"
           }
         ]
       },
       {
-        "id": "observations:573",
+        "id": "observationSeries:573",
         "title": "domain: atmosphere; geometry: point; variable: 573",
         "time": {
           "interval": [
@@ -1096,7 +1052,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GCWCryoNet"
         ],
         "sourceOfObservation": "automaticReading",
@@ -1106,51 +1062,29 @@
           "value": 6.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2018-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-ea7e-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7e-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-10-10",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-ea7e-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7e-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2018-09-18"
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-ea7e-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7e-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e829-ea7e-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2018-09-18",
+            "strategy": "unknown",
             "uom": "W.m-2",
             "reporting": "reporting:7fa3652836ab"
           }
         ]
       },
       {
-        "id": "observations:575",
+        "id": "observationSeries:575",
         "title": "domain: atmosphere; geometry: point; variable: 575",
         "time": {
           "interval": [
@@ -1163,7 +1097,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated",
           "GCWCryoNet"
         ],
@@ -1174,45 +1108,29 @@
           "value": 6.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-ea7b-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7b-7937-e053-148ef98d6de4",
-            "exposure": "class2",
-            "date": "2003-10-10",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-ea7b-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7b-7937-e053-148ef98d6de4",
-            "exposure": "class2",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e829-ea7b-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-09-18",
+            "strategy": "unknown",
             "uom": "W.m-2",
             "reporting": "reporting:7fa3652836ab"
           }
         ]
       },
       {
-        "id": "observations:575",
+        "id": "observationSeries:575",
         "title": "domain: atmosphere; geometry: point; variable: 575",
         "time": {
           "interval": [
@@ -1225,7 +1143,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated",
           "GCWCryoNet"
         ],
@@ -1236,62 +1154,42 @@
           "value": 6.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           },
           {
             "date": "2003-10-10",
-            "schedule": "schedule_ead3c8deba7b"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_e6059433ed54"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-c714-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-c714-7937-e053-148ef98d6de4",
-            "exposure": "class2",
-            "date": "2003-10-10",
-            "operatingStatus": "operational",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-c714-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-c714-7937-e053-148ef98d6de4",
-            "exposure": "class2",
-            "date": "2019-08-08",
-            "operatingStatus": "inactive"
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-c714-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-c714-7937-e053-148ef98d6de4",
-            "exposure": "class2",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e829-c714-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-09-18",
+            "strategy": "unknown",
             "uom": "W.m-2",
             "reporting": "reporting:c3f988f63382"
           },
           {
             "date": "2003-10-10",
+            "strategy": "unknown",
             "uom": "W.m-2",
             "reporting": "reporting:8ffa1ee8545b"
           }
         ]
       },
       {
-        "id": "observations:629",
+        "id": "observationSeries:629",
         "title": "domain: terrestrial; geometry: point; variable: 629",
         "time": {
           "interval": [
@@ -1304,7 +1202,7 @@
         "observedFeature": {
           "domain": "terrestrial"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated",
           "GCWCryoNet"
         ],
@@ -1315,72 +1213,42 @@
           "value": 6.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           },
           {
             "date": "2018-11-02",
-            "schedule": "schedule_4288d185b7b7"
-          },
-          {
-            "date": "2018-11-02",
-            "schedule": "schedule_ead3c8deba7b"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_e6059433ed54"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-ea7c-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7c-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-10-10",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-ea7c-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7c-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2018-11-02",
-            "operatingStatus": "operational"
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-ea7c-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7c-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-08-08",
-            "operatingStatus": "inactive"
-          },
-          {
-            "id": "historicalDeployment:id_b074e829-ea7c-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-ea7c-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e829-ea7c-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-09-18",
+            "strategy": "unknown",
             "uom": "cm",
             "reporting": "reporting:c3f988f63382"
           },
           {
             "date": "2018-11-02",
+            "strategy": "unknown",
             "uom": "cm",
             "reporting": "reporting:7162160272ae"
           }
         ]
       },
       {
-        "id": "observations:629",
+        "id": "observationSeries:629",
         "title": "domain: terrestrial; geometry: point; variable: 629",
         "time": {
           "interval": [
@@ -1393,7 +1261,7 @@
         "observedFeature": {
           "domain": "terrestrial"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated",
           "GCWCryoNet"
         ],
@@ -1404,43 +1272,29 @@
           "value": 6.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2003-10-10",
-            "schedule": "schedule_97fc1c34468a"
-          },
-          {
-            "date": "2003-10-10",
-            "schedule": "schedule_ead3c8deba7b"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_e6059433ed54"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-c715-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-c715-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-10-10",
-            "operatingStatus": "operational",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2400.5
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_b074e829-c715-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2003-10-10",
+            "strategy": "unknown",
             "uom": "cm",
             "reporting": "reporting:12b3c3e1955f"
           }
         ]
       },
       {
-        "id": "observations:12005",
+        "id": "observationSeries:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
         "time": {
           "interval": [
@@ -1453,7 +1307,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated",
           "GCWCryoNet"
         ],
@@ -1464,62 +1318,42 @@
           "value": 7.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           },
           {
             "date": "2003-10-10",
-            "schedule": "schedule_ead3c8deba7b"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_e6059433ed54"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e828-92c0-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92c0-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-10-10",
-            "operatingStatus": "operational",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2401.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92c0-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92c0-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-08-08",
-            "operatingStatus": "inactive"
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92c0-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92c0-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e828-92c0-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-09-18",
+            "strategy": "unknown",
             "uom": "deg",
             "reporting": "reporting:c3f988f63382"
           },
           {
             "date": "2003-10-10",
+            "strategy": "unknown",
             "uom": "deg",
             "reporting": "reporting:8ffa1ee8545b"
           }
         ]
       },
       {
-        "id": "observations:12006",
+        "id": "observationSeries:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
         "time": {
           "interval": [
@@ -1532,7 +1366,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "nonAffiliated",
           "GCWCryoNet"
         ],
@@ -1543,62 +1377,42 @@
           "value": 7.5,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2019-09-18",
-            "schedule": "schedule_d82c3b74df95"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_dea9eeb0b28d"
+            ]
           },
           {
             "date": "2003-10-10",
-            "schedule": "schedule_ead3c8deba7b"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_e6059433ed54"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e828-92c1-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92c1-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2003-10-10",
-            "operatingStatus": "operational",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.946457,
-                46.752729,
-                2401.5
-              ]
-            }
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92c1-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92c1-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-08-08",
-            "operatingStatus": "inactive"
-          },
-          {
-            "id": "historicalDeployment:id_b074e828-92c1-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e828-92c1-7937-e053-148ef98d6de4",
-            "exposure": "class3",
-            "date": "2019-09-18",
-            "operatingStatus": "operational"
-          }
+        "deployments": [
+          "deployment:id_b074e828-92c1-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2019-09-18",
+            "strategy": "unknown",
             "uom": "m.s-1",
             "reporting": "reporting:c3f988f63382"
           },
           {
             "date": "2003-10-10",
+            "strategy": "unknown",
             "uom": "m.s-1",
             "reporting": "reporting:8ffa1ee8545b"
           }
         ]
       },
       {
-        "id": "observations:12014",
+        "id": "observationSeries:12014",
         "title": "domain: terrestrial; geometry: verticalProfile; variable: 12014",
         "time": {
           "interval": [
@@ -1611,7 +1425,7 @@
         "observedFeature": {
           "domain": "terrestrial"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GCWCryoNet"
         ],
         "sourceOfObservation": "automaticReading",
@@ -1621,83 +1435,89 @@
           "value": -10.0,
           "uom": "m"
         },
-        "historicalOfficialStatus": [
+        "officialStatus": [
           {
             "date": "2002-10-01",
             "officialStatus": "primary"
           }
         ],
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2013-02-02",
-            "schedule": "schedule_045030178b17"
+            "strategy": "discrete",
+            "observingSchedules": [
+              "schedule_7cc207354147"
+            ]
           },
           {
             "date": "2013-02-02",
-            "schedule": "schedule_0063ae8f9f52"
+            "strategy": "discrete",
+            "observingSchedules": [
+              "schedule_e9b538b6aae3"
+            ]
           },
           {
             "date": "2013-02-02",
-            "schedule": "schedule_9928d3a502f4"
+            "strategy": "discrete",
+            "observingSchedules": [
+              "schedule_f253213a5423"
+            ]
           },
           {
             "date": "2011-08-05",
-            "schedule": "schedule_5fafa65e59ef"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_f253213a5423"
+            ]
           },
           {
             "date": "2011-08-05",
-            "schedule": "schedule_0063ae8f9f52"
-          },
-          {
-            "date": "2011-08-05",
-            "schedule": "schedule_9928d3a502f4"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_e9b538b6aae3"
+            ]
           },
           {
             "date": "2002-10-01",
-            "schedule": "schedule_5fafa65e59ef"
+            "strategy": "discrete",
+            "observingSchedules": [
+              "schedule_f253213a5423"
+            ]
           },
           {
             "date": "2002-10-01",
-            "schedule": "schedule_9928d3a502f4"
+            "strategy": "discrete",
+            "observingSchedules": [
+              "schedule_e871495a8095"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-edbe-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-edbe-7937-e053-148ef98d6de4",
-            "exposure": "class2",
-            "date": "2002-10-01",
-            "operatingStatus": "operational",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.94516,
-                46.74792,
-                2394
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_b074e829-edbe-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2013-02-02",
+            "strategy": "unknown",
             "uom": "degC",
             "reporting": "reporting:ed8ec6c1d5df"
           },
           {
             "date": "2011-08-05",
+            "strategy": "unknown",
             "uom": "degC",
             "reporting": "reporting:0945263cc8b7"
           },
           {
             "date": "2002-10-01",
+            "strategy": "unknown",
             "uom": "degC",
             "reporting": "reporting:79b9752022ad"
           }
         ]
       },
       {
-        "id": "observations:12015",
+        "id": "observationSeries:12015",
         "title": "domain: terrestrial; geometry: point; variable: 12015",
         "time": {
           "interval": [
@@ -1710,7 +1530,7 @@
         "observedFeature": {
           "domain": "terrestrial"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GCWCryoNet"
         ],
         "sourceOfObservation": "manualReading",
@@ -1720,53 +1540,49 @@
           "value": -3.0,
           "uom": "m"
         },
-        "historicalOfficialStatus": [
+        "officialStatus": [
           {
             "date": "2002-10-01",
             "officialStatus": "additional"
           }
         ],
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2002-10-01",
-            "schedule": "schedule_35f065f5f710"
+            "strategy": "discrete",
+            "observingSchedules": [
+              "schedule_ba3fe210837b"
+            ]
           },
           {
             "date": "2002-10-01",
-            "schedule": "schedule_0c079bcb73a8"
+            "strategy": "discrete",
+            "observingSchedules": [
+              "schedule_3804819ed9e5"
+            ]
           },
           {
             "date": "2002-10-01",
-            "schedule": "schedule_15bc877e29a7"
+            "strategy": "discrete",
+            "observingSchedules": [
+              "schedule_766f5a86f3af"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:1282e819-a245-6658-e063-c35ff98d5acc",
-            "deployment": "deployment:1282e819-a245-6658-e063-c35ff98d5acc",
-            "exposure": "class2",
-            "date": "2002-10-01",
-            "operatingStatus": "operational",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.94516,
-                46.74792,
-                2394
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:1282e819-a245-6658-e063-c35ff98d5acc"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2002-10-01",
+            "strategy": "unknown",
             "uom": "m",
             "reporting": "reporting:79f6ba48d1a6"
           }
         ]
       },
       {
-        "id": "observations:12283",
+        "id": "observationSeries:12283",
         "title": "domain: terrestrial; geometry: point; variable: 12283",
         "time": {
           "interval": [
@@ -1779,7 +1595,7 @@
         "observedFeature": {
           "domain": "terrestrial"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GCWCryoNet"
         ],
         "sourceOfObservation": "inapplicable",
@@ -1789,46 +1605,35 @@
           "value": 0.0,
           "uom": "m"
         },
-        "historicalOfficialStatus": [
+        "officialStatus": [
           {
             "date": "2009-08-01",
             "officialStatus": "primary"
           }
         ],
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2009-08-01",
-            "schedule": "schedule_5fafa65e59ef"
+            "strategy": "discrete",
+            "observingSchedules": [
+              "schedule_f253213a5423"
+            ]
           },
           {
             "date": "2009-08-01",
-            "schedule": "schedule_d3c68e2d8c47"
-          },
-          {
-            "date": "2009-08-01",
-            "schedule": "schedule_9928d3a502f4"
+            "strategy": "discrete",
+            "observingSchedules": [
+              "schedule_0b56f61d63b5"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:1282e819-a241-6658-e063-c35ff98d5acc",
-            "deployment": "deployment:1282e819-a241-6658-e063-c35ff98d5acc",
-            "exposure": "class2",
-            "date": "2009-08-01",
-            "operatingStatus": "operational",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                9.95129,
-                46.7465,
-                2399
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:1282e819-a241-6658-e063-c35ff98d5acc"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2009-08-01",
+            "strategy": "unknown",
             "uom": "m.a-1",
             "reporting": "reporting:cd6afffdd13d"
           }

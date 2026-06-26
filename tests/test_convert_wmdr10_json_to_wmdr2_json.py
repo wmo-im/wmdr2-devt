@@ -122,9 +122,9 @@ def test_observation_program_affiliations_are_plain_unique_code_values() -> None
         {},
         source_name="20200101_0-TEST",
     )
-    observation = record["properties"]["observations"][0]
-    assert observation["programAffiliations"] == ["GAWregional", "GBON"]
-    assert "programAffiliation" not in observation
+    observation = record["properties"]["observationSeries"][0]
+    assert observation["programAffiliation"] == ["GAWregional", "GBON"]
+    assert "programAffiliations" not in observation
 
 
 def test_facility_temporal_program_affiliation_keeps_temporal_metadata() -> None:
@@ -134,7 +134,6 @@ def test_facility_temporal_program_affiliation_keeps_temporal_metadata() -> None
                 "programAffiliation": GAW_REGIONAL,
                 "beginPosition": "2020-01-01T00:00:00Z",
                 "programSpecificFacilityId": "GAW-TEST",
-                "programSpecificFacilityTitle": "GAW TEST",
                 "reportingStatus": [
                     {
                         "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
@@ -151,16 +150,17 @@ def test_facility_temporal_program_affiliation_keeps_temporal_metadata() -> None
         {},
         source_name="20200101_0-TEST",
     )
-    assert record["properties"]["historicalProgramAffiliation"] == [
+    assert record["properties"]["programAffiliation"] == [
         {
             "programAffiliation": "GAWregional",
             "reportingStatus": "operational",
             "date": "2020-01-01",
             "programSpecificFacilityId": "GAW-TEST",
-            "programSpecificFacilityTitle": "GAW TEST",
         }
     ]
     assert "temporalProgramAffiliation" not in record["properties"]
+
+
 
 def test_build_facility_feature_uses_current_core_model() -> None:
     record = module.build_facility_feature(
@@ -171,8 +171,9 @@ def test_build_facility_feature_uses_current_core_model() -> None:
         source_name="20200101_0-TEST",
     )
     props = record["properties"]
-    observation = props["observations"][0]
-    deployment = observation["historicalDeployments"][0]
+    observation = props["observationSeries"][0]
+    deployment_ref = observation["deployments"][0]
+    deployment = props["deployments"][0]
 
     assert record["type"] == "Feature"
     assert record["conformsTo"] == ["http://wigos.wmo.int/spec/wmdr/2/conf/core"]
@@ -191,9 +192,9 @@ def test_build_facility_feature_uses_current_core_model() -> None:
     assert props["deployments"][0]["serialNumber"] == "SN1"
     assert props["deployments"][0]["instrument"].startswith("instrument:")
     assert deployment["date"] == "2020-01-01"
-    assert deployment["deployment"] == props["deployments"][0]["id"]
-    assert "serialNumber" not in deployment
-    assert "instrument" not in deployment
+    assert deployment_ref == props["deployments"][0]["id"]
+    assert deployment["serialNumber"] == "SN1"
+    assert deployment["instrument"].startswith("instrument:")
     assert props["instruments"][0]["verticalRange"] == {"min": 0.0, "max": 30.0}
 
 def test_reporting_is_reusable_and_history_keeps_date_reference_and_uom() -> None:
@@ -206,7 +207,7 @@ def test_reporting_is_reusable_and_history_keeps_date_reference_and_uom() -> Non
     )
     props = record["properties"]
     reporting_defs = props["reporting"]
-    reporting_history = props["observations"][0]["historicalReporting"]
+    reporting_history = props["observationSeries"][0]["reporting"]
 
     assert len(reporting_defs) == 1
     reporting_id = reporting_defs[0]["id"]
@@ -220,7 +221,7 @@ def test_reporting_is_reusable_and_history_keeps_date_reference_and_uom() -> Non
         "dataPolicy": {"dataPolicy": "noLimitation"},
     }
     assert reporting_history == [
-        {"date": "2020-01-01", "uom": "mm", "reporting": reporting_id}
+        {"date": "2020-01-01", "strategy": "unknown", "uom": "mm", "reporting": reporting_id}
     ]
 
 def test_duplicate_temporal_observing_schedule_references_are_removed() -> None:
@@ -232,10 +233,14 @@ def test_duplicate_temporal_observing_schedule_references_are_removed() -> None:
         source_name="20200101_0-TEST",
     )
     schedules = record["properties"]["schedules"]
-    schedule_refs = record["properties"]["observations"][0]["observingSchedules"]
+    observing_procedures = record["properties"]["observationSeries"][0]["observingProcedures"]
     assert schedules
-    assert len(schedule_refs) == len({tuple(sorted(ref.items())) for ref in schedule_refs})
-    assert all(ref["schedule"] in {schedule["uid"] for schedule in schedules} for ref in schedule_refs)
+    assert len(observing_procedures) == len({(ref["date"], ref["strategy"], tuple(ref["observingSchedules"])) for ref in observing_procedures})
+    assert all(
+        schedule_uid in {schedule["uid"] for schedule in schedules}
+        for procedure in observing_procedures
+        for schedule_uid in procedure["observingSchedules"]
+    )
 
 def test_facility_environment_wraps_environmental_histories_as_arrays_of_objects() -> None:
     facility = _minimal_facility() | {
@@ -268,8 +273,8 @@ def test_facility_environment_wraps_environmental_histories_as_arrays_of_objects
         source_name="20200101_0-TEST",
     )
     props = record["properties"]
-    environment = props["historicalEnvironment"]
-    assert "environment" not in props
+    environment = props["environment"]
+    assert "environment" in props
     assert "temporalClimateZone" not in props
     assert "temporalSurfaceCover" not in props
     assert "localTopography" not in props
@@ -746,7 +751,6 @@ def test_temporal_program_affiliation_expands_reporting_status_history() -> None
             "programAffiliation": GAW_REGIONAL,
             "beginPosition": "2020-01-01",
             "programSpecificFacilityId": "GAW-1",
-            "programSpecificFacilityTitle": "GAW One",
             "reportingStatus": [
                 {"reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational", "beginPosition": "2020-01-01"},
                 {"reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/closed", "beginPosition": "2021-01-01"},
@@ -758,14 +762,12 @@ def test_temporal_program_affiliation_expands_reporting_status_history() -> None
             "reportingStatus": "operational",
             "date": "2020-01-01",
             "programSpecificFacilityId": "GAW-1",
-            "programSpecificFacilityTitle": "GAW One",
         },
         {
             "programAffiliation": "GAWregional",
             "reportingStatus": "closed",
             "date": "2021-01-01",
             "programSpecificFacilityId": "GAW-1",
-            "programSpecificFacilityTitle": "GAW One",
         },
     ]
 
@@ -936,7 +938,7 @@ def test_deployment_temporal_serial_number_is_array_of_objects() -> None:
     ]
 
 
-def test_jscalendar_schedule_uses_wmo_aggregation_extension() -> None:
+def test_jscalendar_schedule_uses_v024_sampling_and_aggregation_extensions() -> None:
     event = module._jscalendar_observing_schedule(
         {
             "beginPosition": "2020-01-01T00:00:00Z",
@@ -947,7 +949,9 @@ def test_jscalendar_schedule_uses_wmo_aggregation_extension() -> None:
     )
     assert event is not None
     assert event["@type"] == "Event"
-    assert event["wmo.int:aggregation"] == {"temporalAggregate": "PT1H", "diurnalBaseTime": "07:05:00"}
+    assert event["wmi.int:samplingFrequency"] == "PT1H"
+    assert event["wmo.int:aggregationInterval"] == "PT1H"
+    assert "wmo.int:aggregation" not in event
     assert event["uid"].startswith("schedule_")
 
 
@@ -996,12 +1000,14 @@ def test_normalize_observation_reporting_registers_reusable_definitions() -> Non
     assert reporting is not None
     assert len(registry) == 2
     assert reporting[0]["date"] == "2020-01-01"
+    assert reporting[0]["strategy"] == "unknown"
     assert reporting[0]["uom"] == "mm"
     assert reporting[0]["reporting"] in registry
     assert registry[reporting[0]["reporting"]]["internationalExchange"] is True
     assert registry[reporting[0]["reporting"]]["temporalAggregate"] == "PT1H"
     assert registry[reporting[0]["reporting"]]["timeliness"] == "PT30M"
     assert reporting[1]["date"] == "2021-01-01"
+    assert reporting[1]["strategy"] == "unknown"
     assert reporting[1]["reporting"] in registry
     assert registry[reporting[1]["reporting"]]["internationalExchange"] is False
     assert registry[reporting[1]["reporting"]]["temporalAggregate"] == "PT10M"
@@ -1021,30 +1027,29 @@ def test_two_observations_can_reuse_the_same_reporting_definition() -> None:
     assert len(props["reporting"]) == 1
     reporting_id = props["reporting"][0]["id"]
     assert all(
-        observation["historicalReporting"][0]["reporting"] == reporting_id
-        for observation in props["observations"]
+        observation["reporting"][0]["reporting"] == reporting_id
+        for observation in props["observationSeries"]
     )
 
 
 def test_normalize_observation_links_to_embedded_deployments_by_id() -> None:
     observation = module._normalize_observation(_observation_with_deployment(), index=1, facility_id="0-TEST")
-    assert "deployments" not in observation
-    assert observation["historicalDeployments"][0]["id"] == "historicalDeployment:dep1"
-    assert observation["programAffiliations"] == ["GAWregional", "GBON"]
+    assert observation["deployments"] == ["deployment:dep1"]
+    assert observation["programAffiliation"] == ["GAWregional", "GBON"]
 
 def test_convert_payload_accepts_split_payload_shape() -> None:
     converted = module.convert_payload(
         {
             "header": {"dateStamp": "2020-01-02"},
             "facility": _minimal_facility(),
-            "observations": [_observation_with_deployment()],
+            "observationSeries": [_observation_with_deployment()],
             "deployments": [],
         },
         source_name="20200102_0-TEST",
     )
     assert converted["id"] == "facility:0-TEST"
     assert converted["properties"]["created"] == "2020-01-02T00:00:00Z"
-    assert converted["properties"]["observations"][0]["programAffiliations"] == ["GAWregional", "GBON"]
+    assert converted["properties"]["observationSeries"][0]["programAffiliation"] == ["GAWregional", "GBON"]
 
 
 def test_convert_payload_emits_temporal_geometry_methods_from_geopositioning_method() -> None:
@@ -1062,7 +1067,7 @@ def test_convert_payload_emits_temporal_geometry_methods_from_geopositioning_met
                     {"geoLocation": "45 6 99", "beginPosition": "2020-01-01"},
                 ],
             },
-            "observations": [],
+            "observationSeries": [],
         },
         source_name="0-TEST",
     )
@@ -1086,7 +1091,7 @@ def test_convert_payload_emits_single_temporal_geometry_when_method_is_present()
                     "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps",
                 },
             },
-            "observations": [],
+            "observationSeries": [],
         },
         source_name="0-TEST",
     )
@@ -1100,7 +1105,7 @@ def test_convert_payload_emits_single_temporal_geometry_when_method_is_present()
 
 
 def test_convert_group_uses_source_name_as_fallback_facility_when_missing() -> None:
-    converted = module.convert_group({"observations": []}, source_name="fallback-record")
+    converted = module.convert_group({"observationSeries": []}, source_name="fallback-record")
     assert converted["id"] == "facility:fallback-record"
     assert converted["properties"]["title"] == "fallback-record"
 
@@ -1108,7 +1113,7 @@ def test_convert_group_uses_source_name_as_fallback_facility_when_missing() -> N
 def test_convert_file_writes_json_output(tmp_path: Path) -> None:
     source = tmp_path / "input.json"
     target_dir = tmp_path / "out"
-    source.write_text(json.dumps({"facility": _minimal_facility(), "observations": []}), encoding="utf-8")
+    source.write_text(json.dumps({"facility": _minimal_facility(), "observationSeries": []}), encoding="utf-8")
     output_path = module.convert_file(source, target_dir)
     converted = json.loads(output_path.read_text(encoding="utf-8"))
     assert converted["id"] == "facility:0-TEST"
@@ -1190,7 +1195,7 @@ def test_main_runs_catalogue_post_processing_when_enabled(tmp_path: Path) -> Non
                 "role": "http://codes.wmo.int/wmdr/ResponsiblePartyRole/owner",
             }
         },
-        "observations": [_observation_with_deployment()],
+        "observationSeries": [_observation_with_deployment()],
         "deployments": [],
     }
     (source / "record.json").write_text(json.dumps(payload), encoding="utf-8")
@@ -1241,9 +1246,9 @@ def test_main_runs_catalogue_post_processing_when_enabled(tmp_path: Path) -> Non
     assert [contact["identifier"] for contact in contacts] == ["contact:jane.smith@example.org"]
     assert contacts[0]["phones"] == [{"value": "+41 1 234 56 78"}]
     assert len(instruments) == 1
-    historical_deployment = rewritten["properties"]["observations"][0]["historicalDeployments"][0]
+    deployment_ref = rewritten["properties"]["observationSeries"][0]["deployments"][0]
     assert rewritten["properties"]["deployments"][0]["instrument"] == instruments[0]["id"]
-    assert historical_deployment["deployment"] == rewritten["properties"]["deployments"][0]["id"]
+    assert deployment_ref == rewritten["properties"]["deployments"][0]["id"]
 
 def test_catalogues_source_config_key_is_obsolete(tmp_path: Path) -> None:
     source = tmp_path / "wmdr10"
@@ -1346,9 +1351,8 @@ def test_deployment_temporal_geometry_uses_same_moving_point_model_as_facility()
     )
     assert deployments == [
         {
-            "id": "historicalDeployment:dep1",
+            "id": "deployment:dep1",
             "date": "2021-01-01",
-            "deployment": "deployment:dep1",
             "geometry": {"type": "Point", "coordinates": [7.0, 46.0, 100]},
         }
     ]
@@ -1366,6 +1370,6 @@ def test_observation_accepts_legacy_observed_geometry_type_but_outputs_observed_
         {},
         source_name="20200101_0-TEST",
     )
-    observation = record["properties"]["observations"][0]
+    observation = record["properties"]["observationSeries"][0]
     assert observation["observedGeometry"] == "point"
     assert "observedGeometryType" not in observation

@@ -99,7 +99,7 @@
     ],
     "facilityType": "lakeRiverFixed",
     "wmoRegion": "africa",
-    "historicalProgramAffiliation": [
+    "programAffiliation": [
       {
         "date": "1947-09-01",
         "programAffiliation": [
@@ -108,7 +108,7 @@
         "reportingStatus": "operational"
       }
     ],
-    "historicalTerritory": [
+    "territory": [
       {
         "date": "1947-09-01",
         "territory": "KEN"
@@ -126,10 +126,8 @@
             "frequency": "hourly"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT1H"
-        },
-        "uid": "schedule_9928d3a502f4"
+        "wmo.int:aggregationInterval": "PT1H",
+        "uid": "schedule_f253213a5423"
       }
     ],
     "reporting": [
@@ -144,12 +142,13 @@
     ],
     "deployments": [
       {
-        "id": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb"
+        "id": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
+        "date": "1947-09-01"
       }
     ],
-    "observations": [
+    "observationSeries": [
       {
-        "id": "observations:12252",
+        "id": "observationSeries:12252",
         "title": "domain: ocean; geometry: verticalProfile; variable: 12252",
         "time": {
           "interval": [
@@ -162,25 +161,25 @@
         "observedFeature": {
           "domain": "ocean"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "WHYCOS"
         ],
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "1947-09-01",
-            "schedule": "schedule_9928d3a502f4"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_f253213a5423"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
-            "deployment": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
-            "date": "1947-09-01"
-          }
+        "deployments": [
+          "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "1947-09-01",
+            "strategy": "unknown",
             "uom": "m",
             "reporting": "reporting:0a7fabf5614c"
           }

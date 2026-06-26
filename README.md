@@ -1,8 +1,8 @@
-# WMDR2 development
+# WMDR2 development v0.2.4
 
-This repository contains experimental tooling for transforming legacy WMDR 1.0 XML records into a simplified WMDR10 JSON representation and then into a draft WMDR2 JSON representation.
+This repository contains experimental tooling for transforming legacy WMDR 1.0 XML records into a simplified WMDR10 JSON representation and then into the draft WMDR2 v0.2.4 JSON representation.
 
-The current WMDR2 output is a facility-centric full record encoded as a GeoJSON-like `Feature` with WMDR2-specific content in `properties`. Output files use the `.json` extension.
+The WMDR2 output is a facility-centric full record encoded as a GeoJSON-like `Feature`. WMDR2-specific content is stored in `properties`. Output files use the `.json` extension.
 
 ## References
 
@@ -11,9 +11,9 @@ The current WMDR2 output is a facility-centric full record encoded as a GeoJSON-
 - [WMDR 1.0 schemas](https://schemas.wmo.int/wmdr/1.0/)
 - [WMDR2 draft UML aligned to OMS](https://wmo-im.github.io/wmdr2-devt/oms/html/)
 
-## Current workflow
+## Conversion workflow
 
-The current conversion workflow has two active stages.
+The workflow has two active stages.
 
 ### 1. Convert WMDR 1.0 XML to WMDR10 JSON
 
@@ -47,9 +47,9 @@ python convert_wmdr10_json_to_wmdr2_json.py \
   --target results/wmdr2_json_examples
 ```
 
-This stage writes one `.json` WMDR2 full record per facility.
+This stage writes one WMDR2 full-record JSON file per facility. The converter accepts `observationSeries` input and also accepts older intermediate inputs that still use `observations`; output is always written as `properties.observationSeries`.
 
-## WMDR2 full-record structure
+## Full-record structure
 
 Each WMDR2 output file is a facility-centric JSON `Feature`.
 
@@ -62,11 +62,13 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
     "coordinates": [7.8232, 46.4204, 1540]
   },
   "temporalGeometry": {
+    "type": "MovingPoint",
     "coordinates": [
       [7.823197, 46.420453, 1538],
       [7.8232, 46.4204, 1540]
     ],
-    "dates": ["2000-08-17", "2024-01-17"]
+    "dates": ["2000-08-17", "2024-01-17"],
+    "methods": [[], ["gps"]]
   },
   "time": {
     "interval": ["2000-08-17", "2025-05-28"]
@@ -81,8 +83,13 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
     "updated": "2025-07-29T00:00:00Z",
     "facilitySets": ["facilitySet:gaw"],
     "keywords": ["0-20000-0-06725", "Blatten"],
-    "observations": [],
+    "programAffiliation": [],
+    "territory": [],
+    "environment": [],
+    "observationSeries": [],
     "deployments": [],
+    "reporting": [],
+    "schedules": [],
     "instruments": []
   }
 }
@@ -93,285 +100,343 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
 - `type`: always `Feature`.
 - `id`: facility identifier, usually based on the WIGOS station identifier.
 - `geometry`: current GeoJSON point geometry, derived from the most recent known coordinates.
-- `temporalGeometry`: optional WMDR2 `MovingPoint` coordinate history. It remains the only temporal object that uses aligned `coordinates` and `dates` arrays.
-- `time`: facility lifecycle interval. This uses date resolution only. Unknown bounds are represented with `..`.
-- `conformsTo`: declares the WMDR2 core conformance class. The only allowed value is `http://wigos.wmo.int/spec/wmdr/2/conf/core`. Use `http`, not `https`, because this is a stable identifier URI, not primarily a dereferenceable web URL.
-- `properties`: contains the facility, observation, deployment, instrument, schedule, and facility-set references.
+- `temporalGeometry`: optional WMDR2 `MovingPoint` coordinate history. It is the only temporal object that uses aligned `coordinates`, `dates`, and optional `methods` arrays.
+- `time`: facility lifecycle interval using date resolution only. Unknown bounds are represented with `..`.
+- `conformsTo`: declares the WMDR2 core conformance class. The only allowed value is `http://wigos.wmo.int/spec/wmdr/2/conf/core`.
+- `properties`: contains facility-level metadata and reusable registries for observation series, deployments, reporting definitions, schedules, instruments, contacts, environment, territory, and programme affiliation.
 
-`externalIds` is not emitted, because it only repeats the feature `id`.
+`externalIds` is not emitted because it repeats the feature `id`.
 
-## Temporal-history convention
+## Time-varying object convention
 
-`temporalGeometry` is special and remains an aligned-array `MovingPoint` object:
+`temporalGeometry` is the special trajectory object and remains an aligned-array `MovingPoint`.
 
 ```json
 "temporalGeometry": {
+  "type": "MovingPoint",
   "coordinates": [
     [7.823197, 46.420453, 1538],
     [7.8232, 46.4204, 1540]
   ],
-  "dates": ["2000-08-17", "2024-01-17"]
+  "dates": ["2000-08-17", "2024-01-17"],
+  "methods": [[], ["gps"]]
 }
 ```
 
-All other `temporal*` histories use arrays of dated objects. This avoids parallel-array alignment errors and keeps each historical assertion self-contained.
+Other time-varying concepts use arrays of dated objects. Examples include `environment`, `programAffiliation`, `territory`, `deployments`, `reporting`, `observingProcedures`, and `officialStatus`.
+
+## Facility-level properties
+
+### Facility sets
+
+A facility record references one or more logical facility groupings with `facilitySets`.
 
 ```json
-"temporalProgramAffiliation": [
-  {
-    "programAffiliation": "GOSGeneral",
-    "reportingStatus": "operational",
-    "programSpecificFacilityId": "GOS-06725",
-    "programSpecificFacilityTitle": "Blatten GOS facility",
-    "date": "2000-08-17"
-  },
-  {
-    "programAffiliation": "GBON",
-    "reportingStatus": "operational",
-    "date": "2022-09-08"
-  }
-]
+"facilitySets": ["facilitySet:oscar-station-cluster-5"]
 ```
 
-Examples of the same convention include:
+The referenced facility-set records are kept in a separate facility-set catalogue and are validated by `schemas/wmdr2-facility-sets.schema.json`. A facility set is useful when several facilities need to be treated as one logical entity, for example when a dataset or observing record spans nearby sites or when downstream discovery metadata should point to a group rather than enumerate each facility separately.
 
-```json
-"temporalTerritory": [
-  {"territory": "CHE", "date": "2000-08-17"}
-]
-```
-
-```json
-"deployments": [
-  {
-    "id": "deployment:abc123",
-    "temporalObservingSchedule": [
-      {"observingSchedule": "schedule_daily_12", "date": "2025-01-01"}
-    ]
-  }
-]
-```
-
-## Environment
-
-Environmental histories are grouped under `properties.environment`. `temporalTopographyBathymetry` is not emitted. Its former sub-elements are promoted to first-level environment temporal histories.
-
-```json
-"environment": {
-  "temporalClimateZone": [
-    {"climateZone": "Cfb", "date": "1980-01-01"}
-  ],
-  "temporalSurfaceCover": [
-    {"surfaceCover": "urbanBuiltup", "date": "1981-01-01"}
-  ],
-  "temporalPopulationDensities": [
-    {"populationDensity": [100.0, 200.0], "date": "1990-01-01"}
-  ],
-  "temporalSurfaceRoughness": [
-    {"surfaceRoughness": "rough", "date": "1991-01-01"}
-  ],
-  "temporalLocalTopography": [
-    {"localTopography": "flat", "date": "1970-01-01"}
-  ],
-  "temporalRelativeElevation": [
-    {"relativeElevation": "hilltop", "date": "1970-01-01"}
-  ],
-  "temporalTopographicContext": [
-    {"topographicContext": "valley", "date": "1970-01-01"}
-  ],
-  "temporalAltitudeOrDepth": [
-    {"altitudeOrDepth": 1540, "date": "1970-01-01"}
-  ]
-}
-```
-
-## Facility sets
-
-A facility record references facility sets with `facilitySets`:
-
-```json
-"facilitySets": ["facilitySet:gaw"]
-```
-
-Facility-set catalogue entries are validated separately by `schemas/wmdr2-facility-sets.schema.json`:
+A real example is OSCAR/Surface station-cluster report 5, which groups facilities in the Arosa and Davos area. In WMDR2 this can be represented as a facility set to highlight the continuity of the total column ozone observations that started in Arosa and are being continued in Davos.
 
 ```json
 {
   "facilitySets": [
     {
-      "id": "facilitySet:gaw",
-      "title": "GAW",
-      "description": "Global Atmosphere Watch facilities."
+      "id": "facilitySet:oscar-station-cluster-5",
+      "title": "Arosa/Davos total column ozone facilities",
+      "description": "Grouping of facilities in either the Arosa or Davos area, and to highlight the link between the total column ozone observations started in Arosa and being continued in Davos.",
+      "links": [
+        {
+          "rel": "canonical",
+          "type": "text/html",
+          "title": "OSCAR/Surface station cluster report 5",
+          "href": "https://oscar.wmo.int/surface/#/search/stationClusterReport/5"
+        }
+      ]
     }
   ]
 }
 ```
 
-The singular `facilitySet` property is obsolete.
+The facility-set identifier is the value used by facility records. The external OSCAR/Surface URL remains a link on the facility-set catalogue entry. The singular `facilitySet` property is obsolete.
 
-## Code-list values
+### Programme affiliation
 
-The WMDR2 JSON output stores compact values, not full code-list URLs.
+Facility-level programme affiliation is represented by `properties.programAffiliation`, an array of dated objects.
 
 ```json
-"observedProperty": 12006,
-"observedDomain": {
-  "domain": "atmosphere"
-},
-"facilityType": "landFixed",
-"wmoRegion": "europe"
+"programAffiliation": [
+  {
+    "date": "2000-08-17",
+    "programAffiliation": "GOSGeneral",
+    "reportingStatus": "operational",
+    "programSpecificFacilityId": "GOS-06725"
+  },
+  {
+    "date": "2022-09-08",
+    "programAffiliation": "GBON",
+    "reportingStatus": "operational"
+  }
+]
 ```
 
-Validation against WMO code lists is expected to be handled by a validator that knows which code list applies to each property.
+`programSpecificFacilityId` is retained when present.
 
-## Observations, deployments, instruments, and schedules
+### Territory
 
-### Observations
+Facility territory history is represented by `properties.territory`.
 
-Observations contain observation-specific metadata and references to deployments.
+```json
+"territory": [
+  {
+    "date": "2000-08-17",
+    "territory": "CHE"
+  }
+]
+```
+
+### Environment
+
+Facility environmental context is represented by `properties.environment`, an array of dated `Environment` objects.
+
+```json
+"environment": [
+  {
+    "date": "1980-01-01",
+    "climateZone": "Cfb",
+    "surfaceCover": "urbanBuiltup"
+  },
+  {
+    "date": "1990-01-01",
+    "population": [1000.0, null],
+    "perimeter_km": [10.0, 50.0]
+  },
+  {
+    "date": "1991-01-01",
+    "surfaceRoughness": "rough"
+  },
+  {
+    "date": "..",
+    "topographyBathymetry": {
+      "localTopography": "flat",
+      "relativeElevation": "middle",
+      "topographicContext": "rises",
+      "altitudeOrDepth": "veryHighAltitude"
+    }
+  }
+]
+```
+
+## Observation series
+
+Observation-series records are stored under `properties.observationSeries`.
 
 ```json
 {
-  "id": "observation:12006",
-  "title": "domain: atmosphere; geometry: point; variable: 12006 Horizontal wind speed at specified distance from reference surface",
+  "id": "observationSeries:12006",
+  "title": "domain: atmosphere; geometry: point; variable: 12006",
+  "time": {"interval": ["2016-04-29", ".."]},
   "observedProperty": 12006,
-  "observedDomain": {
+  "observedGeometry": "point",
+  "observedFeature": {
     "domain": "atmosphere",
     "domainFeature": "near-surface-air",
     "featureName": "2 m air"
   },
-  "observedGeometry": "point",
-  "programAffiliations": ["GAWregional"],
-  "deployments": ["deployment:abc123"]
+  "applicationArea": ["weatherForecasting"],
+  "programAffiliation": ["GAWregional"],
+  "sourceOfObservation": "automaticReading",
+  "referenceSurface": "localGround",
+  "representativeness": "local",
+  "verticalDistanceFromReferenceSurface": {
+    "value": 2.0,
+    "uom": "m"
+  },
+  "officialStatus": [
+    {
+      "date": "2020-01-01",
+      "officialStatus": "primary"
+    }
+  ],
+  "deployments": ["deployment:dep-1"],
+  "reporting": [
+    {
+      "date": "2020-01-01",
+      "strategy": "unknown",
+      "reporting": "reporting:hourly-level1-open",
+      "uom": "K"
+    }
+  ],
+  "observingProcedures": [
+    {
+      "date": "2020-01-01",
+      "strategy": "continuous",
+      "observingSchedules": ["schedule_8fd3e0f1094a"]
+    }
+  ]
 }
 ```
 
-`observedDomain` is now an object. The converter derives `observedDomain.domain` from the observed-property code-list branch where possible, for example `ObservedVariableAtmosphere` becomes `atmosphere`. `domainFeature` and `featureName` are optional WMDR2 fields for future enrichment; WMDR10 normally does not provide values for them.
+Important conventions:
 
-`observedGeometry` replaces the former `observedGeometryType` name; the WMDR2 output avoids `*Type` suffixes for this observation geometry property.
+- The identifier prefix is `observationSeries:`.
+- `observedFeature.domain` is used for the broad domain such as `atmosphere`, `terrestrial`, `ocean`, or `earth`.
+- `observedFeature.domainFeature` and `observedFeature.featureName` are optional enrichment fields.
+- Observation-series programme affiliation uses `programAffiliation`, not `programAffiliations`.
+- `officialStatus` is an array of dated objects. WMDR10 boolean `officialStatus` values map to `primary` for `true` and `additional` for `false`.
+- `deployments` is an array of references to `properties.deployments[*].id`.
+- `reporting` is an array of dated `ReportingProcedure` objects that reference reusable reporting definitions.
+- `observingProcedures` is an array of dated `ObservingProcedure` objects. Each observing procedure carries a `strategy` and references one or more reusable schedules through `observingSchedules`.
 
-Observation-level program affiliation is intentionally non-temporal and plural: use `programAffiliations: ["GAWregional"]`. Do not use the old singular temporal-object form:
+Obsolete observation-series names such as `observations`, `observedVariable`, `observedDomain`, `domain`, `domainName`, `historicalDeployments`, `historicalReporting`, `historicalOfficialStatus`, `observingSchedules`, and `programAffiliations` are not emitted.
+
+## Reporting
+
+Reporting definitions are reusable facility-level objects stored under `properties.reporting`.
 
 ```json
-"programAffiliation": [
-  {"programAffiliation": "GAWregional", "date": ".."}
-]
-```
-
-Facility-level program affiliation remains temporal under `properties.temporalProgramAffiliation`, because it can carry `reportingStatus`, `programSpecificFacilityId`, and `programSpecificFacilityTitle`.
-
-Observation reporting uses aligned arrays. Reporting information is sourced from the WMDR1 `dataGeneration.reporting` block and belongs to the observation, not to the deployment schedule:
-
-```json
-"reporting": {
-  "internationalExchange": [false],
-  "temporalAggregate": ["P1M"],
-  "uom": ["DU"],
-  "dataPolicy": [
-    {
+"reporting": [
+  {
+    "id": "reporting:hourly-level1-open",
+    "internationalExchange": true,
+    "temporalAggregate": "PT1H",
+    "levelOfData": "level1",
+    "dataPolicy": {
       "dataPolicy": "noLimitation",
       "attribution": {
         "originator": {
           "role": null
         }
       }
-    }
-  ],
-  "levelOfData": ["level1"],
-  "temporalTimeliness": [
-    {"timeliness": "PT30M", "date": "1982-03-13"}
-  ]
-}
+    },
+    "timeliness": "PT30M"
+  }
+]
 ```
 
-### Observing schedules
+Observation-series reporting history is stored in `observationSeries[*].reporting` as dated `ReportingProcedure` objects.
 
-Schedules are first-class reusable objects in the WMDR2 full-record model. They are stored under `properties.schedules` as JSCalendar / RFC 8984 `Event` objects with a small WMDR2 extension profile. Observations do not embed schedule objects directly.
+```json
+"reporting": [
+  {
+    "date": "2020-01-01",
+    "strategy": "unknown",
+    "reporting": "reporting:hourly-level1-open",
+    "uom": "K"
+  }
+]
+```
 
-The schedule applicability history belongs under `deployments[].temporalObservingSchedule`, because the deployment is the atomic data-collection unit. Each deployment can use a different schedule, or several deployments can reuse the same schedule `uid`.
+This split allows one reporting definition to be reused by multiple observation series. Observation-series-specific values such as `uom` and `links` remain on the dated `ReportingProcedure` object. The v0.2.4 model requires a reporting procedure `strategy`; the converter uses a source strategy when one is available and otherwise emits `unknown`.
+
+## Deployments
+
+Deployments are reusable, dated instrument-instance/state objects stored under `properties.deployments`.
+
+```json
+"deployments": [
+  {
+    "id": "deployment:dep-1",
+    "date": "2020-01-01",
+    "instrument": "instrument:aws-001-temperature-sensor",
+    "serialNumber": "SN-001",
+    "operatingStatus": "operational",
+    "exposure": "good",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [7.0, 46.0, 502]
+    }
+  }
+]
+```
+
+The same deployment may be referenced by several observation series.
+
+```json
+"observationSeries": [
+  {
+    "id": "observationSeries:12006",
+    "deployments": ["deployment:dep-1"]
+  },
+  {
+    "id": "observationSeries:12001",
+    "deployments": ["deployment:dep-1"]
+  }
+]
+```
+
+Important conventions:
+
+- `deployment.instrument` is a scalar reference to one instrument identifier, not a one-element array.
+- `deployment.date` is required.
+- `serialNumber`, `operatingStatus`, `exposure`, and `geometry` describe the dated deployment state.
+- Deployment records do not carry `title`, `type`, `manufacturer`, or `model` properties.
+- Obsolete names such as `temporalSerialNumber`, `serialNumbers`, `temporalOfficialStatus`, and `temporalGeometry` are not emitted on deployments.
+
+## Instruments
+
+Instruments are reusable catalogue objects stored under `properties.instruments`.
+
+```json
+"instruments": [
+  {
+    "id": "instrument:aws-001-temperature-sensor",
+    "title": "Temperature sensor",
+    "description": "Automatic air-temperature sensor.",
+    "manufacturer": "Vaisala",
+    "model": "HMP155",
+    "verticalRange": {
+      "min": 0,
+      "max": 30
+    },
+    "observedProperty": [12006],
+    "observedGeometry": "point"
+  }
+]
+```
+
+Manufacturer, model, optional title, optional description, optional vertical range, and optional instrument capability information belong on the instrument. Serial number belongs on the deployment.
+
+## Observing schedules and observing procedures
+
+Schedules are reusable JSCalendar-like objects stored under `properties.schedules`. Observation series use them through dated `ObservingProcedure` objects under `observationSeries[*].observingProcedures`.
 
 ```json
 "schedules": [
   {
     "@type": "Event",
-    "uid": "schedule_df3ec3dc94b9",
+    "uid": "schedule_8fd3e0f1094a",
     "start": "0001-01-01T00:00:00",
     "timeZone": "UTC",
-    "duration": "P1D",
+    "duration": "PT1H",
     "recurrenceRules": [
-      {"@type": "RecurrenceRule", "frequency": "daily"}
+      {
+        "@type": "RecurrenceRule",
+        "frequency": "hourly"
+      }
     ],
-    "wmo.int:aggregation": {
-      "temporalAggregate": "P1M",
-      "diurnalBaseTime": "00:00:00"
-    }
-  }
-],
-"deployments": [
-  {
-    "id": "deployment:abc123",
-    "temporalObservingSchedule": [
-      {"observingSchedule": "schedule_df3ec3dc94b9", "date": "1982-03-13"}
-    ]
+    "wmi.int:samplingFrequency": "PT1H",
+    "wmo.int:aggregationInterval": "PT1H"
   }
 ]
 ```
 
-### Deployments
-
-Deployments are referenceable objects. Their `id` is preserved from the WMDR1 XML source when the source provides a useful deployment identifier.
+The v0.2.4 XMI names the sampling extension `wmo.int:samplingFrequency`; the converter follows that spelling. Aggregation interval is emitted as `wmo.int:aggregationInterval`. The older nested `wmo.int:aggregation` object is not emitted.
 
 ```json
-{
-  "id": "deployment:abc123",
-  "observingMethod": "automaticWeatherStation",
-  "referenceSurface": "localGround",
-  "verticalDistanceFromReferenceSurface": {
-    "value": 2.0,
-    "uom": "m"
-  },
-  "instrument": ["instrument:def456"],
-  "temporalGeometry": {
-    "type": "MovingPoint",
-    "coordinates": [[7.8232, 46.4204, 1540]],
-    "dates": ["2020-01-01"],
-    "methods": [["gps"]]
-  },
-  "serialNumbers": {
-    "serialNumber": ["S123"],
-    "dates": ["2020-01-01"]
-  },
-  "temporalObservingSchedule": [
-    {"observingSchedule": "schedule_daily_12", "date": "2025-01-01"}
-  ]
-}
+"observingProcedures": [
+  {
+    "date": "2020-01-01",
+    "strategy": "continuous",
+    "observingSchedules": ["schedule_8fd3e0f1094a"]
+  }
+]
 ```
 
-`referenceSurface` replaces the older `localReferenceSurface` property name. `verticalDistanceFromReferenceSurface` is represented as a quantity object with `value` and optional `uom`; the converter populates this from WMDR10 `heightAboveLocalReferenceSurface`, including source `@uom` when available. Deployments may also carry their own optional `temporalGeometry` object, using the same MovingPoint structure as facility `temporalGeometry`.
+`ObservingProcedure.strategy` is required by the model. The converter uses source `samplingStrategy` / `observingStrategy` when available and otherwise emits `unknown`.
 
-Deployment records do not carry `title`, `type`, `manufacturer`, or `model` properties.
-
-### Instruments
-
-Instruments are reusable catalogue objects. Manufacturer and model are stored here, while serial-number histories remain with deployments. Optional `title`, `description`, `verticalRange`, `observableVariables`, and `observableGeometry` properties are part of the schema, but are only emitted when suitable source values are available; WMDR 1.0 records often do not provide all of them. `verticalRange` is a WMDR2 object with numeric `min` and `max` limits. `observableVariables` is an array of compact values from `http://codes.wmo.int/wmdr/ObservedVariable` where possible, or free-text descriptions where no code-list value is available. `observableGeometry` is a compact term from `http://codes.wmo.int/wmdr/Geometry`.
-
-```json
-{
-  "id": "instrument:def456",
-  "title": "Weather transmitter",
-  "description": "Automatic weather instrument.",
-  "manufacturer": "Vaisala",
-  "model": "WXT536",
-  "verticalRange": {
-    "min": 0,
-    "max": 30
-  },
-  "observableVariables": [12006, "local free-text variable"],
-  "observableGeometry": "point"
-}
-```
-
-## Contacts and roles
+## Contacts and catalogue representation
 
 Contacts are stored in `properties.contacts`. A contact may include an `id`, `organization`, `name`, `position`, `emails`, `phones`, `links`, and `roles`.
 
@@ -383,11 +448,28 @@ Contacts are stored in `properties.contacts`. A contact may include an `id`, `or
 }
 ```
 
-Role values should be specific role codes, not URLs to a generic role code list.
+When catalogue post-processing is enabled, contacts and instruments can be externalized to catalogue files. The rewritten facility records retain minimal inline contact references and remove inline `properties.instruments`. Deployment `instrument` references remain scalar strings.
 
-## Keywords and themes
+## Code-list values
 
-`keywords` are retained as lightweight discovery text only when configured. If the converter section has no `discovery` block, the built-in defaults emit facility keywords from `identifier` and `name`, and deployment keywords from selected instrument/deployment fields. As soon as a `discovery` block is present in `config.yaml`, it is authoritative: omitted buckets and empty lists suppress extraction. For example, this disables keywords completely:
+The WMDR2 JSON output stores compact code-list values where possible, not full code-list URLs.
+
+```json
+{
+  "observedProperty": 12006,
+  "observedFeature": {"domain": "atmosphere"},
+  "facilityType": "landFixed",
+  "wmoRegion": "europe"
+}
+```
+
+Validation against WMO code lists is expected to be handled by validators that know which code list applies to each property.
+
+## Keywords and discovery policy
+
+`keywords` are retained as lightweight discovery text only when configured. If the converter section has no `discovery` block, built-in defaults emit facility keywords from `identifier` and `name`, and deployment keywords from selected instrument/deployment fields.
+
+As soon as a `discovery` block is present in `config.yaml`, it is authoritative: omitted buckets and empty lists suppress extraction.
 
 ```yaml
 convert_wmdr10_json_to_wmdr2_json:
@@ -405,7 +487,7 @@ convert_wmdr10_json_to_wmdr2_json:
       links: []
 ```
 
-To retain the former default facility keywords explicitly, use:
+To retain the default facility keywords explicitly, use:
 
 ```yaml
 convert_wmdr10_json_to_wmdr2_json:
@@ -414,15 +496,11 @@ convert_wmdr10_json_to_wmdr2_json:
       keywords: [identifier, name]
 ```
 
-`themes` are intentionally not emitted in the current WMDR2 core representation. Controlled-vocabulary values are represented as explicit WMDR2 properties instead.
+`themes` are intentionally not emitted in the current WMDR2 core representation.
 
-## Schema descriptions
+## Active schema files
 
-The JSON Schemas carry human-readable `description` annotations adapted from WMDR 1.0 `xs:documentation` for comparable concepts. Examples include deployment vertical distance and reference surface, equipment manufacturer/model/description, facility environmental context, surface cover, climate zone, programme affiliation, reporting status, population, surface roughness, and facility-set association. New WMDR2-only instrument elements such as `verticalRange`, `observableVariables`, and `observableGeometry` are documented directly in the WMDR2 schema and are optional when no WMDR 1.0 source content exists.
-
-## Schemas and tests
-
-The active schema files should live under `schemas/`:
+The active schema files live under `schemas/`.
 
 ```text
 schemas/
@@ -431,7 +509,7 @@ schemas/
   wmdr2-facility-sets.schema.json
 ```
 
-Run the schema tests with:
+Run schema tests with:
 
 ```bash
 pytest -q tests/test_wmdr2_schemas.py

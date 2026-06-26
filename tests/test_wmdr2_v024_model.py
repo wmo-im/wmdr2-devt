@@ -38,7 +38,7 @@ def _sample_payload() -> dict:
                 "beginPosition": "2020-01-01",
             },
         },
-        "observations": [
+        "observationSeries": [
             {
                 "identifier": "obs-1",
                 "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
@@ -91,17 +91,17 @@ def _sample_payload() -> dict:
     }
 
 
-def test_v022_observation_contains_model_aligned_historical_objects() -> None:
+def test_v024_observation_contains_model_aligned_historical_objects() -> None:
     record = convert_payload(_sample_payload(), source_name="sample")
     props = record["properties"]
 
     assert props["deployments"]
     assert props["instruments"]
 
-    observation = props["observations"][0]
-    assert observation["id"].startswith("observations:")
-    assert "deployments" not in observation
-    assert "reporting" not in observation
+    observation = props["observationSeries"][0]
+    assert observation["id"].startswith("observationSeries:")
+    assert "deployments" in observation
+    assert "reporting" in observation
     assert "domain" not in observation
     assert "domainName" not in observation
     assert "observedDomain" not in observation
@@ -112,19 +112,17 @@ def test_v022_observation_contains_model_aligned_historical_objects() -> None:
     assert observation["representativeness"] == "local"
     assert observation["verticalDistanceFromReferenceSurface"]["value"] == 2.0
 
-    deployments = observation["historicalDeployments"]
-    assert isinstance(deployments, list)
-    assert deployments
+    deployment_refs = observation["deployments"]
+    assert isinstance(deployment_refs, list)
+    assert deployment_refs
 
-    deployment = deployments[0]
-    assert deployment["id"].startswith("historicalDeployment:")
+    deployment = props["deployments"][0]
+    assert deployment_refs == [deployment["id"]]
+    assert deployment["id"].startswith("deployment:")
     assert deployment["date"] == "2020-01-01"
-    assert props["deployments"][0]["serialNumber"] == "SN-001"
-    assert props["deployments"][0]["instrument"].startswith("instrument:")
-    assert deployment["deployment"] == props["deployments"][0]["id"]
+    assert deployment["serialNumber"] == "SN-001"
+    assert deployment["instrument"].startswith("instrument:")
     assert deployment["operatingStatus"] == "operational"
-    assert "serialNumber" not in deployment
-    assert "instrument" not in deployment
     assert deployment["geometry"]["type"] == "Point"
     assert deployment["exposure"] == "good"
 
@@ -140,19 +138,20 @@ def test_v022_observation_contains_model_aligned_historical_objects() -> None:
         assert key not in deployment
 
 
-def test_v022_historical_reporting_official_status_and_schedule_refs_are_dated_objects() -> None:
+def test_v024_reporting_official_status_and_observing_procedures_are_dated_objects() -> None:
     record = convert_payload(_sample_payload(), source_name="sample")
     props = record["properties"]
-    observation = props["observations"][0]
+    observation = props["observationSeries"][0]
 
     schedules = props["schedules"]
     assert schedules
     assert schedules[0]["uid"].startswith("schedule_")
 
-    schedule_refs = observation["observingSchedules"]
-    assert schedule_refs
-    assert schedule_refs[0]["date"] == "2020-01-01"
-    assert schedule_refs[0]["schedule"] == schedules[0]["uid"]
+    observing_procedures = observation["observingProcedures"]
+    assert observing_procedures
+    assert observing_procedures[0]["date"] == "2020-01-01"
+    assert observing_procedures[0]["strategy"] == "unknown"
+    assert observing_procedures[0]["observingSchedules"] == [schedules[0]["uid"]]
 
     reporting_defs = props["reporting"]
     assert reporting_defs
@@ -163,59 +162,60 @@ def test_v022_historical_reporting_official_status_and_schedule_refs_are_dated_o
     assert reporting_def["levelOfData"] == "level1"
     assert reporting_def["timeliness"] == "PT30M"
 
-    historical_reporting = observation["historicalReporting"]
+    historical_reporting = observation["reporting"]
     assert isinstance(historical_reporting, list)
     reporting = historical_reporting[0]
     assert reporting["date"] == "2020-01-01"
+    assert reporting["strategy"] == "unknown"
     assert reporting["reporting"] == reporting_def["id"]
     assert reporting["uom"] == "K"
     for key in ("internationalExchange", "temporalAggregate", "levelOfData", "timeliness"):
         assert key not in reporting
 
-    official = observation["historicalOfficialStatus"]
+    official = observation["officialStatus"]
     assert isinstance(official, list)
     assert official[0]["date"] == "2020-01-01"
     assert official[0]["officialStatus"] == "primary"
 
 
-def test_v022_facility_histories_are_unwrapped() -> None:
+def test_v024_facility_histories_are_unwrapped() -> None:
     record = convert_payload(_sample_payload(), source_name="sample")
     props = record["properties"]
 
-    assert "environment" not in props
-    assert "historicalEnvironment" in props
+    assert "environment" in props
     assert "temporalProgramAffiliation" not in props
-    assert "historicalProgramAffiliation" in props
+    assert "programAffiliation" in props
 
-    historical_environment = props["historicalEnvironment"]
-    assert isinstance(historical_environment, list)
-    assert historical_environment[0]["date"] == "2020-01-01"
-    assert historical_environment[0]["climateZone"] == "temperate"
-    assert historical_environment[0]["surfaceRoughness"] == "low"
+    environment = props["environment"]
+    assert isinstance(environment, list)
+    assert environment[0]["date"] == "2020-01-01"
+    assert environment[0]["climateZone"] == "temperate"
+    assert environment[0]["surfaceRoughness"] == "low"
 
 
-def test_v022_schema_definitions_are_present() -> None:
+def test_v024_schema_definitions_are_present() -> None:
     schema = json.loads((ROOT / "schemas" / "wmdr2-common.schema.json").read_text(encoding="utf-8"))
     defs = schema["$defs"]
 
     for name in (
         "observedFeature",
-        "historicalDeployment",
+        "deployment",
         "reporting",
-        "historicalReporting",
-        "historicalOfficialStatus",
-        "historicalEnvironment",
-        "historicalProgramAffiliation",
-        "historicalTerritory",
-        "scheduleReference",
+        "reportingProcedure",
+        "observingProcedure",
+        "officialStatus",
+        "environment",
+        "programAffiliation",
+        "territory",
+        "schedule",
     ):
         assert name in defs
 
     observation_props = defs["observation"]["properties"]
     assert "observedFeature" in observation_props
-    assert "historicalDeployments" in observation_props
-    assert "historicalReporting" in observation_props
-    assert "historicalOfficialStatus" in observation_props
-    assert "observingSchedules" in observation_props
-    assert "deployments" not in observation_props
-    assert "reporting" not in observation_props
+    assert "deployments" in observation_props
+    assert "reporting" in observation_props
+    assert "officialStatus" in observation_props
+    assert "observingProcedures" in observation_props
+    assert "deployments" in observation_props
+    assert "reporting" in observation_props

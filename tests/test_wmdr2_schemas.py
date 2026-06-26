@@ -96,10 +96,10 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             "facilitySets": ["facilitySet:gaw"],
             "facilityType": "landFixed",
             "wmoRegion": "europe",
-            "historicalTerritory": [
+            "territory": [
                 {"territory": "BEL", "date": "2016-04-28"},
             ],
-            "historicalEnvironment": [
+            "environment": [
                 {"date": "..", "climateZone": "Cfb", "surfaceCover": "grassland"},
                 {
                     "date": "2020-01-01",
@@ -114,13 +114,12 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     },
                 },
             ],
-            "historicalProgramAffiliation": [
+            "programAffiliation": [
                 {
                     "programAffiliation": "GOSGeneral",
                     "reportingStatus": "operational",
                     "date": "2000-08-17",
                     "programSpecificFacilityId": "GOS-06494",
-                    "programSpecificFacilityTitle": "MONT-RIGI GOS",
                 },
                 {
                     "programAffiliation": "GBON",
@@ -152,44 +151,41 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "temporalAggregate": "PT10M",
                 },
             ],
-            "observations": [
+            "observationSeries": [
                 {
-                    "id": "observations:179",
+                    "id": "observationSeries:179",
                     "title": "domain: atmosphere; geometry: point; variable: 179 Cloud amount",
                     "time": {"interval": ["2016-04-29", ".."]},
                     "observedProperty": 179,
                     "observedGeometry": "point",
                     "observedFeature": {"domain": "atmosphere"},
-                    "programAffiliations": ["GAWregional"],
+                    "programAffiliation": ["GAWregional"],
                     "sourceOfObservation": "automatic",
                     "referenceSurface": "localGround",
                     "verticalDistanceFromReferenceSurface": {"value": 2.0, "uom": "m"},
-                    "historicalOfficialStatus": [
+                    "officialStatus": [
                         {"officialStatus": "primary", "date": ".."}
                     ],
-                    "observingSchedules": [
-                        {"schedule": "schedule_daily_12", "date": "2025-01-01"},
+                    "observingProcedures": [
+                        {"date": "2025-01-01", "strategy": "unknown", "observingSchedules": ["schedule_daily_12"]},
                     ],
-                    "historicalReporting": [
-                        {"date": "2016-04-29", "reporting": "reporting:hourly-open", "uom": None},
-                        {"date": "2020-01-01", "reporting": "reporting:ten-minute-restricted", "uom": "mm"},
+                    "reporting": [
+                        {"date": "2016-04-29", "strategy": "unknown", "reporting": "reporting:hourly-open", "uom": None},
+                        {"date": "2020-01-01", "strategy": "unknown", "reporting": "reporting:ten-minute-restricted", "uom": "mm"},
                     ],
-                    "historicalDeployments": [
-                        {
-                            "id": "historicalDeployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
-                            "date": "2016-04-29",
-                            "deployment": "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
-                            "operatingStatus": "operational",
-                            "geometry": {"type": "Point", "coordinates": [6.0733333333, 50.5108333333, 671]},
-                        }
+                    "deployments": [
+                        "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06"
                     ],
                 }
             ],
             "deployments": [
                 {
                     "id": "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
+                    "date": "2016-04-29",
                     "instrument": "instrument:example",
                     "serialNumber": "ABC123",
+                    "operatingStatus": "operational",
+                    "geometry": {"type": "Point", "coordinates": [6.0733333333, 50.5108333333, 671]},
                 }
             ],
             "instruments": [
@@ -214,38 +210,37 @@ def test_facility_centric_record_feature_is_valid() -> None:
 
 def test_reporting_definitions_are_reusable_and_history_uses_references() -> None:
     instance = _valid_facility_record_feature()
-    observation = instance["properties"]["observations"][0]
+    observation = instance["properties"]["observationSeries"][0]
     reporting_ids = {item["id"] for item in instance["properties"]["reporting"]}
-    assert {item["reporting"] for item in observation["historicalReporting"]} <= reporting_ids
-    observation["historicalReporting"][0]["internationalExchange"] = True
+    assert {item["reporting"] for item in observation["reporting"]} <= reporting_ids
+    observation["reporting"][0]["internationalExchange"] = True
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
 def test_observation_program_affiliations_are_plain_code_lists() -> None:
     instance = _valid_facility_record_feature()
-    observation = instance["properties"]["observations"][0]
-    observation["programAffiliations"] = ["GAWregional", "GBON"]
+    observation = instance["properties"]["observationSeries"][0]
+    observation["programAffiliation"] = ["GAWregional", "GBON"]
     assert _validate(RECORD_SCHEMA, instance) == []
 
 
-def test_observation_program_affiliation_temporal_object_is_invalid() -> None:
+def test_observation_program_affiliation_allows_structured_code_values() -> None:
     instance = _valid_facility_record_feature()
-    observation = instance["properties"]["observations"][0]
-    observation.pop("programAffiliations", None)
+    observation = instance["properties"]["observationSeries"][0]
+    observation.pop("programAffiliation", None)
     observation["programAffiliation"] = [
         {"programAffiliation": "GAWregional", "date": ".."},
     ]
-    assert not _is_valid(RECORD_SCHEMA, instance)
+    assert _is_valid(RECORD_SCHEMA, instance)
 
 
 def test_facility_historical_program_affiliation_is_valid() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["historicalProgramAffiliation"] = [
+    instance["properties"]["programAffiliation"] = [
         {
             "programAffiliation": "GAWregional",
             "reportingStatus": "operational",
             "programSpecificFacilityId": "GAW-123",
-            "programSpecificFacilityTitle": "GAW regional site",
             "date": "..",
         }
     ]
@@ -319,7 +314,7 @@ def test_temporal_geometry_methods_are_optional_aligned_term_lists() -> None:
 
 def test_historical_environment_topography_bathymetry_object_is_valid() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["historicalEnvironment"][0]["topographyBathymetry"] = {
+    instance["properties"]["environment"][0]["topographyBathymetry"] = {
         "localTopography": "slope",
         "relativeElevation": "middle",
         "topographicContext": "rises",
@@ -329,34 +324,34 @@ def test_historical_environment_topography_bathymetry_object_is_valid() -> None:
 
 def test_environment_obsolete_topography_bathymetry_timeline_is_invalid() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["historicalEnvironment"][0]["temporalTopographyBathymetry"] = [
+    instance["properties"]["environment"][0]["temporalTopographyBathymetry"] = [
         {"topographyBathymetry": {"localTopography": "flat"}, "date": "2020-01-01"},
     ]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 def test_environment_obsolete_population_density_timeline_is_invalid() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["historicalEnvironment"][0]["temporalPopulationDensities"] = [
+    instance["properties"]["environment"][0]["temporalPopulationDensities"] = [
         {"populationDensity": [100.0, 200.0], "date": "2020-01-01"},
     ]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 def test_historical_environment_population_requires_population_perimeter_and_date() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["historicalEnvironment"] = [
+    instance["properties"]["environment"] = [
         {"date": "2020-01-01", "population": [1000, None], "perimeter_km": [10, 50]},
     ]
     assert _validate(RECORD_SCHEMA, instance) == []
 
     instance = _valid_facility_record_feature()
-    instance["properties"]["historicalEnvironment"] = [
+    instance["properties"]["environment"] = [
         {"date": "2020-01-01", "population": 1000},
     ]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 def test_environmental_histories_are_invalid_as_direct_facility_properties() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"].pop("historicalEnvironment", None)
+    instance["properties"].pop("environment", None)
     instance["properties"]["temporalClimateZone"] = [
         {"climateZone": "Cfb", "date": "1982-03-13"},
     ]
@@ -387,40 +382,40 @@ def test_facility_sets_catalog_schema() -> None:
 
 def test_observation_description_is_not_part_of_current_core_model() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observations"][0]["description"] = None
+    instance["properties"]["observationSeries"][0]["description"] = None
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_observation_deployments_property_is_not_part_of_v022_model() -> None:
+def test_observation_deployments_reference_deployment_objects() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observations"][0]["deployments"] = [
+    instance["properties"]["observationSeries"][0]["deployments"] = [
         "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
     ]
-    assert not _is_valid(RECORD_SCHEMA, instance)
+    assert _is_valid(RECORD_SCHEMA, instance)
 
-def test_root_deployments_are_reusable_definitions_in_v023_model() -> None:
+def test_root_deployments_are_reusable_definitions_in_v024_model() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["deployments"] = [
-        {"id": "deployment:legacy", "instrument": "instrument:example"},
+        {"id": "deployment:legacy", "date": "2020-01-01", "instrument": "instrument:example"},
     ]
     assert _is_valid(RECORD_SCHEMA, instance)
 
 def test_observation_vertical_distance_accepts_structured_quantity() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observations"][0]["verticalDistanceFromReferenceSurface"] = {"value": 2.0, "uom": "m"}
+    instance["properties"]["observationSeries"][0]["verticalDistanceFromReferenceSurface"] = {"value": 2.0, "uom": "m"}
     assert _is_valid(RECORD_SCHEMA, instance)
 
 def test_reusable_deployment_serial_number_and_observation_official_status_are_valid() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["deployments"][0]["serialNumber"] = "XYZ"
-    instance["properties"]["observations"][0]["historicalOfficialStatus"] = [
+    instance["properties"]["observationSeries"][0]["officialStatus"] = [
         {"officialStatus": "primary", "date": "2024-01-01"}
     ]
     assert _is_valid(RECORD_SCHEMA, instance)
 
-def test_historical_deployment_serial_numbers_parallel_array_is_invalid() -> None:
+def test_deployment_serial_numbers_parallel_array_is_invalid() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observations"][0]["historicalDeployments"][0]["serialNumbers"] = {
+    instance["properties"]["deployments"][0]["serialNumbers"] = {
         "serialNumber": ["ABC123"],
         "dates": [".."],
     }
@@ -496,16 +491,16 @@ def test_wmdr2_core_conformance_rejects_https_variant() -> None:
 
 
 def test_schema_descriptions_carry_wmdr1_documentation() -> None:
-    historical_deployment = COMMON_SCHEMA["$defs"]["historicalDeployment"]
+    deployment = COMMON_SCHEMA["$defs"]["deployment"]
     instrument = COMMON_SCHEMA["$defs"]["instrument"]
-    historical_environment = COMMON_SCHEMA["$defs"]["historicalEnvironment"]
-    assert "deployment" in historical_deployment["properties"]["deployment"]["description"]
+    historical_environment = COMMON_SCHEMA["$defs"]["environment"]
+    assert "Dated Deployment" in deployment["description"]
     assert "Manufacturer of the equipment" in instrument["properties"]["manufacturer"]["description"]
     assert "Environmental context" in historical_environment["description"]
 
 def test_observation_uses_observed_property_not_observed_variable() -> None:
     instance = _valid_facility_record_feature()
-    observation = instance["properties"]["observations"][0]
+    observation = instance["properties"]["observationSeries"][0]
     assert "observedProperty" in observation
     observation["observedVariable"] = observation.pop("observedProperty")
     assert not _is_valid(RECORD_SCHEMA, instance)
@@ -513,7 +508,7 @@ def test_observation_uses_observed_property_not_observed_variable() -> None:
 
 def test_observed_feature_accepts_domain_feature_and_feature_name() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observations"][0]["observedFeature"] = {
+    instance["properties"]["observationSeries"][0]["observedFeature"] = {
         "domain": "atmosphere",
         "domainFeature": "near-surface-air",
         "featureName": "2 m air",
@@ -522,35 +517,35 @@ def test_observed_feature_accepts_domain_feature_and_feature_name() -> None:
 
 def test_observed_domain_is_not_part_of_current_core_model() -> None:
     instance = _valid_facility_record_feature()
-    observation = instance["properties"]["observations"][0]
+    observation = instance["properties"]["observationSeries"][0]
     observation["observedDomain"] = observation.pop("observedFeature")
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 def test_observation_uses_reference_surface_not_local_reference_surface() -> None:
     instance = _valid_facility_record_feature()
-    observation = instance["properties"]["observations"][0]
+    observation = instance["properties"]["observationSeries"][0]
     assert "referenceSurface" in observation
     observation["localReferenceSurface"] = observation.pop("referenceSurface")
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 def test_observation_vertical_distance_requires_quantity_object_with_value() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observations"][0]["verticalDistanceFromReferenceSurface"] = 2.0
+    instance["properties"]["observationSeries"][0]["verticalDistanceFromReferenceSurface"] = 2.0
     assert not _is_valid(RECORD_SCHEMA, instance)
 
     instance = _valid_facility_record_feature()
-    instance["properties"]["observations"][0]["verticalDistanceFromReferenceSurface"] = {"uom": "m"}
+    instance["properties"]["observationSeries"][0]["verticalDistanceFromReferenceSurface"] = {"uom": "m"}
     assert not _is_valid(RECORD_SCHEMA, instance)
 
-def test_historical_deployment_geometry_is_valid_point_geometry() -> None:
+def test_deployment_geometry_is_valid_point_geometry() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observations"][0]["historicalDeployments"][0]["geometry"] = {
+    instance["properties"]["deployments"][0]["geometry"] = {
         "type": "Point",
         "coordinates": [7.0, 46.0, 100],
     }
     assert _validate(RECORD_SCHEMA, instance) == []
 
-    instance["properties"]["observations"][0]["historicalDeployments"][0]["temporalGeometry"] = {
+    instance["properties"]["deployments"][0]["temporalGeometry"] = {
         "type": "MovingPoint",
         "coordinates": [[7.0, 46.0, 100]],
         "dates": ["2021-01-01"],
@@ -559,7 +554,7 @@ def test_historical_deployment_geometry_is_valid_point_geometry() -> None:
 
 def test_observation_uses_observed_geometry_not_observed_geometry_type() -> None:
     instance = _valid_facility_record_feature()
-    observation = instance["properties"]["observations"][0]
+    observation = instance["properties"]["observationSeries"][0]
     assert "observedGeometry" in observation
     observation["observedGeometryType"] = observation.pop("observedGeometry")
     assert not _is_valid(RECORD_SCHEMA, instance)

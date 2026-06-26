@@ -102,7 +102,7 @@
     ],
     "facilityType": "landFixed",
     "wmoRegion": "asia",
-    "historicalProgramAffiliation": [
+    "programAffiliation": [
       {
         "date": "2016-04-28",
         "programAffiliation": [
@@ -178,7 +178,7 @@
         "reportingStatus": "operational"
       }
     ],
-    "historicalTerritory": [
+    "territory": [
       {
         "date": "2016-04-28",
         "territory": "HKG"
@@ -196,11 +196,8 @@
             "frequency": "hourly"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT1H",
-          "diurnalBaseTime": "00:00:00"
-        },
-        "uid": "schedule_d00020f9d1f2"
+        "wmo.int:aggregationInterval": "PT1H",
+        "uid": "schedule_983739e29517"
       },
       {
         "@type": "Event",
@@ -213,10 +210,8 @@
             "frequency": "hourly"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT1H"
-        },
-        "uid": "schedule_9928d3a502f4"
+        "wmo.int:aggregationInterval": "PT1H",
+        "uid": "schedule_f253213a5423"
       },
       {
         "@type": "Event",
@@ -230,11 +225,8 @@
             "interval": 12
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT12H",
-          "diurnalBaseTime": "00:00:00"
-        },
-        "uid": "schedule_c074280b524d"
+        "wmo.int:aggregationInterval": "PT12H",
+        "uid": "schedule_93a1844a90cd"
       },
       {
         "@type": "Event",
@@ -248,27 +240,8 @@
             "interval": 12
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT12H"
-        },
-        "uid": "schedule_240608612e59"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T16:00:00",
-        "timeZone": "UTC",
-        "duration": "PT12H",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "hourly",
-            "interval": 12
-          }
-        ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT12H"
-        },
-        "uid": "schedule_1cb53e21e2cd"
+        "wmo.int:aggregationInterval": "PT12H",
+        "uid": "schedule_919a4b76af3d"
       },
       {
         "@type": "Event",
@@ -281,11 +254,8 @@
             "frequency": "hourly"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "PT1H",
-          "diurnalBaseTime": "00:00:00"
-        },
-        "uid": "schedule_2f2bad3e2b32"
+        "wmo.int:aggregationInterval": "PT1H",
+        "uid": "schedule_b1cd6d80b405"
       },
       {
         "@type": "Event",
@@ -298,10 +268,8 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "P1D"
-        },
-        "uid": "schedule_f86b3476f1db"
+        "wmo.int:aggregationInterval": "P1D",
+        "uid": "schedule_576657933093"
       },
       {
         "@type": "Event",
@@ -314,10 +282,8 @@
             "frequency": "daily"
           }
         ],
-        "wmo.int:aggregation": {
-          "temporalAggregate": "P1D"
-        },
-        "uid": "schedule_54cfff315b3d"
+        "wmo.int:aggregationInterval": "P1D",
+        "uid": "schedule_1f99ffca9e0c"
       }
     ],
     "reporting": [
@@ -359,60 +325,125 @@
     ],
     "deployments": [
       {
-        "id": "deployment:id_9b43c01b-4326-45a9-87a7-d7f426e5bbff"
+        "id": "deployment:id_9b43c01b-4326-45a9-87a7-d7f426e5bbff",
+        "date": "2016-04-29",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            114.1727777778,
+            22.3119444444,
+            64.8
+          ]
+        }
       },
       {
-        "id": "deployment:id_a7015e0a-ccf5-415c-85ed-d6f56b472501"
+        "id": "deployment:id_a7015e0a-ccf5-415c-85ed-d6f56b472501",
+        "date": "1999-05-19",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            114.1727777778,
+            22.3119444444,
+            66.4
+          ]
+        }
       },
       {
-        "id": "deployment:id_f87f0b27-dd5f-47b8-8e39-d7b45f1bfba9"
+        "id": "deployment:id_f87f0b27-dd5f-47b8-8e39-d7b45f1bfba9",
+        "date": "1992-07-01",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            114.1727777778,
+            22.3119444444,
+            66.8
+          ]
+        }
       },
       {
-        "id": "deployment:id_b074e829-f661-7937-e053-148ef98d6de4"
+        "id": "deployment:id_b074e829-f661-7937-e053-148ef98d6de4",
+        "date": "1992-07-01"
       },
       {
-        "id": "deployment:id_01f56dfe-5bdb-4147-9604-0eb685e7e9de"
+        "id": "deployment:id_01f56dfe-5bdb-4147-9604-0eb685e7e9de",
+        "date": ".."
       },
       {
         "id": "deployment:id_b074e829-f660-7937-e053-148ef98d6de4",
+        "date": "2004-05-24",
         "instrument": "instrument:0-20000-0-45004:0f4dfce102df",
         "serialNumber": "not applicable"
       },
       {
-        "id": "deployment:id_65929544-483b-438c-bbfb-31c45b550779"
+        "id": "deployment:id_65929544-483b-438c-bbfb-31c45b550779",
+        "date": "2016-04-29",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            114.1727777778,
+            22.3119444444,
+            66.8
+          ]
+        }
       },
       {
-        "id": "deployment:id_bd1f51be-f8c8-4340-8881-a2edd92a6027"
+        "id": "deployment:id_bd1f51be-f8c8-4340-8881-a2edd92a6027",
+        "date": "2020-10-09",
+        "operatingStatus": "testing",
+        "exposure": "unknown"
       },
       {
-        "id": "deployment:id_54b9a950-2b00-43c9-9d19-0d6506dde229"
+        "id": "deployment:id_54b9a950-2b00-43c9-9d19-0d6506dde229",
+        "date": ".."
       },
       {
         "id": "deployment:id_b6631357-a24d-48d2-92c0-c6eed97c2291",
+        "date": "2004-05-24",
         "instrument": "instrument:0-20000-0-45004:0f4dfce102df",
         "serialNumber": "not applicable"
       },
       {
-        "id": "deployment:id_9a56a45a-9a10-4aa5-be1f-53c3d137ed5f"
+        "id": "deployment:id_9a56a45a-9a10-4aa5-be1f-53c3d137ed5f",
+        "date": ".."
       },
       {
-        "id": "deployment:id_5f6f77ba-1cb8-4738-b86b-4d5cf6d6aa75"
+        "id": "deployment:id_5f6f77ba-1cb8-4738-b86b-4d5cf6d6aa75",
+        "date": ".."
       },
       {
         "id": "deployment:id_bd3ebd7b-8158-4f66-ad37-34fb718d8498",
+        "date": "2004-05-24",
         "instrument": "instrument:0-20000-0-45004:edaa58de5689",
         "serialNumber": "NOT APPLICABLE"
       },
       {
-        "id": "deployment:id_46214214-6805-4ce1-87ac-880b6f691c24"
+        "id": "deployment:id_46214214-6805-4ce1-87ac-880b6f691c24",
+        "date": "2016-07-14",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            114.1727777778,
+            22.3119444444,
+            74.8
+          ]
+        }
       },
       {
-        "id": "deployment:cca8c9b3-3597-23ea-e053-148ef98d1a71"
+        "id": "deployment:cca8c9b3-3597-23ea-e053-148ef98d1a71",
+        "date": "2016-07-14",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            114.1727777778,
+            22.3119444444,
+            74.8
+          ]
+        }
       }
     ],
-    "observations": [
+    "observationSeries": [
       {
-        "id": "observations:213",
+        "id": "observationSeries:213",
         "title": "domain: atmosphere; geometry: point; variable: 213",
         "time": {
           "interval": [
@@ -425,7 +456,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBON",
           "RBCN"
         ],
@@ -435,41 +466,36 @@
           "value": 2.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2016-04-29",
-            "schedule": "schedule_d00020f9d1f2"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_983739e29517"
+            ]
           },
           {
             "date": "2016-04-29",
-            "schedule": "schedule_9928d3a502f4"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_f253213a5423"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_9b43c01b-4326-45a9-87a7-d7f426e5bbff",
-            "deployment": "deployment:id_9b43c01b-4326-45a9-87a7-d7f426e5bbff",
-            "date": "..",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                114.1727777778,
-                22.3119444444,
-                64.8
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_9b43c01b-4326-45a9-87a7-d7f426e5bbff"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2016-04-29",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:87ff24b4a55a"
           }
         ]
       },
       {
-        "id": "observations:216",
+        "id": "observationSeries:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
         "time": {
           "interval": [
@@ -482,7 +508,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GUAN",
           "centennialObservingstations"
         ],
@@ -493,41 +519,36 @@
           "value": 2.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "1999-05-19",
-            "schedule": "schedule_c074280b524d"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_93a1844a90cd"
+            ]
           },
           {
             "date": "1999-05-19",
-            "schedule": "schedule_240608612e59"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_919a4b76af3d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_a7015e0a-ccf5-415c-85ed-d6f56b472501",
-            "deployment": "deployment:id_a7015e0a-ccf5-415c-85ed-d6f56b472501",
-            "date": "..",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                114.1727777778,
-                22.3119444444,
-                66.4
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_a7015e0a-ccf5-415c-85ed-d6f56b472501"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "1999-05-19",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:05fbac6b6a5d"
           }
         ]
       },
       {
-        "id": "observations:224",
+        "id": "observationSeries:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
         "time": {
           "interval": [
@@ -540,7 +561,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBCN",
           "GUAN",
           "centennialObservingstations",
@@ -553,41 +574,36 @@
           "value": 2.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "1992-07-01",
-            "schedule": "schedule_c074280b524d"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_93a1844a90cd"
+            ]
           },
           {
             "date": "1992-07-01",
-            "schedule": "schedule_240608612e59"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_919a4b76af3d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_f87f0b27-dd5f-47b8-8e39-d7b45f1bfba9",
-            "deployment": "deployment:id_f87f0b27-dd5f-47b8-8e39-d7b45f1bfba9",
-            "date": "..",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                114.1727777778,
-                22.3119444444,
-                66.8
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_f87f0b27-dd5f-47b8-8e39-d7b45f1bfba9"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "1992-07-01",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:64d6a04ffa19"
           }
         ]
       },
       {
-        "id": "observations:225",
+        "id": "observationSeries:225",
         "title": "domain: atmosphere; geometry: point; variable: 225",
         "time": {
           "interval": [
@@ -600,7 +616,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GUAN",
           "RBCN",
           "centennialObservingstations",
@@ -612,39 +628,42 @@
           "value": 67.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "1992-07-01",
-            "schedule": "schedule_1cb53e21e2cd"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_93a1844a90cd"
+            ]
           },
           {
             "date": "1992-07-01",
-            "schedule": "schedule_240608612e59"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_919a4b76af3d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-f661-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-f661-7937-e053-148ef98d6de4",
-            "date": "1992-07-01"
-          }
+        "deployments": [
+          "deployment:id_b074e829-f661-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "1992-07-01",
+            "strategy": "unknown",
             "reporting": "reporting:64d6a04ffa19"
           }
         ]
       },
       {
-        "id": "observations:227",
+        "id": "observationSeries:227",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 227",
         "observedProperty": 227,
         "observedGeometry": "verticalProfile",
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GUAN",
           "RBSNt",
           "centennialObservingstations",
@@ -652,23 +671,20 @@
           "GBON"
         ],
         "representativeness": "mesoscale",
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_01f56dfe-5bdb-4147-9604-0eb685e7e9de",
-            "deployment": "deployment:id_01f56dfe-5bdb-4147-9604-0eb685e7e9de",
-            "date": ".."
-          }
+        "deployments": [
+          "deployment:id_01f56dfe-5bdb-4147-9604-0eb685e7e9de"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "..",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:db5c5e6f45b1"
           }
         ]
       },
       {
-        "id": "observations:227",
+        "id": "observationSeries:227",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 227",
         "time": {
           "interval": [
@@ -681,7 +697,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GUAN",
           "RBSNt",
           "centennialObservingstations",
@@ -694,28 +710,28 @@
           "value": 66.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2004-05-24",
-            "schedule": "schedule_240608612e59"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_919a4b76af3d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b074e829-f660-7937-e053-148ef98d6de4",
-            "deployment": "deployment:id_b074e829-f660-7937-e053-148ef98d6de4",
-            "date": "2004-05-24"
-          }
+        "deployments": [
+          "deployment:id_b074e829-f660-7937-e053-148ef98d6de4"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2004-05-24",
+            "strategy": "unknown",
             "reporting": "reporting:dee967f48277"
           }
         ]
       },
       {
-        "id": "observations:12249",
+        "id": "observationSeries:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
         "time": {
           "interval": [
@@ -728,7 +744,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "CLIMATc",
           "RBCN",
           "centennialObservingstations",
@@ -740,41 +756,36 @@
           "value": 2.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2016-04-29",
-            "schedule": "schedule_2f2bad3e2b32"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_b1cd6d80b405"
+            ]
           },
           {
             "date": "2016-04-29",
-            "schedule": "schedule_9928d3a502f4"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_f253213a5423"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_65929544-483b-438c-bbfb-31c45b550779",
-            "deployment": "deployment:id_65929544-483b-438c-bbfb-31c45b550779",
-            "date": "..",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                114.1727777778,
-                22.3119444444,
-                66.8
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_65929544-483b-438c-bbfb-31c45b550779"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2016-04-29",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:87ff24b4a55a"
           }
         ]
       },
       {
-        "id": "observations:256",
+        "id": "observationSeries:256",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 256",
         "time": {
           "interval": [
@@ -787,7 +798,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBON",
           "RBSNt",
           "GBON"
@@ -799,64 +810,62 @@
           "value": 66.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2020-10-09",
-            "schedule": "schedule_f86b3476f1db"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_576657933093"
+            ]
           },
           {
             "date": "2020-10-09",
-            "schedule": "schedule_54cfff315b3d"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_bd1f51be-f8c8-4340-8881-a2edd92a6027",
-            "deployment": "deployment:id_bd1f51be-f8c8-4340-8881-a2edd92a6027",
-            "exposure": "unknown",
-            "date": "2020-10-09",
-            "operatingStatus": "testing"
-          }
+        "deployments": [
+          "deployment:id_bd1f51be-f8c8-4340-8881-a2edd92a6027"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2020-10-09",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:8d09d8e84433"
           }
         ]
       },
       {
-        "id": "observations:270",
+        "id": "observationSeries:270",
         "title": "domain: atmosphere; geometry: point; variable: 270",
         "observedProperty": 270,
         "observedGeometry": "point",
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBON",
           "CLIMATc",
           "RBCN"
         ],
         "representativeness": "toposcale",
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_54b9a950-2b00-43c9-9d19-0d6506dde229",
-            "deployment": "deployment:id_54b9a950-2b00-43c9-9d19-0d6506dde229",
-            "date": ".."
-          }
+        "deployments": [
+          "deployment:id_54b9a950-2b00-43c9-9d19-0d6506dde229"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "..",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:db5c5e6f45b1"
           }
         ]
       },
       {
-        "id": "observations:310",
+        "id": "observationSeries:310",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 310",
         "time": {
           "interval": [
@@ -869,7 +878,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GUAN",
           "RBSNt",
           "centennialObservingstations",
@@ -878,83 +887,77 @@
         ],
         "sourceOfObservation": "automaticReading",
         "representativeness": "mesoscale",
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2004-05-24",
-            "schedule": "schedule_240608612e59"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_919a4b76af3d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_b6631357-a24d-48d2-92c0-c6eed97c2291",
-            "deployment": "deployment:id_b6631357-a24d-48d2-92c0-c6eed97c2291",
-            "date": "2004-05-24"
-          }
+        "deployments": [
+          "deployment:id_b6631357-a24d-48d2-92c0-c6eed97c2291"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2004-05-24",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:dee967f48277"
           }
         ]
       },
       {
-        "id": "observations:510",
+        "id": "observationSeries:510",
         "title": "domain: terrestrial; geometry: area; variable: 510",
         "observedProperty": 510,
         "observedGeometry": "area",
         "observedFeature": {
           "domain": "terrestrial"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GOSGeneral"
         ],
         "representativeness": "toposcale",
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_9a56a45a-9a10-4aa5-be1f-53c3d137ed5f",
-            "deployment": "deployment:id_9a56a45a-9a10-4aa5-be1f-53c3d137ed5f",
-            "date": ".."
-          }
+        "deployments": [
+          "deployment:id_9a56a45a-9a10-4aa5-be1f-53c3d137ed5f"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "..",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:db5c5e6f45b1"
           }
         ]
       },
       {
-        "id": "observations:596",
+        "id": "observationSeries:596",
         "title": "domain: terrestrial; geometry: unknown; variable: 596",
         "observedProperty": 596,
         "observedGeometry": "unknown",
         "observedFeature": {
           "domain": "terrestrial"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "GOSGeneral"
         ],
         "representativeness": "toposcale",
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_5f6f77ba-1cb8-4738-b86b-4d5cf6d6aa75",
-            "deployment": "deployment:id_5f6f77ba-1cb8-4738-b86b-4d5cf6d6aa75",
-            "date": ".."
-          }
+        "deployments": [
+          "deployment:id_5f6f77ba-1cb8-4738-b86b-4d5cf6d6aa75"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "..",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:db5c5e6f45b1"
           }
         ]
       },
       {
-        "id": "observations:12000",
+        "id": "observationSeries:12000",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 12000",
         "time": {
           "interval": [
@@ -967,7 +970,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBSNt",
           "GUAN",
           "centennialObservingstations",
@@ -981,29 +984,29 @@
           "value": 0.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2004-05-24",
-            "schedule": "schedule_240608612e59"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_919a4b76af3d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_bd3ebd7b-8158-4f66-ad37-34fb718d8498",
-            "deployment": "deployment:id_bd3ebd7b-8158-4f66-ad37-34fb718d8498",
-            "date": "2004-05-24"
-          }
+        "deployments": [
+          "deployment:id_bd3ebd7b-8158-4f66-ad37-34fb718d8498"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2004-05-24",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:dee967f48277"
           }
         ]
       },
       {
-        "id": "observations:12005",
+        "id": "observationSeries:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
         "time": {
           "interval": [
@@ -1016,7 +1019,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBCN",
           "GUAN",
           "centennialObservingstations",
@@ -1028,41 +1031,36 @@
           "value": 3.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2016-07-14",
-            "schedule": "schedule_c074280b524d"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_93a1844a90cd"
+            ]
           },
           {
             "date": "2016-07-14",
-            "schedule": "schedule_240608612e59"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_919a4b76af3d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:id_46214214-6805-4ce1-87ac-880b6f691c24",
-            "deployment": "deployment:id_46214214-6805-4ce1-87ac-880b6f691c24",
-            "date": "..",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                114.1727777778,
-                22.3119444444,
-                74.8
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:id_46214214-6805-4ce1-87ac-880b6f691c24"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2016-07-14",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:64d6a04ffa19"
           }
         ]
       },
       {
-        "id": "observations:12006",
+        "id": "observationSeries:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
         "time": {
           "interval": [
@@ -1075,7 +1073,7 @@
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliations": [
+        "programAffiliation": [
           "RBON",
           "RBCN",
           "GUAN",
@@ -1087,34 +1085,29 @@
           "value": 3.0,
           "uom": "m"
         },
-        "observingSchedules": [
+        "observingProcedures": [
           {
             "date": "2016-07-14",
-            "schedule": "schedule_c074280b524d"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_93a1844a90cd"
+            ]
           },
           {
             "date": "2016-07-14",
-            "schedule": "schedule_240608612e59"
+            "strategy": "unknown",
+            "observingSchedules": [
+              "schedule_919a4b76af3d"
+            ]
           }
         ],
-        "historicalDeployments": [
-          {
-            "id": "historicalDeployment:cca8c9b3-3597-23ea-e053-148ef98d1a71",
-            "deployment": "deployment:cca8c9b3-3597-23ea-e053-148ef98d1a71",
-            "date": "..",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                114.1727777778,
-                22.3119444444,
-                74.8
-              ]
-            }
-          }
+        "deployments": [
+          "deployment:cca8c9b3-3597-23ea-e053-148ef98d1a71"
         ],
-        "historicalReporting": [
+        "reporting": [
           {
             "date": "2016-07-14",
+            "strategy": "unknown",
             "uom": "unknown",
             "reporting": "reporting:64d6a04ffa19"
           }
