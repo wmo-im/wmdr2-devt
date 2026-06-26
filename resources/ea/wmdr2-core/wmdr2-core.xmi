@@ -350,7 +350,7 @@
 				<memberEnd xmi:idref="EAID_dstA22F26_9A8C_431b_8DEE_BD2DD97AB4BD"/>
 				<ownedEnd xmi:type="uml:Property" xmi:id="EAID_dstA22F26_9A8C_431b_8DEE_BD2DD97AB4BD" visibility="public" association="EAID_F1A22F26_9A8C_431b_8DEE_BD2DD97AB4BD" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false" aggregation="none">
 					<type xmi:idref="EAID_BD00FED6_B3D4_4a5c_9460_AAE6C84597A4"/>
-					<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000113__9A8C_431b_8DEE_BD2DD97AB4BD" value="0"/>
+					<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000113__9A8C_431b_8DEE_BD2DD97AB4BD" value="1"/>
 					<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000114__9A8C_431b_8DEE_BD2DD97AB4BD" value="-1"/>
 				</ownedEnd>
 				<memberEnd xmi:idref="EAID_srcA22F26_9A8C_431b_8DEE_BD2DD97AB4BD"/>
@@ -426,7 +426,7 @@
 				<memberEnd xmi:idref="EAID_dstE6261D_A88F_4712_8251_3D288A570E9F"/>
 				<ownedEnd xmi:type="uml:Property" xmi:id="EAID_dstE6261D_A88F_4712_8251_3D288A570E9F" visibility="public" association="EAID_0CE6261D_A88F_4712_8251_3D288A570E9F" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false" aggregation="none">
 					<type xmi:idref="EAID_BD00FED6_B3D4_4a5c_9460_AAE6C84597A4"/>
-					<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000147__A88F_4712_8251_3D288A570E9F" value="0"/>
+					<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000147__A88F_4712_8251_3D288A570E9F" value="1"/>
 					<upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="EAID_LI000148__A88F_4712_8251_3D288A570E9F" value="-1"/>
 				</ownedEnd>
 				<memberEnd xmi:idref="EAID_srcE6261D_A88F_4712_8251_3D288A570E9F"/>
@@ -821,15 +821,15 @@
 			<element xmi:idref="EAPK_1ACEFA57_4ABB_4d99_90F3_D1320B5B2970" xmi:type="uml:Package" name="WMDR2-core" scope="public">
 				<model package2="EAID_1ACEFA57_4ABB_4d99_90F3_D1320B5B2970" package="EAPK_030FABF6_519D_492e_BB44_67C658B5D31F" tpos="4" ea_localid="4" ea_eleType="package"/>
 				<properties isSpecification="false" sType="Package" nType="0" scope="public"/>
-				<project author="jkl" version="0.2.4.1" phase="1.0" created="2026-03-06 10:35:23" modified="2026-06-26 14:03:48" complexity="1" status="Proposed"/>
+				<project author="jkl" version="0.2.4.2" phase="1.0" created="2026-03-06 10:35:23" modified="2026-06-26 15:03:22" complexity="1" status="Proposed"/>
 				<code gentype="&lt;none&gt;"/>
 				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
 				<tags/>
 				<xrefs/>
 				<extendedProperties tagged="0" package_name="Model"/>
-				<packageproperties version="0.2.4.1" tpos="4"/>
+				<packageproperties version="0.2.4.2" tpos="4"/>
 				<paths/>
-				<times created="2026-03-06 10:35:23" modified="2026-06-26 14:03:48" lastloaddate="2019-01-23 13:38:11" lastsavedate="2019-01-23 13:38:11"/>
+				<times created="2026-03-06 10:35:23" modified="2026-06-26 15:03:22" lastloaddate="2019-01-23 13:38:11" lastsavedate="2019-01-23 13:38:11"/>
 				<flags iscontrolled="FALSE" isprotected="FALSE" batchsave="0" batchload="0" usedtd="FALSE" logxml="FALSE"/>
 			</element>
 			<element xmi:idref="EAID_5E9541CA_F6B8_4646_9F68_078DC8F5AFD5" xmi:type="uml:Class" name="contact" scope="public">
@@ -3240,7 +3240,7 @@
 				<target xmi:idref="EAID_BD00FED6_B3D4_4a5c_9460_AAE6C84597A4">
 					<model ea_localid="77" type="Class" name="ObservingMethod"/>
 					<role visibility="Public" targetScope="instance"/>
-					<type multiplicity="0..*" aggregation="none" containment="Unspecified"/>
+					<type multiplicity="1..*" aggregation="none" containment="Unspecified"/>
 					<constraints/>
 					<modifiers isOrdered="false" changeable="none" isNavigable="false"/>
 					<style value="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;"/>
@@ -3254,7 +3254,7 @@
 				<parameterSubstitutions/>
 				<documentation/>
 				<appearance linemode="3" linecolor="-1" linewidth="0" seqno="0" headStyle="0" lineStyle="0"/>
-				<labels lb="0..1" rb="0..*"/>
+				<labels lb="0..1" rb="1..*"/>
 				<extendedProperties virtualInheritance="0"/>
 				<style/>
 				<xrefs/>
@@ -3275,7 +3275,7 @@
 				<target xmi:idref="EAID_BD00FED6_B3D4_4a5c_9460_AAE6C84597A4">
 					<model ea_localid="77" type="Class" name="ObservingMethod"/>
 					<role visibility="Public" targetScope="instance"/>
-					<type multiplicity="0..*" aggregation="none" containment="Unspecified"/>
+					<type multiplicity="1..*" aggregation="none" containment="Unspecified"/>
 					<constraints/>
 					<modifiers isOrdered="false" changeable="none" isNavigable="false"/>
 					<style value="Union=0;Derived=0;AllowDuplicates=0;Owned=0;Navigable=Unspecified;"/>
@@ -3289,7 +3289,7 @@
 				<parameterSubstitutions/>
 				<documentation/>
 				<appearance linemode="3" linecolor="-1" linewidth="0" seqno="0" headStyle="0" lineStyle="0"/>
-				<labels lb="1" rb="0..*"/>
+				<labels lb="1" rb="1..*"/>
 				<extendedProperties virtualInheritance="0"/>
 				<style/>
 				<xrefs/>
@@ -3660,10 +3660,10 @@
 		<diagrams>
 			<diagram xmi:id="EAID_1C264E1A_10CD_4b0e_9565_9890D5B54547">
 				<model package="EAPK_1ACEFA57_4ABB_4d99_90F3_D1320B5B2970" localID="5" owner="EAPK_1ACEFA57_4ABB_4d99_90F3_D1320B5B2970"/>
-				<properties name="WMDR2-core" type="Logical" documentation="wmdr2-core v0.2.x&#xA;v0.2.0&#xA;- time (a temporal extent) shall be realized as time:interval (unchanged from v.0.1.13)&#xA;- Following the OGC Features model, geometry = geolocation = coordinates + elevation&#xA;- All temporal&amp;lt;Name&amp;gt; elements are renamed to historical&amp;lt;Name&amp;gt;.&#xA;- historical&amp;lt;Name&amp;gt; elements other than historicalLocation shall be realized as arrays of dictionary objects for (begin) date, and the values of &amp;lt;Name&amp;gt;, e.g., &#xA;   historicalTerritory = [{&#xA;        &quot;date&quot;: &quot;2000-01-01&quot;,&#xA;        &quot;territory&quot;: &quot;&amp;lt;ISO1&amp;gt;&quot;&#xA;    },&#xA;    {&#xA;        &quot;date&quot; 2024-07-13&quot;, &#xA;        &quot;territory&quot;: &quot;&amp;lt;ISO2&amp;gt;&quot;&#xA;    }.&#xA;- &quot;observation&quot; describes time-series (collections) of (individual) observations / measurements. &#xA;- &quot;observation&quot;s are acquired using a &quot;historicalObservingSchedule&quot;, which has a (begin) date and refers to a schedule / coverage. &#xA;- &quot;deployment&quot; is removed as a concept, most attributes are directly under &quot;observation&quot;. - &quot;instrument&quot; links directly to &quot;observation&quot;. In alignment with OMS/STA, there is a link to &quot;facility&quot; via &quot;deplyoment&quot;, but this is not expected to be used at this point.&#xA;- &quot;observation&quot;s can be grouped to an &quot;observationSets&quot; (NB: This is a test and not guaranteed to exist in future.)&#xA;&#xA;v0.2.1&#xA;- &quot;observation&quot; has been renamed to &quot;observations&quot;, because it describes collections (=time-series) of (individual) observations / measurements. &#xA;- &quot;observations&quot; are acquired using a &quot;historicalObservingSchedule&quot;, which has a (begin) date and refers to a schedule / coverage. &#xA;- The concept of deployment has been developed into &quot;historicalDeployment&quot;, which is now a more focussed and intuitive concept. It describes the placement at a specific date of an instrument at a location (=geometry) that can generate observations. It describes the &quot;exposure&quot; of the instrument as well as its &quot;operatingStatus&quot; and &quot;serialNumber&quot; from that date onwards. &#xA;- &quot;observations&quot; can be grouped to an &quot;observationSets&quot; (NB: This is experimental and not guaranteed to exist in future.)&#xA;- &quot;reporting&quot; and &quot;historicalReporting&quot; are modeled to allow reuse of a reporting template. This is similar to the &quot;schedule&quot; / &quot;historicalObservingSchedule&quot; concept.&#xA;&#xA;v0.2.2&#xA;- clean up attribute names, consistent singular naming within historical&amp;lt;Name&amp;gt; classes,&#xA;&#xA;v0.2.3&#xA;- Class names capitalized, except if class is re-usable.&#xA;- prefix &quot;historical&quot; removed as not needed (TT-WMDR2, 2026-06-24), the &quot;date&quot; element makes this clear&#xA;- &quot;observations&quot; renamed to &quot;ObservationSeries&quot; to avoid mis-interpretation.&#xA;- update cardinalities on instrument.manufacturer to [0..1], instrument.model to [0..1]&#xA;- remove ObservationSeries.time (can be inferred from Deployments.)&#xA;- rename ObservingSchedule to ObservingProcedure and add &quot;strategy&quot;, rename schedule to observingSchedule, rename sampling to samplingFrequency, aggregation to aggregationInterval&#xA;- rename Reporting to ReportingProcedure and add strategy; remove aggregation (a misnomer and different concept, used as an alias of temporalReportingInterval), add ReportingProcedure.reportingSchedule to allow regular but constrained reportingInterval via recurrenceRules and recurrenceOverrides.&#xA;&#xA;v0.2.4&#xA;- correct facility.Deployments cardinality from 0..* to 1..*&#xA;- correct ObservingSeries.Deployments cardinality from 0..1 to 1..*&#xA;- move ObservingSeries.ReferenceSurface and .verticalDistance... to Deployment&#xA;- move instrument.observingMethod to ObservingMethod.observingMethod and correct cardinalities&#xA;- remove ObservationSeries.time as redundant&#xA;- officialStatus is a property of ObervationSeries and not time-bound&#xA;- move ObservationSeries.sourceOfObservation to Deployment.sourceOfObservation&#xA;- remove experimental (blue) classes&#xA;&#xA;v0.2.4.1&#xA;- typo fixed in observingSchedule: wmo.int:samplingFrequency"/>
-				<project author="jkl" version="0.2.1" created="2026-03-06 10:35:24" modified="2026-06-26 14:05:01"/>
+				<properties name="WMDR2-core" type="Logical" documentation="wmdr2-core v0.2.x&#xA;v0.2.0&#xA;- time (a temporal extent) shall be realized as time:interval (unchanged from v.0.1.13)&#xA;- Following the OGC Features model, geometry = geolocation = coordinates + elevation&#xA;- All temporal&amp;lt;Name&amp;gt; elements are renamed to historical&amp;lt;Name&amp;gt;.&#xA;- historical&amp;lt;Name&amp;gt; elements other than historicalLocation shall be realized as arrays of dictionary objects for (begin) date, and the values of &amp;lt;Name&amp;gt;, e.g., &#xA;   historicalTerritory = [{&#xA;        &quot;date&quot;: &quot;2000-01-01&quot;,&#xA;        &quot;territory&quot;: &quot;&amp;lt;ISO1&amp;gt;&quot;&#xA;    },&#xA;    {&#xA;        &quot;date&quot; 2024-07-13&quot;, &#xA;        &quot;territory&quot;: &quot;&amp;lt;ISO2&amp;gt;&quot;&#xA;    }.&#xA;- &quot;observation&quot; describes time-series (collections) of (individual) observations / measurements. &#xA;- &quot;observation&quot;s are acquired using a &quot;historicalObservingSchedule&quot;, which has a (begin) date and refers to a schedule / coverage. &#xA;- &quot;deployment&quot; is removed as a concept, most attributes are directly under &quot;observation&quot;. - &quot;instrument&quot; links directly to &quot;observation&quot;. In alignment with OMS/STA, there is a link to &quot;facility&quot; via &quot;deplyoment&quot;, but this is not expected to be used at this point.&#xA;- &quot;observation&quot;s can be grouped to an &quot;observationSets&quot; (NB: This is a test and not guaranteed to exist in future.)&#xA;&#xA;v0.2.1&#xA;- &quot;observation&quot; has been renamed to &quot;observations&quot;, because it describes collections (=time-series) of (individual) observations / measurements. &#xA;- &quot;observations&quot; are acquired using a &quot;historicalObservingSchedule&quot;, which has a (begin) date and refers to a schedule / coverage. &#xA;- The concept of deployment has been developed into &quot;historicalDeployment&quot;, which is now a more focussed and intuitive concept. It describes the placement at a specific date of an instrument at a location (=geometry) that can generate observations. It describes the &quot;exposure&quot; of the instrument as well as its &quot;operatingStatus&quot; and &quot;serialNumber&quot; from that date onwards. &#xA;- &quot;observations&quot; can be grouped to an &quot;observationSets&quot; (NB: This is experimental and not guaranteed to exist in future.)&#xA;- &quot;reporting&quot; and &quot;historicalReporting&quot; are modeled to allow reuse of a reporting template. This is similar to the &quot;schedule&quot; / &quot;historicalObservingSchedule&quot; concept.&#xA;&#xA;v0.2.2&#xA;- clean up attribute names, consistent singular naming within historical&amp;lt;Name&amp;gt; classes,&#xA;&#xA;v0.2.3&#xA;- Class names capitalized, except if class is re-usable.&#xA;- prefix &quot;historical&quot; removed as not needed (TT-WMDR2, 2026-06-24), the &quot;date&quot; element makes this clear&#xA;- &quot;observations&quot; renamed to &quot;ObservationSeries&quot; to avoid mis-interpretation.&#xA;- update cardinalities on instrument.manufacturer to [0..1], instrument.model to [0..1]&#xA;- remove ObservationSeries.time (can be inferred from Deployments.)&#xA;- rename ObservingSchedule to ObservingProcedure and add &quot;strategy&quot;, rename schedule to observingSchedule, rename sampling to samplingFrequency, aggregation to aggregationInterval&#xA;- rename Reporting to ReportingProcedure and add strategy; remove aggregation (a misnomer and different concept, used as an alias of temporalReportingInterval), add ReportingProcedure.reportingSchedule to allow regular but constrained reportingInterval via recurrenceRules and recurrenceOverrides.&#xA;&#xA;v0.2.4&#xA;- correct facility.Deployments cardinality from 0..* to 1..*&#xA;- correct ObservingSeries.Deployments cardinality from 0..1 to 1..*&#xA;- move ObservingSeries.ReferenceSurface and .verticalDistance... to Deployment&#xA;- move instrument.observingMethod to ObservingMethod.observingMethod and correct cardinalities&#xA;- remove ObservationSeries.time as redundant&#xA;- officialStatus is a property of ObervationSeries and not time-bound&#xA;- move ObservationSeries.sourceOfObservation to Deployment.sourceOfObservation&#xA;- remove experimental (blue) classes&#xA;&#xA;v0.2.4.1&#xA;- typo fixed in observingSchedule: wmo.int:samplingFrequency&#xA;v0.2.4.2&#xA;- fix cardinalities of observingMethod to 1..* (According to WMO 1192 and INFCOM-3, this is mandatory, but nilReason is acceptable)"/>
+				<project author="jkl" version="0.2.1" created="2026-03-06 10:35:24" modified="2026-06-26 15:07:47"/>
 				<style1 value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=1;PPgs.cx=1;PPgs.cy=1;DocSize.cx=826;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;ShowShape=1;AllDockable=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
-				<style2 value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;SaveTag=409A5D66;"/>
+				<style2 value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;SaveTag=46D56533;"/>
 				<swimlanes value="locked=false;orientation=0;width=0;inbar=false;names=false;color=-1;bold=false;fcol=0;tcol=-1;ofCol=-1;ufCol=-1;hl=0;ufh=0;hh=0;cls=0;bw=0;hli=0;SwimlaneFont=lfh:-16,lfw:0,lfi:0,lfu:0,lfs:0,lfface:Calibri,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>
 				<matrixitems value="locked=false;matrixactive=false;swimlanesactive=true;kanbanactive=false;width=1;clrLine=0;"/>
 				<extendedProperties/>
