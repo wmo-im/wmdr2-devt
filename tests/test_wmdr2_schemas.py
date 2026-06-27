@@ -166,6 +166,9 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "officialStatus": [
                         {"officialStatus": "primary", "date": ".."}
                     ],
+                    "observingMethods": [
+                        {"date": "2016-04-29", "observingMethod": {"nilReason": "unknown"}},
+                    ],
                     "observingProcedures": [
                         {"date": "2025-01-01", "strategy": "unknown", "observingSchedules": ["schedule_daily_12"]},
                     ],
@@ -191,6 +194,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             "instruments": [
                 {
                     "id": "instrument:example",
+                    "observingMethods": [266],
                     "title": "Example instrument",
                     "description": "Optional instrument description.",
                     "manufacturer": "Vaisala",
@@ -420,6 +424,27 @@ def test_deployment_serial_numbers_parallel_array_is_invalid() -> None:
         "dates": [".."],
     }
     assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+
+def test_observation_series_observing_method_value_is_required_and_accepts_nil_reason() -> None:
+    instance = _valid_facility_record_feature()
+    method = instance["properties"]["observationSeries"][0]["observingMethods"][0]
+    assert method["observingMethod"] == {"nilReason": "unknown"}
+    assert _validate(RECORD_SCHEMA, instance) == []
+
+    method.pop("observingMethod")
+    assert any("'observingMethod' is a required property" in message for message in _validate(RECORD_SCHEMA, instance))
+
+
+def test_observing_method_value_accepts_known_codes_on_instrument_and_observation_series() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["observingMethods"] = ["266", 267]
+    instance["properties"]["observationSeries"][0]["observingMethods"] = [
+        {"date": "1980-01-01", "observingMethod": "266"},
+        {"date": "2001-01-01", "observingMethod": 267},
+    ]
+    assert _is_valid(RECORD_SCHEMA, instance)
 
 def test_instrument_title_and_description_are_schema_properties() -> None:
     instance = _valid_facility_record_feature()

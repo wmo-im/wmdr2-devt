@@ -839,6 +839,99 @@ def test_instrument_id_prefers_explicit_identifier_and_generated_ids_are_stable(
     assert module._instrument_record_id({"manufacturer": "unknown", "model": None}, facility_id="0-TEST") is None
 
 
+
+
+def test_observing_methods_are_dated_on_observation_series_and_capabilities_on_instrument() -> None:
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [_observation_with_deployment()],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    instrument = record["properties"]["instruments"][0]
+    observation = record["properties"]["observationSeries"][0]
+    assert instrument["observingMethods"] == [266]
+    assert observation["observingMethods"] == [{"date": "2020-01-01", "observingMethod": 266}]
+
+
+def test_observation_series_observing_method_uses_nil_reason_when_absent_without_bloating_instrument() -> None:
+    observation = _observation_with_deployment()
+    observation["deployments"][0].pop("observingMethod", None)
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [observation],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    instrument = record["properties"]["instruments"][0]
+    observation_series = record["properties"]["observationSeries"][0]
+    assert "observingMethods" not in instrument
+    assert observation_series["observingMethods"] == [{"date": "..", "observingMethod": {"nilReason": "unknown"}}]
+
+
+def test_observation_series_observing_method_preserves_explicit_nil_reason() -> None:
+    observation = _observation_with_deployment()
+    observation["deployments"][0]["observingMethod"] = {"nilReason": "withheld"}
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [observation],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    instrument = record["properties"]["instruments"][0]
+    observation_series = record["properties"]["observationSeries"][0]
+    assert "observingMethods" not in instrument
+    assert observation_series["observingMethods"] == [{"date": "2020-01-01", "observingMethod": {"nilReason": "withheld"}}]
+
+
+def test_observation_series_can_record_consecutive_observing_methods_from_deployments() -> None:
+    first = _observation_with_deployment()
+    second_deployment = dict(first["deployments"][0])
+    second_deployment["id"] = "dep2"
+    second_deployment["beginPosition"] = "2001-01-01"
+    second_deployment["observingMethod"] = "http://codes.wmo.int/wmdr/ObservingMethod/267"
+    first["deployments"].append(second_deployment)
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [first],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    observation_series = record["properties"]["observationSeries"][0]
+    assert observation_series["observingMethods"] == [
+        {"date": "2020-01-01", "observingMethod": 266},
+        {"date": "2001-01-01", "observingMethod": 267},
+    ]
+
+
+def test_observing_method_alone_does_not_create_instrument_catalogue_entry() -> None:
+    observation = {
+        "observedProperty": OBSERVED_12006,
+        "deployments": [
+            {
+                "id": "dep1",
+                "beginPosition": "1980-01-01T00:00:00Z",
+                "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+            }
+        ],
+    }
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [observation],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    props = record["properties"]
+    assert "instruments" not in props
+    assert props["observationSeries"][0]["observingMethods"] == [
+        {"date": "1980-01-01", "observingMethod": 266}
+    ]
+
 def test_normalize_instrument_includes_optional_title_and_description_when_available() -> None:
     instrument = module._normalize_instrument(
         {

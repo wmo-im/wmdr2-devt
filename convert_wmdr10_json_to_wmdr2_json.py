@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Convert simplified WMDR 1.0 JSON records into facility-centric WMDR2 JSON.
 
-WMDR v0.2.4 implementation notes
+WMDR v0.2.4.2 implementation notes
 ---------------------------------
 
 * The output is a facility-centric GeoJSON-like ``Feature``.
 * ``temporalGeometry`` remains the trajectory-style aligned-array ``MovingPoint``
   object.
-* Other time-varying model elements use v0.2.4 class/property names and are
+* Other time-varying model elements use v0.2.4.2 class/property names and are
   represented as arrays of dated objects, for example ``environment``,
   ``programAffiliation``, ``territory``, ``deployments``, ``reporting`` and
   ``officialStatus``.
@@ -25,6 +25,9 @@ WMDR v0.2.4 implementation notes
   dated ``observingProcedures`` records. Each ObservingProcedure carries a
   strategy and one or more ``observingSchedules`` schedule identifiers.
 * ``observedFeature`` uses ``domain``, ``domainFeature`` and ``featureName``.
+* Instrument ``observingMethod`` is mandatory in v0.2.4.2.  When the
+  source record does not provide an observing method, the converter emits
+  ``{"nilReason": "unknown"}``.
 """
 
 from __future__ import annotations
@@ -223,6 +226,27 @@ def _normalize_code_value(value: Any) -> Any:
             return segment
     return segment
 
+
+
+
+def _nil_reason(reason: Any = "unknown") -> Dict[str, str]:
+    normalized = _normalize_code_value(reason)
+    text = str(normalized).strip() if _non_empty(normalized) else "unknown"
+    return {"nilReason": text}
+
+
+def _normalize_code_or_nil_reason(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        for key in ("nilReason", "@nilReason"):
+            reason = value.get(key)
+            if _non_empty(reason):
+                return _nil_reason(reason)
+        if _parse_bool(value.get("nil")) is True or _parse_bool(value.get("@nil")) is True:
+            return _nil_reason("unknown")
+    normalized = _normalize_code_value(value)
+    if _non_empty(normalized) or isinstance(normalized, bool):
+        return normalized
+    return None
 
 def _compact_wmdr_code_value(value: Any) -> Any:
     if isinstance(value, dict):
@@ -1479,6 +1503,71 @@ def _is_substantive_instrument_value(value: Any) -> bool:
     return True
 
 
+
+
+def _observing_method_candidates(raw: Mapping[str, Any]) -> List[Any]:
+    """Return raw observing-method candidates from an observation, deployment, or instrument."""
+
+    instrument = _as_dict(raw.get("instrument") or raw.get("equipment"))
+    return [
+        instrument.get("observingMethod"),
+        instrument.get("observingMethods"),
+        instrument.get("method"),
+        raw.get("observingMethod"),
+        raw.get("observingMethods"),
+        raw.get("method"),
+        raw.get("observingMethodDetails"),
+    ]
+
+
+def _normalize_observing_method_values(raw: Mapping[str, Any]) -> List[Any]:
+    """Return compact observing-method values or nil-reason objects from one source."""
+
+    values: List[Any] = []
+    for candidate in _observing_method_candidates(raw):
+        for item in _as_list(candidate):
+            value = _normalize_code_or_nil_reason(item)
+            if value is not None:
+                values.append(value)
+    return _uniq_dicts(values)
+
+
+def _normalize_instrument_observing_methods(raw: Mapping[str, Any]) -> Optional[List[Any]]:
+    """Return instrument catalogue observing-method capabilities when known.
+
+    The instrument catalogue describes a type/capability.  Do not add a
+    nilReason-only method here merely because the observation method is unknown;
+    the observation-series history is the authoritative place for that.
+    """
+
+    values = [value for value in _normalize_observing_method_values(raw) if not (isinstance(value, Mapping) and "nilReason" in value)]
+    return values or None
+
+
+def _normalize_observation_series_observing_methods(
+    raw: Mapping[str, Any],
+    *sources: Mapping[str, Any],
+    fallback_date: str = "..",
+) -> List[Dict[str, Any]]:
+    """Return dated observing-method history for an ObservationSeries.
+
+    v0.2.4.2 makes the observingMethod value mandatory for each method-history
+    entry.  When the method is not available from WMDR10, emit a nilReason object
+    rather than omitting the value.  The method is intentionally not carried by
+    Deployment: one deployment can support multiple observation series/methods.
+    """
+
+    records: List[Dict[str, Any]] = []
+    all_sources: List[Mapping[str, Any]] = [raw]
+    all_sources.extend(source for source in sources if isinstance(source, Mapping))
+    for source in all_sources:
+        date = _entry_date(source, fallback_date)
+        for value in _normalize_observing_method_values(source):
+            records.append({"date": date, "observingMethod": value})
+    if not records:
+        records.append({"date": fallback_date, "observingMethod": _nil_reason("unknown")})
+    return _uniq_dicts(_clean_none(records))
+
 def _normalize_instrument(raw: Mapping[str, Any], *, facility_id: str) -> Optional[Dict[str, Any]]:
     instrument_id = _instrument_record_id(raw, facility_id=facility_id)
     if not instrument_id:
@@ -1495,6 +1584,7 @@ def _normalize_instrument(raw: Mapping[str, Any], *, facility_id: str) -> Option
             "manufacturer": manufacturer if _is_substantive_instrument_value(manufacturer) else None,
             "model": model if _is_substantive_instrument_value(model) else None,
             "serialNumber": _first_serial_number(raw),
+            "observingMethods": _normalize_instrument_observing_methods(raw),
             "observedProperty": _normalize_instrument_observed_property(raw),
             "observedGeometry": _normalize_instrument_observed_geometry(raw),
             "verticalRange": _normalize_vertical_range(raw),
@@ -2194,6 +2284,7 @@ def _normalize_observation(
         "representativeness": _first_non_empty(raw.get("representativeness"), _first_from_dicts(deployment_sources, "representativeness")),
         "verticalDistanceFromReferenceSurface": _first_vertical_distance_from_sources(raw, deployment_sources),
         "officialStatus": _normalize_historical_official_status(*official_sources, fallback_date=fallback_date),
+        "observingMethods": _normalize_observation_series_observing_methods(raw, *deployment_sources, fallback_date=fallback_date),
         "observingProcedures": _normalize_observing_procedures(observing_schedule_sources, schedule_registry=schedule_registry, time_zone=time_zone),
         "deployments": deployment_refs,
         "reporting": _preserve_nulls(_normalize_observation_reporting(*reporting_sources, reporting_registry=reporting_registry)),

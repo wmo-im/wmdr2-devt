@@ -829,8 +829,16 @@
               "type": "number"
             }
           }
+        },
+        "observingMethods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observingMethodValue"
+          },
+          "description": "Optional observing-method capabilities of this instrument catalogue entry. These values are not the authoritative dated history of an observation series."
         }
-      }
+      },
+      "description": "Instrument catalogue metadata. Deployed instrument instances are represented by deployment records. Optional observingMethods list instrument capabilities when known; the dated method history belongs to ObservationSeries."
     },
     "observation": {
       "type": "object",
@@ -1262,6 +1270,13 @@
           "items": {
             "$ref": "#/$defs/observingProcedure"
           }
+        },
+        "observingMethods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observingMethod"
+          },
+          "description": "Dated observing-method history associated with this observation series."
         }
       },
       "allOf": [
@@ -1413,6 +1428,48 @@
           "pattern": "^procedure:"
         }
       }
+    },
+    "nilReason": {
+      "type": "object",
+      "required": [
+        "nilReason"
+      ],
+      "additionalProperties": false,
+      "description": "Nil-reason object used when a mandatory WMDR2 value is unknown, missing, withheld, inapplicable, or otherwise not available from source metadata.",
+      "properties": {
+        "nilReason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "observingMethod": {
+      "type": "object",
+      "required": [
+        "date",
+        "observingMethod"
+      ],
+      "additionalProperties": true,
+      "description": "Dated observing-method history entry for an ObservationSeries. In v0.2.4.2 the observingMethod value is mandatory; use a nilReason object when the method is not known.",
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
+        },
+        "observingMethod": {
+          "$ref": "#/$defs/observingMethodValue"
+        }
+      }
+    },
+    "observingMethodValue": {
+      "description": "Mandatory observing-method value, or a nilReason object when unknown, missing, withheld, or otherwise unavailable.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/codeValue"
+        },
+        {
+          "$ref": "#/$defs/nilReason"
+        }
+      ]
     }
   }
 }

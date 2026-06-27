@@ -1,6 +1,6 @@
-# WMDR2 development v0.2.4
+# WMDR2 development v0.2.4.2
 
-This repository contains experimental tooling for transforming legacy WMDR 1.0 XML records into a simplified WMDR10 JSON representation and then into the draft WMDR2 v0.2.4 JSON representation.
+This repository contains experimental tooling for transforming legacy WMDR 1.0 XML records into a simplified WMDR10 JSON representation and then into the draft WMDR2 v0.2.4.2 JSON representation.
 
 The WMDR2 output is a facility-centric full record encoded as a GeoJSON-like `Feature`. WMDR2-specific content is stored in `properties`. Output files use the `.json` extension.
 
@@ -228,6 +228,8 @@ Facility environmental context is represented by `properties.environment`, an ar
 ]
 ```
 
+Obsolete names such as `historicalEnvironment`, `temporalPopulation`, `temporalPopulationDensities`, and `temporalTopographyBathymetry` are not emitted.
+
 ## Observation series
 
 Observation-series records are stored under `properties.observationSeries`.
@@ -253,6 +255,10 @@ Observation-series records are stored under `properties.observationSeries`.
     "value": 2.0,
     "uom": "m"
   },
+  "observingMethods": [
+    {"date": "1980-01-01", "observingMethod": 266},
+    {"date": "2001-01-01", "observingMethod": 267}
+  ],
   "officialStatus": [
     {
       "date": "2020-01-01",
@@ -287,6 +293,7 @@ Important conventions:
 - `officialStatus` is an array of dated objects. WMDR10 boolean `officialStatus` values map to `primary` for `true` and `additional` for `false`.
 - `deployments` is an array of references to `properties.deployments[*].id`.
 - `reporting` is an array of dated `ReportingProcedure` objects that reference reusable reporting definitions.
+- `observingMethods` is the dated observing-method history for the observation series. Each entry has `date` and mandatory `observingMethod`; use a nil-reason object when the method is unknown.
 - `observingProcedures` is an array of dated `ObservingProcedure` objects. Each observing procedure carries a `strategy` and references one or more reusable schedules through `observingSchedules`.
 
 Obsolete observation-series names such as `observations`, `observedVariable`, `observedDomain`, `domain`, `domainName`, `historicalDeployments`, `historicalReporting`, `historicalOfficialStatus`, `observingSchedules`, and `programAffiliations` are not emitted.
@@ -328,7 +335,7 @@ Observation-series reporting history is stored in `observationSeries[*].reportin
 ]
 ```
 
-This split allows one reporting definition to be reused by multiple observation series. Observation-series-specific values such as `uom` and `links` remain on the dated `ReportingProcedure` object. The v0.2.4 model requires a reporting procedure `strategy`; the converter uses a source strategy when one is available and otherwise emits `unknown`.
+This split allows one reporting definition to be reused by multiple observation series. Observation-series-specific values such as `uom` and `links` remain on the dated `ReportingProcedure` object. The v0.2.4.2 model requires a reporting procedure `strategy`; the converter uses a source strategy when one is available and otherwise emits `unknown`.
 
 ## Deployments
 
@@ -386,6 +393,7 @@ Instruments are reusable catalogue objects stored under `properties.instruments`
     "description": "Automatic air-temperature sensor.",
     "manufacturer": "Vaisala",
     "model": "HMP155",
+    "observingMethods": [266],
     "verticalRange": {
       "min": 0,
       "max": 30
@@ -396,7 +404,34 @@ Instruments are reusable catalogue objects stored under `properties.instruments`
 ]
 ```
 
-Manufacturer, model, optional title, optional description, optional vertical range, and optional instrument capability information belong on the instrument. Serial number belongs on the deployment.
+Manufacturer, model, optional title, optional description, optional vertical range, and optional instrument capability information belong on the instrument. Serial number belongs on the deployment. Instrument `observingMethods` is a compact list of method values only when the catalogue instrument type is known and the method capability is known:
+
+```json
+"observingMethods": [266, 267]
+```
+
+Do not create an instrument catalogue entry merely to carry an observing method. If make/model are unknown and the serial number is not documented, the observing method can be represented on the observation series alone.
+
+## Observing methods
+
+The authoritative observing-method information for users is the dated history on `ObservationSeries`:
+
+```json
+"observingMethods": [
+  {"date": "1980-01-01", "observingMethod": 266},
+  {"date": "2001-01-01", "observingMethod": 267}
+]
+```
+
+This answers the important question of how the observation series was generated and when the method changed. In v0.2.4.2 the `observingMethod` value in each history entry is mandatory. When the method is unknown for a known period, use a nil-reason object:
+
+```json
+"observingMethods": [
+  {"date": "1980-01-01", "observingMethod": {"nilReason": "unknown"}}
+]
+```
+
+`ObservingMethod` is not carried by `Deployment`. A deployment is the act/state of placing an instrument instance and making it contribute to one or more observation series. The same deployment can support two observation series that use different methods for different observed properties. `ObservingProcedure` is also not used to carry the observing method; it is the dated procedure/strategy object that links an observation series to one or more observing schedules.
 
 ## Observing schedules and observing procedures
 
@@ -422,7 +457,7 @@ Schedules are reusable JSCalendar-like objects stored under `properties.schedule
 ]
 ```
 
-The v0.2.4 XMI names the sampling extension `wmo.int:samplingFrequency`; the converter follows that spelling. Aggregation interval is emitted as `wmo.int:aggregationInterval`. The older nested `wmo.int:aggregation` object is not emitted.
+The v0.2.4.2 XMI names the sampling extension `wmi.int:samplingFrequency`; the converter follows that spelling. Aggregation interval is emitted as `wmo.int:aggregationInterval`. The older nested `wmo.int:aggregation` object is not emitted.
 
 ```json
 "observingProcedures": [

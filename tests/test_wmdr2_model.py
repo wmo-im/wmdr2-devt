@@ -122,6 +122,9 @@ def test_v024_observation_contains_model_aligned_historical_objects() -> None:
     assert deployment["date"] == "2020-01-01"
     assert deployment["serialNumber"] == "SN-001"
     assert deployment["instrument"].startswith("instrument:")
+    instrument = props["instruments"][0]
+    assert "observingMethods" not in instrument
+    assert observation["observingMethods"] == [{"date": "..", "observingMethod": {"nilReason": "unknown"}}]
     assert deployment["operatingStatus"] == "operational"
     assert deployment["geometry"]["type"] == "Point"
     assert deployment["exposure"] == "good"

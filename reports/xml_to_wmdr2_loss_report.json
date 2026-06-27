@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-26T11:59:30.492755+00:00",
+  "generatedAt": "2026-06-27T13:33:08.704257+00:00",
   "description": "Semantic XML leaf values not found in the generated WMDR2 JSON, after applying intentional-loss and code-list-compaction rules.",
   "notes": [
     "This is a coverage heuristic: it checks whether XML leaf values survive somewhere in the WMDR2 JSON.",
@@ -10,14 +10,14 @@
   "summary": {
     "xml_files": 19,
     "xml_entries": 7076,
-    "matched_entries": 4504,
-    "lost_entries": 2268,
+    "matched_entries": 4606,
+    "lost_entries": 2166,
     "ignored_entries": 304
   },
   "files": [
     {
       "xml": "resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20200304_0-20000-0-06494.json",
       "summary": {
         "xmlEntries": 348,
         "matched": 202,
@@ -1222,11 +1222,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20201007_0-156-10000-51056.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20201007_0-156-10000-51056.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20201007_0-156-10000-51056.json",
       "summary": {
         "xmlEntries": 151,
-        "matched": 84,
-        "lost": 59,
+        "matched": 90,
+        "lost": 53,
         "ignored": 8
       },
       "lost": [
@@ -1279,16 +1279,6 @@
           "value": "47.06 85.56 3500.0",
           "candidateValues": [
             "47.06 85.56 3500.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183",
-          "candidateValues": [
-            "183",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
           ]
         },
         {
@@ -1365,16 +1355,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183",
-          "candidateValues": [
-            "183",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -1443,16 +1423,6 @@
           "value": "0",
           "candidateValues": [
             "0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183",
-          "candidateValues": [
-            "183",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
           ]
         },
         {
@@ -1529,16 +1499,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183",
-          "candidateValues": [
-            "183",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -1611,16 +1571,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183",
-          "candidateValues": [
-            "183",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -1689,16 +1639,6 @@
           "value": "0",
           "candidateValues": [
             "0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183",
-          "candidateValues": [
-            "183",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
           ]
         },
         {
@@ -1777,7 +1717,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20220511_0-404-0-63707.json",
       "summary": {
         "xmlEntries": 187,
         "matched": 122,
@@ -2282,11 +2222,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20221124_0-578-0-92100.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20221124_0-578-0-92100.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20221124_0-578-0-92100.json",
       "summary": {
         "xmlEntries": 70,
-        "matched": 55,
-        "lost": 9,
+        "matched": 59,
+        "lost": 5,
         "ignored": 6
       },
       "lost": [
@@ -2339,52 +2279,12 @@
           "candidateValues": [
             "-71.9563 2.4668 1235.0"
           ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111",
-          "candidateValues": [
-            "111",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-          "candidateValues": [
-            "188",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254",
-          "candidateValues": [
-            "254",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63",
-          "candidateValues": [
-            "63",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
-          ]
         }
       ]
     },
     {
       "xml": "resources/wmdr10_xml_examples/20230331_0-250-1005-SARg.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20230331_0-250-1005-SARg.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20230331_0-250-1005-SARg.json",
       "summary": {
         "xmlEntries": 52,
         "matched": 36,
@@ -2518,11 +2418,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20240806_0-840-11502-KominkoSlade.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20240806_0-840-11502-KominkoSlade.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20240806_0-840-11502-KominkoSlade.json",
       "summary": {
         "xmlEntries": 225,
-        "matched": 145,
-        "lost": 73,
+        "matched": 150,
+        "lost": 68,
         "ignored": 7
       },
       "lost": [
@@ -2601,16 +2501,6 @@
           "value": "-79.466 -112.106 1801.0",
           "candidateValues": [
             "-79.466 -112.106 1801.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111",
-          "candidateValues": [
-            "111",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
           ]
         },
         {
@@ -2729,16 +2619,6 @@
           "value": "-79.466 -112.106 1801.0",
           "candidateValues": [
             "-79.466 -112.106 1801.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-          "candidateValues": [
-            "188",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
           ]
         },
         {
@@ -2871,16 +2751,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250",
-          "candidateValues": [
-            "250",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -2958,16 +2828,6 @@
           "value": "-79.466 -112.106 1801.0",
           "candidateValues": [
             "-79.466 -112.106 1801.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/65",
-          "candidateValues": [
-            "65",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/65"
           ]
         },
         {
@@ -3077,16 +2937,6 @@
           "value": "-79.466 -112.106 1801.0",
           "candidateValues": [
             "-79.466 -112.106 1801.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/65",
-          "candidateValues": [
-            "65",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/65"
           ]
         },
         {
@@ -3202,11 +3052,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20241211_0-20008-0-THE.json",
       "summary": {
         "xmlEntries": 217,
-        "matched": 165,
-        "lost": 41,
+        "matched": 169,
+        "lost": 37,
         "ignored": 11
       },
       "lost": [
@@ -3286,16 +3136,6 @@
           "candidateValues": [
             "http://codes.wmo.int/wmdr/SurfaceCoverClassification/igbp",
             "igbp"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-          "candidateValues": [
-            "78",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
           ]
         },
         {
@@ -3390,31 +3230,11 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/268",
-          "candidateValues": [
-            "268",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/268"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()",
           "kind": "text",
           "value": "40.634 22.956 60.0",
           "candidateValues": [
             "40.634 22.956 60.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/264",
-          "candidateValues": [
-            "264",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/264"
           ]
         },
         {
@@ -3446,16 +3266,6 @@
           "value": "40.634 22.956 60.0",
           "candidateValues": [
             "40.634 22.956 60.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
-          "candidateValues": [
-            "266",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
           ]
         },
         {
@@ -3602,11 +3412,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250314_0-404-800-4AA01.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250314_0-404-800-4AA01.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20250314_0-404-800-4AA01.json",
       "summary": {
         "xmlEntries": 57,
-        "matched": 41,
-        "lost": 13,
+        "matched": 42,
+        "lost": 12,
         "ignored": 3
       },
       "lost": [
@@ -3649,16 +3459,6 @@
           "value": "-0.36172 37.06812 1813.0",
           "candidateValues": [
             "-0.36172 37.06812 1813.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/356",
-          "candidateValues": [
-            "356",
-            "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/356"
           ]
         },
         {
@@ -3737,11 +3537,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20250504_0-20008-0-NRB.json",
       "summary": {
         "xmlEntries": 422,
-        "matched": 303,
-        "lost": 97,
+        "matched": 311,
+        "lost": 89,
         "ignored": 22
       },
       "lost": [
@@ -3874,16 +3674,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startHour/text()",
           "kind": "text",
           "value": "9",
@@ -3945,16 +3735,6 @@
           "value": "WOUDC",
           "candidateValues": [
             "WOUDC"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
           ]
         },
         {
@@ -4113,16 +3893,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107",
-          "candidateValues": [
-            "107",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
           "kind": "text",
           "value": "7",
@@ -4201,16 +3971,6 @@
           "value": "Archive",
           "candidateValues": [
             "Archive"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107",
-          "candidateValues": [
-            "107",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107"
           ]
         },
         {
@@ -4297,16 +4057,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107",
-          "candidateValues": [
-            "107",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()",
           "kind": "text",
           "value": "7",
@@ -4389,16 +4139,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/sampling/Sampling/samplingProcedure/@href",
           "kind": "attribute",
           "value": "http://codes.wmo.int/wmdr/SamplingProcedure/inapplicable",
@@ -4467,16 +4207,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/244",
-          "candidateValues": [
-            "244",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/244"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/instrumentOperatingStatus/InstrumentOperatingStatus/validPeriod/TimePeriod/beginPosition/text()",
           "kind": "text",
           "value": "2010-06-10T00:00:00Z",
@@ -4503,16 +4233,6 @@
           "value": "Archive",
           "candidateValues": [
             "Archive"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/240",
-          "candidateValues": [
-            "240",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/240"
           ]
         },
         {
@@ -4664,7 +4384,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250529_0-410-0-22184.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250529_0-410-0-22184.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20250529_0-410-0-22184.json",
       "summary": {
         "xmlEntries": 61,
         "matched": 56,
@@ -4717,11 +4437,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250728_0-756-1-387493.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20250728_0-756-1-387493.json",
       "summary": {
         "xmlEntries": 1086,
-        "matched": 672,
-        "lost": 374,
+        "matched": 684,
+        "lost": 362,
         "ignored": 40
       },
       "lost": [
@@ -5216,16 +4936,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204",
-          "candidateValues": [
-            "204",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[1]/DataGeneration/schedule/Schedule/endMonth/text()",
           "kind": "text",
           "value": "12",
@@ -5646,16 +5356,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-          "candidateValues": [
-            "188",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[1]/DataGeneration/schedule/Schedule/endMonth/text()",
           "kind": "text",
           "value": "12",
@@ -5847,16 +5547,6 @@
           "value": "46.752729 9.946457 2400.5",
           "candidateValues": [
             "46.752729 9.946457 2400.5"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250",
-          "candidateValues": [
-            "250",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250"
           ]
         },
         {
@@ -6200,16 +5890,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265",
-          "candidateValues": [
-            "265",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
           "kind": "text",
           "value": "12",
@@ -6297,16 +5977,6 @@
           "value": "46.752729 9.946457 2400.5",
           "candidateValues": [
             "46.752729 9.946457 2400.5"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265",
-          "candidateValues": [
-            "265",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265"
           ]
         },
         {
@@ -6412,16 +6082,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
-          "candidateValues": [
-            "266",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()",
           "kind": "text",
           "value": "12",
@@ -6509,16 +6169,6 @@
           "value": "46.752729 9.946457 2400.5",
           "candidateValues": [
             "46.752729 9.946457 2400.5"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
-          "candidateValues": [
-            "266",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
           ]
         },
         {
@@ -6620,16 +6270,6 @@
           "value": "46.752729 9.946457 2400.5",
           "candidateValues": [
             "46.752729 9.946457 2400.5"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
-          "candidateValues": [
-            "266",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
           ]
         },
         {
@@ -6827,16 +6467,6 @@
           "value": "46.752729 9.946457 2400.5",
           "candidateValues": [
             "46.752729 9.946457 2400.5"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260",
-          "candidateValues": [
-            "260",
-            "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260"
           ]
         },
         {
@@ -7054,16 +6684,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260",
-          "candidateValues": [
-            "260",
-            "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/equipmentLog/EquipmentLog/logEntry/MaintenanceReport/author/text()",
           "kind": "text",
           "value": "C. Fierz, 2020-08-04",
@@ -7197,16 +6817,6 @@
           "value": "46.752729 9.946457 2401.5",
           "candidateValues": [
             "46.752729 9.946457 2401.5"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63",
-          "candidateValues": [
-            "63",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
           ]
         },
         {
@@ -7423,16 +7033,6 @@
           "value": "46.752729 9.946457 2401.5",
           "candidateValues": [
             "46.752729 9.946457 2401.5"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63",
-          "candidateValues": [
-            "63",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
           ]
         },
         {
@@ -8227,7 +7827,7 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20250731_0-20000-0-06650.json",
       "summary": {
         "xmlEntries": 419,
         "matched": 263,
@@ -9531,11 +9131,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20251001_0-20008-0-MKN.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20251001_0-20008-0-MKN.json",
       "summary": {
         "xmlEntries": 1120,
-        "matched": 660,
-        "lost": 396,
+        "matched": 685,
+        "lost": 371,
         "ignored": 64
       },
       "lost": [
@@ -9652,16 +9252,6 @@
           "value": "NOAA Earth System Research Laboratory - Global Monitoring Division",
           "candidateValues": [
             "NOAA Earth System Research Laboratory - Global Monitoring Division"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301",
-          "candidateValues": [
-            "301",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301"
           ]
         },
         {
@@ -9904,16 +9494,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/221",
-          "candidateValues": [
-            "221",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/221"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -10029,16 +9609,6 @@
           "value": "NOAA Earth System Research Laboratory - Global Monitoring Division",
           "candidateValues": [
             "NOAA Earth System Research Laboratory - Global Monitoring Division"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/221",
-          "candidateValues": [
-            "221",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/221"
           ]
         },
         {
@@ -10162,16 +9732,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/120",
-          "candidateValues": [
-            "120",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/120"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -10258,16 +9818,6 @@
           "value": "-0.0621999986 37.2971992493 3678.0",
           "candidateValues": [
             "-0.0621999986 37.2971992493 3678.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/120",
-          "candidateValues": [
-            "120",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/120"
           ]
         },
         {
@@ -10362,16 +9912,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/120",
-          "candidateValues": [
-            "120",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/120"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -10458,16 +9998,6 @@
           "value": "-0.0621999986 37.2971992493 3678.0",
           "candidateValues": [
             "-0.0621999986 37.2971992493 3678.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[8]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/73",
-          "candidateValues": [
-            "73",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/73"
           ]
         },
         {
@@ -10563,16 +10093,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-          "candidateValues": [
-            "188",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -10641,16 +10161,6 @@
           "value": "59",
           "candidateValues": [
             "59"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-          "candidateValues": [
-            "188",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
           ]
         },
         {
@@ -10752,16 +10262,6 @@
           "value": "-0.0621999986 37.2971992493 3678.0",
           "candidateValues": [
             "-0.0621999986 37.2971992493 3678.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-          "candidateValues": [
-            "188",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
           ]
         },
         {
@@ -10962,16 +10462,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/247",
-          "candidateValues": [
-            "247",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/247"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[10]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -11058,16 +10548,6 @@
           "value": "-0.0621999986 37.2971992493 3678.0",
           "candidateValues": [
             "-0.0621999986 37.2971992493 3678.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[11]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254",
-          "candidateValues": [
-            "254",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254"
           ]
         },
         {
@@ -11291,16 +10771,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/120",
-          "candidateValues": [
-            "120",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/120"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -11459,16 +10929,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/220",
-          "candidateValues": [
-            "220",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/220"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -11552,16 +11012,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[15]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/230",
-          "candidateValues": [
-            "230",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/230"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[15]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -11640,16 +11090,6 @@
           "candidateValues": [
             "2024-07-14",
             "2024-07-14T00:00:00Z"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[16]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/240",
-          "candidateValues": [
-            "240",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/240"
           ]
         },
         {
@@ -11751,16 +11191,6 @@
           "value": "NOAA Earth System Research Laboratory - Global Monitoring Division",
           "candidateValues": [
             "NOAA Earth System Research Laboratory - Global Monitoring Division"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[17]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301",
-          "candidateValues": [
-            "301",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301"
           ]
         },
         {
@@ -11884,16 +11314,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[18]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301",
-          "candidateValues": [
-            "301",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[18]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -12009,16 +11429,6 @@
           "value": "NOAA Earth System Research Laboratory - Global Monitoring Division",
           "candidateValues": [
             "NOAA Earth System Research Laboratory - Global Monitoring Division"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[19]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301",
-          "candidateValues": [
-            "301",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301"
           ]
         },
         {
@@ -12142,16 +11552,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[20]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301",
-          "candidateValues": [
-            "301",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[20]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -12271,16 +11671,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[21]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301",
-          "candidateValues": [
-            "301",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[21]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -12396,16 +11786,6 @@
           "value": "NOAA Earth System Research Laboratory - Global Monitoring Division",
           "candidateValues": [
             "NOAA Earth System Research Laboratory - Global Monitoring Division"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[22]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301",
-          "candidateValues": [
-            "301",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/301"
           ]
         },
         {
@@ -12858,16 +12238,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[25]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/60",
-          "candidateValues": [
-            "60",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/60"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[25]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -12964,16 +12334,6 @@
           "value": "-0.0621999986 37.2971992493 3678.0",
           "candidateValues": [
             "-0.0621999986 37.2971992493 3678.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[26]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/215",
-          "candidateValues": [
-            "215",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/215"
           ]
         },
         {
@@ -13089,16 +12449,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[26]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/60",
-          "candidateValues": [
-            "60",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/60"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[26]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -13192,11 +12542,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20251218_0-20000-0-45004.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20251218_0-20000-0-45004.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20251218_0-20000-0-45004.json",
       "summary": {
         "xmlEntries": 473,
-        "matched": 333,
-        "lost": 120,
+        "matched": 343,
+        "lost": 110,
         "ignored": 20
       },
       "lost": [
@@ -13390,16 +12740,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111",
-          "candidateValues": [
-            "111",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -13491,16 +12831,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-          "candidateValues": [
-            "188",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -13583,16 +12913,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-          "candidateValues": [
-            "188",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -13662,26 +12982,6 @@
           "candidateValues": [
             "1",
             "http://codes.wmo.int/wmdr/ApplicationArea/1"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331",
-          "candidateValues": [
-            "331",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331",
-          "candidateValues": [
-            "331",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331"
           ]
         },
         {
@@ -13840,16 +13140,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254",
-          "candidateValues": [
-            "254",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "2",
@@ -13944,16 +13234,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327",
-          "candidateValues": [
-            "327",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[9]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -14023,16 +13303,6 @@
           "candidateValues": [
             "1",
             "http://codes.wmo.int/wmdr/ApplicationArea/1"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[12]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327",
-          "candidateValues": [
-            "327",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327"
           ]
         },
         {
@@ -14115,16 +13385,6 @@
           "value": "22.3119444444 114.1727777778 74.8",
           "candidateValues": [
             "22.3119444444 114.1727777778 74.8"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[13]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/95",
-          "candidateValues": [
-            "95",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/95"
           ]
         },
         {
@@ -14220,16 +13480,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/95",
-          "candidateValues": [
-            "95",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/95"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[14]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -14314,11 +13564,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20260318_0-20008-0-ARO.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20260318_0-20008-0-ARO.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20260318_0-20008-0-ARO.json",
       "summary": {
         "xmlEntries": 388,
-        "matched": 233,
-        "lost": 139,
+        "matched": 247,
+        "lost": 125,
         "ignored": 16
       },
       "lost": [
@@ -14471,16 +13721,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -14562,16 +13802,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-          "candidateValues": [
-            "78",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -14640,16 +13870,6 @@
           "value": "59",
           "candidateValues": [
             "59"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
           ]
         },
         {
@@ -14743,32 +13963,12 @@
           ]
         },
         {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[4]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-          "candidateValues": [
-            "78",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
-          ]
-        },
-        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[4]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
           "kind": "text",
           "value": "WOUDC",
           "candidateValues": [
             "WOUDC"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[5]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
           ]
         },
         {
@@ -14862,32 +14062,12 @@
           ]
         },
         {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[6]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-          "candidateValues": [
-            "78",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
-          ]
-        },
-        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[6]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
           "kind": "text",
           "value": "WOUDC",
           "candidateValues": [
             "WOUDC"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[7]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
           ]
         },
         {
@@ -14999,32 +14179,12 @@
           ]
         },
         {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[8]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-          "candidateValues": [
-            "78",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
-          ]
-        },
-        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[8]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
           "kind": "text",
           "value": "WOUDC",
           "candidateValues": [
             "WOUDC"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[9]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
           ]
         },
         {
@@ -15119,16 +14279,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[10]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -15215,16 +14365,6 @@
           "value": "WOUDC",
           "candidateValues": [
             "WOUDC"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[11]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
           ]
         },
         {
@@ -15319,16 +14459,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -15419,16 +14549,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -15497,16 +14617,6 @@
           "value": "59",
           "candidateValues": [
             "59"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[3]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
           ]
         },
         {
@@ -15603,11 +14713,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20260318_0-20008-0-DAV.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20260318_0-20008-0-DAV.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20260318_0-20008-0-DAV.json",
       "summary": {
         "xmlEntries": 382,
-        "matched": 246,
-        "lost": 115,
+        "matched": 252,
+        "lost": 109,
         "ignored": 21
       },
       "lost": [
@@ -15728,16 +14838,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-          "candidateValues": [
-            "106",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[1]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -15810,16 +14910,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-          "candidateValues": [
-            "78",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -15888,16 +14978,6 @@
           "value": "59",
           "candidateValues": [
             "59"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/210",
-          "candidateValues": [
-            "210",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/210"
           ]
         },
         {
@@ -15988,16 +15068,6 @@
           "value": "46.813324 9.844385 1590.0",
           "candidateValues": [
             "46.813324 9.844385 1590.0"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/197",
-          "candidateValues": [
-            "197",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/197"
           ]
         },
         {
@@ -16200,32 +15270,12 @@
           ]
         },
         {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-          "candidateValues": [
-            "78",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
-          ]
-        },
-        {
           "section": "observation",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation[2]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()",
           "kind": "text",
           "value": "WOUDC",
           "candidateValues": [
             "WOUDC"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[7]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265",
-          "candidateValues": [
-            "265",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265"
           ]
         },
         {
@@ -16668,11 +15718,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20260511_0-434-0-62061.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20260511_0-434-0-62061.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20260511_0-434-0-62061.json",
       "summary": {
         "xmlEntries": 379,
-        "matched": 219,
-        "lost": 145,
+        "matched": 225,
+        "lost": 139,
         "ignored": 15
       },
       "lost": [
@@ -16835,16 +15885,6 @@
           "value": "NRT",
           "candidateValues": [
             "NRT"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[1]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/212",
-          "candidateValues": [
-            "212",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/212"
           ]
         },
         {
@@ -17093,16 +16133,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111",
-          "candidateValues": [
-            "111",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[2]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -17275,16 +16305,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-          "candidateValues": [
-            "188",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[3]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -17453,16 +16473,6 @@
           "value": "NRT",
           "candidateValues": [
             "NRT"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[4]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/338",
-          "candidateValues": [
-            "338",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/338"
           ]
         },
         {
@@ -17654,16 +16664,6 @@
           "candidateValues": [
             "gps",
             "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
-          ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[5]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/176",
-          "candidateValues": [
-            "176",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/176"
           ]
         },
         {
@@ -17921,16 +16921,6 @@
         },
         {
           "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/176",
-          "candidateValues": [
-            "176",
-            "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/176"
-          ]
-        },
-        {
-          "section": "deployment",
           "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation[6]/ObservingCapability/observation[2]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()",
           "kind": "text",
           "value": "1",
@@ -18005,11 +16995,11 @@
     },
     {
       "xml": "resources/wmdr10_xml_examples/20260604_0-70-0-Lukavac.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/20260604_0-70-0-Lukavac.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/20260604_0-70-0-Lukavac.json",
       "summary": {
         "xmlEntries": 45,
-        "matched": 37,
-        "lost": 5,
+        "matched": 38,
+        "lost": 4,
         "ignored": 3
       },
       "lost": [
@@ -18053,22 +17043,12 @@
           "candidateValues": [
             "44.5213 18.5262 188.17"
           ]
-        },
-        {
-          "section": "deployment",
-          "path": "/WIGOSMetadataRecord/facility/ObservingFacility/observation/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/observingMethod/@href",
-          "kind": "attribute",
-          "value": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/356",
-          "candidateValues": [
-            "356",
-            "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/356"
-          ]
         }
       ]
     },
     {
       "xml": "resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml",
-      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-31/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
+      "wmdr2Json": "/tmp/pytest-of-jkl/pytest-32/xml_to_wmdr2_e2e0/wmdr2_json/Blatten_20250729_0-20000-0-06725.json",
       "summary": {
         "xmlEntries": 994,
         "matched": 632,
