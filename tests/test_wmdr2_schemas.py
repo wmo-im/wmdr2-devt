@@ -166,7 +166,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "officialStatus": [
                         {"officialStatus": "primary", "date": ".."}
                     ],
-                    "observingMethods": [
+                    "observingConfigurations": [
                         {"date": "2016-04-29", "observingMethod": {"nilReason": "unknown"}},
                     ],
                     "observingProcedures": [
@@ -175,9 +175,6 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                     "reporting": [
                         {"date": "2016-04-29", "strategy": "unknown", "reporting": "reporting:hourly-open", "uom": None},
                         {"date": "2020-01-01", "strategy": "unknown", "reporting": "reporting:ten-minute-restricted", "uom": "mm"},
-                    ],
-                    "deployments": [
-                        "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06"
                     ],
                 }
             ],
@@ -390,12 +387,12 @@ def test_observation_description_is_not_part_of_current_core_model() -> None:
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_observation_deployments_reference_deployment_objects() -> None:
+def test_observation_series_direct_deployments_are_not_part_of_v025_model() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observationSeries"][0]["deployments"] = [
         "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
     ]
-    assert _is_valid(RECORD_SCHEMA, instance)
+    assert not _is_valid(RECORD_SCHEMA, instance)
 
 def test_root_deployments_are_reusable_definitions_in_v024_model() -> None:
     instance = _valid_facility_record_feature()
@@ -427,9 +424,9 @@ def test_deployment_serial_numbers_parallel_array_is_invalid() -> None:
 
 
 
-def test_observation_series_observing_method_value_is_required_and_accepts_nil_reason() -> None:
+def test_observation_series_observing_configuration_value_is_required_and_accepts_nil_reason() -> None:
     instance = _valid_facility_record_feature()
-    method = instance["properties"]["observationSeries"][0]["observingMethods"][0]
+    method = instance["properties"]["observationSeries"][0]["observingConfigurations"][0]
     assert method["observingMethod"] == {"nilReason": "unknown"}
     assert _validate(RECORD_SCHEMA, instance) == []
 
@@ -440,9 +437,23 @@ def test_observation_series_observing_method_value_is_required_and_accepts_nil_r
 def test_observing_method_value_accepts_known_codes_on_instrument_and_observation_series() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["instruments"][0]["observingMethods"] = ["266", 267]
-    instance["properties"]["observationSeries"][0]["observingMethods"] = [
+    instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
         {"date": "1980-01-01", "observingMethod": "266"},
         {"date": "2001-01-01", "observingMethod": 267},
+    ]
+    assert _is_valid(RECORD_SCHEMA, instance)
+
+
+
+def test_observing_method_rejects_literal_unknown_string_use_nil_reason_instead() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
+        {"date": "1980-01-01", "observingMethod": "unknown"}
+    ]
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
+        {"date": "1980-01-01", "observingMethod": {"nilReason": "unknown"}}
     ]
     assert _is_valid(RECORD_SCHEMA, instance)
 

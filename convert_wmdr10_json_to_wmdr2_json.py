@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Convert simplified WMDR 1.0 JSON records into facility-centric WMDR2 JSON.
 
-WMDR v0.2.4.2 implementation notes
----------------------------------
+WMDR v0.2.5 implementation notes
+-------------------------------
 
 * The output is a facility-centric GeoJSON-like ``Feature``.
 * ``temporalGeometry`` remains the trajectory-style aligned-array ``MovingPoint``
   object.
-* Other time-varying model elements use v0.2.4.2 class/property names and are
+* Other time-varying model elements use v0.2.5 class/property names and are
   represented as arrays of dated objects, for example ``environment``,
   ``programAffiliation``, ``territory``, ``deployments``, ``reporting`` and
   ``officialStatus``.
@@ -18,16 +18,21 @@ WMDR v0.2.4.2 implementation notes
   ``observationSeries[*].reporting`` contains dated ReportingProcedure references
   plus observation-series-specific values such as ``uom`` and ``links``.
 * Reusable deployment / instrument-instance states are emitted under
-  ``properties.deployments``. ``observationSeries[*].deployments`` references
-  those deployment identifiers.
+  ``properties.deployments``. Observation series refer to deployments only via
+  ``observationSeries[*].observingConfigurations[*].deployment``, where the
+  deployment reference is tied to a dated observing-method context.
 * Reusable JSCalendar-like schedule objects are emitted under
   ``properties.schedules``; observation series refer to them through
   dated ``observingProcedures`` records. Each ObservingProcedure carries a
   strategy and one or more ``observingSchedules`` schedule identifiers.
 * ``observedFeature`` uses ``domain``, ``domainFeature`` and ``featureName``.
-* Instrument ``observingMethod`` is mandatory in v0.2.4.2.  When the
-  source record does not provide an observing method, the converter emits
-  ``{"nilReason": "unknown"}``.
+* ``observationSeries[*].observingConfigurations`` contains the dated observing
+  method history. Each configuration has a mandatory ``observingMethod`` value,
+  using a nil-reason object when the method is unknown, and may reference the
+  deployment that realized that configuration.
+* ``instrument.observingMethods`` is optional capability metadata for known
+  instrument catalogue entries only; it is not the authoritative observation-
+  series method history.
 """
 
 from __future__ import annotations
@@ -941,7 +946,7 @@ def _parse_bool(value: Any) -> Optional[bool]:
 
 
 def _normalize_official_status(value: Any) -> Optional[str]:
-    """Normalize WMDR10 officialStatus to WMDR v0.2.4 observation-series status.
+    """Normalize WMDR10 officialStatus to WMDR v0.2.5 observation-series status.
 
     The WMDR10 XML uses a boolean officialStatus.  The agreed mapping is:
     true -> primary, false -> additional.  String values are compacted but not
@@ -1305,7 +1310,7 @@ def _normalize_historical_environment(facility: Mapping[str, Any], *, fallback_d
 
 
 def _normalize_environment(facility: Mapping[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    """Compatibility helper returning the v0.2.4 Environment array.
+    """Compatibility helper returning the v0.2.5 Environment array.
 
     Older local code may still call ``_normalize_environment`` directly.  The
     returned value is meant to be assigned directly to ``properties.environment``.
@@ -1521,12 +1526,20 @@ def _observing_method_candidates(raw: Mapping[str, Any]) -> List[Any]:
 
 
 def _normalize_observing_method_values(raw: Mapping[str, Any]) -> List[Any]:
-    """Return compact observing-method values or nil-reason objects from one source."""
+    """Return compact observing-method values or nil-reason objects from one source.
+
+    ``observingMethod`` is mandatory in the v0.2.5 ObservingConfiguration
+    object.  A literal source value such as ``unknown`` therefore represents a
+    missing mandatory method and must be serialized as a nil-reason object, not
+    as the codelist/free-text value ``"unknown"``.
+    """
 
     values: List[Any] = []
     for candidate in _observing_method_candidates(raw):
         for item in _as_list(candidate):
             value = _normalize_code_or_nil_reason(item)
+            if value == "unknown" or _is_unknown_token(value):
+                value = _nil_reason("unknown")
             if value is not None:
                 values.append(value)
     return _uniq_dicts(values)
@@ -1544,26 +1557,42 @@ def _normalize_instrument_observing_methods(raw: Mapping[str, Any]) -> Optional[
     return values or None
 
 
-def _normalize_observation_series_observing_methods(
+def _normalize_observation_series_observing_configurations(
     raw: Mapping[str, Any],
-    *sources: Mapping[str, Any],
+    deployment_sources: Sequence[Mapping[str, Any]],
+    *,
+    facility_id: str,
     fallback_date: str = "..",
 ) -> List[Dict[str, Any]]:
-    """Return dated observing-method history for an ObservationSeries.
+    """Return dated ObservingConfiguration records for an ObservationSeries.
 
-    v0.2.4.2 makes the observingMethod value mandatory for each method-history
-    entry.  When the method is not available from WMDR10, emit a nilReason object
-    rather than omitting the value.  The method is intentionally not carried by
-    Deployment: one deployment can support multiple observation series/methods.
+    In the v0.2.5 model, observing method history is represented by
+    ``ObservationSeries.observingConfigurations``.  Each record has a date and a
+    mandatory observingMethod value; when the method is not available, emit a
+    nilReason object.  A configuration may reference the deployment that realized
+    it, but deployment is optional so method history can still be represented
+    when instrument/deployment details are unknown.
     """
 
     records: List[Dict[str, Any]] = []
-    all_sources: List[Mapping[str, Any]] = [raw]
-    all_sources.extend(source for source in sources if isinstance(source, Mapping))
-    for source in all_sources:
-        date = _entry_date(source, fallback_date)
+    for value in _normalize_observing_method_values(raw):
+        records.append({"date": _entry_date(raw, fallback_date), "observingMethod": value})
+
+    for dep_index, source in enumerate(deployment_sources, start=1):
+        if not isinstance(source, Mapping):
+            continue
+        deployment_id = _deployment_record_id(source, index=dep_index, facility_id=facility_id)
         for value in _normalize_observing_method_values(source):
-            records.append({"date": date, "observingMethod": value})
+            records.append(
+                _clean_none(
+                    {
+                        "date": _entry_date(source, fallback_date),
+                        "deployment": deployment_id,
+                        "observingMethod": value,
+                    }
+                )
+            )
+
     if not records:
         records.append({"date": fallback_date, "observingMethod": _nil_reason("unknown")})
     return _uniq_dicts(_clean_none(records))
@@ -1736,7 +1765,7 @@ def _jscalendar_observing_schedule(raw: Mapping[str, Any], *, time_zone: str = "
         )
     )
     if sampling_frequency:
-        # The v0.2.4 XMI spells this extension property as ``wmi.int:samplingFrequency``.
+        # The v0.2.5 XMI spells this extension property as ``wmi.int:samplingFrequency``.
         event_without_uid["wmi.int:samplingFrequency"] = sampling_frequency
 
     aggregation_interval = _iso_duration(
@@ -1794,7 +1823,7 @@ def _normalize_observing_procedures(
     schedule_registry: Dict[str, Dict[str, Any]],
     time_zone: str = "UTC",
 ) -> Optional[List[Dict[str, Any]]]:
-    """Return v0.2.4 ObservingProcedure records for observation-series observing history."""
+    """Return v0.2.5 ObservingProcedure records for observation-series observing history."""
 
     procedures: List[Dict[str, Any]] = []
     for group in groups:
@@ -1934,7 +1963,7 @@ def _normalize_observation_reporting(
     When a registry is supplied, reusable reporting definitions are registered
     there and the returned historical records contain references.  Without a
     registry, a local temporary registry is used so helper-level callers see the
-    same v0.2.4-style structure.
+    same v0.2.5-style structure.
     """
 
     registry = reporting_registry if reporting_registry is not None else {}
@@ -2092,11 +2121,12 @@ def _normalize_deployment(
     facility_id: str,
     schedule_registry: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> List[Dict[str, Any]]:
-    """Normalize a v0.2.4 Deployment object.
+    """Normalize a v0.2.5 Deployment object.
 
     Kept as a private helper for tests and local tooling; normal feature assembly
-    stores these objects under ``properties.deployments`` and references them from
-    ``observationSeries[*].deployments``.
+    stores these objects under ``properties.deployments``. Observation-series
+    deployment links are represented through
+    ``observingConfigurations[*].deployment``.
     """
 
     del schedule_registry
@@ -2110,7 +2140,7 @@ def _normalize_deployment(
 
 
 def _domain_object(raw: Mapping[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
-    """Return the v0.2.4 observedFeature object.
+    """Return the v0.2.5 observedFeature object.
 
     The output key is ``domain``.  ``domainName`` is accepted only as legacy
     input from earlier intermediate JSON, never emitted.
@@ -2259,12 +2289,6 @@ def _normalize_observation(
     for dep in deployment_sources:
         observing_schedule_sources.extend([dep.get("dataGeneration"), dep.get("coverage"), dep.get("sampling"), dep.get("observingSchedule")])
 
-    deployment_refs: List[str] = []
-    for dep_index, dep in enumerate(deployment_sources, start=1):
-        dep_id = _deployment_record_id(dep, index=dep_index, facility_id=facility_id)
-        if dep_id not in deployment_refs:
-            deployment_refs.append(dep_id)
-
     reference_surface = _first_non_empty(raw.get("referenceSurface"), raw.get("localReferenceSurface"), _first_from_dicts(deployment_sources, "referenceSurface", "localReferenceSurface"))
     fallback_date = _entry_date(raw)
     official_sources: List[Mapping[str, Any]] = [raw, *deployment_sources]
@@ -2284,9 +2308,8 @@ def _normalize_observation(
         "representativeness": _first_non_empty(raw.get("representativeness"), _first_from_dicts(deployment_sources, "representativeness")),
         "verticalDistanceFromReferenceSurface": _first_vertical_distance_from_sources(raw, deployment_sources),
         "officialStatus": _normalize_historical_official_status(*official_sources, fallback_date=fallback_date),
-        "observingMethods": _normalize_observation_series_observing_methods(raw, *deployment_sources, fallback_date=fallback_date),
+        "observingConfigurations": _normalize_observation_series_observing_configurations(raw, deployment_sources, facility_id=facility_id, fallback_date=fallback_date),
         "observingProcedures": _normalize_observing_procedures(observing_schedule_sources, schedule_registry=schedule_registry, time_zone=time_zone),
-        "deployments": deployment_refs,
         "reporting": _preserve_nulls(_normalize_observation_reporting(*reporting_sources, reporting_registry=reporting_registry)),
         "keywords": _keywords_from_values(_collect_discovery_values("observation", raw, "keywords")),
         "links": _extract_links(raw, "observation"),

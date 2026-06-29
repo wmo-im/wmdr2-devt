@@ -1,6 +1,6 @@
-# WMDR2 development v0.2.4.2
+# WMDR2 development v0.2.5
 
-This repository contains experimental tooling for transforming legacy WMDR 1.0 XML records into a simplified WMDR10 JSON representation and then into the draft WMDR2 v0.2.4.2 JSON representation.
+This repository contains experimental tooling for transforming legacy WMDR 1.0 XML records into a simplified WMDR10 JSON representation and then into the draft WMDR2 v0.2.5 JSON representation.
 
 The WMDR2 output is a facility-centric full record encoded as a GeoJSON-like `Feature`. WMDR2-specific content is stored in `properties`. Output files use the `.json` extension.
 
@@ -255,9 +255,9 @@ Observation-series records are stored under `properties.observationSeries`.
     "value": 2.0,
     "uom": "m"
   },
-  "observingMethods": [
-    {"date": "1980-01-01", "observingMethod": 266},
-    {"date": "2001-01-01", "observingMethod": 267}
+  "observingConfigurations": [
+    {"date": "1980-01-01", "deployment": "deployment:dep-1", "observingMethod": 266},
+    {"date": "2001-01-01", "deployment": "deployment:dep-2", "observingMethod": 267}
   ],
   "officialStatus": [
     {
@@ -265,7 +265,6 @@ Observation-series records are stored under `properties.observationSeries`.
       "officialStatus": "primary"
     }
   ],
-  "deployments": ["deployment:dep-1"],
   "reporting": [
     {
       "date": "2020-01-01",
@@ -291,9 +290,9 @@ Important conventions:
 - `observedFeature.domainFeature` and `observedFeature.featureName` are optional enrichment fields.
 - Observation-series programme affiliation uses `programAffiliation`, not `programAffiliations`.
 - `officialStatus` is an array of dated objects. WMDR10 boolean `officialStatus` values map to `primary` for `true` and `additional` for `false`.
-- `deployments` is an array of references to `properties.deployments[*].id`.
 - `reporting` is an array of dated `ReportingProcedure` objects that reference reusable reporting definitions.
-- `observingMethods` is the dated observing-method history for the observation series. Each entry has `date` and mandatory `observingMethod`; use a nil-reason object when the method is unknown.
+- `observingConfigurations` is the dated observing-method configuration history for the observation series. Each entry has `date` and mandatory `observingMethod`; use a nil-reason object when the method is unknown. When a known deployment realizes the configuration, include `deployment`.
+- Direct `observationSeries[*].deployments` is not emitted; deployment references belong inside `observingConfigurations[*].deployment`, where they are tied to the dated method context.
 - `observingProcedures` is an array of dated `ObservingProcedure` objects. Each observing procedure carries a `strategy` and references one or more reusable schedules through `observingSchedules`.
 
 Obsolete observation-series names such as `observations`, `observedVariable`, `observedDomain`, `domain`, `domainName`, `historicalDeployments`, `historicalReporting`, `historicalOfficialStatus`, `observingSchedules`, and `programAffiliations` are not emitted.
@@ -335,7 +334,7 @@ Observation-series reporting history is stored in `observationSeries[*].reportin
 ]
 ```
 
-This split allows one reporting definition to be reused by multiple observation series. Observation-series-specific values such as `uom` and `links` remain on the dated `ReportingProcedure` object. The v0.2.4.2 model requires a reporting procedure `strategy`; the converter uses a source strategy when one is available and otherwise emits `unknown`.
+This split allows one reporting definition to be reused by multiple observation series. Observation-series-specific values such as `uom` and `links` remain on the dated `ReportingProcedure` object. The v0.2.5 model requires a reporting procedure `strategy`; the converter uses a source strategy when one is available and otherwise emits `unknown`.
 
 ## Deployments
 
@@ -358,17 +357,21 @@ Deployments are reusable, dated instrument-instance/state objects stored under `
 ]
 ```
 
-The same deployment may be referenced by several observation series.
+The same deployment may be referenced by several observation series, but the reference is made through each series' dated observing configuration rather than a direct deployment list.
 
 ```json
 "observationSeries": [
   {
     "id": "observationSeries:12006",
-    "deployments": ["deployment:dep-1"]
+    "observingConfigurations": [
+      {"date": "2020-01-01", "deployment": "deployment:dep-1", "observingMethod": 266}
+    ]
   },
   {
     "id": "observationSeries:12001",
-    "deployments": ["deployment:dep-1"]
+    "observingConfigurations": [
+      {"date": "2020-01-01", "deployment": "deployment:dep-1", "observingMethod": 188}
+    ]
   }
 ]
 ```
@@ -412,26 +415,36 @@ Manufacturer, model, optional title, optional description, optional vertical ran
 
 Do not create an instrument catalogue entry merely to carry an observing method. If make/model are unknown and the serial number is not documented, the observing method can be represented on the observation series alone.
 
-## Observing methods
+## Observing configurations
 
-The authoritative observing-method information for users is the dated history on `ObservationSeries`:
+The authoritative observing-method information for users is the dated configuration history on `ObservationSeries`:
 
 ```json
-"observingMethods": [
-  {"date": "1980-01-01", "observingMethod": 266},
-  {"date": "2001-01-01", "observingMethod": 267}
+"observingConfigurations": [
+  {"date": "1980-01-01", "deployment": "deployment:arosa-dobson-1", "observingMethod": 266},
+  {"date": "2001-01-01", "deployment": "deployment:davos-brewer-1", "observingMethod": 267}
 ]
 ```
 
-This answers the important question of how the observation series was generated and when the method changed. In v0.2.4.2 the `observingMethod` value in each history entry is mandatory. When the method is unknown for a known period, use a nil-reason object:
+This answers the important question of how the observation series was generated and when the method changed. In v0.2.5 the `observingMethod` value in each configuration entry is mandatory. When the method is unknown for a known period, use a nil-reason object:
 
 ```json
-"observingMethods": [
+"observingConfigurations": [
   {"date": "1980-01-01", "observingMethod": {"nilReason": "unknown"}}
 ]
 ```
 
-`ObservingMethod` is not carried by `Deployment`. A deployment is the act/state of placing an instrument instance and making it contribute to one or more observation series. The same deployment can support two observation series that use different methods for different observed properties. `ObservingProcedure` is also not used to carry the observing method; it is the dated procedure/strategy object that links an observation series to one or more observing schedules.
+When the method is unknown for the whole period and no better start date is available, use the open date marker:
+
+```json
+"observingConfigurations": [
+  {"date": "..", "observingMethod": {"nilReason": "unknown"}}
+]
+```
+
+Do not emit a literal string such as `"observingMethod": "unknown"`; unknown mandatory method values must use the nil-reason object form.
+
+A configuration may reference a deployment, but the reference is optional. This allows the observation-series method history to be represented even when make/model/serial/deployment details are not known. The method is not carried directly by `Deployment`: a deployment is the act/state of placing an instrument instance and making it contribute to one or more observation series, and the same deployment can support two observation series that use different methods for different observed properties. `ObservingProcedure` is also not used to carry the observing method; it is the dated procedure/strategy object that links an observation series to one or more observing schedules.
 
 ## Observing schedules and observing procedures
 
@@ -457,7 +470,7 @@ Schedules are reusable JSCalendar-like objects stored under `properties.schedule
 ]
 ```
 
-The v0.2.4.2 XMI names the sampling extension `wmi.int:samplingFrequency`; the converter follows that spelling. Aggregation interval is emitted as `wmo.int:aggregationInterval`. The older nested `wmo.int:aggregation` object is not emitted.
+The v0.2.5 XMI names the sampling extension `wmi.int:samplingFrequency`; the converter follows that spelling. Aggregation interval is emitted as `wmo.int:aggregationInterval`. The older nested `wmo.int:aggregation` object is not emitted.
 
 ```json
 "observingProcedures": [

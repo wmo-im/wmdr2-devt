@@ -838,7 +838,7 @@
           "description": "Optional observing-method capabilities of this instrument catalogue entry. These values are not the authoritative dated history of an observation series."
         }
       },
-      "description": "Instrument catalogue metadata. Deployed instrument instances are represented by deployment records. Optional observingMethods list instrument capabilities when known; the dated method history belongs to ObservationSeries."
+      "description": "Instrument catalogue metadata. Deployed instrument instances are represented by deployment records. Optional observingMethods list instrument capabilities when known; the authoritative dated series history belongs to ObservationSeries.observingConfigurations."
     },
     "observation": {
       "type": "object",
@@ -891,13 +891,6 @@
         },
         "officialStatus": {
           "$ref": "#/$defs/officialStatus"
-        },
-        "deployments": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^deployment:"
-          }
         },
         "reporting": {
           "type": "array",
@@ -1021,8 +1014,16 @@
               "historicalObservingProcedure"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "deployments"
+            ]
+          }
         }
-      ]
+      ],
+      "description": "ObservationSeries metadata. Deployment links are expressed through observingConfigurations[*].deployment rather than a direct deployments list."
     },
     "deployment": {
       "type": "object",
@@ -1234,13 +1235,6 @@
         "officialStatus": {
           "$ref": "#/$defs/officialStatus"
         },
-        "deployments": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^deployment:"
-          }
-        },
         "reporting": {
           "type": "array",
           "items": {
@@ -1271,12 +1265,12 @@
             "$ref": "#/$defs/observingProcedure"
           }
         },
-        "observingMethods": {
+        "observingConfigurations": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/observingMethod"
+            "$ref": "#/$defs/observingConfiguration"
           },
-          "description": "Dated observing-method history associated with this observation series."
+          "description": "Dated ObservingConfiguration records associated with this observation series. Each record states the observing method from a date onward and may reference the deployment that realized it."
         }
       },
       "allOf": [
@@ -1370,8 +1364,23 @@
               "historicalObservingProcedure"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "observingMethods"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "deployments"
+            ]
+          }
         }
-      ]
+      ],
+      "description": "ObservationSeries metadata. Deployment links are expressed through observingConfigurations[*].deployment rather than a direct deployments list."
     },
     "observingProcedure": {
       "type": "object",
@@ -1443,33 +1452,57 @@
         }
       }
     },
-    "observingMethod": {
+    "observingMethodValue": {
+      "description": "Mandatory observing-method value, or a nilReason object when unknown, missing, withheld, or otherwise unavailable. Literal unknown/none/null/nil strings are not valid observing-method values; use a nilReason object instead.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/nilReason"
+        },
+        {
+          "type": [
+            "number",
+            "integer",
+            "boolean"
+          ]
+        },
+        {
+          "type": "string",
+          "minLength": 1,
+          "not": {
+            "pattern": "^\\s*([Uu][Nn][Kk][Nn][Oo][Ww][Nn]|[Nn][Oo][Nn][Ee]|[Nn][Uu][Ll][Ll]|[Nn][Ii][Ll])\\s*$"
+          }
+        },
+        {
+          "type": "object",
+          "not": {
+            "required": [
+              "nilReason"
+            ]
+          }
+        }
+      ]
+    },
+    "observingConfiguration": {
       "type": "object",
       "required": [
         "date",
         "observingMethod"
       ],
       "additionalProperties": true,
-      "description": "Dated observing-method history entry for an ObservationSeries. In v0.2.4.2 the observingMethod value is mandatory; use a nilReason object when the method is not known.",
+      "description": "Dated ObservingConfiguration entry for an ObservationSeries. In v0.2.5 the observingMethod value is mandatory; use a nilReason object when the method is not known. A deployment reference may be present when the configuration is realized by a known deployment.",
       "properties": {
         "date": {
           "$ref": "#/$defs/dateOrOpen"
         },
         "observingMethod": {
           "$ref": "#/$defs/observingMethodValue"
+        },
+        "deployment": {
+          "type": "string",
+          "pattern": "^deployment:",
+          "description": "Optional deployment reference that realized this observing configuration."
         }
       }
-    },
-    "observingMethodValue": {
-      "description": "Mandatory observing-method value, or a nilReason object when unknown, missing, withheld, or otherwise unavailable.",
-      "anyOf": [
-        {
-          "$ref": "#/$defs/codeValue"
-        },
-        {
-          "$ref": "#/$defs/nilReason"
-        }
-      ]
     }
   }
 }

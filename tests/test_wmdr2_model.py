@@ -100,7 +100,7 @@ def test_v024_observation_contains_model_aligned_historical_objects() -> None:
 
     observation = props["observationSeries"][0]
     assert observation["id"].startswith("observationSeries:")
-    assert "deployments" in observation
+    assert "deployments" not in observation
     assert "reporting" in observation
     assert "domain" not in observation
     assert "domainName" not in observation
@@ -112,19 +112,14 @@ def test_v024_observation_contains_model_aligned_historical_objects() -> None:
     assert observation["representativeness"] == "local"
     assert observation["verticalDistanceFromReferenceSurface"]["value"] == 2.0
 
-    deployment_refs = observation["deployments"]
-    assert isinstance(deployment_refs, list)
-    assert deployment_refs
-
     deployment = props["deployments"][0]
-    assert deployment_refs == [deployment["id"]]
+    assert observation["observingConfigurations"] == [{"date": "..", "observingMethod": {"nilReason": "unknown"}}]
     assert deployment["id"].startswith("deployment:")
     assert deployment["date"] == "2020-01-01"
     assert deployment["serialNumber"] == "SN-001"
     assert deployment["instrument"].startswith("instrument:")
     instrument = props["instruments"][0]
     assert "observingMethods" not in instrument
-    assert observation["observingMethods"] == [{"date": "..", "observingMethod": {"nilReason": "unknown"}}]
     assert deployment["operatingStatus"] == "operational"
     assert deployment["geometry"]["type"] == "Point"
     assert deployment["exposure"] == "good"
@@ -216,9 +211,9 @@ def test_v024_schema_definitions_are_present() -> None:
 
     observation_props = defs["observation"]["properties"]
     assert "observedFeature" in observation_props
-    assert "deployments" in observation_props
+    assert "deployments" not in observation_props
     assert "reporting" in observation_props
     assert "officialStatus" in observation_props
     assert "observingProcedures" in observation_props
-    assert "deployments" in observation_props
+    assert "deployments" not in observation_props
     assert "reporting" in observation_props

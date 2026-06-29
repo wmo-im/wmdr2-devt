@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from jsonschema import Draft202012Validator, RefResolver
+from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -20,9 +20,13 @@ SCHEMAS = ROOT / "schemas"
 
 
 def _temporal_geometry_validator() -> Draft202012Validator:
-    schema = json.loads((SCHEMAS / "wmdr2-common.schema.json").read_text(encoding="utf-8"))
-    resolver = RefResolver.from_schema(schema)
-    return Draft202012Validator(schema["$defs"]["temporalGeometry"], resolver=resolver)
+    common_schema = json.loads((SCHEMAS / "wmdr2-common.schema.json").read_text(encoding="utf-8"))
+    schema = {
+        "$schema": common_schema.get("$schema", "https://json-schema.org/draft/2020-12/schema"),
+        "$defs": common_schema["$defs"],
+        **common_schema["$defs"]["temporalGeometry"],
+    }
+    return Draft202012Validator(schema)
 
 
 def _assert_valid_temporal_geometry(payload: dict[str, Any]) -> None:
