@@ -1,0 +1,202 @@
+{
+  "type": "Feature",
+  "id": "facility:0-20008-0-ARO",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      9.844385,
+      46.813324,
+      1590
+    ]
+  },
+  "time": {
+    "interval": [
+      "1926-01-01",
+      "2021-02-18"
+    ]
+  },
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar"
+  ],
+  "properties": {
+    "type": "facility",
+    "profile": "wmdr2-gc-dar",
+    "modelVersion": "0.2.5",
+    "sourceProfile": "wmdr2-full",
+    "title": "Arosa",
+    "description": "[{'description': 'Last ozone observing instruments (1 Brewer and 1 Dobson) transferred to Davos (0-20008-0-DAV). The ozone observations continues from there.', 'beginPosition': '2021-02-18T00:00:00Z', 'endPosition': None}, {'description': 'The ozone observations from Arosa have been transferred to Davos (0-20008-0-DAV). Arosa which is approximately 12 km south-west of Davos and about 200 m higher. The parallel observation period (with instruments of Arosa being temporarily deployed in Davos) started on 22 Nov 2011. 4 of the 6 instruments (2 Brewers 2 Dobsons) were definitively transferred to Davos on 28 Feb 2018. The two remaining instruments (1 Brewer and 1 Dobson) continued observations in Arosa until 18 Feb 2021 when they were also transferred to Davos and the ozone observations at Arosa definitively stopped. Since then, the ozone time series is continued from Davos.', 'beginPosition': '2011-11-22T00:00:00Z', 'endPosition': None}]",
+    "created": "2026-03-18T00:00:00Z",
+    "updated": "2026-03-18T00:00:00Z",
+    "keywords": [
+      "0-20008-0-ARO",
+      "Arosa"
+    ],
+    "contacts": [
+      {
+        "name": "Jeannet,Pierre,Mr.",
+        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "phones": [
+          {
+            "value": "+41 (026) 662 6246"
+          },
+          {
+            "value": "+41 (026) 662 6211"
+          }
+        ],
+        "emails": [
+          {
+            "value": "pierre.jeannet@meteoswiss.ch"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Station Aérologique MeteoSchweiz Les Invuardes Case postale 316"
+            ],
+            "city": "Payerne",
+            "postalCode": "CH-1530",
+            "country": "CHE"
+          }
+        ],
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "name": "Ruefenacht,Rolf,Dr.",
+        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "rolf.ruefenacht@meteoswiss.ch"
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Payerne",
+            "country": "CHE"
+          }
+        ],
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ]
+      }
+    ],
+    "facilitySets": [
+      "facilitySet:Arosa-Davos"
+    ],
+    "territory": "CHE",
+    "wmoRegion": "europe",
+    "facilityType": "landFixed",
+    "programAffiliation": [
+      {
+        "program": "GAWregional",
+        "reportingStatus": "closed",
+        "date": "2021-02-18"
+      },
+      {
+        "program": "NDACC",
+        "reportingStatus": "closed",
+        "date": "2021-02-18"
+      }
+    ],
+    "observedProperty": [
+      263
+    ],
+    "observedGeometry": [
+      "totalColumn"
+    ],
+    "observedFeatureDomain": [
+      "atmosphere"
+    ],
+    "observationSeriesCount": 1,
+    "observationSeries": [
+      {
+        "id": "observationSeries:263",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "time": {
+          "interval": [
+            "2014-01-01",
+            "2021-02-18"
+          ]
+        },
+        "current": false,
+        "observedProperty": 263,
+        "observedGeometry": "totalColumn",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GAWregional",
+          "NDACC"
+        ],
+        "sourceOfObservation": "automaticReading",
+        "deployment": "deployment:id_03a5a1b9-8c03-4791-9e88-b22c9bebd721",
+        "observingMethod": 78,
+        "internationalExchange": true,
+        "temporalAggregate": "P1D",
+        "reportingDate": "2014-01-01",
+        "reportingStrategy": "unknown"
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_03a5a1b9-8c03-4791-9e88-b22c9bebd721",
+        "date": "2014-01-01"
+      }
+    ],
+    "provenance": {
+      "derivedFrom": "facility:0-20008-0-ARO",
+      "sourceProfile": "wmdr2-full",
+      "sourceConformsTo": [
+        "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+      ],
+      "sourceContentHash": "sha256:61db716c8881de43b1069ad8c355b4e78750023b797758d7b264b701f6ae88ab",
+      "derivedAt": "2026-06-30T14:34:44Z",
+      "sourceFile": "20260318_0-20008-0-ARO.json"
+    },
+    "retrieval": {
+      "fullRecord": {
+        "href": "https://example.org/wmdr2/full/0-20008-0-ARO.json",
+        "type": "application/json",
+        "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/core",
+        "title": "Full WMDR2 record"
+      },
+      "darRecord": {
+        "href": "https://example.org/wmdr2/gc-dar/0-20008-0-ARO.json",
+        "type": "application/geo+json",
+        "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar",
+        "title": "GC-DAR discovery record"
+      }
+    }
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://example.org/wmdr2/gc-dar/0-20008-0-ARO.json",
+      "type": "application/geo+json",
+      "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar"
+    },
+    {
+      "rel": "alternate",
+      "href": "https://example.org/wmdr2/full/0-20008-0-ARO.json",
+      "type": "application/json",
+      "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/core",
+      "title": "Full WMDR2 record"
+    }
+  ]
+}

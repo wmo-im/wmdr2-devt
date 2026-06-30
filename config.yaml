@@ -58,65 +58,6 @@ convert_wmdr10_xml_to_wmdr10_json:
   source: resources/wmdr10_xml_examples
   target: resources/wmdr10_json_examples
 
-# convert_wmdr10_json_to_records_part1:
-#   source: resources/wmdr10_json_examples
-#   target: results/records_part1_geojson_examples
-#   mapping: mappings/wmdr10_vs_records_part1.csv
-#     # facility: mappings/wmdr10_facility_vs_records_part1.csv
-#     # observations: mappings/wmdr10_observations_vs_records_part1.csv
-#     # deployments: mappings/wmdr10_deployments_vs_records_part1.csv
-#     # full: mappings/wmdr10_full_vs_records_part1.csv
-
-# convert_wmdr10_json_to_wmdr2_json:
-#   source: resources/wmdr10_json_examples
-#   target: results/wmdr2_json_examples/embedded
-#   pattern: "*.json"
-#   recursive: true
-#   discovery:
-#     facility:
-#       keywords:
-#         # - identifier
-#         # - name
-#         # - facilityType
-#       themes:
-#         - facilitySet
-#         - wmoRegion
-#         - territoryName
-#         - climateZone
-#         - surfaceCover
-#         - surfaceCoverClassification
-#         - localTopography
-#         - relativeElevation
-#         - topographicContext
-#         - altitudeOrDepth
-#         - programAffiliation
-#         - reportingStatus
-#       links:
-#         - onlineResource
-#     observation:
-#       keywords: []
-#       themes:
-#         - programAffiliation
-#       links: []
-#     deployment:
-#       keywords:
-#         - manufacturer
-#         - model
-#         - serialNumber
-#         - sourceOfObservation
-#         - observingMethod
-#       themes:
-#         - sourceOfObservation
-#         - observingMethod
-#         - exposure
-#         - representativeness
-#         - localReferenceSurface
-#         - instrumentOperatingStatus
-#       links: []
-#   codeListLabels:
-#     files:
-#       - path: wmdr_observed_variable_labels.csv
-
 convert_wmdr10_json_to_wmdr2_json:
   source: resources/wmdr10_json_examples
 
@@ -131,8 +72,16 @@ convert_wmdr10_json_to_wmdr2_json:
     enabled: true
 
     # Write the catalogue-based facility records separately.
-    records_path: results/wmdr2_json_examples/catalogue_based
+    records_path: results/wmdr2_json_examples_catalogue_version
 
     # Shared catalogues.
-    contacts_path: results/wmdr2_json_examples/catalogue_based/catalogues/contacts.json
-    instruments_path: results/wmdr2_json_examples/catalogue_based/catalogues/instruments.json
+    contacts_path: results/wmdr2_json_examples_catalogue_version/catalogues/contacts.json
+    instruments_path: results/wmdr2_json_examples_catalogue_version/catalogues/instruments.json
+
+convert_wmdr2_json_to_wmdr2_gc_dar:
+  source: results/wmdr2_json_examples
+  target: results/wmdr2_json_examples_gc_dar
+  pattern: "*.json"
+  recursive: true
+  full_record_href_template: "https://example.org/wmdr2/full/{plain_id}.json"
+  dar_record_href_template: "https://example.org/wmdr2/gc-dar/{plain_id}.json"

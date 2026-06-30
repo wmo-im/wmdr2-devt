@@ -1,0 +1,182 @@
+{
+  "type": "Feature",
+  "id": "facility:0-404-800-4AA01",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      37.06812,
+      -0.36172,
+      1813
+    ]
+  },
+  "time": {
+    "interval": [
+      "1947-09-01",
+      ".."
+    ]
+  },
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar"
+  ],
+  "properties": {
+    "type": "facility",
+    "profile": "wmdr2-gc-dar",
+    "modelVersion": "0.2.5",
+    "sourceProfile": "wmdr2-full",
+    "title": "['Sagana', 'Sagana in Tana Basin']",
+    "description": "WMDR2 facility record for ['Sagana', 'Sagana in Tana Basin']",
+    "created": "2025-03-14T00:00:00Z",
+    "updated": "2025-03-14T00:00:00Z",
+    "keywords": [
+      "0-404-800-4AA01",
+      "Sagana",
+      "Sagana in Tana Basin"
+    ],
+    "contacts": [
+      {
+        "organization": "Water Resources Authoriry",
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "name": "MUIRURI,JOHN,Mr",
+        "organization": "KENYA METEOROLOGICAL DEPARTMENT",
+        "phones": [
+          {
+            "value": "0722442639"
+          }
+        ],
+        "emails": [
+          {
+            "value": "jtmuiruri@gmail.com"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "P.O BOX 30259"
+            ],
+            "city": "NAIROBI",
+            "postalCode": "00100",
+            "country": "KEN"
+          }
+        ],
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ]
+      }
+    ],
+    "territory": "KEN",
+    "wmoRegion": "africa",
+    "facilityType": "lakeRiverFixed",
+    "programAffiliation": [
+      {
+        "program": "WHYCOS",
+        "reportingStatus": "operational",
+        "date": "1947-09-01"
+      }
+    ],
+    "observedProperty": [
+      12252
+    ],
+    "observedGeometry": [
+      "verticalProfile"
+    ],
+    "observedFeatureDomain": [
+      "ocean"
+    ],
+    "observationSeriesCount": 1,
+    "observationSeries": [
+      {
+        "id": "observationSeries:12252",
+        "title": "domain: ocean; geometry: verticalProfile; variable: 12252",
+        "time": {
+          "interval": [
+            "1947-09-01",
+            ".."
+          ]
+        },
+        "current": true,
+        "observedProperty": 12252,
+        "observedGeometry": "verticalProfile",
+        "observedFeature": {
+          "domain": "ocean"
+        },
+        "programAffiliation": [
+          "WHYCOS"
+        ],
+        "deployment": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
+        "observingMethod": 356,
+        "uom": "m",
+        "internationalExchange": false,
+        "temporalAggregate": "PT1H",
+        "dataPolicy": {
+          "dataPolicy": "unknown"
+        },
+        "reportingDate": "1947-09-01",
+        "reportingStrategy": "unknown"
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
+        "date": "1947-09-01"
+      }
+    ],
+    "provenance": {
+      "derivedFrom": "facility:0-404-800-4AA01",
+      "sourceProfile": "wmdr2-full",
+      "sourceConformsTo": [
+        "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+      ],
+      "sourceContentHash": "sha256:2d85e74a4abe285f3549b10481332a76c124ea07b8935380d57470ebed4da231",
+      "derivedAt": "2026-06-30T14:34:44Z",
+      "sourceFile": "20250314_0-404-800-4AA01.json"
+    },
+    "retrieval": {
+      "fullRecord": {
+        "href": "https://example.org/wmdr2/full/0-404-800-4AA01.json",
+        "type": "application/json",
+        "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/core",
+        "title": "Full WMDR2 record"
+      },
+      "darRecord": {
+        "href": "https://example.org/wmdr2/gc-dar/0-404-800-4AA01.json",
+        "type": "application/geo+json",
+        "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar",
+        "title": "GC-DAR discovery record"
+      }
+    }
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://example.org/wmdr2/gc-dar/0-404-800-4AA01.json",
+      "type": "application/geo+json",
+      "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar"
+    },
+    {
+      "rel": "alternate",
+      "href": "https://example.org/wmdr2/full/0-404-800-4AA01.json",
+      "type": "application/json",
+      "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/core",
+      "title": "Full WMDR2 record"
+    }
+  ]
+}

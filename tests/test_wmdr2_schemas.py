@@ -167,7 +167,7 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                         {"officialStatus": "primary", "date": ".."}
                     ],
                     "observingConfigurations": [
-                        {"date": "2016-04-29", "observingMethod": {"nilReason": "unknown"}},
+                        {"observingMethod": {"nilReason": "unknown"}},
                     ],
                     "observingProcedures": [
                         {"date": "2025-01-01", "strategy": "unknown", "observingSchedules": ["schedule_daily_12"]},
@@ -438,8 +438,8 @@ def test_observing_method_value_accepts_known_codes_on_instrument_and_observatio
     instance = _valid_facility_record_feature()
     instance["properties"]["instruments"][0]["observingMethods"] = ["266", 267]
     instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
-        {"date": "1980-01-01", "observingMethod": "266"},
-        {"date": "2001-01-01", "observingMethod": 267},
+        {"observingMethod": "266"},
+        {"observingMethod": 267},
     ]
     assert _is_valid(RECORD_SCHEMA, instance)
 
@@ -448,14 +448,21 @@ def test_observing_method_value_accepts_known_codes_on_instrument_and_observatio
 def test_observing_method_rejects_literal_unknown_string_use_nil_reason_instead() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
-        {"date": "1980-01-01", "observingMethod": "unknown"}
+        {"observingMethod": "unknown"}
     ]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
     instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
-        {"date": "1980-01-01", "observingMethod": {"nilReason": "unknown"}}
+        {"observingMethod": {"nilReason": "unknown"}}
     ]
     assert _is_valid(RECORD_SCHEMA, instance)
+
+def test_observing_configuration_rejects_obsolete_date_property() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
+        {"date": "1980-01-01", "observingMethod": 266}
+    ]
+    assert not _is_valid(RECORD_SCHEMA, instance)
 
 def test_instrument_title_and_description_are_schema_properties() -> None:
     instance = _valid_facility_record_feature()

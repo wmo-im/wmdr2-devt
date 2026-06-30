@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Convert simplified WMDR 1.0 JSON records into facility-centric WMDR2 JSON.
 
-WMDR v0.2.5 implementation notes
+WMDR v0.2.5.1 implementation notes
 -------------------------------
 
 * The output is a facility-centric GeoJSON-like ``Feature``.
 * ``temporalGeometry`` remains the trajectory-style aligned-array ``MovingPoint``
   object.
-* Other time-varying model elements use v0.2.5 class/property names and are
+* Other time-varying model elements use v0.2.5.1 class/property names and are
   represented as arrays of dated objects, for example ``environment``,
   ``programAffiliation``, ``territory``, ``deployments``, ``reporting`` and
   ``officialStatus``.
@@ -20,16 +20,18 @@ WMDR v0.2.5 implementation notes
 * Reusable deployment / instrument-instance states are emitted under
   ``properties.deployments``. Observation series refer to deployments only via
   ``observationSeries[*].observingConfigurations[*].deployment``, where the
-  deployment reference is tied to a dated observing-method context.
+  deployment reference is tied to the observing method used by that deployment
+  for the observation series.
 * Reusable JSCalendar-like schedule objects are emitted under
   ``properties.schedules``; observation series refer to them through
   dated ``observingProcedures`` records. Each ObservingProcedure carries a
   strategy and one or more ``observingSchedules`` schedule identifiers.
 * ``observedFeature`` uses ``domain``, ``domainFeature`` and ``featureName``.
-* ``observationSeries[*].observingConfigurations`` contains the dated observing
-  method history. Each configuration has a mandatory ``observingMethod`` value,
-  using a nil-reason object when the method is unknown, and may reference the
-  deployment that realized that configuration.
+* ``observationSeries[*].observingConfigurations`` states which observing
+  method is used by a referenced deployment to contribute to the observation
+  series. Each configuration has a mandatory ``observingMethod`` value, using
+  a nil-reason object when the method is unknown. It has no own date; the date
+  is carried by the referenced Deployment.
 * ``instrument.observingMethods`` is optional capability metadata for known
   instrument catalogue entries only; it is not the authoritative observation-
   series method history.
@@ -946,7 +948,7 @@ def _parse_bool(value: Any) -> Optional[bool]:
 
 
 def _normalize_official_status(value: Any) -> Optional[str]:
-    """Normalize WMDR10 officialStatus to WMDR v0.2.5 observation-series status.
+    """Normalize WMDR10 officialStatus to WMDR v0.2.5.1 observation-series status.
 
     The WMDR10 XML uses a boolean officialStatus.  The agreed mapping is:
     true -> primary, false -> additional.  String values are compacted but not
@@ -1310,7 +1312,7 @@ def _normalize_historical_environment(facility: Mapping[str, Any], *, fallback_d
 
 
 def _normalize_environment(facility: Mapping[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    """Compatibility helper returning the v0.2.5 Environment array.
+    """Compatibility helper returning the v0.2.5.1 Environment array.
 
     Older local code may still call ``_normalize_environment`` directly.  The
     returned value is meant to be assigned directly to ``properties.environment``.
@@ -1528,7 +1530,7 @@ def _observing_method_candidates(raw: Mapping[str, Any]) -> List[Any]:
 def _normalize_observing_method_values(raw: Mapping[str, Any]) -> List[Any]:
     """Return compact observing-method values or nil-reason objects from one source.
 
-    ``observingMethod`` is mandatory in the v0.2.5 ObservingConfiguration
+    ``observingMethod`` is mandatory in the v0.2.5.1 ObservingConfiguration
     object.  A literal source value such as ``unknown`` therefore represents a
     missing mandatory method and must be serialized as a nil-reason object, not
     as the codelist/free-text value ``"unknown"``.
@@ -1564,29 +1566,28 @@ def _normalize_observation_series_observing_configurations(
     facility_id: str,
     fallback_date: str = "..",
 ) -> List[Dict[str, Any]]:
-    """Return dated ObservingConfiguration records for an ObservationSeries.
+    """Return ObservingConfiguration records for an ObservationSeries.
 
-    In the v0.2.5 model, observing method history is represented by
-    ``ObservationSeries.observingConfigurations``.  Each record has a date and a
-    mandatory observingMethod value; when the method is not available, emit a
-    nilReason object.  A configuration may reference the deployment that realized
-    it, but deployment is optional so method history can still be represented
-    when instrument/deployment details are unknown.
+    In the v0.2.5.1 model, ``ObservationSeries.observingConfigurations`` is
+    the bridge from an ObservationSeries to a Deployment and the observing
+    method used for that contribution.  It does not carry its own date; the
+    temporal anchor is the referenced ``Deployment.date``.  When there is no
+    deployment information at all, emit a method-only configuration so the
+    mandatory observingMethod value or nilReason can still be represented.
     """
 
     records: List[Dict[str, Any]] = []
-    for value in _normalize_observing_method_values(raw):
-        records.append({"date": _entry_date(raw, fallback_date), "observingMethod": value})
+    raw_method_values = _normalize_observing_method_values(raw)
 
     for dep_index, source in enumerate(deployment_sources, start=1):
         if not isinstance(source, Mapping):
             continue
         deployment_id = _deployment_record_id(source, index=dep_index, facility_id=facility_id)
-        for value in _normalize_observing_method_values(source):
+        method_values = _normalize_observing_method_values(source) or raw_method_values or [_nil_reason("unknown")]
+        for value in method_values:
             records.append(
                 _clean_none(
                     {
-                        "date": _entry_date(source, fallback_date),
                         "deployment": deployment_id,
                         "observingMethod": value,
                     }
@@ -1594,7 +1595,9 @@ def _normalize_observation_series_observing_configurations(
             )
 
     if not records:
-        records.append({"date": fallback_date, "observingMethod": _nil_reason("unknown")})
+        method_values = raw_method_values or [_nil_reason("unknown")]
+        for value in method_values:
+            records.append({"observingMethod": value})
     return _uniq_dicts(_clean_none(records))
 
 def _normalize_instrument(raw: Mapping[str, Any], *, facility_id: str) -> Optional[Dict[str, Any]]:
@@ -1765,7 +1768,7 @@ def _jscalendar_observing_schedule(raw: Mapping[str, Any], *, time_zone: str = "
         )
     )
     if sampling_frequency:
-        # The v0.2.5 XMI spells this extension property as ``wmi.int:samplingFrequency``.
+        # The v0.2.5.1 XMI spells this extension property as ``wmi.int:samplingFrequency``.
         event_without_uid["wmi.int:samplingFrequency"] = sampling_frequency
 
     aggregation_interval = _iso_duration(
@@ -1823,7 +1826,7 @@ def _normalize_observing_procedures(
     schedule_registry: Dict[str, Dict[str, Any]],
     time_zone: str = "UTC",
 ) -> Optional[List[Dict[str, Any]]]:
-    """Return v0.2.5 ObservingProcedure records for observation-series observing history."""
+    """Return v0.2.5.1 ObservingProcedure records for observation-series observing history."""
 
     procedures: List[Dict[str, Any]] = []
     for group in groups:
@@ -1963,7 +1966,7 @@ def _normalize_observation_reporting(
     When a registry is supplied, reusable reporting definitions are registered
     there and the returned historical records contain references.  Without a
     registry, a local temporary registry is used so helper-level callers see the
-    same v0.2.5-style structure.
+    same v0.2.5.1-style structure.
     """
 
     registry = reporting_registry if reporting_registry is not None else {}
@@ -2121,7 +2124,7 @@ def _normalize_deployment(
     facility_id: str,
     schedule_registry: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> List[Dict[str, Any]]:
-    """Normalize a v0.2.5 Deployment object.
+    """Normalize a v0.2.5.1 Deployment object.
 
     Kept as a private helper for tests and local tooling; normal feature assembly
     stores these objects under ``properties.deployments``. Observation-series
@@ -2140,7 +2143,7 @@ def _normalize_deployment(
 
 
 def _domain_object(raw: Mapping[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
-    """Return the v0.2.5 observedFeature object.
+    """Return the v0.2.5.1 observedFeature object.
 
     The output key is ``domain``.  ``domainName`` is accepted only as legacy
     input from earlier intermediate JSON, never emitted.

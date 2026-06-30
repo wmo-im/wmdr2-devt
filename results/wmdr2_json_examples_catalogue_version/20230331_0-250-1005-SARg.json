@@ -1,35 +1,17 @@
 {
   "type": "Feature",
-  "id": "facility:0-404-800-4AA01",
+  "id": "facility:0-250-1005-SARg",
   "geometry": {
     "type": "Point",
     "coordinates": [
-      37.06812,
-      -0.36172,
-      1813
-    ]
-  },
-  "temporalGeometry": {
-    "type": "MovingPoint",
-    "coordinates": [
-      [
-        37.06812,
-        -0.36172,
-        1813
-      ]
-    ],
-    "dates": [
-      "1947-09-01"
-    ],
-    "methods": [
-      [
-        "gps"
-      ]
+      6.07,
+      45.07,
+      2850
     ]
   },
   "time": {
     "interval": [
-      "1947-09-01",
+      "1949-01-01",
       ".."
     ]
   },
@@ -38,36 +20,36 @@
   ],
   "properties": {
     "type": "facility",
-    "title": "['Sagana', 'Sagana in Tana Basin']",
-    "created": "2025-03-14T00:00:00Z",
-    "updated": "2025-03-14T00:00:00Z",
-    "description": "WMDR2 facility record for ['Sagana', 'Sagana in Tana Basin']",
+    "title": "Sarennes Glacier",
+    "created": "2023-03-31T00:00:00Z",
+    "updated": "2023-03-31T00:00:00Z",
+    "description": "WMDR2 facility record for Sarennes Glacier",
     "contacts": [
       {
-        "identifier": "contact:water-resources-authoriry--87213fe1",
-        "organization": "Water Resources Authoriry",
+        "identifier": "contact:universit-grenoble-alpes--85858f8c",
+        "organization": "Université Grenoble-Alpes",
         "roles": [
           "owner"
         ],
         "links": [
           {
             "rel": "about",
-            "href": "catalogues/contacts.json#contact:water-resources-authoriry--87213fe1",
+            "href": "catalogues/contacts.json#contact:universit-grenoble-alpes--85858f8c",
             "type": "application/json"
           }
         ]
       },
       {
-        "identifier": "contact:jtmuiruri@gmail.com",
-        "name": "MUIRURI,JOHN,Mr",
-        "organization": "KENYA METEOROLOGICAL DEPARTMENT",
+        "identifier": "contact:delphine.six@univ-grenoble-alpes.fr",
+        "name": "SIX,Delphine,Mme",
+        "organization": "Université Grenoble-Alpes",
         "roles": [
-          "pointOfContact"
+          "principalInvestigator"
         ],
         "links": [
           {
             "rel": "about",
-            "href": "catalogues/contacts.json#contact:jtmuiruri@gmail.com",
+            "href": "catalogues/contacts.json#contact:delphine.six@univ-grenoble-alpes.fr",
             "type": "application/json"
           }
         ]
@@ -85,25 +67,30 @@
       }
     ],
     "keywords": [
-      "0-404-800-4AA01",
-      "Sagana",
-      "Sagana in Tana Basin"
+      "0-250-1005-SARg",
+      "Sarennes Glacier"
     ],
-    "facilityType": "lakeRiverFixed",
-    "wmoRegion": "africa",
+    "links": [
+      {
+        "href": "https://glacioclim.osug.fr/Glacier-de-Sarennes-203",
+        "rel": "about",
+        "type": "text/html"
+      }
+    ],
+    "facilityType": "landOnIce",
+    "wmoRegion": "europe",
     "programAffiliation": [
       {
-        "date": "1947-09-01",
+        "date": "1949-01-01",
         "programAffiliation": [
-          "WHYCOS"
-        ],
-        "reportingStatus": "operational"
+          "nonAffiliated"
+        ]
       }
     ],
     "territory": [
       {
-        "date": "1947-09-01",
-        "territory": "KEN"
+        "date": "1949-01-01",
+        "territory": "FRA"
       }
     ],
     "schedules": [
@@ -124,48 +111,46 @@
     ],
     "reporting": [
       {
-        "id": "reporting:0a7fabf5614c",
+        "id": "reporting:87ff24b4a55a",
         "internationalExchange": false,
-        "temporalAggregate": "PT1H",
-        "dataPolicy": {
-          "dataPolicy": "unknown"
-        }
+        "temporalAggregate": "PT1H"
       }
     ],
     "deployments": [
       {
-        "id": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
-        "date": "1947-09-01"
+        "id": "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c",
+        "date": "1949-01-01"
       }
     ],
     "observationSeries": [
       {
-        "id": "observationSeries:12252",
-        "title": "domain: ocean; geometry: verticalProfile; variable: 12252",
+        "id": "observationSeries:12010",
+        "title": "domain: terrestrial; geometry: unknown; variable: 12010",
         "time": {
           "interval": [
-            "1947-09-01",
+            "1949-01-01",
             ".."
           ]
         },
-        "observedProperty": 12252,
-        "observedGeometry": "verticalProfile",
+        "observedProperty": 12010,
+        "observedGeometry": "unknown",
         "observedFeature": {
-          "domain": "ocean"
+          "domain": "terrestrial"
         },
         "programAffiliation": [
-          "WHYCOS"
+          "nonAffiliated"
         ],
         "observingConfigurations": [
           {
-            "date": "1947-09-01",
-            "deployment": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
-            "observingMethod": 356
+            "deployment": "deployment:id_14ca4229-9da7-4f5c-8e35-5a30369f353c",
+            "observingMethod": {
+              "nilReason": "unknown"
+            }
           }
         ],
         "observingProcedures": [
           {
-            "date": "1947-09-01",
+            "date": "1949-01-01",
             "strategy": "unknown",
             "observingSchedules": [
               "schedule_f253213a5423"
@@ -174,10 +159,9 @@
         ],
         "reporting": [
           {
-            "date": "1947-09-01",
+            "date": "1949-01-01",
             "strategy": "unknown",
-            "uom": "m",
-            "reporting": "reporting:0a7fabf5614c"
+            "reporting": "reporting:87ff24b4a55a"
           }
         ]
       }

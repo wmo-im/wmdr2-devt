@@ -838,7 +838,7 @@
           "description": "Optional observing-method capabilities of this instrument catalogue entry. These values are not the authoritative dated history of an observation series."
         }
       },
-      "description": "Instrument catalogue metadata. Deployed instrument instances are represented by deployment records. Optional observingMethods list instrument capabilities when known; the authoritative dated series history belongs to ObservationSeries.observingConfigurations."
+      "description": "Instrument catalogue metadata. Deployed instrument instances are represented by deployment records. Optional observingMethods list instrument capabilities when known; the authoritative series-to-deployment/method configuration belongs to ObservationSeries.observingConfigurations."
     },
     "observation": {
       "type": "object",
@@ -1485,15 +1485,11 @@
     "observingConfiguration": {
       "type": "object",
       "required": [
-        "date",
         "observingMethod"
       ],
       "additionalProperties": true,
-      "description": "Dated ObservingConfiguration entry for an ObservationSeries. In v0.2.5 the observingMethod value is mandatory; use a nilReason object when the method is not known. A deployment reference may be present when the configuration is realized by a known deployment.",
+      "description": "ObservingConfiguration entry for an ObservationSeries. In v0.2.5.1 it links an observation series to the observing method used by an optional deployment. It has no date of its own; the temporal anchor is Deployment.date when a deployment reference is present. Use a nilReason object when the observing method is not known.",
       "properties": {
-        "date": {
-          "$ref": "#/$defs/dateOrOpen"
-        },
         "observingMethod": {
           "$ref": "#/$defs/observingMethodValue"
         },
@@ -1502,6 +1498,11 @@
           "pattern": "^deployment:",
           "description": "Optional deployment reference that realized this observing configuration."
         }
+      },
+      "not": {
+        "required": [
+          "date"
+        ]
       }
     }
   }

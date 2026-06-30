@@ -842,7 +842,7 @@ def test_instrument_id_prefers_explicit_identifier_and_generated_ids_are_stable(
 
 
 
-def test_observing_configurations_are_dated_on_observation_series_and_capabilities_on_instrument() -> None:
+def test_observing_configurations_link_observation_series_deployment_and_method() -> None:
     record = module.build_facility_feature(
         _minimal_facility(),
         [_observation_with_deployment()],
@@ -853,7 +853,7 @@ def test_observing_configurations_are_dated_on_observation_series_and_capabiliti
     instrument = record["properties"]["instruments"][0]
     observation = record["properties"]["observationSeries"][0]
     assert instrument["observingMethods"] == [266]
-    assert observation["observingConfigurations"] == [{"date": "2020-01-01", "deployment": "deployment:dep1", "observingMethod": 266}]
+    assert observation["observingConfigurations"] == [{"deployment": "deployment:dep1", "observingMethod": 266}]
 
 
 def test_observation_series_observing_configuration_uses_nil_reason_when_absent_without_bloating_instrument() -> None:
@@ -869,7 +869,7 @@ def test_observation_series_observing_configuration_uses_nil_reason_when_absent_
     instrument = record["properties"]["instruments"][0]
     observation_series = record["properties"]["observationSeries"][0]
     assert "observingMethods" not in instrument
-    assert observation_series["observingConfigurations"] == [{"date": "..", "observingMethod": {"nilReason": "unknown"}}]
+    assert observation_series["observingConfigurations"] == [{"deployment": "deployment:dep1", "observingMethod": {"nilReason": "unknown"}}]
 
 
 
@@ -888,7 +888,7 @@ def test_observation_series_observing_configuration_converts_unknown_string_to_n
     observation_series = record["properties"]["observationSeries"][0]
     assert "observingMethods" not in instrument
     assert observation_series["observingConfigurations"] == [
-        {"date": "2020-01-01", "deployment": "deployment:dep1", "observingMethod": {"nilReason": "unknown"}}
+        {"deployment": "deployment:dep1", "observingMethod": {"nilReason": "unknown"}}
     ]
 
 def test_observation_series_observing_configuration_preserves_explicit_nil_reason() -> None:
@@ -904,7 +904,7 @@ def test_observation_series_observing_configuration_preserves_explicit_nil_reaso
     instrument = record["properties"]["instruments"][0]
     observation_series = record["properties"]["observationSeries"][0]
     assert "observingMethods" not in instrument
-    assert observation_series["observingConfigurations"] == [{"date": "2020-01-01", "deployment": "deployment:dep1", "observingMethod": {"nilReason": "withheld"}}]
+    assert observation_series["observingConfigurations"] == [{"deployment": "deployment:dep1", "observingMethod": {"nilReason": "withheld"}}]
 
 
 def test_observation_series_can_record_consecutive_observing_methods_from_deployments() -> None:
@@ -923,8 +923,8 @@ def test_observation_series_can_record_consecutive_observing_methods_from_deploy
     )
     observation_series = record["properties"]["observationSeries"][0]
     assert observation_series["observingConfigurations"] == [
-        {"date": "2020-01-01", "deployment": "deployment:dep1", "observingMethod": 266},
-        {"date": "2001-01-01", "deployment": "deployment:dep2", "observingMethod": 267},
+        {"deployment": "deployment:dep1", "observingMethod": 266},
+        {"deployment": "deployment:dep2", "observingMethod": 267},
     ]
 
 
@@ -949,7 +949,7 @@ def test_observing_configuration_method_alone_does_not_create_instrument_catalog
     props = record["properties"]
     assert "instruments" not in props
     assert props["observationSeries"][0]["observingConfigurations"] == [
-        {"date": "1980-01-01", "deployment": "deployment:dep1", "observingMethod": 266}
+        {"deployment": "deployment:dep1", "observingMethod": 266}
     ]
 
 def test_normalize_instrument_includes_optional_title_and_description_when_available() -> None:

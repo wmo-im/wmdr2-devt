@@ -1,0 +1,179 @@
+{
+  "type": "Feature",
+  "id": "facility:0-20000-0-06725-0-756-1-Blatten",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      7.8232,
+      46.4204,
+      1540
+    ]
+  },
+  "time": {
+    "interval": [
+      "2000-08-17",
+      "2025-05-28"
+    ]
+  },
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar"
+  ],
+  "properties": {
+    "type": "facility",
+    "profile": "wmdr2-gc-dar",
+    "modelVersion": "0.2.5",
+    "sourceProfile": "wmdr2-full",
+    "title": "BLATTEN, LOETSCHENTAL",
+    "description": "Bla...bla...bla...",
+    "created": "2025-07-29T00:00:00Z",
+    "updated": "2025-07-29T00:00:00Z",
+    "keywords": [
+      "0-20000-0-06725,0-756-1-Blatten",
+      "BLATTEN, LOETSCHENTAL"
+    ],
+    "contacts": [
+      {
+        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ]
+      }
+    ],
+    "territory": "CHE",
+    "wmoRegion": "europe",
+    "facilityType": "landFixed",
+    "programAffiliation": [
+      {
+        "program": "GOSGeneral",
+        "reportingStatus": "closed",
+        "date": "2025-05-28"
+      },
+      {
+        "program": "GBON",
+        "reportingStatus": "closed",
+        "date": "2025-05-28"
+      }
+    ],
+    "observedProperty": [
+      12006
+    ],
+    "observedGeometry": [
+      "point"
+    ],
+    "observedFeatureDomain": [
+      "atmosphere"
+    ],
+    "observationSeriesCount": 1,
+    "observationSeries": [
+      {
+        "id": "observationSeries:12006",
+        "title": "domain: atmosphere; geometry: point; variable: 12006",
+        "time": {
+          "interval": [
+            "2013-05-31",
+            "2025-05-28"
+          ]
+        },
+        "current": false,
+        "observedProperty": 12006,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "GBON"
+        ],
+        "sourceOfObservation": "automaticReading",
+        "deployment": "deployment:id-metch-20-12006-dg5-inc2-depl",
+        "instrument": "instrument:0-20000-0-06725-0-756-1-Blatten:2eb406a8a1c0",
+        "observingMethod": {
+          "nilReason": "unknown"
+        },
+        "uom": "m.s-1",
+        "internationalExchange": false,
+        "temporalAggregate": "PT10M",
+        "reportingDate": "2013-05-31",
+        "reportingStrategy": "unknown"
+      }
+    ],
+    "deployments": [
+      {
+        "id": "deployment:id-metch-20-12006-dg5-inc2-depl",
+        "date": "2013-05-31",
+        "instrument": "instrument:0-20000-0-06725-0-756-1-Blatten:2eb406a8a1c0",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            7.823197,
+            46.420408,
+            1538
+          ]
+        }
+      }
+    ],
+    "instruments": [
+      {
+        "id": "instrument:0-20000-0-06725-0-756-1-Blatten:2eb406a8a1c0"
+      }
+    ],
+    "provenance": {
+      "derivedFrom": "facility:0-20000-0-06725-0-756-1-Blatten",
+      "sourceProfile": "wmdr2-full",
+      "sourceConformsTo": [
+        "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+      ],
+      "sourceContentHash": "sha256:3bbd78225a306337a99bd77fbdfd4642c9e011aa7e47c184aa1939af437b1872",
+      "derivedAt": "2026-06-30T14:34:44Z",
+      "sourceFile": "Blatten_20250729_0-20000-0-06725.json"
+    },
+    "retrieval": {
+      "fullRecord": {
+        "href": "https://example.org/wmdr2/full/0-20000-0-06725-0-756-1-Blatten.json",
+        "type": "application/json",
+        "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/core",
+        "title": "Full WMDR2 record"
+      },
+      "darRecord": {
+        "href": "https://example.org/wmdr2/gc-dar/0-20000-0-06725-0-756-1-Blatten.json",
+        "type": "application/geo+json",
+        "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar",
+        "title": "GC-DAR discovery record"
+      }
+    }
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://example.org/wmdr2/gc-dar/0-20000-0-06725-0-756-1-Blatten.json",
+      "type": "application/geo+json",
+      "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar"
+    },
+    {
+      "rel": "alternate",
+      "href": "https://example.org/wmdr2/full/0-20000-0-06725-0-756-1-Blatten.json",
+      "type": "application/json",
+      "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/core",
+      "title": "Full WMDR2 record"
+    },
+    {
+      "href": "https://www.meteoschweiz.admin.ch/home/messwerte.html?param=messnetz-automatisch&station=BLA",
+      "rel": "about",
+      "type": "text/html"
+    }
+  ]
+}

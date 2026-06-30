@@ -91,7 +91,7 @@ def _sample_payload() -> dict:
     }
 
 
-def test_v024_observation_contains_model_aligned_historical_objects() -> None:
+def test_v0251_observation_contains_model_aligned_historical_objects() -> None:
     record = convert_payload(_sample_payload(), source_name="sample")
     props = record["properties"]
 
@@ -113,7 +113,7 @@ def test_v024_observation_contains_model_aligned_historical_objects() -> None:
     assert observation["verticalDistanceFromReferenceSurface"]["value"] == 2.0
 
     deployment = props["deployments"][0]
-    assert observation["observingConfigurations"] == [{"date": "..", "observingMethod": {"nilReason": "unknown"}}]
+    assert observation["observingConfigurations"] == [{"deployment": "deployment:dep-1", "observingMethod": {"nilReason": "unknown"}}]
     assert deployment["id"].startswith("deployment:")
     assert deployment["date"] == "2020-01-01"
     assert deployment["serialNumber"] == "SN-001"
@@ -136,7 +136,7 @@ def test_v024_observation_contains_model_aligned_historical_objects() -> None:
         assert key not in deployment
 
 
-def test_v024_reporting_official_status_and_observing_procedures_are_dated_objects() -> None:
+def test_v0251_reporting_official_status_and_observing_procedures_are_dated_objects() -> None:
     record = convert_payload(_sample_payload(), source_name="sample")
     props = record["properties"]
     observation = props["observationSeries"][0]
@@ -191,7 +191,7 @@ def test_v024_facility_histories_are_unwrapped() -> None:
     assert environment[0]["surfaceRoughness"] == "low"
 
 
-def test_v024_schema_definitions_are_present() -> None:
+def test_v0251_schema_definitions_are_present() -> None:
     schema = json.loads((ROOT / "schemas" / "wmdr2-common.schema.json").read_text(encoding="utf-8"))
     defs = schema["$defs"]
 

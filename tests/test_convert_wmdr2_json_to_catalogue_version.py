@@ -44,7 +44,7 @@ def test_externalize_contacts_and_instruments(tmp_path: Path):
                 }
             ],
             "deployments": [{"id": "deployment:a", "instrument": "instrument:thermo-49i"}],
-            "observationSeries": [{"id": "observationSeries:a", "observingConfigurations": [{"date": "2020-01-01", "deployment": "deployment:a", "observingMethod": {"nilReason": "unknown"}}]}],
+            "observationSeries": [{"id": "observationSeries:a", "observingConfigurations": [{"deployment": "deployment:a", "observingMethod": {"nilReason": "unknown"}}]}],
             "instruments": [{"id": "instrument:thermo-49i", "manufacturer": "Thermo", "model": "49i"}],
         },
     }
@@ -62,7 +62,7 @@ def test_externalize_contacts_and_instruments(tmp_path: Path):
                 {"name": "No Email", "organization": "Example Org"},
             ],
             "deployments": [{"id": "deployment:b", "instrument": "instrument:thermo-49i"}],
-            "observationSeries": [{"id": "observationSeries:b", "observingConfigurations": [{"date": "2020-01-01", "deployment": "deployment:b", "observingMethod": {"nilReason": "unknown"}}]}],
+            "observationSeries": [{"id": "observationSeries:b", "observingConfigurations": [{"deployment": "deployment:b", "observingMethod": {"nilReason": "unknown"}}]}],
             "instruments": [{"id": "instrument:thermo-49i", "manufacturer": "Thermo", "model": "49i"}],
         },
     }
@@ -139,7 +139,7 @@ def test_externalize_preserves_temporal_geometry_methods_alignment(tmp_path: Pat
                 }
             ],
             "deployments": [{"id": "deployment:a", "instrument": "instrument:thermo-49i"}],
-            "observationSeries": [{"id": "observationSeries:a", "observingConfigurations": [{"date": "2020-01-01", "deployment": "deployment:a", "observingMethod": {"nilReason": "unknown"}}]}],
+            "observationSeries": [{"id": "observationSeries:a", "observingConfigurations": [{"deployment": "deployment:a", "observingMethod": {"nilReason": "unknown"}}]}],
             "instruments": [{"id": "instrument:thermo-49i", "manufacturer": "Thermo", "model": "49i"}],
         },
     }

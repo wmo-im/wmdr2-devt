@@ -9,24 +9,6 @@
       1235
     ]
   },
-  "temporalGeometry": {
-    "type": "MovingPoint",
-    "coordinates": [
-      [
-        2.4668,
-        -71.9563,
-        1235
-      ]
-    ],
-    "dates": [
-      "2007-01-01"
-    ],
-    "methods": [
-      [
-        "map"
-      ]
-    ]
-  },
   "time": {
     "interval": [
       "2007-01-01",
@@ -34,14 +16,21 @@
     ]
   },
   "conformsTo": [
-    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+    "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar"
   ],
   "properties": {
     "type": "facility",
+    "profile": "wmdr2-gc-dar",
+    "modelVersion": "0.2.5",
+    "sourceProfile": "wmdr2-full",
     "title": "TROLL AIRFIELD",
+    "description": "WMDR2 facility record for TROLL AIRFIELD",
     "created": "2022-11-24T00:00:00Z",
     "updated": "2022-11-24T00:00:00Z",
-    "description": "WMDR2 facility record for TROLL AIRFIELD",
+    "keywords": [
+      "0-578-0-92100",
+      "TROLL AIRFIELD"
+    ],
     "contacts": [
       {
         "organization": "Norwegian Polar Institute",
@@ -86,32 +75,122 @@
         ]
       }
     ],
-    "keywords": [
-      "0-578-0-92100",
-      "TROLL AIRFIELD"
-    ],
-    "facilityType": "landOnIce",
+    "territory": "NOR",
     "wmoRegion": "antarctica",
+    "facilityType": "landOnIce",
     "programAffiliation": [
       {
-        "date": "2022-11-22",
-        "programAffiliation": [
-          "GOSGeneral"
-        ],
-        "reportingStatus": "operational"
+        "program": "GOSGeneral",
+        "reportingStatus": "operational",
+        "date": "2022-11-22"
       },
       {
-        "date": "2022-11-22",
-        "programAffiliation": [
-          "nonAffiliated"
-        ],
-        "reportingStatus": "operational"
+        "program": "nonAffiliated",
+        "reportingStatus": "operational",
+        "date": "2022-11-22"
       }
     ],
-    "territory": [
+    "observedProperty": [
+      216,
+      224,
+      12249,
+      12005
+    ],
+    "observedGeometry": [
+      "point"
+    ],
+    "observedFeatureDomain": [
+      "atmosphere"
+    ],
+    "observationSeriesCount": 4,
+    "observationSeries": [
       {
-        "date": "2007-01-01",
-        "territory": "NOR"
+        "id": "observationSeries:216",
+        "title": "domain: atmosphere; geometry: point; variable: 216",
+        "time": {
+          "interval": [
+            "2007-01-01",
+            ".."
+          ]
+        },
+        "current": true,
+        "observedProperty": 216,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "nonAffiliated",
+          "GOSGeneral"
+        ],
+        "deployment": "deployment:id_98af3b44-3633-4017-b16a-8dfb89707c55",
+        "observingMethod": 111
+      },
+      {
+        "id": "observationSeries:224",
+        "title": "domain: atmosphere; geometry: point; variable: 224",
+        "time": {
+          "interval": [
+            "2007-01-01",
+            ".."
+          ]
+        },
+        "current": true,
+        "observedProperty": 224,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "nonAffiliated",
+          "GOSGeneral"
+        ],
+        "deployment": "deployment:id_1c5901b1-da2a-46dd-9d48-6afb6a876cb4",
+        "observingMethod": 188
+      },
+      {
+        "id": "observationSeries:12249",
+        "title": "domain: atmosphere; geometry: point; variable: 12249",
+        "time": {
+          "interval": [
+            "2022-11-22",
+            ".."
+          ]
+        },
+        "current": true,
+        "observedProperty": 12249,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "nonAffiliated",
+          "GOSGeneral"
+        ],
+        "deployment": "deployment:id_86c6bc2c-7e41-4c5e-b8db-7f6147d34c68",
+        "observingMethod": 254
+      },
+      {
+        "id": "observationSeries:12005",
+        "title": "domain: atmosphere; geometry: point; variable: 12005",
+        "time": {
+          "interval": [
+            "2007-01-01",
+            ".."
+          ]
+        },
+        "current": true,
+        "observedProperty": 12005,
+        "observedGeometry": "point",
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "programAffiliation": [
+          "nonAffiliated",
+          "GOSGeneral"
+        ],
+        "deployment": "deployment:id_1219f00c-7af8-432b-be2a-9a442a76e14a",
+        "observingMethod": 63
       }
     ],
     "deployments": [
@@ -132,107 +211,44 @@
         "date": "2007-01-01"
       }
     ],
-    "observationSeries": [
-      {
-        "id": "observationSeries:216",
-        "title": "domain: atmosphere; geometry: point; variable: 216",
-        "time": {
-          "interval": [
-            "2007-01-01",
-            ".."
-          ]
-        },
-        "observedProperty": 216,
-        "observedGeometry": "point",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "nonAffiliated",
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "deployment": "deployment:id_98af3b44-3633-4017-b16a-8dfb89707c55",
-            "observingMethod": 111
-          }
-        ]
+    "provenance": {
+      "derivedFrom": "facility:0-578-0-92100",
+      "sourceProfile": "wmdr2-full",
+      "sourceConformsTo": [
+        "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+      ],
+      "sourceContentHash": "sha256:4e2c0f6bb19916accad510a2ef0c0e34ede555431de3426d39989317bb55cbf6",
+      "derivedAt": "2026-06-30T14:34:44Z",
+      "sourceFile": "20221124_0-578-0-92100.json"
+    },
+    "retrieval": {
+      "fullRecord": {
+        "href": "https://example.org/wmdr2/full/0-578-0-92100.json",
+        "type": "application/json",
+        "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/core",
+        "title": "Full WMDR2 record"
       },
-      {
-        "id": "observationSeries:224",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "2007-01-01",
-            ".."
-          ]
-        },
-        "observedProperty": 224,
-        "observedGeometry": "point",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "nonAffiliated",
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "deployment": "deployment:id_1c5901b1-da2a-46dd-9d48-6afb6a876cb4",
-            "observingMethod": 188
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:12249",
-        "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "time": {
-          "interval": [
-            "2022-11-22",
-            ".."
-          ]
-        },
-        "observedProperty": 12249,
-        "observedGeometry": "point",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "nonAffiliated",
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "deployment": "deployment:id_86c6bc2c-7e41-4c5e-b8db-7f6147d34c68",
-            "observingMethod": 254
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:12005",
-        "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "time": {
-          "interval": [
-            "2007-01-01",
-            ".."
-          ]
-        },
-        "observedProperty": 12005,
-        "observedGeometry": "point",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "nonAffiliated",
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "deployment": "deployment:id_1219f00c-7af8-432b-be2a-9a442a76e14a",
-            "observingMethod": 63
-          }
-        ]
+      "darRecord": {
+        "href": "https://example.org/wmdr2/gc-dar/0-578-0-92100.json",
+        "type": "application/geo+json",
+        "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar",
+        "title": "GC-DAR discovery record"
       }
-    ]
-  }
+    }
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://example.org/wmdr2/gc-dar/0-578-0-92100.json",
+      "type": "application/geo+json",
+      "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar"
+    },
+    {
+      "rel": "alternate",
+      "href": "https://example.org/wmdr2/full/0-578-0-92100.json",
+      "type": "application/json",
+      "profile": "http://wigos.wmo.int/spec/wmdr/2/conf/core",
+      "title": "Full WMDR2 record"
+    }
+  ]
 }

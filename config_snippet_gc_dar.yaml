@@ -1,0 +1,7 @@
+convert_wmdr2_full_to_gc_dar:
+  source: results/wmdr2_json_examples
+  target: results/wmdr2_json_examples/gc_dar
+  pattern: "*.json"
+  recursive: true
+  full_record_href_template: "https://example.org/wmdr2/full/{plain_id}.json"
+  dar_record_href_template: "https://example.org/wmdr2/gc-dar/{plain_id}.json"

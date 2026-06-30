@@ -1,4 +1,4 @@
-# WMDR2 development v0.2.5
+# WMDR2 development v0.2.5.1
 
 This repository contains experimental tooling for transforming legacy WMDR 1.0 XML records into a simplified WMDR10 JSON representation and then into the draft WMDR2 v0.2.5 JSON representation.
 
@@ -256,8 +256,8 @@ Observation-series records are stored under `properties.observationSeries`.
     "uom": "m"
   },
   "observingConfigurations": [
-    {"date": "1980-01-01", "deployment": "deployment:dep-1", "observingMethod": 266},
-    {"date": "2001-01-01", "deployment": "deployment:dep-2", "observingMethod": 267}
+    {"deployment": "deployment:dep-1", "observingMethod": 266},
+    {"deployment": "deployment:dep-2", "observingMethod": 267}
   ],
   "officialStatus": [
     {
@@ -291,8 +291,8 @@ Important conventions:
 - Observation-series programme affiliation uses `programAffiliation`, not `programAffiliations`.
 - `officialStatus` is an array of dated objects. WMDR10 boolean `officialStatus` values map to `primary` for `true` and `additional` for `false`.
 - `reporting` is an array of dated `ReportingProcedure` objects that reference reusable reporting definitions.
-- `observingConfigurations` is the dated observing-method configuration history for the observation series. Each entry has `date` and mandatory `observingMethod`; use a nil-reason object when the method is unknown. When a known deployment realizes the configuration, include `deployment`.
-- Direct `observationSeries[*].deployments` is not emitted; deployment references belong inside `observingConfigurations[*].deployment`, where they are tied to the dated method context.
+- `observingConfigurations` is the observingMethod configuration for the observation series. Each entry has mandatory `observingMethod`; use a nil-reason object when the method is unknown. When a known deployment realizes the configuration, include `deployment`.
+- Direct `observationSeries[*].deployments` is not emitted; deployment references belong inside `observingConfigurations[*].deployment`, where they are tied to the method context.
 - `observingProcedures` is an array of dated `ObservingProcedure` objects. Each observing procedure carries a `strategy` and references one or more reusable schedules through `observingSchedules`.
 
 Obsolete observation-series names such as `observations`, `observedVariable`, `observedDomain`, `domain`, `domainName`, `historicalDeployments`, `historicalReporting`, `historicalOfficialStatus`, `observingSchedules`, and `programAffiliations` are not emitted.
@@ -357,20 +357,20 @@ Deployments are reusable, dated instrument-instance/state objects stored under `
 ]
 ```
 
-The same deployment may be referenced by several observation series, but the reference is made through each series' dated observing configuration rather than a direct deployment list.
+The same deployment may be referenced by several observation series, but the reference is made through each series' observing configuration rather than a direct deployment list.
 
 ```json
 "observationSeries": [
   {
     "id": "observationSeries:12006",
     "observingConfigurations": [
-      {"date": "2020-01-01", "deployment": "deployment:dep-1", "observingMethod": 266}
+      {"deployment": "deployment:dep-1", "observingMethod": 266}
     ]
   },
   {
     "id": "observationSeries:12001",
     "observingConfigurations": [
-      {"date": "2020-01-01", "deployment": "deployment:dep-1", "observingMethod": 188}
+      {"deployment": "deployment:dep-1", "observingMethod": 188}
     ]
   }
 ]
@@ -421,8 +421,8 @@ The authoritative observing-method information for users is the dated configurat
 
 ```json
 "observingConfigurations": [
-  {"date": "1980-01-01", "deployment": "deployment:arosa-dobson-1", "observingMethod": 266},
-  {"date": "2001-01-01", "deployment": "deployment:davos-brewer-1", "observingMethod": 267}
+  {"deployment": "deployment:arosa-dobson-1", "observingMethod": 266},
+  {"deployment": "deployment:davos-brewer-1", "observingMethod": 267}
 ]
 ```
 
@@ -430,21 +430,13 @@ This answers the important question of how the observation series was generated 
 
 ```json
 "observingConfigurations": [
-  {"date": "1980-01-01", "observingMethod": {"nilReason": "unknown"}}
-]
-```
-
-When the method is unknown for the whole period and no better start date is available, use the open date marker:
-
-```json
-"observingConfigurations": [
-  {"date": "..", "observingMethod": {"nilReason": "unknown"}}
+  {"observingMethod": {"nilReason": "unknown"}}
 ]
 ```
 
 Do not emit a literal string such as `"observingMethod": "unknown"`; unknown mandatory method values must use the nil-reason object form.
 
-A configuration may reference a deployment, but the reference is optional. This allows the observation-series method history to be represented even when make/model/serial/deployment details are not known. The method is not carried directly by `Deployment`: a deployment is the act/state of placing an instrument instance and making it contribute to one or more observation series, and the same deployment can support two observation series that use different methods for different observed properties. `ObservingProcedure` is also not used to carry the observing method; it is the dated procedure/strategy object that links an observation series to one or more observing schedules.
+A configuration may reference a deployment, but the reference is optional. This allows the observation-series method to be represented even when make/model/serial/deployment details are not known. The method is not carried directly by `Deployment`: a deployment is the act/state of placing an instrument instance and making it contribute to one or more observation series, and the same deployment can support two observation series that use different methods for different observed properties. `ObservingProcedure` is also not used to carry the observing method; it is the dated procedure/strategy object that links an observation series to one or more observing schedules.
 
 ## Observing schedules and observing procedures
 
@@ -569,15 +561,79 @@ Run all tests with:
 pytest -q
 ```
 
-## Repository cleanup notes
+## WMDR2 GC-DAR profile
 
-The current WMDR2 workflow no longer uses the previous Records Part 1 GeoJSON conversion path. The following root-level files can be removed if they are not referenced by local branches or pending work:
+GC-DAR means **Global Catalogue Discovery, Access and Retrieval**.
 
-- `convert_wmdr10_json_to_records_part1.py`
-- `settings.geojson`
-- `version.geojson`
-- root-level `wmdr2-common.schema.json`
-- root-level `wmdr2-feature-collection.schema.json`
-- root-level `wmdr2-record-feature.schema.json`
+It is a derived profile of a WMDR2 v0.2.5 full record. It is not intended as an
+editing source of truth. Nodes should edit and publish the full WMDR2 record; the
+Global Catalogue should derive GC-DAR records for discovery and portal retrieval.
 
-Do not remove the active schema files under `schemas/`.
+### Design intent
+
+GC-DAR is a **current-state discovery projection**. The full WMDR2 record remains
+where historical detail, complete deployment history, reporting definitions and
+editing semantics live.
+
+Current/latest record-level search facets are emitted directly under `properties`.
+GC-DAR deliberately avoids a separate `summary` wrapper because the whole profile
+is already a discovery/access/retrieval projection. These top-level facets should
+remain shallow and should not contain unrelated bags of values whose combinations
+cannot be reconstructed.
+
+Program affiliations are not represented as aligned arrays, because positional
+coupling is fragile. They are represented as objects, for example
+`{"program": "GAWregional", "reportingStatus": "operational"}`.
+
+The linked combinations belong in `observationSeries`. In GC-DAR, each
+observation-series summary resolves the current/latest reporting, deployment,
+instrument and observing-method information directly on the observation-series
+object. This avoids the ambiguous pattern where `observedProperty`,
+`observedGeometry`, `observedFeatureDomain`, `observingMethod`, `deployment`,
+`uom`, `internationalExchange` and `temporalAggregate` are all independent arrays.
+
+The converter therefore:
+
+- emits `properties.territory` as a scalar latest value, not as both `territory[]`
+  and `latestTerritory`;
+- emits `properties.programAffiliation` as an array of explicit objects with
+  `program`, `reportingStatus` and, when available, `date`;
+- emits current-state discovery facets such as `observedProperty`,
+  `observedGeometry`, `observedFeatureDomain`, `instrument` and
+  `observationSeriesCount` directly under `properties`;
+- removes reporting-definition indirection from GC-DAR and resolves reporting
+  fields onto the relevant `observationSeries` element;
+- resolves deployment-to-instrument references onto the relevant
+  `observationSeries` element;
+- keeps top-level `deployments` and `instruments` only for the current/latest
+  observation series included in GC-DAR;
+- uses `provenance`, not `ancestry`, for source derivation metadata.
+
+Recommended workflow:
+
+```text
+XML -> WMDR10 -> WMDR2 full -> WMDR2 catalogue
+                           \-> WMDR2 GC-DAR
+```
+
+Suggested config section:
+
+```yaml
+convert_wmdr2_json_to_wmdr2_gc_dar:
+  source: results/wmdr2_json_examples
+  target: results/wmdr2_json_examples/gc_dar
+  pattern: "*.json"
+  recursive: true
+  full_record_href_template: "https://example.org/wmdr2/full/{plain_id}.json"
+  dar_record_href_template: "https://example.org/wmdr2/gc-dar/{plain_id}.json"
+```
+
+Run:
+
+```bash
+python convert_wmdr2_json_to_wmdr2_gc_dar.py \
+  --source results/wmdr2_json_examples \
+  --target results/wmdr2_json_examples/gc_dar
+
+pytest -q tests/test_convert_wmdr2_json_to_wmdr2_gc_dar.py tests/test_wmdr2_gc_dar_schema.py
+```
