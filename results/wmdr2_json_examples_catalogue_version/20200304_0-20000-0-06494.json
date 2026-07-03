@@ -115,7 +115,6 @@
     "deployments": [
       {
         "id": "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -123,11 +122,11 @@
             50.5108333333,
             671
           ]
-        }
+        },
+        "referenceSurface": "localGround"
       },
       {
         "id": "deployment:id_cbeee7c2-88d2-42b5-9e9b-7d247430b5ad",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -135,11 +134,11 @@
             50.5108333333,
             673
           ]
-        }
+        },
+        "referenceSurface": "localGround"
       },
       {
         "id": "deployment:id_5a1a8bb6-8867-4ca4-89ab-f538b6238162",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -147,11 +146,15 @@
             50.5108333333,
             673
           ]
+        },
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_b3b6f93e-a743-41be-836c-56e4aa2ffecd",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -159,11 +162,11 @@
             50.5108333333,
             671
           ]
-        }
+        },
+        "referenceSurface": "localGround"
       },
       {
         "id": "deployment:id_94df9bb5-31c0-4ec0-9eff-832f20424ec0",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -171,11 +174,15 @@
             50.5108333333,
             673
           ]
+        },
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_8a767a59-5fea-4c4a-ba63-a215b7a48731",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -183,11 +190,11 @@
             50.5108333333,
             671
           ]
-        }
+        },
+        "referenceSurface": "localGround"
       },
       {
         "id": "deployment:id_a3d312d1-31e6-4a19-a147-8fc680f9f71f",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -195,15 +202,14 @@
             50.5108333333,
             671
           ]
-        }
+        },
+        "referenceSurface": "localGround"
       },
       {
-        "id": "deployment:id_e255ce45-4880-4534-890b-fe13020f1ba9",
-        "date": ".."
+        "id": "deployment:id_e255ce45-4880-4534-890b-fe13020f1ba9"
       },
       {
         "id": "deployment:id_f50e905d-0204-455b-a4e3-b61634dde81c",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -211,11 +217,11 @@
             50.5108333333,
             671
           ]
-        }
+        },
+        "referenceSurface": "localGround"
       },
       {
         "id": "deployment:id_5afcfbb0-4bf8-42fd-bc88-0ada98fbc2f8",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -223,15 +229,14 @@
             50.5108333333,
             671
           ]
-        }
+        },
+        "referenceSurface": "localGround"
       },
       {
-        "id": "deployment:id_8aba1fb3-7eab-4ee9-bc01-3b9fe58f54d2",
-        "date": ".."
+        "id": "deployment:id_8aba1fb3-7eab-4ee9-bc01-3b9fe58f54d2"
       },
       {
         "id": "deployment:id_c0288657-ab05-4e50-a36b-e024a09b7417",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -239,11 +244,14 @@
             50.5108333333,
             681
           ]
+        },
+        "verticalDistanceFromReferenceSurface": {
+          "value": 10.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:cca8c9b3-4ac7-23ea-e053-148ef98d1a71",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -251,6 +259,10 @@
             50.5108333333,
             681
           ]
+        },
+        "verticalDistanceFromReferenceSurface": {
+          "value": 10.0,
+          "uom": "m"
         }
       }
     ],
@@ -258,12 +270,6 @@
       {
         "id": "observationSeries:179",
         "title": "domain: atmosphere; geometry: point; variable: 179",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 179,
         "observedGeometry": "point",
         "observedFeature": {
@@ -272,9 +278,9 @@
         "programAffiliation": [
           "GOSGeneral"
         ],
-        "referenceSurface": "localGround",
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
             "observingMethod": {
               "nilReason": "unknown"
@@ -302,12 +308,6 @@
       {
         "id": "observationSeries:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 216,
         "observedGeometry": "point",
         "observedFeature": {
@@ -316,9 +316,9 @@
         "programAffiliation": [
           "GBON"
         ],
-        "referenceSurface": "localGround",
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_cbeee7c2-88d2-42b5-9e9b-7d247430b5ad",
             "observingMethod": {
               "nilReason": "unknown"
@@ -346,12 +346,6 @@
       {
         "id": "observationSeries:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 224,
         "observedGeometry": "point",
         "observedFeature": {
@@ -360,13 +354,9 @@
         "programAffiliation": [
           "GBON"
         ],
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_5a1a8bb6-8867-4ca4-89ab-f538b6238162",
             "observingMethod": {
               "nilReason": "unknown"
@@ -394,12 +384,6 @@
       {
         "id": "observationSeries:230",
         "title": "domain: atmosphere; geometry: point; variable: 230",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 230,
         "observedGeometry": "point",
         "observedFeature": {
@@ -408,9 +392,9 @@
         "programAffiliation": [
           "GOSGeneral"
         ],
-        "referenceSurface": "localGround",
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_b3b6f93e-a743-41be-836c-56e4aa2ffecd",
             "observingMethod": {
               "nilReason": "unknown"
@@ -438,12 +422,6 @@
       {
         "id": "observationSeries:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 12249,
         "observedGeometry": "point",
         "observedFeature": {
@@ -452,13 +430,9 @@
         "programAffiliation": [
           "GBON"
         ],
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_94df9bb5-31c0-4ec0-9eff-832f20424ec0",
             "observingMethod": {
               "nilReason": "unknown"
@@ -486,12 +460,6 @@
       {
         "id": "observationSeries:265",
         "title": "domain: atmosphere; geometry: point; variable: 265",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 265,
         "observedGeometry": "point",
         "observedFeature": {
@@ -500,9 +468,9 @@
         "programAffiliation": [
           "GOSGeneral"
         ],
-        "referenceSurface": "localGround",
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_8a767a59-5fea-4c4a-ba63-a215b7a48731",
             "observingMethod": {
               "nilReason": "unknown"
@@ -530,12 +498,6 @@
       {
         "id": "observationSeries:266",
         "title": "domain: atmosphere; geometry: point; variable: 266",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 266,
         "observedGeometry": "point",
         "observedFeature": {
@@ -544,9 +506,9 @@
         "programAffiliation": [
           "GOSGeneral"
         ],
-        "referenceSurface": "localGround",
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_a3d312d1-31e6-4a19-a147-8fc680f9f71f",
             "observingMethod": {
               "nilReason": "unknown"
@@ -584,6 +546,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "deployment": "deployment:id_e255ce45-4880-4534-890b-fe13020f1ba9",
             "observingMethod": {
               "nilReason": "unknown"
@@ -611,12 +574,6 @@
       {
         "id": "observationSeries:531",
         "title": "domain: atmosphere; geometry: point; variable: 531",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 531,
         "observedGeometry": "point",
         "observedFeature": {
@@ -625,9 +582,9 @@
         "programAffiliation": [
           "GOSGeneral"
         ],
-        "referenceSurface": "localGround",
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_f50e905d-0204-455b-a4e3-b61634dde81c",
             "observingMethod": {
               "nilReason": "unknown"
@@ -655,12 +612,6 @@
       {
         "id": "observationSeries:550",
         "title": "domain: atmosphere; geometry: point; variable: 550",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 550,
         "observedGeometry": "point",
         "observedFeature": {
@@ -669,9 +620,9 @@
         "programAffiliation": [
           "GOSGeneral"
         ],
-        "referenceSurface": "localGround",
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_5afcfbb0-4bf8-42fd-bc88-0ada98fbc2f8",
             "observingMethod": {
               "nilReason": "unknown"
@@ -709,6 +660,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "deployment": "deployment:id_8aba1fb3-7eab-4ee9-bc01-3b9fe58f54d2",
             "observingMethod": {
               "nilReason": "unknown"
@@ -736,12 +688,6 @@
       {
         "id": "observationSeries:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 12005,
         "observedGeometry": "point",
         "observedFeature": {
@@ -750,12 +696,9 @@
         "programAffiliation": [
           "GBON"
         ],
-        "verticalDistanceFromReferenceSurface": {
-          "value": 10.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_c0288657-ab05-4e50-a36b-e024a09b7417",
             "observingMethod": {
               "nilReason": "unknown"
@@ -783,12 +726,6 @@
       {
         "id": "observationSeries:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 12006,
         "observedGeometry": "point",
         "observedFeature": {
@@ -797,12 +734,9 @@
         "programAffiliation": [
           "GBON"
         ],
-        "verticalDistanceFromReferenceSurface": {
-          "value": 10.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:cca8c9b3-4ac7-23ea-e053-148ef98d1a71",
             "observingMethod": {
               "nilReason": "unknown"

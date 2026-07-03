@@ -80,20 +80,12 @@
         "name": "Lazzara,Matthew A.,Dr.",
         "organization": "University of Wisconsin-Madison",
         "phones": [
-          {
-            "value": "+1-608-262-0436"
-          },
-          {
-            "value": "+1-608-616-3382"
-          }
+          "+1-608-262-0436",
+          "+1-608-616-3382"
         ],
         "emails": [
-          {
-            "value": "mattl@ssec.wisc.edu"
-          },
-          {
-            "value": "mlazzara@madisoncollege.edu"
-          }
+          "mattl@ssec.wisc.edu",
+          "mlazzara@madisoncollege.edu"
         ],
         "addresses": [
           {
@@ -112,9 +104,7 @@
       {
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
-          {
-            "value": "oscar@wmo.int"
-          }
+          "oscar@wmo.int"
         ],
         "links": [
           {
@@ -198,9 +188,8 @@
     "deployments": [
       {
         "id": "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
-        "date": "2006-01-13",
-        "instrument": "instrument:0-840-11502-KominkoSlade:559b14aa2b21",
-        "exposure": "class1",
+        "instrument": "instrument:PAROSCIENTIFIC--Series-2000-Absolute-and-Gauge-Pressure-Transducers---215A-102",
+        "sourceOfObservation": "automaticReading",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -208,13 +197,17 @@
             -79.466,
             1801
           ]
+        },
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
-        "date": "2006-01-13",
-        "instrument": "instrument:0-840-11502-KominkoSlade:b2c93dfaf8d5",
-        "exposure": "class2",
+        "instrument": "instrument:Weed-Instrument--Platinum-resistance-thermometer--PRT",
+        "sourceOfObservation": "humanObservation",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -222,13 +215,17 @@
             -79.466,
             1801
           ]
+        },
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
-        "date": "2006-01-13",
-        "instrument": "instrument:0-840-11502-KominkoSlade:607330a26caf",
-        "exposure": "class2",
+        "instrument": "instrument:Vaisala-Oyj--VAISALA_HMP45A",
+        "sourceOfObservation": "automaticReading",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -236,13 +233,17 @@
             -79.466,
             1801
           ]
+        },
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
-        "date": "2006-01-13",
-        "instrument": "instrument:0-840-11502-KominkoSlade:4a52955cfb18",
-        "exposure": "class2",
+        "instrument": "instrument:RM-Young--Wind-Monitor-HD-Alpine-05108-45",
+        "sourceOfObservation": "automaticReading",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -250,13 +251,17 @@
             -79.466,
             1801
           ]
+        },
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 3.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
-        "date": "2006-01-13",
-        "instrument": "instrument:0-840-11502-KominkoSlade:4a52955cfb18",
-        "exposure": "class2",
+        "instrument": "instrument:RM-Young--Wind-Monitor-HD-Alpine-05108-45",
+        "sourceOfObservation": "automaticReading",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -264,6 +269,11 @@
             -79.466,
             1801
           ]
+        },
+        "referenceSurface": "naturalGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 3.0,
+          "uom": "m"
         }
       }
     ],
@@ -271,12 +281,6 @@
       {
         "id": "observationSeries:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        },
         "observedProperty": 216,
         "observedGeometry": "point",
         "observedFeature": {
@@ -286,16 +290,12 @@
           "RBON",
           "GBON"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "naturalGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2006-01-13",
             "deployment": "deployment:id_940b409e-a547-4534-9590-4f2393a77f6f",
-            "observingMethod": 111
+            "observingMethod": 111,
+            "exposure": "class1"
           }
         ],
         "observingProcedures": [
@@ -319,12 +319,6 @@
       {
         "id": "observationSeries:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        },
         "observedProperty": 224,
         "observedGeometry": "point",
         "observedFeature": {
@@ -334,16 +328,12 @@
           "RBON",
           "GBON"
         ],
-        "sourceOfObservation": "humanObservation",
-        "referenceSurface": "naturalGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2006-01-13",
             "deployment": "deployment:id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
-            "observingMethod": 188
+            "observingMethod": 188,
+            "exposure": "class2"
           }
         ],
         "observingProcedures": [
@@ -367,12 +357,6 @@
       {
         "id": "observationSeries:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        },
         "observedProperty": 12249,
         "observedGeometry": "point",
         "observedFeature": {
@@ -382,16 +366,12 @@
           "RBON",
           "GBON"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "naturalGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2006-01-13",
             "deployment": "deployment:id_5d75c851-055a-457f-a6c2-888ac2f19eba",
-            "observingMethod": 250
+            "observingMethod": 250,
+            "exposure": "class2"
           }
         ],
         "observingProcedures": [
@@ -415,12 +395,6 @@
       {
         "id": "observationSeries:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        },
         "observedProperty": 12005,
         "observedGeometry": "point",
         "observedFeature": {
@@ -430,16 +404,12 @@
           "RBON",
           "GBON"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "naturalGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 3.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2006-01-13",
             "deployment": "deployment:id_fec708c6-197d-4bad-8d15-9f68e04622f0",
-            "observingMethod": 65
+            "observingMethod": 65,
+            "exposure": "class2"
           }
         ],
         "observingProcedures": [
@@ -463,12 +433,6 @@
       {
         "id": "observationSeries:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        },
         "observedProperty": 12006,
         "observedGeometry": "point",
         "observedFeature": {
@@ -478,16 +442,12 @@
           "RBON",
           "GBON"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "naturalGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 3.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2006-01-13",
             "deployment": "deployment:id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
-            "observingMethod": 65
+            "observingMethod": 65,
+            "exposure": "class2"
           }
         ],
         "observingProcedures": [
@@ -511,7 +471,7 @@
     ],
     "instruments": [
       {
-        "id": "instrument:0-840-11502-KominkoSlade:559b14aa2b21",
+        "id": "instrument:PAROSCIENTIFIC--Series-2000-Absolute-and-Gauge-Pressure-Transducers---215A-102",
         "manufacturer": "PAROSCIENTIFIC",
         "model": "Series 2000 Absolute and Gauge Pressure Transducers - 215A-102",
         "observingMethods": [
@@ -519,7 +479,7 @@
         ]
       },
       {
-        "id": "instrument:0-840-11502-KominkoSlade:b2c93dfaf8d5",
+        "id": "instrument:Weed-Instrument--Platinum-resistance-thermometer--PRT",
         "manufacturer": "Weed Instrument",
         "model": "Platinum resistance thermometer (PRT)",
         "observingMethods": [
@@ -527,7 +487,7 @@
         ]
       },
       {
-        "id": "instrument:0-840-11502-KominkoSlade:607330a26caf",
+        "id": "instrument:Vaisala-Oyj--VAISALA_HMP45A",
         "manufacturer": "Vaisala Oyj",
         "model": "VAISALA_HMP45A",
         "observingMethods": [
@@ -535,7 +495,7 @@
         ]
       },
       {
-        "id": "instrument:0-840-11502-KominkoSlade:4a52955cfb18",
+        "id": "instrument:RM-Young--Wind-Monitor-HD-Alpine-05108-45",
         "manufacturer": "RM Young",
         "model": "Wind Monitor HD-Alpine 05108-45",
         "observingMethods": [

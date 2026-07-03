@@ -1,6 +1,6 @@
-# WMDR2 development v0.2.5.1
+# WMDR2 development v0.2.5.3
 
-This repository contains experimental tooling for transforming legacy WMDR 1.0 XML records into a simplified WMDR10 JSON representation and then into the draft WMDR2 v0.2.5 JSON representation.
+This repository contains experimental tooling for transforming legacy WMDR 1.0 XML records into a simplified WMDR10 JSON representation and then into the draft WMDR2 v0.2.5.3 JSON representation.
 
 The WMDR2 output is a facility-centric full record encoded as a GeoJSON-like `Feature`. WMDR2-specific content is stored in `properties`. Output files use the `.json` extension.
 
@@ -123,7 +123,7 @@ Each WMDR2 output file is a facility-centric JSON `Feature`.
 }
 ```
 
-Other time-varying concepts use arrays of dated objects. Examples include `environment`, `programAffiliation`, `territory`, `deployments`, `reporting`, `observingProcedures`, and `officialStatus`.
+Other time-varying concepts use arrays of dated objects. Examples include `environment`, `programAffiliation`, `territory`, `reporting`, `observingProcedures`, `observingConfigurations`, and `officialStatus`. Deployment itself is now the stable deployed observer/instrument context, not a dated state object.
 
 ## Facility-level properties
 
@@ -232,13 +232,12 @@ Obsolete names such as `historicalEnvironment`, `temporalPopulation`, `temporalP
 
 ## Observation series
 
-Observation-series records are stored under `properties.observationSeries`.
+Observation-series records are stored under `properties.observationSeries`. The observation-series lifecycle/history is expressed by its dated `observingConfigurations`, not by a separate `observationSeries.time` summary.
 
 ```json
 {
   "id": "observationSeries:12006",
   "title": "domain: atmosphere; geometry: point; variable: 12006",
-  "time": {"interval": ["2016-04-29", ".."]},
   "observedProperty": 12006,
   "observedGeometry": "point",
   "observedFeature": {
@@ -248,16 +247,21 @@ Observation-series records are stored under `properties.observationSeries`.
   },
   "applicationArea": ["weatherForecasting"],
   "programAffiliation": ["GAWregional"],
-  "sourceOfObservation": "automaticReading",
-  "referenceSurface": "localGround",
   "representativeness": "local",
-  "verticalDistanceFromReferenceSurface": {
-    "value": 2.0,
-    "uom": "m"
-  },
   "observingConfigurations": [
-    {"deployment": "deployment:dep-1", "observingMethod": 266},
-    {"deployment": "deployment:dep-2", "observingMethod": 267}
+    {
+      "date": "2020-01-01",
+      "deployment": "deployment:dep-1",
+      "observingMethod": 266,
+      "operatingStatus": "operational",
+      "exposure": "good"
+    },
+    {
+      "date": "2024-01-17",
+      "deployment": "deployment:dep-2",
+      "observingMethod": 267,
+      "operatingStatus": "operational"
+    }
   ],
   "officialStatus": [
     {
@@ -291,11 +295,13 @@ Important conventions:
 - Observation-series programme affiliation uses `programAffiliation`, not `programAffiliations`.
 - `officialStatus` is an array of dated objects. WMDR10 boolean `officialStatus` values map to `primary` for `true` and `additional` for `false`.
 - `reporting` is an array of dated `ReportingProcedure` objects that reference reusable reporting definitions.
-- `observingConfigurations` is the observingMethod configuration for the observation series. Each entry has mandatory `observingMethod`; use a nil-reason object when the method is unknown. When a known deployment realizes the configuration, include `deployment`.
-- Direct `observationSeries[*].deployments` is not emitted; deployment references belong inside `observingConfigurations[*].deployment`, where they are tied to the method context.
+- `observingConfigurations` is the dated observation-series history. Each entry requires `date` and `observingMethod`, may reference a deployment, and may carry `operatingStatus` and `exposure`.
+- `observationSeries.time` is not emitted. The covered period can be derived from the first and last dated observing configurations, including terminal statuses such as `decommissioned`, `broken`, or `inactive`.
+- Physical deployment context such as `sourceOfObservation`, `referenceSurface`, `verticalDistanceFromReferenceSurface`, and `geometry` belongs on `properties.deployments[*]`, not on the observation series.
+- Direct `observationSeries[*].deployments` is not emitted; deployment references belong inside `observingConfigurations[*].deployment`, where they are tied to the dated method/status contribution for that series.
 - `observingProcedures` is an array of dated `ObservingProcedure` objects. Each observing procedure carries a `strategy` and references one or more reusable schedules through `observingSchedules`.
 
-Obsolete observation-series names such as `observations`, `observedVariable`, `observedDomain`, `domain`, `domainName`, `historicalDeployments`, `historicalReporting`, `historicalOfficialStatus`, `observingSchedules`, and `programAffiliations` are not emitted.
+Obsolete observation-series names such as `observations`, `time`, `observedVariable`, `observedDomain`, `domain`, `domainName`, `sourceOfObservation`, `referenceSurface`, `verticalDistanceFromReferenceSurface`, `historicalDeployments`, `historicalReporting`, `historicalOfficialStatus`, `observingSchedules`, and `programAffiliations` are not emitted.
 
 ## Reporting
 
@@ -334,43 +340,57 @@ Observation-series reporting history is stored in `observationSeries[*].reportin
 ]
 ```
 
-This split allows one reporting definition to be reused by multiple observation series. Observation-series-specific values such as `uom` and `links` remain on the dated `ReportingProcedure` object. The v0.2.5 model requires a reporting procedure `strategy`; the converter uses a source strategy when one is available and otherwise emits `unknown`.
+This split allows one reporting definition to be reused by multiple observation series. Observation-series-specific values such as `uom` and `links` remain on the dated `ReportingProcedure` object. The v0.2.5.3 model requires a reporting procedure `strategy`; the converter uses a source strategy when one is available and otherwise emits `unknown`.
 
 ## Deployments
 
-Deployments are reusable, dated instrument-instance/state objects stored under `properties.deployments`.
+Deployments are reusable stable observer/instrument contexts stored under `properties.deployments`. A deployment can represent an installed instrument, a human observer, or another source of observation. It is not itself the dated observation-series state; dates, status and exposure are carried by `observationSeries[*].observingConfigurations[*]`.
 
 ```json
 "deployments": [
   {
     "id": "deployment:dep-1",
-    "date": "2020-01-01",
     "instrument": "instrument:aws-001-temperature-sensor",
     "serialNumber": "SN-001",
-    "operatingStatus": "operational",
-    "exposure": "good",
+    "sourceOfObservation": "automaticReading",
     "geometry": {
       "type": "Point",
       "coordinates": [7.0, 46.0, 502]
+    },
+    "referenceSurface": "localGround",
+    "verticalDistanceFromReferenceSurface": {
+      "value": 2.0,
+      "uom": "m"
     }
   }
 ]
 ```
 
-The same deployment may be referenced by several observation series, but the reference is made through each series' observing configuration rather than a direct deployment list.
+The same deployment may be referenced by several observation series, but the dated contribution is made through each series' observing configuration rather than a direct deployment list.
 
 ```json
 "observationSeries": [
   {
     "id": "observationSeries:12006",
     "observingConfigurations": [
-      {"deployment": "deployment:dep-1", "observingMethod": 266}
+      {
+        "date": "2020-01-01",
+        "deployment": "deployment:dep-1",
+        "observingMethod": 266,
+        "operatingStatus": "operational",
+        "exposure": "good"
+      }
     ]
   },
   {
     "id": "observationSeries:12001",
     "observingConfigurations": [
-      {"deployment": "deployment:dep-1", "observingMethod": 188}
+      {
+        "date": "2020-01-01",
+        "deployment": "deployment:dep-1",
+        "observingMethod": 188,
+        "operatingStatus": "operational"
+      }
     ]
   }
 ]
@@ -379,10 +399,11 @@ The same deployment may be referenced by several observation series, but the ref
 Important conventions:
 
 - `deployment.instrument` is a scalar reference to one instrument identifier, not a one-element array.
-- `deployment.date` is required.
-- `serialNumber`, `operatingStatus`, `exposure`, and `geometry` describe the dated deployment state.
-- Deployment records do not carry `title`, `type`, `manufacturer`, or `model` properties.
-- Obsolete names such as `temporalSerialNumber`, `serialNumbers`, `temporalOfficialStatus`, and `temporalGeometry` are not emitted on deployments.
+- `deployment.date` is not emitted.
+- `serialNumber`, `sourceOfObservation`, `geometry`, `referenceSurface`, and `verticalDistanceFromReferenceSurface` describe the stable deployment context.
+- `operatingStatus` and `exposure` belong to `ObservingConfiguration`, because they describe the dated contribution of that deployment to a particular observation series.
+- Deployment records do not carry `title`, `type`, `manufacturer`, `model`, `operatingStatus`, `exposure`, or `date` properties.
+- Obsolete names such as `temporalSerialNumber`, `serialNumbers`, `temporalOfficialStatus`, `temporalGeometry`, and `localReferenceSurface` are not emitted on deployments.
 
 ## Instruments
 
@@ -391,52 +412,109 @@ Instruments are reusable catalogue objects stored under `properties.instruments`
 ```json
 "instruments": [
   {
-    "id": "instrument:aws-001-temperature-sensor",
-    "title": "Temperature sensor",
-    "description": "Automatic air-temperature sensor.",
+    "id": "instrument:vaisala--hmp155",
     "manufacturer": "Vaisala",
     "model": "HMP155",
     "observingMethods": [266],
     "verticalRange": {
       "min": 0,
       "max": 30
-    },
-    "observedProperty": [12006],
-    "observedGeometry": "point"
+    }
   }
 ]
 ```
 
-Manufacturer, model, optional title, optional description, optional vertical range, and optional instrument capability information belong on the instrument. Serial number belongs on the deployment. Instrument `observingMethods` is a compact list of method values only when the catalogue instrument type is known and the method capability is known:
+The instrument catalogue is a type catalogue, not an instance catalogue. It does not include serial numbers, facility-local deployment identifiers, or observation-series-specific fields such as `observedProperty` and `observedGeometry`. Serial numbers and physical deployment context belong on `Deployment`; the authoritative dated method history belongs on `ObservationSeries.observingConfigurations`.
+
+Manufacturer, model, optional vertical range, and optional instrument capability information belong on the instrument. Instrument `observingMethods` is a compact list of method values only when the catalogue instrument type is known and the method capability is known:
 
 ```json
 "observingMethods": [266, 267]
 ```
 
-Do not create an instrument catalogue entry merely to carry an observing method. If make/model are unknown and the serial number is not documented, the observing method can be represented on the observation series alone.
+Do not create an instrument catalogue entry merely to carry an observing method or a serial number. If reusable type metadata such as manufacturer/model or vertical range is unknown, keep the serial number on the deployment and represent the observing method on the observation series.
 
 ## Observing configurations
 
-The authoritative observing-method information for users is the dated configuration history on `ObservationSeries`:
+The authoritative observation-series history is stored in `ObservationSeries.observingConfigurations`. An observing configuration is a dated contribution state for one observation series. It states from which date an observing method applies, optionally through a known deployment, and may carry the operating status and exposure for that specific contribution.
 
 ```json
-"observingConfigurations": [
-  {"deployment": "deployment:arosa-dobson-1", "observingMethod": 266},
-  {"deployment": "deployment:davos-brewer-1", "observingMethod": 267}
+"deployments": [
+  {"id": "deployment:arosa-dobson-1"},
+  {"id": "deployment:davos-brewer-1"}
+],
+"observationSeries": [
+  {
+    "id": "observationSeries:total-column-ozone",
+    "observingConfigurations": [
+      {
+        "date": "1980-01-01",
+        "deployment": "deployment:arosa-dobson-1",
+        "observingMethod": 266,
+        "operatingStatus": "operational"
+      },
+      {
+        "date": "2001-01-01",
+        "deployment": "deployment:davos-brewer-1",
+        "observingMethod": 267,
+        "operatingStatus": "operational"
+      }
+    ]
+  }
 ]
 ```
 
-This answers the important question of how the observation series was generated and when the method changed. In v0.2.5 the `observingMethod` value in each configuration entry is mandatory. When the method is unknown for a known period, use a nil-reason object:
+This represents the relevant historical case: a later deployment can contribute to the same observation series using a different method, while the method/status chronology is visible directly in the observation series.
+
+For historical data where the deployment is unknown but the method and period are known, the deployment reference may be omitted. The configuration still requires a date:
 
 ```json
-"observingConfigurations": [
-  {"observingMethod": {"nilReason": "unknown"}}
+"observationSeries": [
+  {
+    "id": "observationSeries:wind-direction",
+    "observingConfigurations": [
+      {
+        "date": "1999-01-01",
+        "observingMethod": 60,
+        "operatingStatus": "operational"
+      }
+    ]
+  }
 ]
 ```
 
-Do not emit a literal string such as `"observingMethod": "unknown"`; unknown mandatory method values must use the nil-reason object form.
+When the method is unknown, use a nil-reason object as the mandatory method value:
 
-A configuration may reference a deployment, but the reference is optional. This allows the observation-series method to be represented even when make/model/serial/deployment details are not known. The method is not carried directly by `Deployment`: a deployment is the act/state of placing an instrument instance and making it contribute to one or more observation series, and the same deployment can support two observation series that use different methods for different observed properties. `ObservingProcedure` is also not used to carry the observing method; it is the dated procedure/strategy object that links an observation series to one or more observing schedules.
+```json
+"observingConfigurations": [
+  {
+    "date": "1999-01-01",
+    "observingMethod": {"nilReason": "unknown"},
+    "operatingStatus": "operational"
+  }
+]
+```
+
+An ended observation series can be represented by a terminal observing configuration:
+
+```json
+"observingConfigurations": [
+  {
+    "date": "1999-01-01",
+    "deployment": "deployment:wind-observer-1",
+    "observingMethod": 60,
+    "operatingStatus": "operational"
+  },
+  {
+    "date": "2017-01-25",
+    "deployment": "deployment:wind-observer-1",
+    "observingMethod": {"nilReason": "notApplicable"},
+    "operatingStatus": "decommissioned"
+  }
+]
+```
+
+Do not emit literal `"observingMethod": "unknown"`. Use `{"nilReason": "unknown"}` instead.
 
 ## Observing schedules and observing procedures
 
@@ -462,7 +540,7 @@ Schedules are reusable JSCalendar-like objects stored under `properties.schedule
 ]
 ```
 
-The v0.2.5 XMI names the sampling extension `wmi.int:samplingFrequency`; the converter follows that spelling. Aggregation interval is emitted as `wmo.int:aggregationInterval`. The older nested `wmo.int:aggregation` object is not emitted.
+The v0.2.5.3 XMI names the sampling extension `wmi.int:samplingFrequency`; the converter follows that spelling. Aggregation interval is emitted as `wmo.int:aggregationInterval`. The older nested `wmo.int:aggregation` object is not emitted.
 
 ```json
 "observingProcedures": [
@@ -478,17 +556,21 @@ The v0.2.5 XMI names the sampling extension `wmi.int:samplingFrequency`; the con
 
 ## Contacts and catalogue representation
 
-Contacts are stored in `properties.contacts`. A contact may include an `id`, `organization`, `name`, `position`, `emails`, `phones`, `links`, and `roles`.
+Contacts are stored in `properties.contacts`. A contact may include an `id` or `identifier`, `organization`, `name`, `position`, simple `emails` and `phones` string arrays, `addresses`, `links`, and `roles`.
 
 ```json
 {
-  "id": "contact:owner:rmi",
+  "identifier": "contact:owner:rmi",
   "organization": "Royal Meteorological Institute of Belgium",
+  "emails": ["contact@example.org"],
+  "phones": ["+41 1 234 56 78"],
   "roles": ["owner"]
 }
 ```
 
-When catalogue post-processing is enabled, contacts and instruments can be externalized to catalogue files. The rewritten facility records retain minimal inline contact references and remove inline `properties.instruments`. Deployment `instrument` references remain scalar strings.
+The WMDR2 JSON profile does not require the ISO-style `emails: [{"value": ...}]` or `phones: [{"value": ...}]` representation. The converter and catalogue post-processor now normalize these to string arrays.
+
+When catalogue post-processing is enabled, contacts and instruments can be externalized to catalogue files. The rewritten facility records retain minimal inline contact references and remove inline `properties.instruments`. Deployment `instrument` references remain scalar strings, but only when they point to a reusable instrument catalogue/type entry; serial-number-only instance references are removed and the deployment keeps its `serialNumber`.
 
 ## Code-list values
 
@@ -561,79 +643,15 @@ Run all tests with:
 pytest -q
 ```
 
-## WMDR2 GC-DAR profile
+## Repository cleanup notes
 
-GC-DAR means **Global Catalogue Discovery, Access and Retrieval**.
+The current WMDR2 workflow no longer uses the previous Records Part 1 GeoJSON conversion path. The following root-level files can be removed if they are not referenced by local branches or pending work:
 
-It is a derived profile of a WMDR2 v0.2.5 full record. It is not intended as an
-editing source of truth. Nodes should edit and publish the full WMDR2 record; the
-Global Catalogue should derive GC-DAR records for discovery and portal retrieval.
+- `convert_wmdr10_json_to_records_part1.py`
+- `settings.geojson`
+- `version.geojson`
+- root-level `wmdr2-common.schema.json`
+- root-level `wmdr2-feature-collection.schema.json`
+- root-level `wmdr2-record-feature.schema.json`
 
-### Design intent
-
-GC-DAR is a **current-state discovery projection**. The full WMDR2 record remains
-where historical detail, complete deployment history, reporting definitions and
-editing semantics live.
-
-Current/latest record-level search facets are emitted directly under `properties`.
-GC-DAR deliberately avoids a separate `summary` wrapper because the whole profile
-is already a discovery/access/retrieval projection. These top-level facets should
-remain shallow and should not contain unrelated bags of values whose combinations
-cannot be reconstructed.
-
-Program affiliations are not represented as aligned arrays, because positional
-coupling is fragile. They are represented as objects, for example
-`{"program": "GAWregional", "reportingStatus": "operational"}`.
-
-The linked combinations belong in `observationSeries`. In GC-DAR, each
-observation-series summary resolves the current/latest reporting, deployment,
-instrument and observing-method information directly on the observation-series
-object. This avoids the ambiguous pattern where `observedProperty`,
-`observedGeometry`, `observedFeatureDomain`, `observingMethod`, `deployment`,
-`uom`, `internationalExchange` and `temporalAggregate` are all independent arrays.
-
-The converter therefore:
-
-- emits `properties.territory` as a scalar latest value, not as both `territory[]`
-  and `latestTerritory`;
-- emits `properties.programAffiliation` as an array of explicit objects with
-  `program`, `reportingStatus` and, when available, `date`;
-- emits current-state discovery facets such as `observedProperty`,
-  `observedGeometry`, `observedFeatureDomain`, `instrument` and
-  `observationSeriesCount` directly under `properties`;
-- removes reporting-definition indirection from GC-DAR and resolves reporting
-  fields onto the relevant `observationSeries` element;
-- resolves deployment-to-instrument references onto the relevant
-  `observationSeries` element;
-- keeps top-level `deployments` and `instruments` only for the current/latest
-  observation series included in GC-DAR;
-- uses `provenance`, not `ancestry`, for source derivation metadata.
-
-Recommended workflow:
-
-```text
-XML -> WMDR10 -> WMDR2 full -> WMDR2 catalogue
-                           \-> WMDR2 GC-DAR
-```
-
-Suggested config section:
-
-```yaml
-convert_wmdr2_json_to_wmdr2_gc_dar:
-  source: results/wmdr2_json_examples
-  target: results/wmdr2_json_examples/gc_dar
-  pattern: "*.json"
-  recursive: true
-  full_record_href_template: "https://example.org/wmdr2/full/{plain_id}.json"
-  dar_record_href_template: "https://example.org/wmdr2/gc-dar/{plain_id}.json"
-```
-
-Run:
-
-```bash
-python convert_wmdr2_json_to_wmdr2_gc_dar.py \
-  --source results/wmdr2_json_examples \
-  --target results/wmdr2_json_examples/gc_dar
-
-pytest -q tests/test_convert_wmdr2_json_to_wmdr2_gc_dar.py tests/test_wmdr2_gc_dar_schema.py
-```
+Do not remove the active schema files under `schemas/`.

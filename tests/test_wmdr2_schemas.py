@@ -155,19 +155,15 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                 {
                     "id": "observationSeries:179",
                     "title": "domain: atmosphere; geometry: point; variable: 179 Cloud amount",
-                    "time": {"interval": ["2016-04-29", ".."]},
                     "observedProperty": 179,
                     "observedGeometry": "point",
                     "observedFeature": {"domain": "atmosphere"},
                     "programAffiliation": ["GAWregional"],
-                    "sourceOfObservation": "automatic",
-                    "referenceSurface": "localGround",
-                    "verticalDistanceFromReferenceSurface": {"value": 2.0, "uom": "m"},
                     "officialStatus": [
                         {"officialStatus": "primary", "date": ".."}
                     ],
                     "observingConfigurations": [
-                        {"observingMethod": {"nilReason": "unknown"}},
+                        {"date": "2016-04-29", "deployment": "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06", "observingMethod": {"nilReason": "unknown"}, "operatingStatus": "operational", "exposure": "good"},
                     ],
                     "observingProcedures": [
                         {"date": "2025-01-01", "strategy": "unknown", "observingSchedules": ["schedule_daily_12"]},
@@ -181,10 +177,11 @@ def _valid_facility_record_feature() -> dict[str, Any]:
             "deployments": [
                 {
                     "id": "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
-                    "date": "2016-04-29",
                     "instrument": "instrument:example",
                     "serialNumber": "ABC123",
-                    "operatingStatus": "operational",
+                    "sourceOfObservation": "automatic",
+                    "referenceSurface": "localGround",
+                    "verticalDistanceFromReferenceSurface": {"value": 2.0, "uom": "m"},
                     "geometry": {"type": "Point", "coordinates": [6.0733333333, 50.5108333333, 671]},
                 }
             ],
@@ -192,13 +189,9 @@ def _valid_facility_record_feature() -> dict[str, Any]:
                 {
                     "id": "instrument:example",
                     "observingMethods": [266],
-                    "title": "Example instrument",
-                    "description": "Optional instrument description.",
                     "manufacturer": "Vaisala",
                     "model": "ExampleModel",
                     "verticalRange": {"min": 0, "max": 30},
-                    "observedProperty": [179, "free text variable"],
-                    "observedGeometry": "point",
                 }
             ],
         },
@@ -387,24 +380,47 @@ def test_observation_description_is_not_part_of_current_core_model() -> None:
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_observation_series_direct_deployments_are_not_part_of_v025_model() -> None:
+def test_observation_series_time_is_not_part_of_v0252_model() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["observationSeries"][0]["time"] = {"interval": ["2016-04-29", ".."]}
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+
+def test_observation_series_direct_deployments_are_not_part_of_v0252_model() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observationSeries"][0]["deployments"] = [
         "deployment:id_af2ac7ee-a215-4e90-974c-f4499458cc06",
     ]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
-def test_root_deployments_are_reusable_definitions_in_v024_model() -> None:
+def test_root_deployments_are_stable_contexts_in_v0252_model() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["deployments"] = [
-        {"id": "deployment:legacy", "date": "2020-01-01", "instrument": "instrument:example"},
+        {"id": "deployment:legacy", "instrument": "instrument:example"},
     ]
     assert _is_valid(RECORD_SCHEMA, instance)
 
-def test_observation_vertical_distance_accepts_structured_quantity() -> None:
+def test_deployment_vertical_distance_accepts_structured_quantity() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observationSeries"][0]["verticalDistanceFromReferenceSurface"] = {"value": 2.0, "uom": "m"}
+    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = {"value": 2.0, "uom": "m"}
     assert _is_valid(RECORD_SCHEMA, instance)
+
+def test_deployment_date_operating_status_and_exposure_are_not_part_of_stable_context() -> None:
+    instance = _valid_facility_record_feature()
+    deployment = instance["properties"]["deployments"][0]
+    deployment["date"] = "2020-01-01"
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    instance = _valid_facility_record_feature()
+    deployment = instance["properties"]["deployments"][0]
+    deployment["operatingStatus"] = "operational"
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+    instance = _valid_facility_record_feature()
+    deployment = instance["properties"]["deployments"][0]
+    deployment["exposure"] = "good"
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
 
 def test_reusable_deployment_serial_number_and_observation_official_status_are_valid() -> None:
     instance = _valid_facility_record_feature()
@@ -438,8 +454,8 @@ def test_observing_method_value_accepts_known_codes_on_instrument_and_observatio
     instance = _valid_facility_record_feature()
     instance["properties"]["instruments"][0]["observingMethods"] = ["266", 267]
     instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
-        {"observingMethod": "266"},
-        {"observingMethod": 267},
+        {"date": "2016-04-29", "observingMethod": "266"},
+        {"date": "2017-01-01", "observingMethod": 267},
     ]
     assert _is_valid(RECORD_SCHEMA, instance)
 
@@ -448,28 +464,25 @@ def test_observing_method_value_accepts_known_codes_on_instrument_and_observatio
 def test_observing_method_rejects_literal_unknown_string_use_nil_reason_instead() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
-        {"observingMethod": "unknown"}
+        {"date": "2016-04-29", "observingMethod": "unknown"}
     ]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
     instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
-        {"observingMethod": {"nilReason": "unknown"}}
+        {"date": "2016-04-29", "observingMethod": {"nilReason": "unknown"}}
     ]
     assert _is_valid(RECORD_SCHEMA, instance)
 
-def test_observing_configuration_rejects_obsolete_date_property() -> None:
+def test_observing_configuration_requires_date_property() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observationSeries"][0]["observingConfigurations"] = [
-        {"date": "1980-01-01", "observingMethod": 266}
-    ]
+    method = instance["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    method.pop("date")
+    assert any("'date' is a required property" in message for message in _validate(RECORD_SCHEMA, instance))
+
+def test_instrument_serial_number_is_not_a_catalogue_property() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["instruments"][0]["serialNumber"] = "ABC123"
     assert not _is_valid(RECORD_SCHEMA, instance)
-
-def test_instrument_title_and_description_are_schema_properties() -> None:
-    instance = _valid_facility_record_feature()
-    instrument = instance["properties"]["instruments"][0]
-    instrument["title"] = "Schema-visible instrument title"
-    instrument["description"] = "Schema-visible instrument description."
-    assert _is_valid(RECORD_SCHEMA, instance)
 
 
 def test_instrument_vertical_range_requires_min_and_max() -> None:
@@ -488,27 +501,15 @@ def test_instrument_vertical_range_min_and_max_are_numeric() -> None:
     assert any("'0' is not of type 'number'" in message for message in _validate(RECORD_SCHEMA, instance))
 
 
-def test_instrument_observed_property_accept_code_values_and_free_text() -> None:
+def test_instrument_observed_property_is_not_a_catalogue_property() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["instruments"][0]["observedProperty"] = [179, "free text variable"]
-    assert _is_valid(RECORD_SCHEMA, instance)
-
-
-def test_instrument_observed_property_must_be_array_of_strings_or_integers() -> None:
-    instance = _valid_facility_record_feature()
-    instance["properties"]["instruments"][0]["observedProperty"] = [{"observedProperty": 179}]
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
-def test_instrument_observed_geometry_is_schema_property() -> None:
+def test_instrument_observed_geometry_is_not_a_catalogue_property() -> None:
     instance = _valid_facility_record_feature()
     instance["properties"]["instruments"][0]["observedGeometry"] = "point"
-    assert _is_valid(RECORD_SCHEMA, instance)
-
-
-def test_instrument_observed_geometry_must_be_string() -> None:
-    instance = _valid_facility_record_feature()
-    instance["properties"]["instruments"][0]["observedGeometry"] = {"href": "point"}
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 
@@ -537,7 +538,7 @@ def test_schema_descriptions_carry_wmdr1_documentation() -> None:
     deployment = COMMON_SCHEMA["$defs"]["deployment"]
     instrument = COMMON_SCHEMA["$defs"]["instrument"]
     historical_environment = COMMON_SCHEMA["$defs"]["environment"]
-    assert "Dated Deployment" in deployment["description"]
+    assert "stable deployed observer/instrument context" in deployment["description"]
     assert "Manufacturer of the equipment" in instrument["properties"]["manufacturer"]["description"]
     assert "Environmental context" in historical_environment["description"]
 
@@ -564,20 +565,27 @@ def test_observed_domain_is_not_part_of_current_core_model() -> None:
     observation["observedDomain"] = observation.pop("observedFeature")
     assert not _is_valid(RECORD_SCHEMA, instance)
 
-def test_observation_uses_reference_surface_not_local_reference_surface() -> None:
+def test_observation_series_does_not_carry_reference_surface() -> None:
     instance = _valid_facility_record_feature()
     observation = instance["properties"]["observationSeries"][0]
-    assert "referenceSurface" in observation
-    observation["localReferenceSurface"] = observation.pop("referenceSurface")
+    observation["referenceSurface"] = "localGround"
     assert not _is_valid(RECORD_SCHEMA, instance)
 
-def test_observation_vertical_distance_requires_quantity_object_with_value() -> None:
+
+def test_deployment_uses_reference_surface_not_local_reference_surface() -> None:
     instance = _valid_facility_record_feature()
-    instance["properties"]["observationSeries"][0]["verticalDistanceFromReferenceSurface"] = 2.0
+    deployment = instance["properties"]["deployments"][0]
+    assert "referenceSurface" in deployment
+    deployment["localReferenceSurface"] = deployment.pop("referenceSurface")
+    assert not _is_valid(RECORD_SCHEMA, instance)
+
+def test_deployment_vertical_distance_requires_quantity_object_with_value() -> None:
+    instance = _valid_facility_record_feature()
+    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = 2.0
     assert not _is_valid(RECORD_SCHEMA, instance)
 
     instance = _valid_facility_record_feature()
-    instance["properties"]["observationSeries"][0]["verticalDistanceFromReferenceSurface"] = {"uom": "m"}
+    instance["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] = {"uom": "m"}
     assert not _is_valid(RECORD_SCHEMA, instance)
 
 def test_deployment_geometry_is_valid_point_geometry() -> None:

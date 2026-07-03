@@ -184,12 +184,6 @@
       {
         "id": "observationSeries:263",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "time": {
-          "interval": [
-            "1982-03-13",
-            ".."
-          ]
-        },
         "current": true,
         "observedProperty": 263,
         "observedGeometry": "totalColumn",
@@ -199,9 +193,9 @@
         "programAffiliation": [
           "GAWregional"
         ],
-        "sourceOfObservation": "automaticReading",
         "deployment": "deployment:id_dbac206e-0e1e-4e50-baa5-42ec0909a02b",
         "observingMethod": 78,
+        "observingConfigurationDate": "1982-03-13",
         "uom": "DU",
         "internationalExchange": false,
         "temporalAggregate": "P1M",
@@ -226,7 +220,8 @@
         ],
         "observingMethod": {
           "nilReason": "unknown"
-        }
+        },
+        "observingConfigurationDate": ".."
       },
       {
         "id": "observationSeries:325",
@@ -242,17 +237,12 @@
         ],
         "observingMethod": {
           "nilReason": "unknown"
-        }
+        },
+        "observingConfigurationDate": ".."
       },
       {
         "id": "observationSeries:359",
         "title": "domain: atmosphere; geometry: area; variable: 359",
-        "time": {
-          "interval": [
-            "1993-08-26",
-            ".."
-          ]
-        },
         "current": true,
         "observedProperty": 359,
         "observedGeometry": "area",
@@ -263,17 +253,12 @@
           "GAWregional"
         ],
         "deployment": "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197",
-        "observingMethod": 268
+        "observingMethod": 268,
+        "observingConfigurationDate": "1993-08-26"
       },
       {
         "id": "observationSeries:572",
         "title": "domain: atmosphere; geometry: point; variable: 572",
-        "time": {
-          "interval": [
-            "2016-04-01",
-            ".."
-          ]
-        },
         "current": true,
         "observedProperty": 572,
         "observedGeometry": "point",
@@ -283,10 +268,10 @@
         "programAffiliation": [
           "GAWregional"
         ],
-        "sourceOfObservation": "automaticReading",
         "deployment": "deployment:id_f5f50866-9c93-4e3a-9c0e-c13d32c342e6",
         "instrument": "instrument:0-20008-0-THE:8b71b7c8ebef",
         "observingMethod": 264,
+        "observingConfigurationDate": "2016-04-01",
         "uom": "W.m-2",
         "internationalExchange": false,
         "reportingDate": "2016-04-01",
@@ -295,12 +280,6 @@
       {
         "id": "observationSeries:573",
         "title": "domain: atmosphere; geometry: area; variable: 573",
-        "time": {
-          "interval": [
-            "1992-05-27",
-            ".."
-          ]
-        },
         "current": true,
         "observedProperty": 573,
         "observedGeometry": "area",
@@ -310,10 +289,10 @@
         "programAffiliation": [
           "GAWregional"
         ],
-        "sourceOfObservation": "automaticReading",
         "deployment": "deployment:id_cca5e647-05b3-4d9c-bb5a-cbd300e3ae4c",
         "instrument": "instrument:0-20008-0-THE:6ee232fe8ed0",
         "observingMethod": 266,
+        "observingConfigurationDate": "1992-05-27",
         "uom": "W.m-2",
         "internationalExchange": false,
         "temporalAggregate": "PT1H",
@@ -338,7 +317,8 @@
         ],
         "observingMethod": {
           "nilReason": "unknown"
-        }
+        },
+        "observingConfigurationDate": ".."
       },
       {
         "id": "observationSeries:12151",
@@ -354,7 +334,8 @@
         ],
         "observingMethod": {
           "nilReason": "unknown"
-        }
+        },
+        "observingConfigurationDate": ".."
       },
       {
         "id": "observationSeries:12153",
@@ -370,7 +351,8 @@
         ],
         "observingMethod": {
           "nilReason": "unknown"
-        }
+        },
+        "observingConfigurationDate": ".."
       },
       {
         "id": "observationSeries:12159",
@@ -386,23 +368,20 @@
         ],
         "observingMethod": {
           "nilReason": "unknown"
-        }
+        },
+        "observingConfigurationDate": ".."
       }
     ],
     "deployments": [
       {
-        "id": "deployment:id_dbac206e-0e1e-4e50-baa5-42ec0909a02b",
-        "date": "1982-03-13"
+        "id": "deployment:id_dbac206e-0e1e-4e50-baa5-42ec0909a02b"
       },
       {
-        "id": "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197",
-        "date": "1993-08-26"
+        "id": "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197"
       },
       {
         "id": "deployment:id_f5f50866-9c93-4e3a-9c0e-c13d32c342e6",
-        "date": "2016-04-01",
         "instrument": "instrument:0-20008-0-THE:8b71b7c8ebef",
-        "exposure": "class1",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -414,10 +393,7 @@
       },
       {
         "id": "deployment:id_cca5e647-05b3-4d9c-bb5a-cbd300e3ae4c",
-        "date": "1992-05-27",
         "instrument": "instrument:0-20008-0-THE:6ee232fe8ed0",
-        "operatingStatus": "operational",
-        "exposure": "class1",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -452,8 +428,8 @@
       "sourceConformsTo": [
         "http://wigos.wmo.int/spec/wmdr/2/conf/core"
       ],
-      "sourceContentHash": "sha256:23fc7e0c73d0f8fc3221f3a7335c757fa148b5452f8a36059c5e60c401d1b80e",
-      "derivedAt": "2026-06-30T14:34:44Z",
+      "sourceContentHash": "sha256:7704d996e1c176435664f247e18ca4ed81405d715759dc1af147ab1ed8fbdbc4",
+      "derivedAt": "2026-07-03T05:39:33Z",
       "sourceFile": "20241211_0-20008-0-THE.json"
     },
     "retrieval": {

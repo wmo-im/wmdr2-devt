@@ -210,36 +210,75 @@ def _merge_objects(existing: dict[str, Any], incoming: dict[str, Any]) -> dict[s
     return _clean_none(merged)
 
 
-def instrument_identifier(instrument: dict[str, Any]) -> str:
-    raw = instrument.get("id") or instrument.get("identifier")
-    if isinstance(raw, str) and raw.strip():
-        raw = raw.strip()
-        return raw if raw.startswith("instrument:") else f"instrument:{_slug(raw)}"
+def _normalize_contact_strings(contact: dict[str, Any]) -> dict[str, Any]:
+    """Use simple string arrays for phones and e-mails in the WMDR2 profile."""
+    out = copy.deepcopy(contact)
 
-    seed = {
-        "manufacturer": instrument.get("manufacturer"),
-        "model": instrument.get("model"),
-        "type": instrument.get("type"),
-        "title": instrument.get("title"),
-        "description": instrument.get("description"),
-        "observedProperty": instrument.get("observedProperty"),
-        "observedGeometry": instrument.get("observedGeometry"),
-    }
+    emails = _contact_emails(out)
+    if emails:
+        out["emails"] = emails
+    else:
+        out.pop("emails", None)
+
+    phones: list[str] = []
+    for item in _as_list(out.get("phones")):
+        if isinstance(item, str):
+            value = item.strip()
+        elif isinstance(item, dict):
+            value = str(item.get("value") or item.get("phone") or item.get("number") or "").strip()
+        else:
+            value = ""
+        if value and value not in phones:
+            phones.append(value)
+    if phones:
+        out["phones"] = phones
+    else:
+        out.pop("phones", None)
+    return _clean_none(out)
+
+
+def instrument_identifier(instrument: dict[str, Any]) -> str | None:
+    """Return a catalogue/type id, or None for instance-only metadata.
+
+    Serial numbers are deliberately ignored.  A catalogue entry is created only
+    when reusable type metadata is present; otherwise the deployment keeps the
+    instance information without an instrument-catalogue reference.
+    """
+    manufacturer = instrument.get("manufacturer")
+    model = instrument.get("model")
+    vertical_range = instrument.get("verticalRange")
+    if not any(_non_empty(value) for value in (manufacturer, model, vertical_range)):
+        return None
+
     human = "--".join(
         _slug(str(part))
-        for part in (instrument.get("manufacturer"), instrument.get("model"), instrument.get("title"))
+        for part in (manufacturer, model)
         if isinstance(part, str) and part.strip()
     )
-    return f"instrument:{human or 'unknown'}--{_stable_hash(seed, 8)}"
+    if human:
+        return f"instrument:{human}"
+    return f"instrument:vertical-range--{_stable_hash({'verticalRange': vertical_range}, 8)}"
+
+
+def _normalize_catalogue_instrument(instrument: dict[str, Any]) -> dict[str, Any] | None:
+    identifier = instrument_identifier(instrument)
+    if not identifier:
+        return None
+    return _clean_none(
+        {
+            "id": identifier,
+            "manufacturer": instrument.get("manufacturer"),
+            "model": instrument.get("model"),
+            "observingMethods": instrument.get("observingMethods") or instrument.get("observingMethod"),
+            "verticalRange": instrument.get("verticalRange"),
+        }
+    )
 
 
 def _normalize_instrument_ref(value: Any) -> str | None:
-    """Normalize one instrument reference or inline instrument object to an id."""
+    """Normalize one inline instrument object to a catalogue id."""
     if isinstance(value, dict):
         return instrument_identifier(value)
-    if isinstance(value, str) and value.strip():
-        ref = value.strip()
-        return ref if ref.startswith("instrument:") else f"instrument:{_slug(ref)}"
     return None
 
 
@@ -284,7 +323,7 @@ def convert_record_to_catalogue_version(
     for raw_contact in _as_list(properties.get("contacts")):
         if not isinstance(raw_contact, dict):
             continue
-        full_contact = _clean_none(copy.deepcopy(raw_contact))
+        full_contact = _normalize_contact_strings(_clean_none(copy.deepcopy(raw_contact)))
         identifier = contact_identifier(full_contact)
         full_contact["identifier"] = identifier
         contacts[identifier] = _merge_objects(contacts.get(identifier, {}), full_contact)
@@ -293,24 +332,45 @@ def convert_record_to_catalogue_version(
     if contact_stubs:
         properties["contacts"] = _dedupe_dicts(contact_stubs)
 
-    # Instruments: move full details to instruments.json.
+    # Instruments: move reusable type details to instruments.json.  Do not
+    # catalogue serial-number-only instance records; those stay on Deployment.
+    instrument_ref_map: dict[str, str | None] = {}
     for raw_instrument in _as_list(properties.get("instruments")):
         if not isinstance(raw_instrument, dict):
             continue
-        full_instrument = _clean_none(copy.deepcopy(raw_instrument))
-        identifier = instrument_identifier(full_instrument)
-        full_instrument["id"] = identifier
+        old_ref = raw_instrument.get("id") or raw_instrument.get("identifier")
+        full_instrument = _normalize_catalogue_instrument(_clean_none(copy.deepcopy(raw_instrument)))
+        if not full_instrument:
+            if isinstance(old_ref, str):
+                instrument_ref_map[old_ref] = None
+            continue
+        identifier = full_instrument["id"]
+        if isinstance(old_ref, str):
+            instrument_ref_map[old_ref] = identifier
         instruments[identifier] = _merge_objects(instruments.get(identifier, {}), full_instrument)
     properties.pop("instruments", None)
 
-    # Ensure deployment instrument refs are stable scalar ids.  The v0.2.x
-    # reusable deployment model uses one instrument reference, not a list.
+    # Ensure deployment instrument refs point to catalogue/type ids.  If the old
+    # reference only identified an instance, remove it and keep serialNumber on
+    # the deployment.
     for deployment in _as_list(properties.get("deployments")):
         if not isinstance(deployment, dict):
             continue
-        ref = _deployment_instrument_ref(deployment.get("instrument"))
-        if ref:
-            deployment["instrument"] = ref
+        old_value = deployment.get("instrument")
+        if isinstance(old_value, str):
+            ref = old_value.strip()
+            if ref in instrument_ref_map:
+                new_ref = instrument_ref_map[ref]
+                if new_ref:
+                    deployment["instrument"] = new_ref
+                else:
+                    deployment.pop("instrument", None)
+            elif ref:
+                deployment["instrument"] = ref
+        else:
+            ref = _deployment_instrument_ref(old_value)
+            if ref:
+                deployment["instrument"] = ref
 
     return _clean_none(out)
 

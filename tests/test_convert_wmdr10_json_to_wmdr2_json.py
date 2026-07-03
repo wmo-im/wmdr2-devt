@@ -187,11 +187,15 @@ def test_build_facility_feature_uses_current_core_model() -> None:
     assert observation["observedFeature"] == {"domain": "atmosphere"}
     assert "domain" not in observation
     assert "description" not in observation
-    assert observation["referenceSurface"] == "localGround"
-    assert observation["verticalDistanceFromReferenceSurface"] == {"value": 2.0}
+    assert "referenceSurface" not in observation
+    assert "verticalDistanceFromReferenceSurface" not in observation
     assert props["deployments"][0]["serialNumber"] == "SN1"
     assert props["deployments"][0]["instrument"].startswith("instrument:")
-    assert deployment["date"] == "2020-01-01"
+    assert "date" not in deployment
+    assert deployment["sourceOfObservation"] == "automaticReading"
+    assert deployment["referenceSurface"] == "localGround"
+    assert deployment["verticalDistanceFromReferenceSurface"] == {"value": 2.0}
+    assert observation["observingConfigurations"][0]["date"] == "2020-01-01"
     assert deployment_ref == props["deployments"][0]["id"]
     assert "deployments" not in observation
     assert deployment["serialNumber"] == "SN1"
@@ -620,7 +624,7 @@ def test_normalize_contact_returns_public_contact_and_discovery_contact() -> Non
             "role": "http://codes.wmo.int/wmdr/ResponsiblePartyRole/owner",
         }
     )
-    assert public == {"name": "Jane Doe", "organization": "Org", "emails": [{"value": "jane@example.org"}], "roles": ["owner"]}
+    assert public == {"name": "Jane Doe", "organization": "Org", "emails": ["jane@example.org"], "roles": ["owner"]}
     assert discovery == public
 
 
@@ -853,7 +857,7 @@ def test_observing_configurations_link_observation_series_deployment_and_method(
     instrument = record["properties"]["instruments"][0]
     observation = record["properties"]["observationSeries"][0]
     assert instrument["observingMethods"] == [266]
-    assert observation["observingConfigurations"] == [{"deployment": "deployment:dep1", "observingMethod": 266}]
+    assert observation["observingConfigurations"] == [{"date": "2020-01-01", "deployment": "deployment:dep1", "observingMethod": 266}]
 
 
 def test_observation_series_observing_configuration_uses_nil_reason_when_absent_without_bloating_instrument() -> None:
@@ -869,7 +873,7 @@ def test_observation_series_observing_configuration_uses_nil_reason_when_absent_
     instrument = record["properties"]["instruments"][0]
     observation_series = record["properties"]["observationSeries"][0]
     assert "observingMethods" not in instrument
-    assert observation_series["observingConfigurations"] == [{"deployment": "deployment:dep1", "observingMethod": {"nilReason": "unknown"}}]
+    assert observation_series["observingConfigurations"] == [{"date": "2020-01-01", "deployment": "deployment:dep1", "observingMethod": {"nilReason": "unknown"}}]
 
 
 
@@ -888,7 +892,7 @@ def test_observation_series_observing_configuration_converts_unknown_string_to_n
     observation_series = record["properties"]["observationSeries"][0]
     assert "observingMethods" not in instrument
     assert observation_series["observingConfigurations"] == [
-        {"deployment": "deployment:dep1", "observingMethod": {"nilReason": "unknown"}}
+        {"date": "2020-01-01", "deployment": "deployment:dep1", "observingMethod": {"nilReason": "unknown"}}
     ]
 
 def test_observation_series_observing_configuration_preserves_explicit_nil_reason() -> None:
@@ -904,7 +908,7 @@ def test_observation_series_observing_configuration_preserves_explicit_nil_reaso
     instrument = record["properties"]["instruments"][0]
     observation_series = record["properties"]["observationSeries"][0]
     assert "observingMethods" not in instrument
-    assert observation_series["observingConfigurations"] == [{"deployment": "deployment:dep1", "observingMethod": {"nilReason": "withheld"}}]
+    assert observation_series["observingConfigurations"] == [{"date": "2020-01-01", "deployment": "deployment:dep1", "observingMethod": {"nilReason": "withheld"}}]
 
 
 def test_observation_series_can_record_consecutive_observing_methods_from_deployments() -> None:
@@ -923,8 +927,8 @@ def test_observation_series_can_record_consecutive_observing_methods_from_deploy
     )
     observation_series = record["properties"]["observationSeries"][0]
     assert observation_series["observingConfigurations"] == [
-        {"deployment": "deployment:dep1", "observingMethod": 266},
-        {"deployment": "deployment:dep2", "observingMethod": 267},
+        {"date": "2020-01-01", "deployment": "deployment:dep1", "observingMethod": 266},
+        {"date": "2001-01-01", "deployment": "deployment:dep2", "observingMethod": 267},
     ]
 
 
@@ -949,24 +953,49 @@ def test_observing_configuration_method_alone_does_not_create_instrument_catalog
     props = record["properties"]
     assert "instruments" not in props
     assert props["observationSeries"][0]["observingConfigurations"] == [
-        {"deployment": "deployment:dep1", "observingMethod": 266}
+        {"date": "1980-01-01", "deployment": "deployment:dep1", "observingMethod": 266}
     ]
 
-def test_normalize_instrument_includes_optional_title_and_description_when_available() -> None:
+
+def test_serial_number_only_deployment_does_not_create_instrument_catalogue_entry() -> None:
+    observation = _observation_with_deployment()
+    observation["deployments"] = [
+        {
+            "identifier": "dep-serial-only",
+            "beginPosition": "2020-01-01",
+            "serialNumber": "SN-ONLY",
+        }
+    ]
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [observation],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    props = record["properties"]
+    assert "instruments" not in props
+    assert props["deployments"][0]["serialNumber"] == "SN-ONLY"
+    assert "instrument" not in props["deployments"][0]
+
+def test_normalize_instrument_catalogue_uses_type_metadata_only() -> None:
     instrument = module._normalize_instrument(
         {
             "manufacturer": "Maker",
             "model": "Model",
             "instrumentTitle": "Instrument title",
             "instrumentDescription": {"description": "Instrument description"},
+            "serialNumber": "SN-001",
         },
         facility_id="0-TEST",
     )
     assert instrument is not None
-    assert instrument["title"] == "Instrument title"
-    assert instrument["description"] == "Instrument description"
+    assert instrument["id"] == "instrument:Maker--Model"
     assert instrument["manufacturer"] == "Maker"
     assert instrument["model"] == "Model"
+    assert "serialNumber" not in instrument
+    assert "title" not in instrument
+    assert "description" not in instrument
 
 
 def test_normalize_vertical_range_accepts_object_and_flat_min_max_fields() -> None:
@@ -1010,7 +1039,7 @@ def test_normalize_instrument_observed_geometry_compacts_geometry_code() -> None
     assert module._normalize_instrument_observed_geometry({"observedGeometry": {"href": GEOMETRY_POINT}}) == "point"
 
 
-def test_normalize_instrument_includes_observed_property_and_geometry_when_available() -> None:
+def test_normalize_instrument_does_not_include_observed_property_or_geometry() -> None:
     instrument = module._normalize_instrument(
         {
             "manufacturer": "Maker",
@@ -1021,18 +1050,16 @@ def test_normalize_instrument_includes_observed_property_and_geometry_when_avail
         facility_id="0-TEST",
     )
     assert instrument is not None
-    assert instrument["observedProperty"] == [12006, "local free-text variable"]
-    assert instrument["observedGeometry"] == "point"
+    assert "observedProperty" not in instrument
+    assert "observedGeometry" not in instrument
 
 
-def test_observed_property_alone_is_enough_to_create_an_instrument_record() -> None:
+def test_observed_property_alone_does_not_create_an_instrument_record() -> None:
     instrument = module._normalize_instrument(
         {"observedProperty": [OBSERVED_12006]},
         facility_id="0-TEST",
     )
-    assert instrument is not None
-    assert instrument["id"].startswith("instrument:")
-    assert instrument["observedProperty"] == [12006]
+    assert instrument is None
 
 
 def test_vertical_range_alone_is_enough_to_create_an_instrument_record() -> None:
@@ -1358,7 +1385,7 @@ def test_main_runs_catalogue_post_processing_when_enabled(tmp_path: Path) -> Non
         }
     ]
     assert [contact["identifier"] for contact in contacts] == ["contact:jane.smith@example.org"]
-    assert contacts[0]["phones"] == [{"value": "+41 1 234 56 78"}]
+    assert contacts[0]["phones"] == ["+41 1 234 56 78"]
     assert len(instruments) == 1
     deployment_ref = rewritten["properties"]["observationSeries"][0]["observingConfigurations"][0]["deployment"]
     assert rewritten["properties"]["deployments"][0]["instrument"] == instruments[0]["id"]
@@ -1416,20 +1443,24 @@ def test_domain_object_accepts_future_domain_feature_fields() -> None:
     }
 
 def test_deployment_vertical_distance_is_quantity_from_height_above_local_reference_surface() -> None:
-    observation = module._normalize_observation(
-        {
-            "observedProperty": OBSERVED_12006,
-            "deployments": [
-                {
-                    "id": "dep1",
-                    "heightAboveLocalReferenceSurface": {"@uom": "m", "#text": "0.0"},
-                }
-            ],
-        },
-        index=1,
-        facility_id="0-TEST",
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [
+            {
+                "observedProperty": OBSERVED_12006,
+                "deployments": [
+                    {
+                        "id": "dep1",
+                        "heightAboveLocalReferenceSurface": {"@uom": "m", "#text": "0.0"},
+                    }
+                ],
+            }
+        ],
+        [],
+        {},
+        source_name="20200101_0-TEST",
     )
-    assert observation["verticalDistanceFromReferenceSurface"] == {"value": 0.0, "uom": "m"}
+    assert record["properties"]["deployments"][0]["verticalDistanceFromReferenceSurface"] == {"value": 0.0, "uom": "m"}
 
 def test_deployment_official_status_defaults_to_unknown_when_absent_and_maps_booleans() -> None:
     missing = module._normalize_historical_official_status(
@@ -1467,7 +1498,6 @@ def test_deployment_temporal_geometry_uses_same_moving_point_model_as_facility()
     assert deployments == [
         {
             "id": "deployment:dep1",
-            "date": "2021-01-01",
             "geometry": {"type": "Point", "coordinates": [7.0, 46.0, 100]},
         }
     ]

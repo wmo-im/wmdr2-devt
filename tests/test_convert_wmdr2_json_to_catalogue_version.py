@@ -13,7 +13,7 @@ def test_contact_identifier_prefers_email():
     contact = {
         "name": "Jane Smith",
         "organization": "Example Org",
-        "emails": [{"value": "Jane.Smith@Example.ORG"}],
+        "emails": ["Jane.Smith@Example.ORG"],
     }
     assert contact_identifier(contact) == "contact:jane.smith@example.org"
 
@@ -39,8 +39,8 @@ def test_externalize_contacts_and_instruments(tmp_path: Path):
                     "name": "Jane Smith",
                     "organization": "Example Org",
                     "roles": ["pointOfContact"],
-                    "emails": [{"value": "jane.smith@example.org"}],
-                    "phones": [{"value": "+41 1 234 56 78"}],
+                    "emails": ["jane.smith@example.org"],
+                    "phones": ["+41 1 234 56 78"],
                 }
             ],
             "deployments": [{"id": "deployment:a", "instrument": "instrument:thermo-49i"}],
@@ -57,7 +57,7 @@ def test_externalize_contacts_and_instruments(tmp_path: Path):
                 {
                     "name": "Jane Smith",
                     "organization": "Example Org",
-                    "emails": [{"value": "JANE.SMITH@example.org"}],
+                    "emails": ["JANE.SMITH@example.org"],
                 },
                 {"name": "No Email", "organization": "Example Org"},
             ],
@@ -86,8 +86,8 @@ def test_externalize_contacts_and_instruments(tmp_path: Path):
         "contact:jane.smith@example.org",
         "contact:no-email--example-org",
     ]
-    assert contacts[0]["phones"] == [{"value": "+41 1 234 56 78"}]
-    assert instruments == [{"id": "instrument:thermo-49i", "manufacturer": "Thermo", "model": "49i"}]
+    assert contacts[0]["phones"] == ["+41 1 234 56 78"]
+    assert instruments == [{"id": "instrument:thermo--49i", "manufacturer": "Thermo", "model": "49i"}]
 
     inline_contact = rewritten["properties"]["contacts"][0]
     assert inline_contact == {
@@ -105,7 +105,7 @@ def test_externalize_contacts_and_instruments(tmp_path: Path):
     }
     assert "phones" not in inline_contact
     assert "instruments" not in rewritten["properties"]
-    assert rewritten["properties"]["deployments"][0]["instrument"] == "instrument:thermo-49i"
+    assert rewritten["properties"]["deployments"][0]["instrument"] == "instrument:thermo--49i"
     assert rewritten["properties"]["observationSeries"][0]["observingConfigurations"][0]["deployment"] == "deployment:a"
 
 
@@ -135,7 +135,7 @@ def test_externalize_preserves_temporal_geometry_methods_alignment(tmp_path: Pat
                 {
                     "name": "Jane Smith",
                     "organization": "Example Org",
-                    "emails": [{"value": "jane.smith@example.org"}],
+                    "emails": ["jane.smith@example.org"],
                 }
             ],
             "deployments": [{"id": "deployment:a", "instrument": "instrument:thermo-49i"}],
@@ -195,3 +195,43 @@ def test_externalize_preserves_single_position_temporal_geometry_with_methods(tm
 
     rewritten = json.loads((records / "a.json").read_text(encoding="utf-8"))
     assert rewritten["temporalGeometry"] == feature["temporalGeometry"]
+
+
+def test_catalogue_externalizer_does_not_catalogue_serial_number_only_instruments(tmp_path: Path):
+    source = tmp_path / "source"
+    records = tmp_path / "records"
+    catalogues = tmp_path / "catalogues"
+    source.mkdir()
+    feature = {
+        "type": "Feature",
+        "id": "facility:a",
+        "properties": {
+            "type": "facility",
+            "deployments": [{"id": "deployment:a", "instrument": "instrument:instance-a", "serialNumber": "SN-001"}],
+            "observationSeries": [
+                {
+                    "id": "observationSeries:a",
+                    "observingConfigurations": [
+                        {"date": "2020-01-01", "deployment": "deployment:a", "observingMethod": {"nilReason": "unknown"}}
+                    ],
+                }
+            ],
+            "instruments": [{"id": "instrument:instance-a", "serialNumber": "SN-001"}],
+        },
+    }
+    (source / "a.json").write_text(json.dumps(feature), encoding="utf-8")
+
+    convert_to_catalogue_version(
+        CataloguePaths(
+            source=source,
+            records_path=records,
+            contacts_path=catalogues / "contacts.json",
+            instruments_path=catalogues / "instruments.json",
+        )
+    )
+
+    instruments = json.loads((catalogues / "instruments.json").read_text(encoding="utf-8"))["instruments"]
+    rewritten = json.loads((records / "a.json").read_text(encoding="utf-8"))
+    assert instruments == []
+    assert rewritten["properties"]["deployments"][0]["serialNumber"] == "SN-001"
+    assert "instrument" not in rewritten["properties"]["deployments"][0]

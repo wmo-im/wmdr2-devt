@@ -251,17 +251,15 @@
     "deployments": [
       {
         "id": "deployment:id_dbac206e-0e1e-4e50-baa5-42ec0909a02b",
-        "date": "1982-03-13"
+        "sourceOfObservation": "automaticReading"
       },
       {
-        "id": "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197",
-        "date": "1993-08-26"
+        "id": "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197"
       },
       {
         "id": "deployment:id_f5f50866-9c93-4e3a-9c0e-c13d32c342e6",
-        "date": "2016-04-01",
-        "instrument": "instrument:0-20008-0-THE:8b71b7c8ebef",
-        "exposure": "class1",
+        "instrument": "instrument:kipp-zonen--chp-1",
+        "sourceOfObservation": "automaticReading",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -269,14 +267,17 @@
             40.634,
             60
           ]
+        },
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 20.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_cca5e647-05b3-4d9c-bb5a-cbd300e3ae4c",
-        "date": "1992-05-27",
-        "instrument": "instrument:0-20008-0-THE:6ee232fe8ed0",
-        "operatingStatus": "operational",
-        "exposure": "class1",
+        "instrument": "instrument:kipp-zonen--cm21",
+        "sourceOfObservation": "automaticReading",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -284,6 +285,11 @@
             40.634,
             60
           ]
+        },
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 20.0,
+          "uom": "m"
         }
       }
     ],
@@ -291,12 +297,6 @@
       {
         "id": "observationSeries:263",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "time": {
-          "interval": [
-            "1982-03-13",
-            ".."
-          ]
-        },
         "observedProperty": 263,
         "observedGeometry": "totalColumn",
         "observedFeature": {
@@ -305,9 +305,9 @@
         "programAffiliation": [
           "GAWregional"
         ],
-        "sourceOfObservation": "automaticReading",
         "observingConfigurations": [
           {
+            "date": "1982-03-13",
             "deployment": "deployment:id_dbac206e-0e1e-4e50-baa5-42ec0909a02b",
             "observingMethod": 78
           }
@@ -343,6 +343,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "observingMethod": {
               "nilReason": "unknown"
             }
@@ -362,6 +363,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "observingMethod": {
               "nilReason": "unknown"
             }
@@ -371,12 +373,6 @@
       {
         "id": "observationSeries:359",
         "title": "domain: atmosphere; geometry: area; variable: 359",
-        "time": {
-          "interval": [
-            "1993-08-26",
-            ".."
-          ]
-        },
         "observedProperty": 359,
         "observedGeometry": "area",
         "observedFeature": {
@@ -387,6 +383,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "1993-08-26",
             "deployment": "deployment:id_9ab31a82-afbb-4b63-807e-b33f17389197",
             "observingMethod": 268
           }
@@ -395,12 +392,6 @@
       {
         "id": "observationSeries:572",
         "title": "domain: atmosphere; geometry: point; variable: 572",
-        "time": {
-          "interval": [
-            "2016-04-01",
-            ".."
-          ]
-        },
         "observedProperty": 572,
         "observedGeometry": "point",
         "observedFeature": {
@@ -409,17 +400,13 @@
         "programAffiliation": [
           "GAWregional"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "localGround",
         "representativeness": "toposcale",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 20.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2016-04-01",
             "deployment": "deployment:id_f5f50866-9c93-4e3a-9c0e-c13d32c342e6",
-            "observingMethod": 264
+            "observingMethod": 264,
+            "exposure": "class1"
           }
         ],
         "reporting": [
@@ -434,12 +421,6 @@
       {
         "id": "observationSeries:573",
         "title": "domain: atmosphere; geometry: area; variable: 573",
-        "time": {
-          "interval": [
-            "1992-05-27",
-            ".."
-          ]
-        },
         "observedProperty": 573,
         "observedGeometry": "area",
         "observedFeature": {
@@ -448,17 +429,14 @@
         "programAffiliation": [
           "GAWregional"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "localGround",
         "representativeness": "toposcale",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 20.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "1992-05-27",
             "deployment": "deployment:id_cca5e647-05b3-4d9c-bb5a-cbd300e3ae4c",
-            "observingMethod": 266
+            "observingMethod": 266,
+            "operatingStatus": "operational",
+            "exposure": "class1"
           }
         ],
         "observingProcedures": [
@@ -499,6 +477,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "observingMethod": {
               "nilReason": "unknown"
             }
@@ -518,6 +497,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "observingMethod": {
               "nilReason": "unknown"
             }
@@ -537,6 +517,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "observingMethod": {
               "nilReason": "unknown"
             }
@@ -556,6 +537,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "observingMethod": {
               "nilReason": "unknown"
             }

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Convert simplified WMDR 1.0 JSON records into facility-centric WMDR2 JSON.
 
-WMDR v0.2.5.1 implementation notes
+WMDR v0.2.5.2 implementation notes
 -------------------------------
 
 * The output is a facility-centric GeoJSON-like ``Feature``.
 * ``temporalGeometry`` remains the trajectory-style aligned-array ``MovingPoint``
   object.
-* Other time-varying model elements use v0.2.5.1 class/property names and are
+* Other time-varying model elements use v0.2.5.2 class/property names and are
   represented as arrays of dated objects, for example ``environment``,
   ``programAffiliation``, ``territory``, ``deployments``, ``reporting`` and
   ``officialStatus``.
@@ -881,15 +881,15 @@ def _normalize_contact(raw: Any) -> Tuple[Optional[Dict[str, Any]], Optional[Dic
 
     info = _as_dict(payload.get("contactInfo"))
     phone_obj = _as_dict(info.get("phone"))
-    phones = [{"value": voice.strip()} for voice in _as_list(phone_obj.get("voice")) if isinstance(voice, str) and voice.strip()]
+    phones = [voice.strip() for voice in _as_list(phone_obj.get("voice")) if isinstance(voice, str) and voice.strip()]
     if phones:
-        contact["phones"] = phones
+        contact["phones"] = _uniq_scalars(phones)
     address_obj = _as_dict(info.get("address"))
     emails = [
-        {"value": email.strip()} for email in _as_list(address_obj.get("electronicMailAddress")) if isinstance(email, str) and "@" in email
+        email.strip() for email in _as_list(address_obj.get("electronicMailAddress")) if isinstance(email, str) and "@" in email
     ]
     if emails:
-        contact["emails"] = emails
+        contact["emails"] = _uniq_scalars(emails)
     address: Dict[str, Any] = {}
     delivery_points = [dp for dp in _as_list(address_obj.get("deliveryPoint")) if isinstance(dp, str) and dp.strip()]
     if delivery_points:
@@ -948,7 +948,7 @@ def _parse_bool(value: Any) -> Optional[bool]:
 
 
 def _normalize_official_status(value: Any) -> Optional[str]:
-    """Normalize WMDR10 officialStatus to WMDR v0.2.5.1 observation-series status.
+    """Normalize WMDR10 officialStatus to WMDR v0.2.5.2 observation-series status.
 
     The WMDR10 XML uses a boolean officialStatus.  The agreed mapping is:
     true -> primary, false -> additional.  String values are compacted but not
@@ -1312,7 +1312,7 @@ def _normalize_historical_environment(facility: Mapping[str, Any], *, fallback_d
 
 
 def _normalize_environment(facility: Mapping[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    """Compatibility helper returning the v0.2.5.1 Environment array.
+    """Compatibility helper returning the v0.2.5.2 Environment array.
 
     Older local code may still call ``_normalize_environment`` directly.  The
     returned value is meant to be assigned directly to ``properties.environment``.
@@ -1456,28 +1456,31 @@ def _instrument_source_values(raw: Mapping[str, Any]) -> Tuple[Any, Any]:
 
 
 def _instrument_record_id(raw: Mapping[str, Any], *, facility_id: str) -> Optional[str]:
-    instrument = _as_dict(raw.get("instrument") or raw.get("equipment"))
-    raw_id = _first_non_empty(
-        instrument.get("id"),
-        instrument.get("identifier"),
-        instrument.get("@gml:id"),
-        raw.get("instrument"),
-        raw.get("equipment"),
-    )
-    if isinstance(raw_id, str) and raw_id.startswith("instrument:"):
-        return raw_id
-    if isinstance(raw_id, str) and raw_id.strip() and not raw_id.strip().startswith(("http://", "https://")):
-        return f"instrument:{_sanitize_id(raw_id)}"
+    """Return a catalogue/type identifier for an instrument, never an instance id.
+
+    The instrument catalogue describes reusable instrument metadata such as
+    manufacturer, model and vertical range.  Serial numbers and facility-local
+    deployment identifiers belong to Deployment and must not influence the
+    instrument id; otherwise the catalogue degenerates into a list of deployed
+    instances.
+    """
+
     manufacturer, model = _instrument_source_values(raw)
-    serial = _first_serial_number(raw)
-    observed_property = _normalize_instrument_observed_property(raw)
-    observed_geometry = _normalize_instrument_observed_geometry(raw)
     vertical_range = _normalize_vertical_range(raw)
-    if not any(_is_substantive_instrument_value(value) for value in (manufacturer, model, serial, observed_property, observed_geometry, vertical_range)):
+    if not any(_is_substantive_instrument_value(value) for value in (manufacturer, model, vertical_range)):
         return None
-    seed = "|".join(str(_first_non_empty(value, "")) for value in (facility_id, manufacturer, model, serial, observed_property, observed_geometry, vertical_range))
-    digest = hashlib.sha1(seed.encode("utf-8")).hexdigest()[:12]
-    return f"instrument:{_sanitize_id(facility_id)}:{digest}"
+
+    parts = [
+        _sanitize_id(str(value))
+        for value in (manufacturer, model)
+        if _is_substantive_instrument_value(value)
+    ]
+    if parts:
+        return f"instrument:{'--'.join(parts)}"
+
+    seed = json.dumps({"verticalRange": vertical_range}, ensure_ascii=False, sort_keys=True, default=str)
+    digest = hashlib.sha1(seed.encode("utf-8")).hexdigest()[:10]
+    return f"instrument:vertical-range--{digest}"
 
 
 def _instrument_ref_for_deployment(raw: Mapping[str, Any], *, facility_id: str) -> Optional[str]:
@@ -1530,7 +1533,7 @@ def _observing_method_candidates(raw: Mapping[str, Any]) -> List[Any]:
 def _normalize_observing_method_values(raw: Mapping[str, Any]) -> List[Any]:
     """Return compact observing-method values or nil-reason objects from one source.
 
-    ``observingMethod`` is mandatory in the v0.2.5.1 ObservingConfiguration
+    ``observingMethod`` is mandatory in the v0.2.5.2 ObservingConfiguration
     object.  A literal source value such as ``unknown`` therefore represents a
     missing mandatory method and must be serialized as a nil-reason object, not
     as the codelist/free-text value ``"unknown"``.
@@ -1568,12 +1571,13 @@ def _normalize_observation_series_observing_configurations(
 ) -> List[Dict[str, Any]]:
     """Return ObservingConfiguration records for an ObservationSeries.
 
-    In the v0.2.5.1 model, ``ObservationSeries.observingConfigurations`` is
+    In the v0.2.5.2 model, ``ObservationSeries.observingConfigurations`` is
     the bridge from an ObservationSeries to a Deployment and the observing
-    method used for that contribution.  It does not carry its own date; the
-    temporal anchor is the referenced ``Deployment.date``.  When there is no
-    deployment information at all, emit a method-only configuration so the
-    mandatory observingMethod value or nilReason can still be represented.
+    method used for that contribution.  It carries the dated observation-series state.  The optional deployment
+    reference points to the stable deployed observer/instrument context.  When
+    there is no deployment information at all, emit a method-only configuration
+    with a date so the mandatory observingMethod value or nilReason can still
+    be represented.
     """
 
     records: List[Dict[str, Any]] = []
@@ -1588,8 +1592,11 @@ def _normalize_observation_series_observing_configurations(
             records.append(
                 _clean_none(
                     {
+                        "date": _entry_date(source, fallback=fallback_date),
                         "deployment": deployment_id,
                         "observingMethod": value,
+                        "operatingStatus": _first_operating_status_value(source),
+                        "exposure": source.get("exposure"),
                     }
                 )
             )
@@ -1597,31 +1604,41 @@ def _normalize_observation_series_observing_configurations(
     if not records:
         method_values = raw_method_values or [_nil_reason("unknown")]
         for value in method_values:
-            records.append({"observingMethod": value})
+            records.append(_clean_none({"date": fallback_date, "observingMethod": value}))
     return _uniq_dicts(_clean_none(records))
 
 def _normalize_instrument(raw: Mapping[str, Any], *, facility_id: str) -> Optional[Dict[str, Any]]:
     instrument_id = _instrument_record_id(raw, facility_id=facility_id)
     if not instrument_id:
         return None
-    instrument = _as_dict(raw.get("instrument") or raw.get("equipment"))
     manufacturer, model = _instrument_source_values(raw)
-    title = _normalize_description_value(_first_non_empty(instrument.get("title"), raw.get("instrumentTitle"), raw.get("equipmentTitle"), raw.get("title"), raw.get("name")))
-    description = _normalize_description_value(_first_non_empty(instrument.get("description"), raw.get("instrumentDescription"), raw.get("equipmentDescription")))
     return _clean_none(
         {
             "id": instrument_id,
-            "title": title,
-            "description": description,
             "manufacturer": manufacturer if _is_substantive_instrument_value(manufacturer) else None,
             "model": model if _is_substantive_instrument_value(model) else None,
-            "serialNumber": _first_serial_number(raw),
             "observingMethods": _normalize_instrument_observing_methods(raw),
-            "observedProperty": _normalize_instrument_observed_property(raw),
-            "observedGeometry": _normalize_instrument_observed_geometry(raw),
             "verticalRange": _normalize_vertical_range(raw),
         }
     )
+
+
+def _merge_catalogue_instrument(existing: Dict[str, Any], incoming: Dict[str, Any]) -> Dict[str, Any]:
+    merged = dict(existing)
+    for key, value in incoming.items():
+        if not _non_empty(value):
+            continue
+        if key not in merged or not _non_empty(merged.get(key)):
+            merged[key] = value
+        elif isinstance(merged[key], list):
+            merged[key] = _uniq_dicts([*merged[key], *_as_list(value)])
+        elif isinstance(merged[key], dict) and isinstance(value, Mapping):
+            nested = dict(merged[key])
+            for nested_key, nested_value in value.items():
+                if nested_key not in nested or not _non_empty(nested.get(nested_key)):
+                    nested[nested_key] = nested_value
+            merged[key] = nested
+    return _clean_none(merged)
 
 
 def _normalize_instruments(deployments: Sequence[Mapping[str, Any]], *, facility_id: str) -> List[Dict[str, Any]]:
@@ -1631,8 +1648,9 @@ def _normalize_instruments(deployments: Sequence[Mapping[str, Any]], *, facility
         if not instrument:
             continue
         instrument_id = instrument.get("id")
-        if isinstance(instrument_id, str) and instrument_id not in by_id:
-            by_id[instrument_id] = instrument
+        if not isinstance(instrument_id, str):
+            continue
+        by_id[instrument_id] = _merge_catalogue_instrument(by_id.get(instrument_id, {}), instrument)
     return list(by_id.values())
 
 
@@ -1768,7 +1786,7 @@ def _jscalendar_observing_schedule(raw: Mapping[str, Any], *, time_zone: str = "
         )
     )
     if sampling_frequency:
-        # The v0.2.5.1 XMI spells this extension property as ``wmi.int:samplingFrequency``.
+        # The v0.2.5.2 XMI spells this extension property as ``wmi.int:samplingFrequency``.
         event_without_uid["wmi.int:samplingFrequency"] = sampling_frequency
 
     aggregation_interval = _iso_duration(
@@ -1826,7 +1844,7 @@ def _normalize_observing_procedures(
     schedule_registry: Dict[str, Dict[str, Any]],
     time_zone: str = "UTC",
 ) -> Optional[List[Dict[str, Any]]]:
-    """Return v0.2.5.1 ObservingProcedure records for observation-series observing history."""
+    """Return v0.2.5.2 ObservingProcedure records for observation-series observing history."""
 
     procedures: List[Dict[str, Any]] = []
     for group in groups:
@@ -1966,7 +1984,7 @@ def _normalize_observation_reporting(
     When a registry is supplied, reusable reporting definitions are registered
     there and the returned historical records contain references.  Without a
     registry, a local temporary registry is used so helper-level callers see the
-    same v0.2.5.1-style structure.
+    same v0.2.5.2-style structure.
     """
 
     registry = reporting_registry if reporting_registry is not None else {}
@@ -2012,6 +2030,14 @@ def _normalize_operating_status(raw: Mapping[str, Any]) -> List[Dict[str, Any]]:
         if _non_empty(value):
             records.append({"date": date, "operatingStatus": _compact_wmdr_code_value(value) if isinstance(value, str) else value})
     return _uniq_dicts(_clean_none(records))
+
+
+def _first_operating_status_value(raw: Mapping[str, Any]) -> Any:
+    for item in _normalize_operating_status(raw):
+        value = item.get("operatingStatus")
+        if _non_empty(value):
+            return value
+    return None
 
 
 def _deployment_official_status_source(raw: Mapping[str, Any]) -> Any:
@@ -2063,38 +2089,28 @@ def _normalize_deployment_record(
 ) -> Optional[Dict[str, Any]]:
     """Normalize a reusable deployment / instrument-instance record.
 
-    The dated observation-to-deployment relationship is represented separately
-    in ``historicalDeployment`` objects.  This reusable object holds the stable
-    instrument-instance identity and references the reusable instrument record.
+    This reusable object holds the stable deployed observer/instrument context.
+    Dates, operating status and exposure are represented in the
+    ObservationSeries.observingConfigurations entries that reference it.
     """
 
     instrument_ref = _scalar_reference(_instrument_ref_for_deployment(raw, facility_id=facility_id))
     serial_number = _first_serial_number(raw)
     deployment_id = _deployment_record_id(raw, index=index, facility_id=facility_id)
-    start, _ = _extract_interval(raw)
-    fallback_date = _normalize_date_value(start) or ".."
-    operating_status = None
-    for item in _normalize_operating_status(raw):
-        operating_status = item.get("operatingStatus")
-        break
     geometry = None
-    geometry_date = None
     for entry in _facility_temporal_geometry_entries(raw):
         geometry = _point_geometry_from_entry(entry)
-        geometry_date = _normalize_date_value(entry.get("date"))
         if geometry:
             break
-    if fallback_date == ".." and geometry_date:
-        fallback_date = geometry_date
     record = _clean_none(
         {
             "id": deployment_id,
-            "date": fallback_date,
             "instrument": instrument_ref,
             "serialNumber": serial_number,
-            "operatingStatus": operating_status,
-            "exposure": raw.get("exposure"),
+            "sourceOfObservation": _first_non_empty(raw.get("sourceOfObservation"), raw.get("source")),
             "geometry": geometry,
+            "referenceSurface": _first_non_empty(raw.get("referenceSurface"), raw.get("localReferenceSurface")),
+            "verticalDistanceFromReferenceSurface": _normalize_vertical_distance_from_reference_surface(raw),
             "links": _extract_links(raw, "deployment"),
         }
     )
@@ -2124,12 +2140,12 @@ def _normalize_deployment(
     facility_id: str,
     schedule_registry: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> List[Dict[str, Any]]:
-    """Normalize a v0.2.5.1 Deployment object.
+    """Normalize a v0.2.5.2 Deployment object.
 
     Kept as a private helper for tests and local tooling; normal feature assembly
-    stores these objects under ``properties.deployments``. Observation-series
-    deployment links are represented through
-    ``observingConfigurations[*].deployment``.
+    stores these objects under ``properties.deployments``. The object represents
+    a stable deployed observer/instrument context; dated contribution states are
+    represented through ``observingConfigurations[*]``.
     """
 
     del schedule_registry
@@ -2143,7 +2159,7 @@ def _normalize_deployment(
 
 
 def _domain_object(raw: Mapping[str, Any], observed_property: Any) -> Optional[Dict[str, Any]]:
-    """Return the v0.2.5.1 observedFeature object.
+    """Return the v0.2.5.2 observedFeature object.
 
     The output key is ``domain``.  ``domainName`` is accepted only as legacy
     input from earlier intermediate JSON, never emitted.
@@ -2299,17 +2315,13 @@ def _normalize_observation(
     payload: Dict[str, Any] = {
         "id": f"observationSeries:{source_id}",
         "title": title,
-        "time": _derive_observation_time(raw, deployment_sources),
         "applicationArea": raw.get("applicationArea"),
         "observedProperty": observed_property,
         "observedGeometry": observed_geometry,
         "observedFeature": _domain_object(raw, observed_property),
         "programAffiliation": _normalize_program_affiliations(raw.get("programAffiliation")),
         "contacts": contacts,
-        "sourceOfObservation": _first_non_empty(raw.get("sourceOfObservation"), _first_from_dicts(deployment_sources, "sourceOfObservation")),
-        "referenceSurface": reference_surface,
         "representativeness": _first_non_empty(raw.get("representativeness"), _first_from_dicts(deployment_sources, "representativeness")),
-        "verticalDistanceFromReferenceSurface": _first_vertical_distance_from_sources(raw, deployment_sources),
         "officialStatus": _normalize_historical_official_status(*official_sources, fallback_date=fallback_date),
         "observingConfigurations": _normalize_observation_series_observing_configurations(raw, deployment_sources, facility_id=facility_id, fallback_date=fallback_date),
         "observingProcedures": _normalize_observing_procedures(observing_schedule_sources, schedule_registry=schedule_registry, time_zone=time_zone),

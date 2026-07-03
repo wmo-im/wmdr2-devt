@@ -91,7 +91,7 @@ def _sample_payload() -> dict:
     }
 
 
-def test_v0251_observation_contains_model_aligned_historical_objects() -> None:
+def test_v0252_observation_contains_model_aligned_historical_objects() -> None:
     record = convert_payload(_sample_payload(), source_name="sample")
     props = record["properties"]
 
@@ -107,36 +107,45 @@ def test_v0251_observation_contains_model_aligned_historical_objects() -> None:
     assert "observedDomain" not in observation
 
     assert observation["observedFeature"]["domain"] == "atmosphere"
-    assert observation["sourceOfObservation"] == "automaticReading"
-    assert observation["referenceSurface"] == "ground"
+    assert "sourceOfObservation" not in observation
+    assert "referenceSurface" not in observation
     assert observation["representativeness"] == "local"
-    assert observation["verticalDistanceFromReferenceSurface"]["value"] == 2.0
+    assert "verticalDistanceFromReferenceSurface" not in observation
 
     deployment = props["deployments"][0]
-    assert observation["observingConfigurations"] == [{"deployment": "deployment:dep-1", "observingMethod": {"nilReason": "unknown"}}]
+    assert observation["observingConfigurations"] == [
+        {
+            "date": "2020-01-01",
+            "deployment": "deployment:dep-1",
+            "observingMethod": {"nilReason": "unknown"},
+            "operatingStatus": "operational",
+            "exposure": "good",
+        }
+    ]
     assert deployment["id"].startswith("deployment:")
-    assert deployment["date"] == "2020-01-01"
+    assert "date" not in deployment
     assert deployment["serialNumber"] == "SN-001"
     assert deployment["instrument"].startswith("instrument:")
     instrument = props["instruments"][0]
     assert "observingMethods" not in instrument
-    assert deployment["operatingStatus"] == "operational"
+    assert "operatingStatus" not in deployment
     assert deployment["geometry"]["type"] == "Point"
-    assert deployment["exposure"] == "good"
+    assert "exposure" not in deployment
+    assert deployment["sourceOfObservation"] == "automaticReading"
+    assert deployment["referenceSurface"] == "ground"
+    assert deployment["verticalDistanceFromReferenceSurface"]["value"] == 2.0
 
     for key in (
         "officialStatus",
-        "sourceOfObservation",
-        "referenceSurface",
-        "representativeness",
-        "verticalDistanceFromReferenceSurface",
+        "operatingStatus",
+        "exposure",
         "observingSchedule",
         "temporalObservingSchedule",
     ):
         assert key not in deployment
 
 
-def test_v0251_reporting_official_status_and_observing_procedures_are_dated_objects() -> None:
+def test_v0252_reporting_official_status_and_observing_procedures_are_dated_objects() -> None:
     record = convert_payload(_sample_payload(), source_name="sample")
     props = record["properties"]
     observation = props["observationSeries"][0]
@@ -191,7 +200,7 @@ def test_v024_facility_histories_are_unwrapped() -> None:
     assert environment[0]["surfaceRoughness"] == "low"
 
 
-def test_v0251_schema_definitions_are_present() -> None:
+def test_v0252_schema_definitions_are_present() -> None:
     schema = json.loads((ROOT / "schemas" / "wmdr2-common.schema.json").read_text(encoding="utf-8"))
     defs = schema["$defs"]
 

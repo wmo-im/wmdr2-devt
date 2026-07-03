@@ -35,14 +35,10 @@
         "name": "LEE,Olivia S M,Ms",
         "organization": "Hong Kong Observatory",
         "phones": [
-          {
-            "value": "+852 29268414"
-          }
+          "+852 29268414"
         ],
         "emails": [
-          {
-            "value": "olee@hko.gov.hk"
-          }
+          "olee@hko.gov.hk"
         ],
         "addresses": [
           {
@@ -61,14 +57,10 @@
         "name": "PAN,Chi-kin,Dr",
         "organization": "Hong Kong Observatory",
         "phones": [
-          {
-            "value": "+852 2926 8357"
-          }
+          "+852 2926 8357"
         ],
         "emails": [
-          {
-            "value": "ckpan@hko.gov.hk"
-          }
+          "ckpan@hko.gov.hk"
         ],
         "addresses": [
           {
@@ -87,14 +79,10 @@
         "name": "LEE,Eunice Fung-ying,Ms",
         "organization": "Hong Kong Observatory",
         "phones": [
-          {
-            "value": "+852 29268414"
-          }
+          "+852 29268414"
         ],
         "emails": [
-          {
-            "value": "fylee@hko.gov.hk"
-          }
+          "fylee@hko.gov.hk"
         ],
         "addresses": [
           {
@@ -112,9 +100,7 @@
       {
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
-          {
-            "value": "oscar@wmo.int"
-          }
+          "oscar@wmo.int"
         ],
         "links": [
           {
@@ -355,7 +341,6 @@
     "deployments": [
       {
         "id": "deployment:id_9b43c01b-4326-45a9-87a7-d7f426e5bbff",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -363,11 +348,16 @@
             22.3119444444,
             64.8
           ]
+        },
+        "referenceSurface": "other",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_a7015e0a-ccf5-415c-85ed-d6f56b472501",
-        "date": "1999-05-19",
+        "sourceOfObservation": "automaticReading",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -375,11 +365,16 @@
             22.3119444444,
             66.4
           ]
+        },
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_f87f0b27-dd5f-47b8-8e39-d7b45f1bfba9",
-        "date": "1992-07-01",
+        "sourceOfObservation": "automaticReading",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -387,25 +382,38 @@
             22.3119444444,
             66.8
           ]
+        },
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_b074e829-f661-7937-e053-148ef98d6de4",
-        "date": "1992-07-01"
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "other",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 67.0,
+          "uom": "m"
+        }
       },
       {
-        "id": "deployment:id_01f56dfe-5bdb-4147-9604-0eb685e7e9de",
-        "date": ".."
+        "id": "deployment:id_01f56dfe-5bdb-4147-9604-0eb685e7e9de"
       },
       {
         "id": "deployment:id_b074e829-f660-7937-e053-148ef98d6de4",
-        "date": "2004-05-24",
-        "instrument": "instrument:0-20000-0-45004:0f4dfce102df",
-        "serialNumber": "not applicable"
+        "instrument": "instrument:Vaisala-Oyj--RS41-SG",
+        "serialNumber": "not applicable",
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "other",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 66.0,
+          "uom": "m"
+        }
       },
       {
         "id": "deployment:id_65929544-483b-438c-bbfb-31c45b550779",
-        "date": "2016-04-29",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -413,41 +421,51 @@
             22.3119444444,
             66.8
           ]
+        },
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 2.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_bd1f51be-f8c8-4340-8881-a2edd92a6027",
-        "date": "2020-10-09",
-        "operatingStatus": "testing",
-        "exposure": "unknown"
+        "sourceOfObservation": "manualReading",
+        "referenceSurface": "other",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 66.0,
+          "uom": "m"
+        }
       },
       {
-        "id": "deployment:id_54b9a950-2b00-43c9-9d19-0d6506dde229",
-        "date": ".."
+        "id": "deployment:id_54b9a950-2b00-43c9-9d19-0d6506dde229"
       },
       {
         "id": "deployment:id_b6631357-a24d-48d2-92c0-c6eed97c2291",
-        "date": "2004-05-24",
-        "instrument": "instrument:0-20000-0-45004:0f4dfce102df",
-        "serialNumber": "not applicable"
+        "instrument": "instrument:Vaisala-Oyj--RS41-SG",
+        "serialNumber": "not applicable",
+        "sourceOfObservation": "automaticReading"
       },
       {
-        "id": "deployment:id_9a56a45a-9a10-4aa5-be1f-53c3d137ed5f",
-        "date": ".."
+        "id": "deployment:id_9a56a45a-9a10-4aa5-be1f-53c3d137ed5f"
       },
       {
-        "id": "deployment:id_5f6f77ba-1cb8-4738-b86b-4d5cf6d6aa75",
-        "date": ".."
+        "id": "deployment:id_5f6f77ba-1cb8-4738-b86b-4d5cf6d6aa75"
       },
       {
         "id": "deployment:id_bd3ebd7b-8158-4f66-ad37-34fb718d8498",
-        "date": "2004-05-24",
-        "instrument": "instrument:0-20000-0-45004:edaa58de5689",
-        "serialNumber": "NOT APPLICABLE"
+        "instrument": "instrument:Vaisala-Oyj--RS41-SG",
+        "serialNumber": "NOT APPLICABLE",
+        "sourceOfObservation": "automaticReading",
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 0.0,
+          "uom": "m"
+        }
       },
       {
         "id": "deployment:id_46214214-6805-4ce1-87ac-880b6f691c24",
-        "date": "2016-07-14",
+        "sourceOfObservation": "automaticReading",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -455,11 +473,16 @@
             22.3119444444,
             74.8
           ]
+        },
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 3.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:cca8c9b3-3597-23ea-e053-148ef98d1a71",
-        "date": "2016-07-14",
+        "sourceOfObservation": "automaticReading",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -467,6 +490,11 @@
             22.3119444444,
             74.8
           ]
+        },
+        "referenceSurface": "localGround",
+        "verticalDistanceFromReferenceSurface": {
+          "value": 3.0,
+          "uom": "m"
         }
       }
     ],
@@ -474,12 +502,6 @@
       {
         "id": "observationSeries:213",
         "title": "domain: atmosphere; geometry: point; variable: 213",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            ".."
-          ]
-        },
         "observedProperty": 213,
         "observedGeometry": "point",
         "observedFeature": {
@@ -489,14 +511,10 @@
           "RBON",
           "RBCN"
         ],
-        "referenceSurface": "other",
         "representativeness": "toposcale",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_9b43c01b-4326-45a9-87a7-d7f426e5bbff",
             "observingMethod": {
               "nilReason": "unknown"
@@ -531,12 +549,6 @@
       {
         "id": "observationSeries:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "time": {
-          "interval": [
-            "1999-05-19",
-            ".."
-          ]
-        },
         "observedProperty": 216,
         "observedGeometry": "point",
         "observedFeature": {
@@ -546,15 +558,10 @@
           "GUAN",
           "centennialObservingstations"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "localGround",
         "representativeness": "toposcale",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "1999-05-19",
             "deployment": "deployment:id_a7015e0a-ccf5-415c-85ed-d6f56b472501",
             "observingMethod": 111
           }
@@ -587,12 +594,6 @@
       {
         "id": "observationSeries:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "time": {
-          "interval": [
-            "1992-07-01",
-            ".."
-          ]
-        },
         "observedProperty": 224,
         "observedGeometry": "point",
         "observedFeature": {
@@ -604,15 +605,10 @@
           "centennialObservingstations",
           "RBON"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "localGround",
         "representativeness": "toposcale",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "1992-07-01",
             "deployment": "deployment:id_f87f0b27-dd5f-47b8-8e39-d7b45f1bfba9",
             "observingMethod": 188
           }
@@ -645,12 +641,6 @@
       {
         "id": "observationSeries:225",
         "title": "domain: atmosphere; geometry: point; variable: 225",
-        "time": {
-          "interval": [
-            "1992-07-01",
-            ".."
-          ]
-        },
         "observedProperty": 225,
         "observedGeometry": "point",
         "observedFeature": {
@@ -662,14 +652,9 @@
           "centennialObservingstations",
           "RBON"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "other",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 67.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "1992-07-01",
             "deployment": "deployment:id_b074e829-f661-7937-e053-148ef98d6de4",
             "observingMethod": 188
           }
@@ -716,6 +701,7 @@
         "representativeness": "mesoscale",
         "observingConfigurations": [
           {
+            "date": "..",
             "deployment": "deployment:id_01f56dfe-5bdb-4147-9604-0eb685e7e9de",
             "observingMethod": 331
           }
@@ -732,12 +718,6 @@
       {
         "id": "observationSeries:227",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 227",
-        "time": {
-          "interval": [
-            "2004-05-24",
-            ".."
-          ]
-        },
         "observedProperty": 227,
         "observedGeometry": "verticalProfile",
         "observedFeature": {
@@ -750,14 +730,9 @@
           "RBON",
           "GBON"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "other",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 66.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2004-05-24",
             "deployment": "deployment:id_b074e829-f660-7937-e053-148ef98d6de4",
             "observingMethod": 331
           }
@@ -782,12 +757,6 @@
       {
         "id": "observationSeries:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "time": {
-          "interval": [
-            "2016-04-29",
-            "2016-04-30"
-          ]
-        },
         "observedProperty": 12249,
         "observedGeometry": "point",
         "observedFeature": {
@@ -799,14 +768,10 @@
           "centennialObservingstations",
           "RBON"
         ],
-        "referenceSurface": "localGround",
         "representativeness": "toposcale",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2016-04-29",
             "deployment": "deployment:id_65929544-483b-438c-bbfb-31c45b550779",
             "observingMethod": {
               "nilReason": "unknown"
@@ -841,12 +806,6 @@
       {
         "id": "observationSeries:256",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 256",
-        "time": {
-          "interval": [
-            "2020-10-09",
-            ".."
-          ]
-        },
         "observedProperty": 256,
         "observedGeometry": "verticalProfile",
         "observedFeature": {
@@ -857,17 +816,14 @@
           "RBSNt",
           "GBON"
         ],
-        "sourceOfObservation": "manualReading",
-        "referenceSurface": "other",
         "representativeness": "inapplicable",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 66.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2020-10-09",
             "deployment": "deployment:id_bd1f51be-f8c8-4340-8881-a2edd92a6027",
-            "observingMethod": 254
+            "observingMethod": 254,
+            "operatingStatus": "testing",
+            "exposure": "unknown"
           }
         ],
         "observingProcedures": [
@@ -911,6 +867,7 @@
         "representativeness": "toposcale",
         "observingConfigurations": [
           {
+            "date": "..",
             "deployment": "deployment:id_54b9a950-2b00-43c9-9d19-0d6506dde229",
             "observingMethod": {
               "nilReason": "unknown"
@@ -929,12 +886,6 @@
       {
         "id": "observationSeries:310",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 310",
-        "time": {
-          "interval": [
-            "2004-05-24",
-            ".."
-          ]
-        },
         "observedProperty": 310,
         "observedGeometry": "verticalProfile",
         "observedFeature": {
@@ -947,10 +898,10 @@
           "RBON",
           "GBON"
         ],
-        "sourceOfObservation": "automaticReading",
         "representativeness": "mesoscale",
         "observingConfigurations": [
           {
+            "date": "2004-05-24",
             "deployment": "deployment:id_b6631357-a24d-48d2-92c0-c6eed97c2291",
             "observingMethod": 327
           }
@@ -987,6 +938,7 @@
         "representativeness": "toposcale",
         "observingConfigurations": [
           {
+            "date": "..",
             "deployment": "deployment:id_9a56a45a-9a10-4aa5-be1f-53c3d137ed5f",
             "observingMethod": {
               "nilReason": "unknown"
@@ -1016,6 +968,7 @@
         "representativeness": "toposcale",
         "observingConfigurations": [
           {
+            "date": "..",
             "deployment": "deployment:id_5f6f77ba-1cb8-4738-b86b-4d5cf6d6aa75",
             "observingMethod": {
               "nilReason": "unknown"
@@ -1034,12 +987,6 @@
       {
         "id": "observationSeries:12000",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 12000",
-        "time": {
-          "interval": [
-            "2004-05-24",
-            ".."
-          ]
-        },
         "observedProperty": 12000,
         "observedGeometry": "verticalProfile",
         "observedFeature": {
@@ -1052,15 +999,10 @@
           "RBON",
           "GBON"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "localGround",
         "representativeness": "mesoscale",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 0.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2004-05-24",
             "deployment": "deployment:id_bd3ebd7b-8158-4f66-ad37-34fb718d8498",
             "observingMethod": 327
           }
@@ -1086,12 +1028,6 @@
       {
         "id": "observationSeries:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "time": {
-          "interval": [
-            "2016-07-14",
-            ".."
-          ]
-        },
         "observedProperty": 12005,
         "observedGeometry": "point",
         "observedFeature": {
@@ -1103,14 +1039,9 @@
           "centennialObservingstations",
           "RBON"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 3.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2016-07-14",
             "deployment": "deployment:id_46214214-6805-4ce1-87ac-880b6f691c24",
             "observingMethod": 95
           }
@@ -1143,12 +1074,6 @@
       {
         "id": "observationSeries:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "time": {
-          "interval": [
-            "2016-07-14",
-            ".."
-          ]
-        },
         "observedProperty": 12006,
         "observedGeometry": "point",
         "observedFeature": {
@@ -1160,14 +1085,9 @@
           "GUAN",
           "centennialObservingstations"
         ],
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 3.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "2016-07-14",
             "deployment": "deployment:cca8c9b3-3597-23ea-e053-148ef98d1a71",
             "observingMethod": 95
           }
@@ -1200,20 +1120,11 @@
     ],
     "instruments": [
       {
-        "id": "instrument:0-20000-0-45004:0f4dfce102df",
+        "id": "instrument:Vaisala-Oyj--RS41-SG",
         "manufacturer": "Vaisala Oyj",
         "model": "RS41-SG",
-        "serialNumber": "not applicable",
         "observingMethods": [
-          331
-        ]
-      },
-      {
-        "id": "instrument:0-20000-0-45004:edaa58de5689",
-        "manufacturer": "Vaisala Oyj",
-        "model": "RS41-SG",
-        "serialNumber": "NOT APPLICABLE",
-        "observingMethods": [
+          331,
           327
         ]
       }

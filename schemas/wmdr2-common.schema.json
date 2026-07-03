@@ -93,13 +93,14 @@
         "emails": {
           "type": "array",
           "items": {
-            "type": "object"
+            "type": "string",
+            "format": "email"
           }
         },
         "phones": {
           "type": "array",
           "items": {
-            "type": "object"
+            "type": "string"
           }
         },
         "addresses": {
@@ -785,35 +786,10 @@
           "type": "string",
           "pattern": "^instrument:"
         },
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
         "manufacturer": {
           "description": "Manufacturer of the equipment or instrument."
         },
         "model": {},
-        "serialNumber": {
-          "type": "string"
-        },
-        "observedProperty": {
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "string"
-              }
-            ]
-          }
-        },
-        "observedGeometry": {
-          "type": "string"
-        },
         "verticalRange": {
           "type": "object",
           "required": [
@@ -838,7 +814,30 @@
           "description": "Optional observing-method capabilities of this instrument catalogue entry. These values are not the authoritative dated history of an observation series."
         }
       },
-      "description": "Instrument catalogue metadata. Deployed instrument instances are represented by deployment records. Optional observingMethods list instrument capabilities when known; the authoritative series-to-deployment/method configuration belongs to ObservationSeries.observingConfigurations."
+      "description": "Instrument catalogue metadata. This is a reusable type/catalogue entry, not a deployed instance: serial numbers and other instance-specific metadata belong to Deployment. Optional observingMethods list instrument capabilities when known; the authoritative dated series-to-deployment/method configuration belongs to ObservationSeries.observingConfigurations.",
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "serialNumber"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observedProperty"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "observedGeometry"
+            ]
+          }
+        }
+      ]
     },
     "observation": {
       "type": "object",
@@ -853,12 +852,6 @@
         },
         "title": {
           "type": "string"
-        },
-        "time": {
-          "type": [
-            "object",
-            "null"
-          ]
         },
         "applicationArea": {
           "type": [
@@ -879,16 +872,7 @@
             "$ref": "#/$defs/contact"
           }
         },
-        "sourceOfObservation": {
-          "$ref": "#/$defs/codeValue"
-        },
-        "referenceSurface": {
-          "$ref": "#/$defs/codeValue"
-        },
         "representativeness": {},
-        "verticalDistanceFromReferenceSurface": {
-          "$ref": "#/$defs/quantity"
-        },
         "officialStatus": {
           "$ref": "#/$defs/officialStatus"
         },
@@ -1021,25 +1005,63 @@
               "deployments"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "time"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "referenceSurface"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "verticalDistanceFromReferenceSurface"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "sourceOfObservation"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "deployments"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "historicalDeployments"
+            ]
+          }
         }
       ],
-      "description": "ObservationSeries metadata. Deployment links are expressed through observingConfigurations[*].deployment rather than a direct deployments list."
+      "description": "ObservationSeries metadata. Observation-series history is expressed through observingConfigurations[*].date, observingMethod, operatingStatus and optional deployment links rather than observationSeries.time or a direct deployments list."
     },
     "deployment": {
       "type": "object",
       "required": [
-        "id",
-        "date"
+        "id"
       ],
       "additionalProperties": true,
-      "description": "Dated Deployment object. It represents a deployed instrument instance/state and can be referenced by one or more ObservationSeries.",
+      "description": "Deployment object. It represents a stable deployed observer/instrument context (for example an instrument, a human observer, or another source of observation). Dated observation-series states are represented by ObservingConfiguration.",
       "properties": {
         "id": {
           "type": "string",
           "pattern": "^deployment:"
-        },
-        "date": {
-          "$ref": "#/$defs/dateOrOpen"
         },
         "instrument": {
           "anyOf": [
@@ -1058,10 +1080,6 @@
             "null"
           ]
         },
-        "operatingStatus": {
-          "$ref": "#/$defs/codeValue"
-        },
-        "exposure": {},
         "geometry": {
           "$ref": "#/$defs/pointGeometry"
         },
@@ -1070,6 +1088,22 @@
           "items": {
             "$ref": "#/$defs/link"
           }
+        },
+        "sourceOfObservation": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "referenceSurface": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/codeValue"
+            },
+            {
+              "$ref": "#/$defs/nilReasonObject"
+            }
+          ]
+        },
+        "verticalDistanceFromReferenceSurface": {
+          "$ref": "#/$defs/quantity"
         }
       },
       "allOf": [
@@ -1098,6 +1132,34 @@
           "not": {
             "required": [
               "serialNumbers"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "date"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "operatingStatus"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "exposure"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "localReferenceSurface"
             ]
           }
         }
@@ -1197,12 +1259,6 @@
         "title": {
           "type": "string"
         },
-        "time": {
-          "type": [
-            "object",
-            "null"
-          ]
-        },
         "applicationArea": {
           "type": [
             "array",
@@ -1222,16 +1278,7 @@
             "$ref": "#/$defs/contact"
           }
         },
-        "sourceOfObservation": {
-          "$ref": "#/$defs/codeValue"
-        },
-        "referenceSurface": {
-          "$ref": "#/$defs/codeValue"
-        },
         "representativeness": {},
-        "verticalDistanceFromReferenceSurface": {
-          "$ref": "#/$defs/quantity"
-        },
         "officialStatus": {
           "$ref": "#/$defs/officialStatus"
         },
@@ -1270,7 +1317,8 @@
           "items": {
             "$ref": "#/$defs/observingConfiguration"
           },
-          "description": "Dated ObservingConfiguration records associated with this observation series. Each record states the observing method from a date onward and may reference the deployment that realized it."
+          "description": "Dated ObservingConfiguration records associated with this observation series. Each record states the observing method from a date onward and may reference the deployment that realized it.",
+          "minItems": 1
         }
       },
       "allOf": [
@@ -1378,9 +1426,51 @@
               "deployments"
             ]
           }
+        },
+        {
+          "not": {
+            "required": [
+              "time"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "referenceSurface"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "verticalDistanceFromReferenceSurface"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "sourceOfObservation"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "deployments"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "historicalDeployments"
+            ]
+          }
         }
       ],
-      "description": "ObservationSeries metadata. Deployment links are expressed through observingConfigurations[*].deployment rather than a direct deployments list."
+      "description": "ObservationSeries metadata. Observation-series history is expressed through observingConfigurations[*].date, observingMethod, operatingStatus and optional deployment links rather than observationSeries.time or a direct deployments list."
     },
     "observingProcedure": {
       "type": "object",
@@ -1485,24 +1575,27 @@
     "observingConfiguration": {
       "type": "object",
       "required": [
+        "date",
         "observingMethod"
       ],
       "additionalProperties": true,
-      "description": "ObservingConfiguration entry for an ObservationSeries. In v0.2.5.1 it links an observation series to the observing method used by an optional deployment. It has no date of its own; the temporal anchor is Deployment.date when a deployment reference is present. Use a nilReason object when the observing method is not known.",
+      "description": "ObservingConfiguration entry for an ObservationSeries. In v0.2.5.2 it is the dated observation-series state: it states from which date an observing method and optional deployment contribution apply, with optional operatingStatus and exposure.",
       "properties": {
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
+        },
         "observingMethod": {
           "$ref": "#/$defs/observingMethodValue"
         },
         "deployment": {
           "type": "string",
           "pattern": "^deployment:",
-          "description": "Optional deployment reference that realized this observing configuration."
-        }
-      },
-      "not": {
-        "required": [
-          "date"
-        ]
+          "description": "Optional reference to the stable deployment context that realized this observing configuration."
+        },
+        "operatingStatus": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "exposure": {}
       }
     }
   }

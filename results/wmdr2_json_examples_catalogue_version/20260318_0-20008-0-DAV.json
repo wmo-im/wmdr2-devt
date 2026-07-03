@@ -255,19 +255,16 @@
     "deployments": [
       {
         "id": "deployment:id_c5e4d97e-1759-43f0-8575-f8f56fc57be2",
-        "date": "2017-05-11"
+        "sourceOfObservation": "automaticReading"
       },
       {
-        "id": "deployment:id_be23ab80-e98a-4c26-97c0-1493d343f4be",
-        "date": "2011-11-22"
+        "id": "deployment:id_be23ab80-e98a-4c26-97c0-1493d343f4be"
       },
       {
-        "id": "deployment:id_8eca3df1-135c-4085-ae1b-70d9db6c11c1",
-        "date": "2011-11-22"
+        "id": "deployment:id_8eca3df1-135c-4085-ae1b-70d9db6c11c1"
       },
       {
         "id": "deployment:id_b074e828-5b76-7937-e053-148ef98d6de4",
-        "date": "1969-01-01",
         "geometry": {
           "type": "Point",
           "coordinates": [
@@ -275,63 +272,58 @@
             46.813324,
             1590
           ]
+        },
+        "verticalDistanceFromReferenceSurface": {
+          "value": 1.0,
+          "uom": "m"
         }
       },
       {
         "id": "deployment:id_b074e828-5b78-7937-e053-148ef98d6de4",
-        "date": "2007-02-20"
+        "sourceOfObservation": "unknown"
       },
       {
         "id": "deployment:id_b074e828-5b77-7937-e053-148ef98d6de4",
-        "date": "2007-01-23"
+        "sourceOfObservation": "unknown"
       },
       {
         "id": "deployment:id_b074e828-5b79-7937-e053-148ef98d6de4",
-        "date": "2007-01-11"
+        "sourceOfObservation": "unknown"
       },
       {
-        "id": "deployment:id_b074e828-5b7a-7937-e053-148ef98d6de4",
-        "date": ".."
+        "id": "deployment:id_b074e828-5b7a-7937-e053-148ef98d6de4"
       },
       {
-        "id": "deployment:id_b074e828-5b7b-7937-e053-148ef98d6de4",
-        "date": ".."
+        "id": "deployment:id_b074e828-5b7b-7937-e053-148ef98d6de4"
       },
       {
         "id": "deployment:id_b074e828-5b7c-7937-e053-148ef98d6de4",
-        "date": "2007-01-01"
+        "sourceOfObservation": "unknown"
       },
       {
-        "id": "deployment:id_b074e828-5b7d-7937-e053-148ef98d6de4",
-        "date": ".."
+        "id": "deployment:id_b074e828-5b7d-7937-e053-148ef98d6de4"
       },
       {
         "id": "deployment:id_b074e828-5b7e-7937-e053-148ef98d6de4",
-        "date": "1999-01-01"
+        "sourceOfObservation": "unknown"
       },
       {
         "id": "deployment:id_b074e828-5b7f-7937-e053-148ef98d6de4",
-        "date": "1999-01-01"
+        "sourceOfObservation": "unknown"
       },
       {
         "id": "deployment:id_b074e828-5b80-7937-e053-148ef98d6de4",
-        "date": "2000-08-29"
+        "sourceOfObservation": "unknown"
       },
       {
         "id": "deployment:id_b074e828-5b81-7937-e053-148ef98d6de4",
-        "date": "1969-01-01"
+        "sourceOfObservation": "unknown"
       }
     ],
     "observationSeries": [
       {
         "id": "observationSeries:263",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "time": {
-          "interval": [
-            "2017-05-11",
-            ".."
-          ]
-        },
         "observedProperty": 263,
         "observedGeometry": "totalColumn",
         "observedFeature": {
@@ -341,9 +333,9 @@
           "GAWregional",
           "NDACC"
         ],
-        "sourceOfObservation": "automaticReading",
         "observingConfigurations": [
           {
+            "date": "2017-05-11",
             "deployment": "deployment:id_c5e4d97e-1759-43f0-8575-f8f56fc57be2",
             "observingMethod": 106
           }
@@ -368,12 +360,6 @@
       {
         "id": "observationSeries:263",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "time": {
-          "interval": [
-            "2011-11-22",
-            ".."
-          ]
-        },
         "observedProperty": 263,
         "observedGeometry": "totalColumn",
         "observedFeature": {
@@ -385,6 +371,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "2011-11-22",
             "deployment": "deployment:id_be23ab80-e98a-4c26-97c0-1493d343f4be",
             "observingMethod": 78
           }
@@ -409,12 +396,6 @@
       {
         "id": "observationSeries:264",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
-        "time": {
-          "interval": [
-            "2011-11-22",
-            ".."
-          ]
-        },
         "observedProperty": 264,
         "observedGeometry": "verticalProfile",
         "observedFeature": {
@@ -426,6 +407,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "2011-11-22",
             "deployment": "deployment:id_8eca3df1-135c-4085-ae1b-70d9db6c11c1",
             "observingMethod": 210
           }
@@ -450,12 +432,6 @@
       {
         "id": "observationSeries:325",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 325",
-        "time": {
-          "interval": [
-            "1969-01-01",
-            ".."
-          ]
-        },
         "observedProperty": 325,
         "observedGeometry": "totalColumn",
         "observedFeature": {
@@ -464,12 +440,9 @@
         "programAffiliation": [
           "AERONET"
         ],
-        "verticalDistanceFromReferenceSurface": {
-          "value": 1.0,
-          "uom": "m"
-        },
         "observingConfigurations": [
           {
+            "date": "1969-01-01",
             "deployment": "deployment:id_b074e828-5b76-7937-e053-148ef98d6de4",
             "observingMethod": 197
           }
@@ -495,12 +468,6 @@
       {
         "id": "observationSeries:356",
         "title": "domain: atmosphere; geometry: point; variable: 356",
-        "time": {
-          "interval": [
-            "2007-02-20",
-            "2013-12-01"
-          ]
-        },
         "observedProperty": 356,
         "observedGeometry": "point",
         "observedFeature": {
@@ -509,9 +476,9 @@
         "programAffiliation": [
           "AERONET"
         ],
-        "sourceOfObservation": "unknown",
         "observingConfigurations": [
           {
+            "date": "2007-02-20",
             "deployment": "deployment:id_b074e828-5b78-7937-e053-148ef98d6de4",
             "observingMethod": 263
           }
@@ -537,12 +504,6 @@
       {
         "id": "observationSeries:356",
         "title": "domain: atmosphere; geometry: point; variable: 356",
-        "time": {
-          "interval": [
-            "2007-01-23",
-            "2013-12-01"
-          ]
-        },
         "observedProperty": 356,
         "observedGeometry": "point",
         "observedFeature": {
@@ -551,9 +512,9 @@
         "programAffiliation": [
           "AERONET"
         ],
-        "sourceOfObservation": "unknown",
         "observingConfigurations": [
           {
+            "date": "2007-01-23",
             "deployment": "deployment:id_b074e828-5b77-7937-e053-148ef98d6de4",
             "observingMethod": {
               "nilReason": "unknown"
@@ -581,12 +542,6 @@
       {
         "id": "observationSeries:356",
         "title": "domain: atmosphere; geometry: point; variable: 356",
-        "time": {
-          "interval": [
-            "2007-01-11",
-            "2013-12-01"
-          ]
-        },
         "observedProperty": 356,
         "observedGeometry": "point",
         "observedFeature": {
@@ -595,9 +550,9 @@
         "programAffiliation": [
           "AERONET"
         ],
-        "sourceOfObservation": "unknown",
         "observingConfigurations": [
           {
+            "date": "2007-01-11",
             "deployment": "deployment:id_b074e828-5b79-7937-e053-148ef98d6de4",
             "observingMethod": 263
           }
@@ -633,6 +588,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "deployment": "deployment:id_b074e828-5b7a-7937-e053-148ef98d6de4",
             "observingMethod": {
               "nilReason": "unknown"
@@ -661,6 +617,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "deployment": "deployment:id_b074e828-5b7b-7937-e053-148ef98d6de4",
             "observingMethod": {
               "nilReason": "unknown"
@@ -679,12 +636,6 @@
       {
         "id": "observationSeries:359",
         "title": "domain: atmosphere; geometry: point; variable: 359",
-        "time": {
-          "interval": [
-            "2007-01-01",
-            "2012-12-31"
-          ]
-        },
         "observedProperty": 359,
         "observedGeometry": "point",
         "observedFeature": {
@@ -693,9 +644,9 @@
         "programAffiliation": [
           "AERONET"
         ],
-        "sourceOfObservation": "unknown",
         "observingConfigurations": [
           {
+            "date": "2007-01-01",
             "deployment": "deployment:id_b074e828-5b7c-7937-e053-148ef98d6de4",
             "observingMethod": 78
           }
@@ -731,6 +682,7 @@
         ],
         "observingConfigurations": [
           {
+            "date": "..",
             "deployment": "deployment:id_b074e828-5b7d-7937-e053-148ef98d6de4",
             "observingMethod": 265
           }
@@ -747,12 +699,6 @@
       {
         "id": "observationSeries:566",
         "title": "domain: atmosphere; geometry: point; variable: 566",
-        "time": {
-          "interval": [
-            "1999-01-01",
-            "2007-12-31"
-          ]
-        },
         "observedProperty": 566,
         "observedGeometry": "point",
         "observedFeature": {
@@ -761,9 +707,9 @@
         "programAffiliation": [
           "AERONET"
         ],
-        "sourceOfObservation": "unknown",
         "observingConfigurations": [
           {
+            "date": "1999-01-01",
             "deployment": "deployment:id_b074e828-5b7e-7937-e053-148ef98d6de4",
             "observingMethod": {
               "nilReason": "unknown"
@@ -791,12 +737,6 @@
       {
         "id": "observationSeries:571",
         "title": "domain: atmosphere; geometry: point; variable: 571",
-        "time": {
-          "interval": [
-            "1999-01-01",
-            "2007-12-31"
-          ]
-        },
         "observedProperty": 571,
         "observedGeometry": "point",
         "observedFeature": {
@@ -805,9 +745,9 @@
         "programAffiliation": [
           "AERONET"
         ],
-        "sourceOfObservation": "unknown",
         "observingConfigurations": [
           {
+            "date": "1999-01-01",
             "deployment": "deployment:id_b074e828-5b7f-7937-e053-148ef98d6de4",
             "observingMethod": {
               "nilReason": "unknown"
@@ -835,12 +775,6 @@
       {
         "id": "observationSeries:572",
         "title": "domain: atmosphere; geometry: point; variable: 572",
-        "time": {
-          "interval": [
-            "2000-08-29",
-            "2007-12-31"
-          ]
-        },
         "observedProperty": 572,
         "observedGeometry": "point",
         "observedFeature": {
@@ -849,9 +783,9 @@
         "programAffiliation": [
           "AERONET"
         ],
-        "sourceOfObservation": "unknown",
         "observingConfigurations": [
           {
+            "date": "2000-08-29",
             "deployment": "deployment:id_b074e828-5b80-7937-e053-148ef98d6de4",
             "observingMethod": {
               "nilReason": "unknown"
@@ -879,12 +813,6 @@
       {
         "id": "observationSeries:573",
         "title": "domain: atmosphere; geometry: point; variable: 573",
-        "time": {
-          "interval": [
-            "1969-01-01",
-            "2013-12-31"
-          ]
-        },
         "observedProperty": 573,
         "observedGeometry": "point",
         "observedFeature": {
@@ -893,9 +821,9 @@
         "programAffiliation": [
           "AERONET"
         ],
-        "sourceOfObservation": "unknown",
         "observingConfigurations": [
           {
+            "date": "1969-01-01",
             "deployment": "deployment:id_b074e828-5b81-7937-e053-148ef98d6de4",
             "observingMethod": {
               "nilReason": "unknown"
