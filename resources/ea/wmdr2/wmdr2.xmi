@@ -548,7 +548,7 @@
 			</packagedElement>
 			<packagedElement xmi:type="uml:Association" xmi:id="EAID_7EE610BA_A4E0_43ca_9199_A64CE2E42DD0" visibility="public">
 				<memberEnd xmi:idref="EAID_dstE610BA_A4E0_43ca_9199_A64CE2E42DD0"/>
-				<ownedEnd xmi:type="uml:Property" xmi:id="EAID_dstE610BA_A4E0_43ca_9199_A64CE2E42DD0" name="deployment" visibility="public" association="EAID_7EE610BA_A4E0_43ca_9199_A64CE2E42DD0" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false" aggregation="none">
+				<ownedEnd xmi:type="uml:Property" xmi:id="EAID_dstE610BA_A4E0_43ca_9199_A64CE2E42DD0" name="observingLocation" visibility="public" association="EAID_7EE610BA_A4E0_43ca_9199_A64CE2E42DD0" isStatic="false" isReadOnly="false" isDerived="false" isOrdered="false" isUnique="true" isDerivedUnion="false" aggregation="none">
 					<type xmi:idref="EAID_DF1567EB_1BA2_4732_BB3A_9D88C4BA6835"/>
 					<lowerValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000179__A4E0_43ca_9199_A64CE2E42DD0" value="0"/>
 					<upperValue xmi:type="uml:LiteralInteger" xmi:id="EAID_LI000180__A4E0_43ca_9199_A64CE2E42DD0" value="1"/>
@@ -3609,7 +3609,7 @@
 				</source>
 				<target xmi:idref="EAID_DF1567EB_1BA2_4732_BB3A_9D88C4BA6835">
 					<model ea_localid="72" type="Class" name="ObservingLocation"/>
-					<role name="deployment" visibility="Public" targetScope="instance"/>
+					<role name="observingLocation" visibility="Public" targetScope="instance"/>
 					<type multiplicity="0..1" aggregation="none" containment="Unspecified"/>
 					<constraints/>
 					<modifiers isOrdered="false" changeable="none" isNavigable="true"/>
@@ -3624,7 +3624,7 @@
 				<parameterSubstitutions/>
 				<documentation/>
 				<appearance linemode="3" linecolor="-1" linewidth="0" seqno="0" headStyle="0" lineStyle="0"/>
-				<labels lb="0..*" lt="+observingConfigurations" rb="0..1" rt="+deployment"/>
+				<labels lb="0..*" lt="+observingConfigurations" rb="0..1" rt="+observingLocation"/>
 				<extendedProperties/>
 				<style/>
 				<xrefs/>
@@ -3759,7 +3759,7 @@
 				<project author="jkl" version="0.3.0" created="2026-03-06 10:35:24" modified="2026-07-06 16:29:53"/>
 				<style1 value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=1;PPgs.cx=1;PPgs.cy=1;DocSize.cx=826;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;ShowShape=1;AllDockable=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
 				<style2 value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;m_bElementClassifier=1;SPT=1;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;Theme=:119;SaveTag=E126A6A3;"/>
-				<swimlanes value="locked=false;orientation=0;width=0;inbar=false;names=false;color=-1;bold=false;fcol=0;tcol=-1;ofCol=-1;ufCol=-1;hl=0;ufh=0;hh=0;cls=0;bw=0;hli=0;SwimlaneFont=lfh:-10,lfw:0,lfi:0,lfu:0,lfs:0,lfface:Calibri,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>
+				<swimlanes value="locked=false;orientation=0;width=0;inbar=false;names=false;color=-1;bold=false;fcol=0;tcol=-1;ofCol=-1;ufCol=-1;hl=0;ufh=0;hh=0;cls=0;bw=0;hli=0;SwimlaneFont=lfh:-16,lfw:0,lfi:0,lfu:0,lfs:0,lfface:Calibri,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>
 				<matrixitems value="locked=false;matrixactive=false;swimlanesactive=true;kanbanactive=false;width=1;clrLine=0;"/>
 				<extendedProperties/>
 				<elements>
