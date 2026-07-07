@@ -1,6 +1,6 @@
 {
   "type": "Feature",
-  "id": "facility:0-404-800-4AA01",
+  "id": "wsi:0-404-800-4AA01",
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -31,54 +31,27 @@
     "interval": [
       "1947-09-01",
       ".."
-    ]
+    ],
+    "resolution": "day"
   },
   "conformsTo": [
     "http://wigos.wmo.int/spec/wmdr/2/conf/core"
   ],
   "properties": {
     "type": "facility",
-    "title": "['Sagana', 'Sagana in Tana Basin']",
+    "title": "Sagana; Sagana in Tana Basin",
     "created": "2025-03-14T00:00:00Z",
     "updated": "2025-03-14T00:00:00Z",
-    "description": "WMDR2 facility record for ['Sagana', 'Sagana in Tana Basin']",
+    "facilityType": "lakeRiverFixed",
+    "wmoRegion": "africa",
     "contacts": [
       {
-        "identifier": "contact:water-resources-authoriry--87213fe1",
-        "organization": "Water Resources Authoriry",
-        "roles": [
-          "owner"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:water-resources-authoriry--87213fe1",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:jtmuiruri@gmail.com",
-        "name": "MUIRURI,JOHN,Mr",
-        "organization": "KENYA METEOROLOGICAL DEPARTMENT",
-        "roles": [
-          "pointOfContact"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:jtmuiruri@gmail.com",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:oscar@wmo.int",
+        "uid": "contact:oscar@wmo.int",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "links": [
           {
             "rel": "about",
-            "href": "catalogues/contacts.json#contact:oscar@wmo.int",
+            "href": "../catalogues/contacts.json#contact:oscar@wmo.int",
             "type": "application/json"
           }
         ]
@@ -89,21 +62,64 @@
       "Sagana",
       "Sagana in Tana Basin"
     ],
-    "facilityType": "lakeRiverFixed",
-    "wmoRegion": "africa",
-    "programAffiliation": [
+    "programAffiliations": [
       {
-        "date": "1947-09-01",
-        "programAffiliation": [
-          "WHYCOS"
-        ],
+        "validFrom": "1947-09-01",
+        "program": "WHYCOS",
         "reportingStatus": "operational"
       }
     ],
     "territory": [
       {
-        "date": "1947-09-01",
+        "validFrom": "1947-09-01",
         "territory": "KEN"
+      }
+    ],
+    "observationSeries": [
+      {
+        "uid": "observationSeries:12252-ca06a31932",
+        "title": "domain: ocean; geometry: verticalProfile; variable: 12252",
+        "observedProperty": 12252,
+        "observedFeature": {
+          "domain": "ocean"
+        },
+        "observedGeometry": "verticalProfile",
+        "programAffiliations": [
+          "WHYCOS"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "1947-09-01",
+            "observingMethod": 356,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": {
+              "nilReason": "unknown"
+            }
+          }
+        ],
+        "observingProcedures": [
+          {
+            "validFrom": "1947-09-01",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_f253213a5423"
+            ]
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "uom": "m",
+            "temporalReportingInterval": "PT1H",
+            "dataPolicy": "unknown",
+            "strategy": "routine",
+            "reportingSchedules": [
+              "schedule_f253213a5423"
+            ]
+          }
+        ]
       }
     ],
     "schedules": [
@@ -120,59 +136,6 @@
         ],
         "wmo.int:aggregationInterval": "PT1H",
         "uid": "schedule_f253213a5423"
-      }
-    ],
-    "reporting": [
-      {
-        "id": "reporting:0a7fabf5614c",
-        "internationalExchange": false,
-        "temporalAggregate": "PT1H",
-        "dataPolicy": {
-          "dataPolicy": "unknown"
-        }
-      }
-    ],
-    "deployments": [
-      {
-        "id": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb"
-      }
-    ],
-    "observationSeries": [
-      {
-        "id": "observationSeries:12252",
-        "title": "domain: ocean; geometry: verticalProfile; variable: 12252",
-        "observedProperty": 12252,
-        "observedGeometry": "verticalProfile",
-        "observedFeature": {
-          "domain": "ocean"
-        },
-        "programAffiliation": [
-          "WHYCOS"
-        ],
-        "observingConfigurations": [
-          {
-            "date": "1947-09-01",
-            "deployment": "deployment:id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
-            "observingMethod": 356
-          }
-        ],
-        "observingProcedures": [
-          {
-            "date": "1947-09-01",
-            "strategy": "unknown",
-            "observingSchedules": [
-              "schedule_f253213a5423"
-            ]
-          }
-        ],
-        "reporting": [
-          {
-            "date": "1947-09-01",
-            "strategy": "unknown",
-            "uom": "m",
-            "reporting": "reporting:0a7fabf5614c"
-          }
-        ]
       }
     ]
   }

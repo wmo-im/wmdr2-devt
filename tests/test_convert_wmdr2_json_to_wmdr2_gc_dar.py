@@ -14,7 +14,7 @@ from convert_wmdr2_json_to_wmdr2_gc_dar import GcDarPaths, convert_files, conver
 def _minimal_full_record() -> dict:
     return {
         "type": "Feature",
-        "id": "facility:0-20000-0-06725",
+        "id": "wsi:0-20000-0-06725",
         "geometry": {"type": "Point", "coordinates": [7.8232, 46.4204, 1540]},
         "time": {"interval": ["2000-08-17", ".."]},
         "conformsTo": ["http://wigos.wmo.int/spec/wmdr/2/conf/core"],
@@ -22,59 +22,47 @@ def _minimal_full_record() -> dict:
             "type": "facility",
             "title": "Blatten",
             "keywords": ["0-20000-0-06725", "Blatten"],
-            "programAffiliation": [
-                {"date": "2000-08-17", "programAffiliation": "GOSGeneral", "reportingStatus": "operational"},
-                {"date": "2022-09-08", "programAffiliation": "GBON", "reportingStatus": "operational"},
+            "programAffiliations": [
+                {"validFrom": "2000-08-17", "program": "GOSGeneral", "reportingStatus": "operational"},
+                {"validFrom": "2022-09-08", "program": "GBON", "reportingStatus": "operational"},
             ],
             "territory": [{"date": "2000-08-17", "territory": "CHE"}],
             "observationSeries": [
                 {
-                    "id": "observationSeries:12006:old",
+                    "uid": "observationSeries:12006:old",
                     "title": "historic air temperature",
                     "time": {"interval": ["2000-01-01", "2019-12-31"]},
                     "observedProperty": 12006,
                     "observedGeometry": "point",
                     "observedFeature": {"domain": "atmosphere", "domainFeature": "near-surface-air"},
-                    "programAffiliation": ["GOSGeneral"],
+                    "programAffiliations": ["GOSGeneral"],
                     "sourceOfObservation": "manualReading",
                     "observingConfigurations": [
-                        {"date": "2000-01-01", "deployment": "deployment:old", "observingMethod": 1}
+                        {"validFrom": "2000-01-01", "instrument": "instrument:old", "sourceOfObservation": "manualReading", "observingMethod": 1}
                     ],
                 },
                 {
-                    "id": "observationSeries:12006",
+                    "uid": "observationSeries:12006",
                     "title": "domain: atmosphere; geometry: point; variable: 12006",
                     "time": {"interval": ["2020-01-01", ".."]},
                     "observedProperty": 12006,
                     "observedGeometry": "point",
                     "observedFeature": {"domain": "atmosphere", "domainFeature": "near-surface-air"},
-                    "programAffiliation": ["GBON"],
+                    "programAffiliations": ["GBON"],
                     "applicationArea": ["weatherForecasting"],
                     "sourceOfObservation": "automaticReading",
                     "observingConfigurations": [
-                        {"date": "2020-01-01", "deployment": "deployment:dep-1", "observingMethod": 266}
+                        {"validFrom": "2020-01-01", "instrument": "instrument:aws-1", "sourceOfObservation": "automaticReading", "observingMethod": 266}
                     ],
                     "officialStatus": [{"date": "2020-01-01", "officialStatus": "primary"}],
-                    "reporting": [
-                        {"date": "2020-01-01", "strategy": "unknown", "reporting": "reporting:hourly", "uom": "K"}
+                    "reportingProcedures": [
+                        {"strategy": "routine", "internationalExchange": True, "temporalReportingInterval": "PT1H", "levelOfData": "level1", "uom": "K"}
                     ],
                 },
             ],
-            "deployments": [
-                {"id": "deployment:old", "date": "2000-01-01", "instrument": "instrument:old"},
-                {"id": "deployment:dep-1", "date": "2020-01-01", "instrument": "instrument:aws-1"},
-            ],
-            "reporting": [
-                {
-                    "id": "reporting:hourly",
-                    "internationalExchange": True,
-                    "temporalAggregate": "PT1H",
-                    "levelOfData": "level1",
-                }
-            ],
             "instruments": [
-                {"id": "instrument:old", "manufacturer": "Old", "model": "Old"},
-                {"id": "instrument:aws-1", "manufacturer": "Vaisala", "model": "HMP155"},
+                {"uid": "instrument:old", "manufacturer": "Old", "model": "Old"},
+                {"uid": "instrument:aws-1", "manufacturer": "Vaisala", "model": "HMP155"},
             ],
         },
     }
@@ -90,12 +78,12 @@ def test_convert_record_to_gc_dar_extracts_current_discovery_summary():
     )
 
     assert dar["type"] == "Feature"
-    assert dar["id"] == "facility:0-20000-0-06725"
+    assert dar["id"] == "wsi:0-20000-0-06725"
     assert dar["conformsTo"] == ["http://wigos.wmo.int/spec/wmdr/2/conf/gc-dar"]
     props = dar["properties"]
     assert "summary" not in props
     assert props["territory"] == "CHE"
-    assert props["programAffiliation"] == [
+    assert props["programAffiliations"] == [
         {"program": "GOSGeneral", "reportingStatus": "operational", "date": "2000-08-17"},
         {"program": "GBON", "reportingStatus": "operational", "date": "2022-09-08"},
     ]
@@ -109,11 +97,11 @@ def test_convert_record_to_gc_dar_extracts_current_discovery_summary():
     assert series["current"] is True
     assert series["sourceOfObservation"] == "automaticReading"
     assert series["observingMethod"] == 266
-    assert series["deployment"] == "deployment:dep-1"
+    assert "deployment" not in series
     assert series["instrument"] == "instrument:aws-1"
     assert series["uom"] == "K"
     assert series["internationalExchange"] is True
-    assert series["temporalAggregate"] == "PT1H"
+    assert series["temporalReportingInterval"] == "PT1H"
     assert series["levelOfData"] == "level1"
     assert "reportingDefinitions" not in dar["properties"]
     assert dar["properties"]["provenance"]["sourceContentHash"].startswith("sha256:")

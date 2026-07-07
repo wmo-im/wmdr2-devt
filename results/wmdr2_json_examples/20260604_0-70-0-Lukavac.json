@@ -1,6 +1,6 @@
 {
   "type": "Feature",
-  "id": "facility:0-70-0-Lukavac",
+  "id": "wsi:0-70-0-Lukavac",
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -31,7 +31,8 @@
     "interval": [
       "2019-08-05",
       ".."
-    ]
+    ],
+    "resolution": "day"
   },
   "conformsTo": [
     "http://wigos.wmo.int/spec/wmdr/2/conf/core"
@@ -41,34 +42,9 @@
     "title": "LUKAVAC",
     "created": "2026-06-04T00:00:00Z",
     "updated": "2026-06-04T00:00:00Z",
-    "description": "WMDR2 facility record for LUKAVAC",
+    "facilityType": "underwaterFixed",
+    "wmoRegion": "europe",
     "contacts": [
-      {
-        "organization": "Federal Hydrometeorological Institute",
-        "roles": [
-          "owner"
-        ]
-      },
-      {
-        "name": "Trako,Merima,Ms",
-        "organization": "Federal Hydrometeorological Institute",
-        "emails": [
-          "merima.trako@fhmzbih.gov.ba"
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "Bardakčije 12"
-            ],
-            "city": "Sarajevo",
-            "postalCode": "71000",
-            "country": "BIH"
-          }
-        ],
-        "roles": [
-          "pointOfContact"
-        ]
-      },
       {
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
@@ -94,51 +70,47 @@
         "type": "text/html"
       }
     ],
-    "facilityType": "underwaterFixed",
-    "wmoRegion": "europe",
-    "programAffiliation": [
+    "environment": [
       {
-        "date": "2019-08-05",
-        "programAffiliation": [
-          "WHYCOS"
-        ],
+        "validFrom": "2019-08-05",
+        "climateZone": "snowFullyHumidWarmSummer"
+      }
+    ],
+    "programAffiliations": [
+      {
+        "validFrom": "2019-08-05",
+        "program": "WHYCOS",
         "reportingStatus": "operational"
       }
     ],
     "territory": [
       {
-        "date": "2019-08-05",
+        "validFrom": "2019-08-05",
         "territory": "BIH"
-      }
-    ],
-    "environment": [
-      {
-        "date": "2019-08-05",
-        "climateZone": "snowFullyHumidWarmSummer"
-      }
-    ],
-    "deployments": [
-      {
-        "id": "deployment:id_8ca504be-eb29-43a4-9ef0-a3e7a81f1ab3"
       }
     ],
     "observationSeries": [
       {
-        "id": "observationSeries:166",
+        "uid": "observationSeries:166-fc7520628d",
         "title": "domain: terrestrial; geometry: point; variable: 166",
         "observedProperty": 166,
-        "observedGeometry": "point",
         "observedFeature": {
           "domain": "terrestrial"
         },
-        "programAffiliation": [
+        "observedGeometry": "point",
+        "programAffiliations": [
           "WHYCOS"
         ],
         "observingConfigurations": [
           {
-            "date": "2019-08-05",
-            "deployment": "deployment:id_8ca504be-eb29-43a4-9ef0-a3e7a81f1ab3",
-            "observingMethod": 356
+            "validFrom": "2019-08-05",
+            "observingMethod": 356,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": {
+              "nilReason": "unknown"
+            }
           }
         ]
       }

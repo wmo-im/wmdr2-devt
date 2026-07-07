@@ -1,6 +1,6 @@
 {
   "type": "Feature",
-  "id": "facility:0-578-0-92100",
+  "id": "wsi:0-578-0-92100",
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -31,7 +31,8 @@
     "interval": [
       "2007-01-01",
       ".."
-    ]
+    ],
+    "resolution": "day"
   },
   "conformsTo": [
     "http://wigos.wmo.int/spec/wmdr/2/conf/core"
@@ -41,44 +42,16 @@
     "title": "TROLL AIRFIELD",
     "created": "2022-11-24T00:00:00Z",
     "updated": "2022-11-24T00:00:00Z",
-    "description": "WMDR2 facility record for TROLL AIRFIELD",
+    "facilityType": "landOnIce",
+    "wmoRegion": "antarctica",
     "contacts": [
       {
-        "identifier": "contact:norwegian-polar-institute--8f27a0e0",
-        "organization": "Norwegian Polar Institute",
-        "roles": [
-          "owner"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:norwegian-polar-institute--8f27a0e0",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:christina.pedersen@npolar.no",
-        "name": "Pedersen,Christina Alsvik,Dr.",
-        "organization": "Norwegian Polar Institute",
-        "roles": [
-          "principalInvestigator"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:christina.pedersen@npolar.no",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:oscar@wmo.int",
+        "uid": "contact:oscar@wmo.int",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "links": [
           {
             "rel": "about",
-            "href": "catalogues/contacts.json#contact:oscar@wmo.int",
+            "href": "../catalogues/contacts.json#contact:oscar@wmo.int",
             "type": "application/json"
           }
         ]
@@ -88,122 +61,122 @@
       "0-578-0-92100",
       "TROLL AIRFIELD"
     ],
-    "facilityType": "landOnIce",
-    "wmoRegion": "antarctica",
-    "programAffiliation": [
+    "programAffiliations": [
       {
-        "date": "2022-11-22",
-        "programAffiliation": [
-          "GOSGeneral"
-        ],
+        "validFrom": "2022-11-22",
+        "program": "GOSGeneral",
         "reportingStatus": "operational"
       },
       {
-        "date": "2022-11-22",
-        "programAffiliation": [
-          "nonAffiliated"
-        ],
+        "validFrom": "2022-11-22",
+        "program": "nonAffiliated",
         "reportingStatus": "operational"
       }
     ],
     "territory": [
       {
-        "date": "2007-01-01",
+        "validFrom": "2007-01-01",
         "territory": "NOR"
-      }
-    ],
-    "deployments": [
-      {
-        "id": "deployment:id_98af3b44-3633-4017-b16a-8dfb89707c55"
-      },
-      {
-        "id": "deployment:id_1c5901b1-da2a-46dd-9d48-6afb6a876cb4"
-      },
-      {
-        "id": "deployment:id_86c6bc2c-7e41-4c5e-b8db-7f6147d34c68"
-      },
-      {
-        "id": "deployment:id_1219f00c-7af8-432b-be2a-9a442a76e14a"
       }
     ],
     "observationSeries": [
       {
-        "id": "observationSeries:216",
+        "uid": "observationSeries:216-3ade9de2c0",
         "title": "domain: atmosphere; geometry: point; variable: 216",
         "observedProperty": 216,
-        "observedGeometry": "point",
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliation": [
+        "observedGeometry": "point",
+        "programAffiliations": [
           "nonAffiliated",
           "GOSGeneral"
         ],
         "observingConfigurations": [
           {
-            "date": "2007-01-01",
-            "deployment": "deployment:id_98af3b44-3633-4017-b16a-8dfb89707c55",
-            "observingMethod": 111
+            "validFrom": "2007-01-01",
+            "observingMethod": 111,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": {
+              "nilReason": "unknown"
+            }
           }
         ]
       },
       {
-        "id": "observationSeries:224",
+        "uid": "observationSeries:224-1b5962cc82",
         "title": "domain: atmosphere; geometry: point; variable: 224",
         "observedProperty": 224,
-        "observedGeometry": "point",
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliation": [
+        "observedGeometry": "point",
+        "programAffiliations": [
           "nonAffiliated",
           "GOSGeneral"
         ],
         "observingConfigurations": [
           {
-            "date": "2007-01-01",
-            "deployment": "deployment:id_1c5901b1-da2a-46dd-9d48-6afb6a876cb4",
-            "observingMethod": 188
+            "validFrom": "2007-01-01",
+            "observingMethod": 188,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": {
+              "nilReason": "unknown"
+            }
           }
         ]
       },
       {
-        "id": "observationSeries:12249",
+        "uid": "observationSeries:12249-fb0c212660",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
         "observedProperty": 12249,
-        "observedGeometry": "point",
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliation": [
+        "observedGeometry": "point",
+        "programAffiliations": [
           "nonAffiliated",
           "GOSGeneral"
         ],
         "observingConfigurations": [
           {
-            "date": "2022-11-22",
-            "deployment": "deployment:id_86c6bc2c-7e41-4c5e-b8db-7f6147d34c68",
-            "observingMethod": 254
+            "validFrom": "2022-11-22",
+            "observingMethod": 254,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": {
+              "nilReason": "unknown"
+            }
           }
         ]
       },
       {
-        "id": "observationSeries:12005",
+        "uid": "observationSeries:12005-6da5315be0",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
         "observedProperty": 12005,
-        "observedGeometry": "point",
         "observedFeature": {
           "domain": "atmosphere"
         },
-        "programAffiliation": [
+        "observedGeometry": "point",
+        "programAffiliations": [
           "nonAffiliated",
           "GOSGeneral"
         ],
         "observingConfigurations": [
           {
-            "date": "2007-01-01",
-            "deployment": "deployment:id_1219f00c-7af8-432b-be2a-9a442a76e14a",
-            "observingMethod": 63
+            "validFrom": "2007-01-01",
+            "observingMethod": 63,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": {
+              "nilReason": "unknown"
+            }
           }
         ]
       }

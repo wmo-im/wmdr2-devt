@@ -1,40 +1,17 @@
 #!/usr/bin/env python3
+"""Externalize WMDR2 contacts and instrument type metadata into catalogues.
+
+The converter accepts both WMDR2 v0.3.1 full records with instrument references on
+``observationSeries[*].observingConfigurations[*].instrument``.
 """
-convert_wmdr2_json_to_catalogue_version.py
-
-Convert embedded WMDR2 facility records to the catalogue-based representation.
-
-The converter reads facility-centric WMDR2 JSON Features, collects full contact
-and instrument objects into shared catalogues, and writes facility records with
-minimal inline contact stubs and deployment-level instrument references.  The
-output intentionally avoids a custom ``wmdr2`` wrapper property.
-
-For the v0.2.x reusable-deployment model, ``properties.deployments[*].instrument``
-is a scalar reference to one reusable instrument.  This module preserves that
-scalar shape when externalising instruments; older versions accidentally wrapped
-it as a one-item list.
-"""
-
 from __future__ import annotations
 
-import argparse
-import copy
-import hashlib
-import json
-import os
-import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable
-
-try:  # pragma: no cover - optional dependency for CLI convenience
-    import yaml  # type: ignore
-except Exception:  # pragma: no cover
-    yaml = None
-
-
-DEFAULT_PATTERN = "*.json"
-CATALOGUE_MEDIA_TYPE = "application/json"
+from typing import Any, Mapping
+import json
+import re
+import copy
 
 
 @dataclass(frozen=True)
@@ -43,525 +20,229 @@ class CataloguePaths:
     records_path: Path
     contacts_path: Path
     instruments_path: Path
-    pattern: str = DEFAULT_PATTERN
-    recursive: bool = True
 
 
 def _as_list(value: Any) -> list[Any]:
     if value is None:
         return []
-    if isinstance(value, list):
-        return value
-    return [value]
+    return value if isinstance(value, list) else [value]
 
 
-def _non_empty(value: Any) -> bool:
-    return value not in (None, "", [], {})
-
-
-def _clean_none(obj: Any, *, _path: tuple[str, ...] = ()) -> Any:
-    """Remove empty members, preserving aligned ``temporalGeometry.methods`` slots."""
-
-    def preserve_empty_list(path: tuple[str, ...]) -> bool:
-        return len(path) >= 2 and path[-2:] == ("temporalGeometry", "methods")
-
+def _clean(obj: Any) -> Any:
     if isinstance(obj, dict):
-        cleaned = {key: _clean_none(value, _path=_path + (key,)) for key, value in obj.items()}
-        return {key: value for key, value in cleaned.items() if value not in (None, "", [], {})}
-
+        return {k: v for k, v in ((k, _clean(v)) for k, v in obj.items()) if v not in (None, "", [], {})}
     if isinstance(obj, list):
-        cleaned = [_clean_none(item, _path=_path) for item in obj]
-        return [
-            item
-            for item in cleaned
-            if item not in ("", {}) and (item != [] or preserve_empty_list(_path))
-        ]
-
+        return [v for v in (_clean(v) for v in obj) if v not in (None, "", [], {})]
     return obj
 
 
-def _slug(text: str) -> str:
-    text = text.strip().lower()
-    text = re.sub(r"[^a-z0-9]+", "-", text)
-    text = re.sub(r"-{2,}", "-", text).strip("-")
-    return text or "unknown"
+def _slug(value: Any) -> str:
+    text = str(value or "").strip().lower()
+    text = re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+    return text or "value"
 
 
-def _stable_hash(payload: Any, length: int = 10) -> str:
-    raw = json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str)
-    return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:length]
 
 
-def _dedupe_scalars(items: Iterable[Any]) -> list[Any]:
-    out: list[Any] = []
-    seen: set[str] = set()
-    for item in items:
-        marker = json.dumps(item, sort_keys=True, ensure_ascii=False, default=str)
-        if marker not in seen:
-            seen.add(marker)
-            out.append(item)
-    return out
+def _last_segment(value: Any) -> str | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    text = value.strip().strip("<>").rstrip("/#")
+    if "/" in text:
+        text = text.rsplit("/", 1)[-1]
+    if "#" in text:
+        text = text.rsplit("#", 1)[-1]
+    return text or None
 
 
-def _dedupe_dicts(items: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
-    out: list[dict[str, Any]] = []
-    seen: set[str] = set()
-    for item in items:
-        marker = json.dumps(item, sort_keys=True, ensure_ascii=False, default=str)
-        if marker not in seen:
-            seen.add(marker)
-            out.append(item)
-    return out
-
-
-def _normalize_email_value(value: Any) -> str | None:
+def _is_role_codelist_reference(value: Any) -> bool:
     if not isinstance(value, str):
+        return False
+    text = value.strip().strip("<>")
+    segment = _last_segment(text) or text
+    return segment in {"CI_RoleCode", "RoleCode"} or text.endswith("#CI_RoleCode") or text.endswith("#RoleCode")
+
+
+def _normalize_role(value: Any) -> str | None:
+    if isinstance(value, Mapping):
+        for key in ("codeListValue", "@codeListValue", "role", "value", "#text", "text", "name"):
+            candidate = value.get(key)
+            if _is_role_codelist_reference(candidate):
+                continue
+            role = _normalize_role(candidate)
+            if role:
+                return role
+        for key in ("href", "url", "codeList", "@codeList"):
+            candidate = value.get(key)
+            if _is_role_codelist_reference(candidate):
+                continue
+            role = _normalize_role(candidate)
+            if role:
+                return role
         return None
-    email = value.strip().lower()
-    if not email or "@" not in email:
+    if not isinstance(value, str) or not value.strip():
         return None
-    return email
+    text = value.strip().strip("<>")
+    if _is_role_codelist_reference(text):
+        return None
+    segment = _last_segment(text) or text
+    if _is_role_codelist_reference(segment) or segment.lower() in {"unknown", "none", "null", "nil"}:
+        return None
+    return segment
 
 
-def _contact_emails(contact: dict[str, Any]) -> list[str]:
-    emails: list[str] = []
-    for item in _as_list(contact.get("emails")):
-        if isinstance(item, str):
-            email = _normalize_email_value(item)
-        elif isinstance(item, dict):
-            email = _normalize_email_value(item.get("value") or item.get("email") or item.get("href"))
-        else:
-            email = None
-        if email and email not in emails:
-            emails.append(email)
-    return emails
+def _normalize_roles(value: Any) -> list[str]:
+    roles: list[str] = []
+    for item in _as_list(value):
+        role = _normalize_role(item)
+        if role and role not in roles:
+            roles.append(role)
+    return roles
 
 
-def contact_identifier(contact: dict[str, Any]) -> str:
-    """Return a deterministic catalogue id for a contact."""
-    emails = _contact_emails(contact)
-    if emails:
-        return f"contact:{emails[0]}"
-
-    name = str(contact.get("name") or "").strip()
-    organization = str(contact.get("organization") or "").strip()
-    if name and organization:
-        return f"contact:{_slug(name)}--{_slug(organization)}"
-
-    seed = {
-        "identifier": contact.get("identifier"),
-        "name": name,
-        "organization": organization,
-        "position": contact.get("position"),
-        "phones": contact.get("phones"),
-        "addresses": contact.get("addresses"),
-        "links": contact.get("links"),
-    }
-    base = _slug("--".join(part for part in (name, organization, str(contact.get("identifier") or "")) if part))
-    return f"contact:{base}--{_stable_hash(seed, 8)}"
-
-
-def _catalogue_href(catalogue_path: Path, records_path: Path, identifier: str) -> str:
-    rel = Path(os.path.relpath(catalogue_path, start=records_path))
-    return f"{rel.as_posix()}#{identifier}"
-
-
-def _minimal_contact_stub(contact: dict[str, Any], identifier: str, *, href: str) -> dict[str, Any]:
-    """Return a minimal OGC Records contact object that points to the catalogue."""
-    stub: dict[str, Any] = {"identifier": identifier}
-
-    if _non_empty(contact.get("name")):
-        stub["name"] = contact["name"]
-    if _non_empty(contact.get("organization")):
-        stub["organization"] = contact["organization"]
-    if "name" not in stub and "organization" not in stub:
-        stub["name"] = identifier.removeprefix("contact:")
-    if _non_empty(contact.get("roles")):
-        stub["roles"] = contact["roles"]
-
-    stub["links"] = [
-        {
-            "rel": "about",
-            "href": href,
-            "type": CATALOGUE_MEDIA_TYPE,
-        }
-    ]
-    return _clean_none(stub)
-
-
-def _merge_objects(existing: dict[str, Any], incoming: dict[str, Any]) -> dict[str, Any]:
-    """Conservative object merge: preserve existing values, add missing details."""
-    merged = copy.deepcopy(existing)
-    for key, value in incoming.items():
-        if not _non_empty(value):
-            continue
-        if key not in merged or not _non_empty(merged.get(key)):
-            merged[key] = copy.deepcopy(value)
-            continue
-        if isinstance(merged[key], list):
-            current = merged[key]
-            for item in _as_list(value):
-                marker = json.dumps(item, sort_keys=True, ensure_ascii=False, default=str)
-                if not any(json.dumps(old, sort_keys=True, ensure_ascii=False, default=str) == marker for old in current):
-                    current.append(copy.deepcopy(item))
-        elif isinstance(merged[key], dict) and isinstance(value, dict):
-            merged[key] = _merge_objects(merged[key], value)
-        # Scalar conflicts intentionally keep the first value for id stability.
-    return _clean_none(merged)
-
-
-def _normalize_contact_strings(contact: dict[str, Any]) -> dict[str, Any]:
-    """Use simple string arrays for phones and e-mails in the WMDR2 profile."""
-    out = copy.deepcopy(contact)
-
-    emails = _contact_emails(out)
-    if emails:
-        out["emails"] = emails
+def _sanitize_contact_roles(contact: Mapping[str, Any]) -> dict[str, Any]:
+    sanitized = dict(contact)
+    roles = _normalize_roles(sanitized.get("roles") or sanitized.get("role"))
+    sanitized.pop("role", None)
+    if roles:
+        sanitized["roles"] = roles
     else:
-        out.pop("emails", None)
-
-    phones: list[str] = []
-    for item in _as_list(out.get("phones")):
-        if isinstance(item, str):
-            value = item.strip()
-        elif isinstance(item, dict):
-            value = str(item.get("value") or item.get("phone") or item.get("number") or "").strip()
-        else:
-            value = ""
-        if value and value not in phones:
-            phones.append(value)
-    if phones:
-        out["phones"] = phones
-    else:
-        out.pop("phones", None)
-    return _clean_none(out)
+        sanitized.pop("roles", None)
+    return sanitized
 
 
-def instrument_identifier(instrument: dict[str, Any]) -> str | None:
-    """Return a catalogue/type id, or None for instance-only metadata.
+def contact_uid(contact: Mapping[str, Any]) -> str:
+    for email in _as_list(contact.get("emails") or contact.get("email")):
+        if isinstance(email, str) and "@" in email:
+            return f"contact:{email.strip().lower()}"
+    name = contact.get("name") or contact.get("title") or ""
+    org = contact.get("organization") or contact.get("organisation") or contact.get("organisationName") or ""
+    return f"contact:{_slug(name)}--{_slug(org)}"
 
-    Serial numbers are deliberately ignored.  A catalogue entry is created only
-    when reusable type metadata is present; otherwise the deployment keeps the
-    instance information without an instrument-catalogue reference.
-    """
+
+def _inline_contact(contact: Mapping[str, Any], uid: str) -> dict[str, Any]:
+    contact = _sanitize_contact_roles(contact)
+    out: dict[str, Any] = {"uid": uid}
+    for key in ("name", "organization", "roles"):
+        if contact.get(key) not in (None, "", [], {}):
+            out[key] = contact[key]
+    out["links"] = [{"rel": "about", "href": f"../catalogues/contacts.json#{uid}", "type": "application/json"}]
+    return _clean(out)
+
+
+def _instrument_catalogue_uid(instrument: Mapping[str, Any]) -> str | None:
     manufacturer = instrument.get("manufacturer")
     model = instrument.get("model")
-    vertical_range = instrument.get("verticalRange")
-    if not any(_non_empty(value) for value in (manufacturer, model, vertical_range)):
-        return None
-
-    human = "--".join(
-        _slug(str(part))
-        for part in (manufacturer, model)
-        if isinstance(part, str) and part.strip()
-    )
-    if human:
-        return f"instrument:{human}"
-    return f"instrument:vertical-range--{_stable_hash({'verticalRange': vertical_range}, 8)}"
-
-
-def _normalize_catalogue_instrument(instrument: dict[str, Any]) -> dict[str, Any] | None:
-    identifier = instrument_identifier(instrument)
-    if not identifier:
-        return None
-    return _clean_none(
-        {
-            "id": identifier,
-            "manufacturer": instrument.get("manufacturer"),
-            "model": instrument.get("model"),
-            "observingMethods": instrument.get("observingMethods") or instrument.get("observingMethod"),
-            "verticalRange": instrument.get("verticalRange"),
-        }
-    )
-
-
-def _normalize_instrument_ref(value: Any) -> str | None:
-    """Normalize one inline instrument object to a catalogue id."""
-    if isinstance(value, dict):
-        return instrument_identifier(value)
+    if manufacturer not in (None, "", [], {}) and model not in (None, "", [], {}):
+        return f"instrument:{_slug(manufacturer)}--{_slug(model)}"
+    raw_id = instrument.get("uid") or instrument.get("id")
+    if isinstance(raw_id, str) and raw_id.startswith("instrument:"):
+        # Keep existing type-like identifiers, but not serial-number-only instances.
+        if "serialNumber" in instrument and len(instrument) <= 2:
+            return None
+        return raw_id
     return None
 
 
-def _deployment_instrument_ref(value: Any) -> str | None:
-    """Return the scalar v0.2.x deployment instrument reference.
-
-    WMDR2 v0.2.x reusable deployment definitions point to one instrument.  If a
-    legacy input contains a list, the first non-empty reference is retained.
-    """
-    for item in _as_list(value):
-        ref = _normalize_instrument_ref(item)
-        if ref:
-            return ref
-    return None
-
-
-def _iter_json_files(root: Path, *, pattern: str, recursive: bool) -> list[Path]:
-    if root.is_file():
-        return [root] if root.suffix.lower() == ".json" else []
-    if not root.is_dir():
-        return []
-    walker = root.rglob if recursive else root.glob
-    return sorted(path for path in walker(pattern) if path.is_file() and path.suffix.lower() == ".json")
+def _instrument_catalogue_entry(instrument: Mapping[str, Any]) -> dict[str, Any] | None:
+    iid = _instrument_catalogue_uid(instrument)
+    if not iid:
+        return None
+    out: dict[str, Any] = {"uid": iid}
+    for key in ("manufacturer", "model", "verticalRange", "observingMethods"):
+        if instrument.get(key) not in (None, "", [], {}):
+            out[key] = instrument[key]
+    if set(out) == {"uid"}:
+        return None
+    return _clean(out)
 
 
-def convert_record_to_catalogue_version(
-    record: dict[str, Any],
-    *,
-    contacts: dict[str, dict[str, Any]],
-    instruments: dict[str, dict[str, Any]],
-    records_path: Path,
-    contacts_path: Path,
-) -> dict[str, Any]:
-    """Externalize one facility record and update shared catalogue maps."""
-    out = copy.deepcopy(record)
-    properties = out.setdefault("properties", {})
-    if not isinstance(properties, dict):
-        return out
-
-    # Contacts: keep minimal OGC Records-compliant contact objects inline.
-    contact_stubs: list[dict[str, Any]] = []
-    for raw_contact in _as_list(properties.get("contacts")):
-        if not isinstance(raw_contact, dict):
-            continue
-        full_contact = _normalize_contact_strings(_clean_none(copy.deepcopy(raw_contact)))
-        identifier = contact_identifier(full_contact)
-        full_contact["identifier"] = identifier
-        contacts[identifier] = _merge_objects(contacts.get(identifier, {}), full_contact)
-        href = _catalogue_href(contacts_path, records_path, identifier)
-        contact_stubs.append(_minimal_contact_stub(full_contact, identifier, href=href))
-    if contact_stubs:
-        properties["contacts"] = _dedupe_dicts(contact_stubs)
-
-    # Instruments: move reusable type details to instruments.json.  Do not
-    # catalogue serial-number-only instance records; those stay on Deployment.
-    instrument_ref_map: dict[str, str | None] = {}
-    for raw_instrument in _as_list(properties.get("instruments")):
-        if not isinstance(raw_instrument, dict):
-            continue
-        old_ref = raw_instrument.get("id") or raw_instrument.get("identifier")
-        full_instrument = _normalize_catalogue_instrument(_clean_none(copy.deepcopy(raw_instrument)))
-        if not full_instrument:
-            if isinstance(old_ref, str):
-                instrument_ref_map[old_ref] = None
-            continue
-        identifier = full_instrument["id"]
-        if isinstance(old_ref, str):
-            instrument_ref_map[old_ref] = identifier
-        instruments[identifier] = _merge_objects(instruments.get(identifier, {}), full_instrument)
-    properties.pop("instruments", None)
-
-    # Ensure deployment instrument refs point to catalogue/type ids.  If the old
-    # reference only identified an instance, remove it and keep serialNumber on
-    # the deployment.
-    for deployment in _as_list(properties.get("deployments")):
-        if not isinstance(deployment, dict):
-            continue
-        old_value = deployment.get("instrument")
-        if isinstance(old_value, str):
-            ref = old_value.strip()
-            if ref in instrument_ref_map:
-                new_ref = instrument_ref_map[ref]
-                if new_ref:
-                    deployment["instrument"] = new_ref
-                else:
-                    deployment.pop("instrument", None)
-            elif ref:
-                deployment["instrument"] = ref
-        else:
-            ref = _deployment_instrument_ref(old_value)
-            if ref:
-                deployment["instrument"] = ref
-
-    return _clean_none(out)
+def _iter_record_paths(source: Path) -> list[Path]:
+    if source.is_file():
+        return [source]
+    return sorted(p for p in source.rglob("*.json") if p.is_file())
 
 
-def _is_relative_to(path: Path, root: Path) -> bool:
-    try:
-        path.resolve().relative_to(root.resolve())
-        return True
-    except ValueError:
-        return False
-
-
-def _should_skip_generated_catalogue_input(path: Path, paths: CataloguePaths) -> bool:
-    """Return True for derived catalogue outputs that should not be reprocessed."""
-    if _is_relative_to(path, paths.records_path):
-        return True
-    try:
-        resolved = path.resolve()
-    except Exception:
-        resolved = path.absolute()
-    for catalogue_file in (paths.contacts_path, paths.instruments_path):
-        try:
-            if resolved == catalogue_file.resolve():
-                return True
-        except Exception:
-            if resolved == catalogue_file.absolute():
-                return True
-    return False
-
-
-def _relative_output_path(source_file: Path, source_root: Path) -> Path:
-    if source_root.is_file():
-        return Path(source_file.name)
-    try:
-        return source_file.relative_to(source_root)
-    except ValueError:
-        return Path(source_file.name)
-
-
-def _write_catalogues(
-    *,
-    contacts: dict[str, dict[str, Any]],
-    instruments: dict[str, dict[str, Any]],
-    contacts_path: Path,
-    instruments_path: Path,
-) -> None:
-    contacts_path.parent.mkdir(parents=True, exist_ok=True)
-    contacts_path.write_text(
-        json.dumps({"contacts": sorted(contacts.values(), key=lambda item: item.get("identifier", ""))}, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-
-    instruments_path.parent.mkdir(parents=True, exist_ok=True)
-    instruments_path.write_text(
-        json.dumps({"instruments": sorted(instruments.values(), key=lambda item: item.get("id", ""))}, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-
-
-def convert_catalogue_files(source_files: Iterable[Path], paths: CataloguePaths) -> list[Path]:
-    """Externalize a known set of generated WMDR2 facility record files."""
-    contacts: dict[str, dict[str, Any]] = {}
-    instruments: dict[str, dict[str, Any]] = {}
-    written_records: list[Path] = []
-
-    for source_file in sorted(source_files):
-        if _should_skip_generated_catalogue_input(source_file, paths):
-            continue
-        payload = json.loads(source_file.read_text(encoding="utf-8"))
-        if not isinstance(payload, dict):
-            continue
-        catalogue_record = convert_record_to_catalogue_version(
-            payload,
-            contacts=contacts,
-            instruments=instruments,
-            records_path=paths.records_path,
-            contacts_path=paths.contacts_path,
-        )
-        relative = _relative_output_path(source_file, paths.source)
-        target_file = paths.records_path / relative
-        target_file.parent.mkdir(parents=True, exist_ok=True)
-        target_file.write_text(json.dumps(catalogue_record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        written_records.append(target_file)
-
-    _write_catalogues(
-        contacts=contacts,
-        instruments=instruments,
-        contacts_path=paths.contacts_path,
-        instruments_path=paths.instruments_path,
-    )
-    return written_records
+def _write_json(path: Path, payload: Mapping[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def convert_to_catalogue_version(paths: CataloguePaths) -> list[Path]:
-    source_files = [
-        source_file
-        for source_file in _iter_json_files(paths.source, pattern=paths.pattern, recursive=paths.recursive)
-        if not _should_skip_generated_catalogue_input(source_file, paths)
-    ]
-    return convert_catalogue_files(source_files, paths)
+    contacts: dict[str, dict[str, Any]] = {}
+    instruments: dict[str, dict[str, Any]] = {}
+    written: list[Path] = []
 
+    for source_path in _iter_record_paths(paths.source):
+        record = json.loads(source_path.read_text(encoding="utf-8"))
+        if not isinstance(record, dict):
+            continue
+        rewritten = copy.deepcopy(record)
+        props = rewritten.get("properties")
+        source_props = record.get("properties")
+        if not isinstance(props, dict) or not isinstance(source_props, dict):
+            continue
 
-def _paths_from_config(config_path: Path) -> CataloguePaths:
-    if yaml is None:
-        raise SystemExit("PyYAML is required when using --config.")
-    cfg = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
-    section = cfg.get("convert_wmdr10_json_to_wmdr2_json") or {}
-    if not isinstance(section, dict):
-        raise SystemExit("Missing convert_wmdr10_json_to_wmdr2_json config section.")
-    catalogues = section.get("catalogues") or {}
-    if not isinstance(catalogues, dict):
-        raise SystemExit("catalogues must be a mapping.")
-    if "source" in catalogues:
-        raise SystemExit("catalogues.source is obsolete; catalogue input is always the converter target.")
+        inline_contacts: list[dict[str, Any]] = []
+        for contact in _as_list(source_props.get("contacts")):
+            if not isinstance(contact, Mapping):
+                continue
+            entry = _sanitize_contact_roles(contact)
+            cid = contact_uid(entry)
+            entry["uid"] = cid
+            entry.pop("id", None)
+            entry.pop("identifier", None)
+            # Merge by uid, preserving details from later duplicates.
+            merged = {**contacts.get(cid, {}), **entry}
+            contacts[cid] = _clean(merged)
+            inline_contacts.append(_inline_contact(entry, cid))
+        if inline_contacts:
+            props["contacts"] = inline_contacts
 
-    base = config_path.parent
-    target = section.get("target")
-    if not target:
-        raise SystemExit("Missing convert_wmdr10_json_to_wmdr2_json.target; it is used as catalogue input.")
+        id_map: dict[str, str] = {}
+        for inst in _as_list(source_props.get("instruments")):
+            if not isinstance(inst, Mapping):
+                continue
+            entry = _instrument_catalogue_entry(inst)
+            if not entry:
+                continue
+            old_id = inst.get("uid") or inst.get("id")
+            new_id = entry["uid"]
+            if isinstance(old_id, str):
+                id_map[old_id] = new_id
+            instruments[new_id] = {**instruments.get(new_id, {}), **entry}
 
-    source = Path(str(target)).expanduser()
-    records_path = Path(str(catalogues.get("records_path") or (source / "catalogue_representation"))).expanduser()
-    contacts_path = Path(str(catalogues.get("contacts_path") or (source / "catalogues" / "contacts.json"))).expanduser()
-    instruments_path = Path(str(catalogues.get("instruments_path") or (source / "catalogues" / "instruments.json"))).expanduser()
+        # v0.3.1: instrument refs live on observing configurations.
+        for obs in _as_list(props.get("observationSeries")):
+            if not isinstance(obs, dict):
+                continue
+            for cfg in _as_list(obs.get("observingConfigurations")):
+                if isinstance(cfg, dict) and isinstance(cfg.get("instrument"), str):
+                    if cfg["instrument"] in id_map:
+                        cfg["instrument"] = id_map[cfg["instrument"]]
+                    else:
+                        cfg.pop("instrument", None)
 
-    def abs_path(path: Path) -> Path:
-        return path if path.is_absolute() else base / path
+        props.pop("instruments", None)
+        rel = source_path.relative_to(paths.source) if paths.source.is_dir() else Path(source_path.name)
+        out_path = paths.records_path / rel
+        _write_json(out_path, rewritten)
+        written.append(out_path)
 
-    return CataloguePaths(
-        source=abs_path(source),
-        records_path=abs_path(records_path),
-        contacts_path=abs_path(contacts_path),
-        instruments_path=abs_path(instruments_path),
-        pattern=str(section.get("pattern") or DEFAULT_PATTERN),
-        recursive=bool(section.get("recursive", True)),
-    )
-
-
-# Backwards-compatible aliases for older imports/tests.
-externalize_record = convert_record_to_catalogue_version
-externalize_catalogue_files = convert_catalogue_files
-externalize_catalogues = convert_to_catalogue_version
-
-
-def main(argv: list[str] | None = None) -> None:
-    parser = argparse.ArgumentParser(description="Convert embedded WMDR2 facility records to the catalogue-based representation.")
-    parser.add_argument("--config", default=Path("config.yaml"), type=Path, help="Read catalogue paths from config.yaml.")
-    parser.add_argument("--source", type=Path, help="Source WMDR2 facility records, usually converter target output.")
-    parser.add_argument("--records-path", type=Path, help="Target folder for rewritten facility records.")
-    parser.add_argument("--contacts-path", type=Path, help="Target contacts.json path.")
-    parser.add_argument("--instruments-path", type=Path, help="Target instruments.json path.")
-    parser.add_argument("--pattern", default=DEFAULT_PATTERN)
-    parser.add_argument("--no-recursive", action="store_true")
-    args = parser.parse_args(argv)
-
-    explicit_paths_provided = all(
-        value is not None
-        for value in (args.source, args.records_path, args.contacts_path, args.instruments_path)
-    )
-    if explicit_paths_provided:
-        paths = CataloguePaths(
-            source=args.source,
-            records_path=args.records_path,
-            contacts_path=args.contacts_path,
-            instruments_path=args.instruments_path,
-            pattern=args.pattern,
-            recursive=not args.no_recursive,
-        )
-    elif args.config.exists():
-        paths = _paths_from_config(args.config)
+    if contacts:
+        _write_json(paths.contacts_path, {"contacts": sorted(contacts.values(), key=lambda c: c.get("uid", ""))})
     else:
-        missing = [
-            name
-            for name, value in (
-                ("--source", args.source),
-                ("--records-path", args.records_path),
-                ("--contacts-path", args.contacts_path),
-                ("--instruments-path", args.instruments_path),
-            )
-            if value is None
-        ]
-        raise SystemExit(
-            f"Config file not found: {args.config}. "
-            f"Alternatively pass all explicit path arguments: {', '.join(missing)}"
-        )
-
-    written = convert_to_catalogue_version(paths)
-    print(f"Wrote {len(written)} catalogue-based WMDR2 record(s) to {paths.records_path}")
-    print(f"Wrote contacts catalogue to {paths.contacts_path}")
-    print(f"Wrote instruments catalogue to {paths.instruments_path}")
+        _write_json(paths.contacts_path, {"contacts": []})
+    if instruments:
+        _write_json(paths.instruments_path, {"instruments": sorted(instruments.values(), key=lambda i: i.get("uid", ""))})
+    else:
+        _write_json(paths.instruments_path, {"instruments": []})
+    return written
 
 
-if __name__ == "__main__":
-    main()
+def contact_identifier(contact: Mapping[str, Any]) -> str:
+    """Backward-compatible alias for callers; returns the contact uid."""
+    return contact_uid(contact)
+
+
+__all__ = ["CataloguePaths", "contact_uid", "contact_identifier", "convert_to_catalogue_version"]

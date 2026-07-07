@@ -124,3 +124,21 @@ def test_environment_schema_rejects_obsolete_environment_names(obsolete_name: st
     with pytest.raises(ValidationError):
         Draft202012Validator(schema).validate([{obsolete_name: []}])
 
+
+# v0.3.0 overrides: Environment histories use validFrom.
+
+def test_environment_converter_uses_temporal_population_and_topography_bathymetry() -> None:
+    facility = {
+        "population": [{"population": [12000, None], "perimeter_km": [10, 50], "beginPosition": "2020-01-01", "endPosition": None}],
+        "topographyBathymetry": {"localTopography": "slope", "relativeElevation": "middle", "topographicContext": "rises", "altitudeOrDepth": "veryHighAltitude"},
+    }
+    assert converter._normalize_environment(facility) == [
+        {"validFrom": "..", "topographyBathymetry": {"localTopography": "slope", "relativeElevation": "middle", "topographicContext": "rises", "altitudeOrDepth": "veryHighAltitude"}},
+        {"validFrom": "2020-01-01", "population": [12000.0, None], "perimeter_km": [10.0, 50.0]},
+    ]
+
+
+def test_environment_converter_defaults_population_perimeters_and_allows_unknown_second_population() -> None:
+    assert converter._normalize_environment({"population": [{"population": "12000", "beginPosition": "2020-01-01"}]}) == [
+        {"validFrom": "2020-01-01", "population": [12000.0, None], "perimeter_km": [10.0, 50.0]}
+    ]

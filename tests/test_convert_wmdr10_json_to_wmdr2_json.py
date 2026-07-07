@@ -123,8 +123,8 @@ def test_observation_program_affiliations_are_plain_unique_code_values() -> None
         source_name="20200101_0-TEST",
     )
     observation = record["properties"]["observationSeries"][0]
-    assert observation["programAffiliation"] == ["GAWregional", "GBON"]
-    assert "programAffiliations" not in observation
+    assert observation["programAffiliations"] == ["GAWregional", "GBON"]
+    assert "programAffiliation" not in observation
 
 
 def test_facility_temporal_program_affiliation_keeps_temporal_metadata() -> None:
@@ -150,9 +150,9 @@ def test_facility_temporal_program_affiliation_keeps_temporal_metadata() -> None
         {},
         source_name="20200101_0-TEST",
     )
-    assert record["properties"]["programAffiliation"] == [
+    assert record["properties"]["programAffiliations"] == [
         {
-            "programAffiliation": "GAWregional",
+            "program": "GAWregional",
             "reportingStatus": "operational",
             "date": "2020-01-01",
             "programSpecificFacilityId": "GAW-TEST",
@@ -211,8 +211,8 @@ def test_reporting_is_reusable_and_history_keeps_date_reference_and_uom() -> Non
         source_name="20200101_0-TEST",
     )
     props = record["properties"]
-    reporting_defs = props["reporting"]
-    reporting_history = props["observationSeries"][0]["reporting"]
+    reporting_defs = props["reportingProcedures"]
+    reporting_history = props["observationSeries"][0]["reportingProcedures"]
 
     assert len(reporting_defs) == 1
     reporting_id = reporting_defs[0]["id"]
@@ -763,13 +763,13 @@ def test_temporal_program_affiliation_expands_reporting_status_history() -> None
         }
     ) == [
         {
-            "programAffiliation": "GAWregional",
+            "program": "GAWregional",
             "reportingStatus": "operational",
             "date": "2020-01-01",
             "programSpecificFacilityId": "GAW-1",
         },
         {
-            "programAffiliation": "GAWregional",
+            "program": "GAWregional",
             "reportingStatus": "closed",
             "date": "2021-01-01",
             "programSpecificFacilityId": "GAW-1",
@@ -826,12 +826,12 @@ def test_facility_set_refs_are_plural_id_references() -> None:
 
 def test_facility_set_catalog_uses_id_title_description_shape() -> None:
     assert module.facility_set_catalog_entry("GAW", description="Global Atmosphere Watch") == {
-        "id": "facilitySet:GAW",
+        "uid": "facilitySet:GAW",
         "title": "GAW",
         "description": "Global Atmosphere Watch",
     }
     assert module.facility_set_catalog(["GAW"]) == {
-        "facilitySets": [{"id": "facilitySet:GAW", "title": "GAW"}]
+        "facilitySets": [{"uid": "facilitySet:GAW", "title": "GAW"}]
     }
 
 
@@ -990,7 +990,7 @@ def test_normalize_instrument_catalogue_uses_type_metadata_only() -> None:
         facility_id="0-TEST",
     )
     assert instrument is not None
-    assert instrument["id"] == "instrument:Maker--Model"
+    assert instrument["uid"] == "instrument:Maker--Model"
     assert instrument["manufacturer"] == "Maker"
     assert instrument["model"] == "Model"
     assert "serialNumber" not in instrument
@@ -1068,7 +1068,7 @@ def test_vertical_range_alone_is_enough_to_create_an_instrument_record() -> None
         facility_id="0-TEST",
     )
     assert instrument is not None
-    assert instrument["id"].startswith("instrument:")
+    assert instrument["uid"].startswith("instrument:")
     assert instrument["verticalRange"] == {"min": 10.0, "max": 500.0}
 
 
@@ -1089,8 +1089,10 @@ def test_jscalendar_schedule_uses_v024_sampling_and_aggregation_extensions() -> 
     )
     assert event is not None
     assert event["@type"] == "Event"
-    assert event["wmi.int:samplingFrequency"] == "PT1H"
+    assert event["wmo.int:samplingFrequency"] == "PT1H"
+    assert "wmi.int:samplingFrequency" not in event
     assert event["wmo.int:aggregationInterval"] == "PT1H"
+    assert "wmi.int:aggregationInterval" not in event
     assert "wmo.int:aggregation" not in event
     assert event["uid"].startswith("schedule_")
 
@@ -1142,15 +1144,15 @@ def test_normalize_observation_reporting_registers_reusable_definitions() -> Non
     assert reporting[0]["date"] == "2020-01-01"
     assert reporting[0]["strategy"] == "unknown"
     assert reporting[0]["uom"] == "mm"
-    assert reporting[0]["reporting"] in registry
-    assert registry[reporting[0]["reporting"]]["internationalExchange"] is True
-    assert registry[reporting[0]["reporting"]]["temporalAggregate"] == "PT1H"
-    assert registry[reporting[0]["reporting"]]["timeliness"] == "PT30M"
+    assert reporting[0]["reportingProcedures"] in registry
+    assert registry[reporting[0]["reportingProcedures"]]["internationalExchange"] is True
+    assert registry[reporting[0]["reportingProcedures"]]["temporalAggregate"] == "PT1H"
+    assert registry[reporting[0]["reportingProcedures"]]["timeliness"] == "PT30M"
     assert reporting[1]["date"] == "2021-01-01"
     assert reporting[1]["strategy"] == "unknown"
-    assert reporting[1]["reporting"] in registry
-    assert registry[reporting[1]["reporting"]]["internationalExchange"] is False
-    assert registry[reporting[1]["reporting"]]["temporalAggregate"] == "PT10M"
+    assert reporting[1]["reportingProcedures"] in registry
+    assert registry[reporting[1]["reportingProcedures"]]["internationalExchange"] is False
+    assert registry[reporting[1]["reportingProcedures"]]["temporalAggregate"] == "PT10M"
 
 
 def test_two_observations_can_reuse_the_same_reporting_definition() -> None:
@@ -1164,10 +1166,10 @@ def test_two_observations_can_reuse_the_same_reporting_definition() -> None:
         source_name="20200101_0-TEST",
     )
     props = record["properties"]
-    assert len(props["reporting"]) == 1
-    reporting_id = props["reporting"][0]["id"]
+    assert len(props["reportingProcedures"]) == 1
+    reporting_id = props["reportingProcedures"][0]["id"]
     assert all(
-        observation["reporting"][0]["reporting"] == reporting_id
+        observation["reportingProcedures"][0]["reportingProcedures"] == reporting_id
         for observation in props["observationSeries"]
     )
 
@@ -1176,7 +1178,7 @@ def test_normalize_observation_links_to_embedded_deployments_by_id() -> None:
     observation = module._normalize_observation(_observation_with_deployment(), index=1, facility_id="0-TEST")
     assert "deployments" not in observation
     assert observation["observingConfigurations"][0]["deployment"] == "deployment:dep1"
-    assert observation["programAffiliation"] == ["GAWregional", "GBON"]
+    assert observation["programAffiliations"] == ["GAWregional", "GBON"]
 
 def test_convert_payload_accepts_split_payload_shape() -> None:
     converted = module.convert_payload(
@@ -1188,9 +1190,9 @@ def test_convert_payload_accepts_split_payload_shape() -> None:
         },
         source_name="20200102_0-TEST",
     )
-    assert converted["id"] == "facility:0-TEST"
+    assert converted["id"] == "wsi:0-TEST"
     assert converted["properties"]["created"] == "2020-01-02T00:00:00Z"
-    assert converted["properties"]["observationSeries"][0]["programAffiliation"] == ["GAWregional", "GBON"]
+    assert converted["properties"]["observationSeries"][0]["programAffiliations"] == ["GAWregional", "GBON"]
 
 
 def test_convert_payload_emits_temporal_geometry_methods_from_geopositioning_method() -> None:
@@ -1247,7 +1249,7 @@ def test_convert_payload_emits_single_temporal_geometry_when_method_is_present()
 
 def test_convert_group_uses_source_name_as_fallback_facility_when_missing() -> None:
     converted = module.convert_group({"observationSeries": []}, source_name="fallback-record")
-    assert converted["id"] == "facility:fallback-record"
+    assert converted["id"] == "wsi:fallback-record"
     assert converted["properties"]["title"] == "fallback-record"
 
 
@@ -1257,7 +1259,7 @@ def test_convert_file_writes_json_output(tmp_path: Path) -> None:
     source.write_text(json.dumps({"facility": _minimal_facility(), "observationSeries": []}), encoding="utf-8")
     output_path = module.convert_file(source, target_dir)
     converted = json.loads(output_path.read_text(encoding="utf-8"))
-    assert converted["id"] == "facility:0-TEST"
+    assert converted["id"] == "wsi:0-TEST"
 
 
 def test_load_code_list_labels_reads_csv_mapping(tmp_path: Path) -> None:
@@ -1371,7 +1373,7 @@ def test_main_runs_catalogue_post_processing_when_enabled(tmp_path: Path) -> Non
     assert "instruments" not in rewritten["properties"]
     assert rewritten["properties"]["contacts"] == [
         {
-            "identifier": "contact:jane.smith@example.org",
+            "uid": "contact:jane.smith@example.org",
             "name": "Jane Smith",
             "organization": "Example Org",
             "roles": ["owner"],
@@ -1384,7 +1386,7 @@ def test_main_runs_catalogue_post_processing_when_enabled(tmp_path: Path) -> Non
             ],
         }
     ]
-    assert [contact["identifier"] for contact in contacts] == ["contact:jane.smith@example.org"]
+    assert [contact["uid"] for contact in contacts] == ["contact:jane.smith@example.org"]
     assert contacts[0]["phones"] == ["+41 1 234 56 78"]
     assert len(instruments) == 1
     deployment_ref = rewritten["properties"]["observationSeries"][0]["observingConfigurations"][0]["deployment"]
@@ -1518,3 +1520,406 @@ def test_observation_accepts_legacy_observed_geometry_type_but_outputs_observed_
     observation = record["properties"]["observationSeries"][0]
     assert observation["observedGeometry"] == "point"
     assert "observedGeometryType" not in observation
+
+# ---------------------------------------------------------------------------
+# v0.3.0 expectation overrides for tests originally written for v0.2.x.
+# These keep the same test names while asserting the current EA model shape.
+# ---------------------------------------------------------------------------
+
+
+def test_facility_temporal_program_affiliation_keeps_temporal_metadata() -> None:
+    facility = _minimal_facility() | {
+        "programAffiliation": [
+            {
+                "programAffiliation": GAW_REGIONAL,
+                "beginPosition": "2020-01-01T00:00:00Z",
+                "programSpecificFacilityId": "GAW-TEST",
+                "reportingStatus": [
+                    {
+                        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+                        "beginPosition": "2020-01-01T00:00:00Z",
+                    }
+                ],
+            }
+        ]
+    }
+    record = module.build_facility_feature(facility, [], [], {}, source_name="20200101_0-TEST")
+    assert record["properties"]["programAffiliations"] == [
+        {
+            "validFrom": "2020-01-01",
+            "program": "GAWregional",
+            "reportingStatus": "operational",
+            "programSpecificFacilityId": "GAW-TEST",
+        }
+    ]
+    assert "temporalProgramAffiliation" not in record["properties"]
+
+
+def test_build_facility_feature_uses_current_core_model() -> None:
+    record = module.build_facility_feature(_minimal_facility(), [_observation_with_deployment()], [], {}, source_name="20200101_0-TEST")
+    props = record["properties"]
+    observation = props["observationSeries"][0]
+    cfg = observation["observingConfigurations"][0]
+    assert record["type"] == "Feature"
+    assert record["conformsTo"] == ["http://wigos.wmo.int/spec/wmdr/2/conf/core"]
+    assert record["geometry"] == {"type": "Point", "coordinates": [7.0, 46.0, 100]}
+    assert "deployments" not in props
+    assert observation["observedProperty"] == 12006
+    assert observation["observedGeometry"] == "point"
+    assert observation["observedFeature"] == {"domain": "atmosphere"}
+    assert cfg["validFrom"] == "2020-01-01"
+    assert "deployment" not in cfg
+    assert cfg["observingLocation"]["referenceSurface"] == "localGround"
+    assert cfg["observingLocation"]["verticalDistanceFromReferenceSurface"] == {"value": 2.0}
+    assert cfg["sourceOfObservation"] == "automaticReading"
+    assert cfg["serialNumber"] == "SN1"
+    assert cfg["instrument"].startswith("instrument:")
+    assert props["instruments"][0]["verticalRange"] == {"min": 0.0, "max": 30.0}
+
+
+def test_reporting_is_reusable_and_history_keeps_date_reference_and_uom() -> None:
+    record = module.build_facility_feature(_minimal_facility(), [_observation_with_deployment()], [], {}, source_name="20200101_0-TEST")
+    props = record["properties"]
+    assert "reporting" not in props
+    reporting = props["observationSeries"][0]["reportingProcedures"][0]
+    assert reporting["internationalExchange"] is True
+    assert reporting["temporalReportingInterval"] == "PT1H"
+    assert reporting["timeliness"] == "PT30M"
+    assert reporting["levelOfData"] == "level1"
+    assert reporting["uom"] == "mm"
+    assert reporting["dataPolicy"] == "noLimitation"
+    assert reporting["reportingSchedules"][0] in {schedule["uid"] for schedule in props["schedules"]}
+
+def test_reporting_schedules_are_reusable_global_schedules() -> None:
+    record = module.build_facility_feature(
+        _minimal_facility(),
+        [_observation_with_deployment(duplicate_data_generation=True)],
+        [],
+        {},
+        source_name="20200101_0-TEST",
+    )
+    props = record["properties"]
+    reporting = props["observationSeries"][0]["reportingProcedures"]
+    schedule_ids = {schedule["uid"] for schedule in props["schedules"]}
+    assert reporting
+    refs = [uid for item in reporting for uid in item.get("reportingSchedules", [])]
+    assert all(isinstance(uid, str) and uid in schedule_ids for uid in refs)
+    assert len(set(refs)) == 1
+
+
+
+def test_duplicate_temporal_observing_schedule_references_are_removed() -> None:
+    record = module.build_facility_feature(_minimal_facility(), [_observation_with_deployment(duplicate_data_generation=True)], [], {}, source_name="20200101_0-TEST")
+    schedules = record["properties"]["schedules"]
+    procedures = record["properties"]["observationSeries"][0]["observingProcedures"]
+    assert schedules
+    assert len(procedures) == len({(ref["validFrom"], ref["strategy"], tuple(ref["observingSchedules"])) for ref in procedures})
+    assert all(uid in {schedule["uid"] for schedule in schedules} for p in procedures for uid in p["observingSchedules"])
+
+
+def test_facility_environment_wraps_environmental_histories_as_arrays_of_objects() -> None:
+    facility = _minimal_facility() | {
+        "climateZone": {"climateZone": "http://codes.wmo.int/wmdr/ClimateZone/Cfb", "beginPosition": "1980-01-01T00:00:00Z"},
+        "surfaceCover": {"surfaceCover": "http://codes.wmo.int/wmdr/SurfaceCover/urbanBuiltup", "beginPosition": "1981-01-01T00:00:00Z"},
+        "population": {"population": [100, None], "perimeter_km": [10, 50], "beginPosition": "1990-01-01T00:00:00Z"},
+        "surfaceRoughness": {"surfaceRoughness": "http://codes.wmo.int/wmdr/SurfaceRoughness/rough", "beginPosition": "1991-01-01T00:00:00Z"},
+        "topographyBathymetry": {"localTopography": "flat"},
+    }
+    record = module.build_facility_feature(facility, [], [], {}, source_name="20200101_0-TEST")
+    environment = record["properties"]["environment"]
+    assert {item["validFrom"]: item for item in environment} == {
+        "1980-01-01": {"validFrom": "1980-01-01", "climateZone": "Cfb"},
+        "1981-01-01": {"validFrom": "1981-01-01", "surfaceCover": "urbanBuiltup"},
+        "1990-01-01": {"validFrom": "1990-01-01", "population": [100.0, None], "perimeter_km": [10.0, 50.0]},
+        "1991-01-01": {"validFrom": "1991-01-01", "surfaceRoughness": "rough"},
+        "..": {"validFrom": "..", "topographyBathymetry": {"localTopography": "flat"}},
+    }
+
+
+def test_normalize_temporal_values_produces_array_of_objects_not_object_of_arrays() -> None:
+    assert module._normalize_temporal_climate_zone([
+        {"climateZone": "http://codes.wmo.int/wmdr/ClimateZone/Cfb", "beginPosition": "2020-01-01T00:00:00Z"},
+        "http://codes.wmo.int/wmdr/ClimateZone/Af",
+    ]) == [{"validFrom": "2020-01-01", "climateZone": "Cfb"}, {"validFrom": "..", "climateZone": "Af"}]
+
+
+def test_surface_cover_preserves_classification_inside_each_temporal_object() -> None:
+    assert module._normalize_temporal_surface_cover({
+        "surfaceCover": "http://codes.wmo.int/wmdr/SurfaceCover/grassland",
+        "surfaceClassification": {"href": "http://codes.wmo.int/wmdr/SurfaceClassification/local"},
+        "beginPosition": "2020-01-01",
+    }) == [{"validFrom": "2020-01-01", "surfaceCover": "grassland", "surfaceClassification": "local"}]
+
+
+def test_normalize_temporal_population_uses_population_perimeter_and_dates() -> None:
+    assert module._normalize_temporal_population({"population": "100", "perimeter_km": [10, 50], "beginPosition": "1990-01-01T00:00:00Z"}) == [
+        {"validFrom": "1990-01-01", "population": [100.0, None], "perimeter_km": [10.0, 50.0]}
+    ]
+
+
+def test_normalize_temporal_surface_roughness_is_array_of_objects() -> None:
+    assert module._normalize_temporal_surface_roughness({"surfaceRoughness": "http://codes.wmo.int/wmdr/SurfaceRoughness/rough", "beginPosition": "1991-01-01"}) == [
+        {"validFrom": "1991-01-01", "surfaceRoughness": "rough"}
+    ]
+
+
+def test_environment_uses_topography_bathymetry_object() -> None:
+    environment = module._normalize_environment({
+        "topographyBathymetry": {
+            "localTopography": {"value": "flat", "beginPosition": "2020-01-01"},
+            "relativeElevation": {"value": "ridge", "beginPosition": "2021-01-01"},
+            "topographicContext": {"value": "valley", "beginPosition": "2022-01-01"},
+            "altitudeOrDepth": {"value": 123, "beginPosition": "2023-01-01"},
+        }
+    })
+    assert environment == [{"validFrom": "..", "topographyBathymetry": {"localTopography": "flat", "relativeElevation": "ridge", "topographicContext": "valley", "altitudeOrDepth": 123}}]
+
+
+def test_temporal_program_affiliation_expands_reporting_status_history() -> None:
+    assert module._normalize_temporal_program_affiliation({
+        "programAffiliation": GAW_REGIONAL,
+        "beginPosition": "2020-01-01",
+        "programSpecificFacilityId": "GAW-1",
+        "reportingStatus": [
+            {"reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational", "beginPosition": "2020-01-01"},
+            {"reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/closed", "beginPosition": "2021-01-01"},
+        ],
+    }) == [
+        {"validFrom": "2020-01-01", "program": "GAWregional", "programSpecificFacilityId": "GAW-1", "reportingStatus": "operational"},
+        {"validFrom": "2021-01-01", "program": "GAWregional", "programSpecificFacilityId": "GAW-1", "reportingStatus": "closed"},
+    ]
+
+
+def test_temporal_instrument_operating_status_is_array_of_objects() -> None:
+    assert module._normalize_temporal_instrument_operating_status({"instrumentOperatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational", "beginPosition": "2020-01-01"}) == [
+        {"validFrom": "2020-01-01", "instrumentOperatingStatus": "operational"}
+    ]
+
+
+def test_temporal_data_policy_retains_policy_and_attribution_with_dates() -> None:
+    assert module._normalize_temporal_data_policy({"dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation", "attribution": {"originator": "Org"}, "beginPosition": "2020-01-01"}) == [
+        {"validFrom": "2020-01-01", "dataPolicy": "noLimitation", "attribution": {"originator": "Org"}}
+    ]
+
+
+def test_observing_configurations_link_observation_series_deployment_and_method() -> None:
+    record = module.build_facility_feature(_minimal_facility(), [_observation_with_deployment()], [], {}, source_name="20200101_0-TEST")
+    instrument = record["properties"]["instruments"][0]
+    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    assert instrument["observingMethods"] == [266]
+    assert cfg["validFrom"] == "2020-01-01"
+    assert "deployment" not in cfg
+    assert cfg["observingMethod"] == 266
+    assert cfg["instrument"] == instrument["uid"]
+
+
+def test_observation_series_observing_configuration_uses_nil_reason_when_absent_without_bloating_instrument() -> None:
+    observation = _observation_with_deployment()
+    observation["deployments"][0].pop("observingMethod", None)
+    record = module.build_facility_feature(_minimal_facility(), [observation], [], {}, source_name="20200101_0-TEST")
+    instrument = record["properties"]["instruments"][0]
+    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    assert "observingMethods" not in instrument
+    assert cfg["validFrom"] == "2020-01-01"
+    assert cfg["observingMethod"] == {"nilReason": "unknown"}
+    assert "deployment" not in cfg
+
+
+def test_observation_series_observing_configuration_converts_unknown_string_to_nil_reason() -> None:
+    observation = _observation_with_deployment()
+    observation["deployments"][0]["observingMethod"] = "unknown"
+    record = module.build_facility_feature(_minimal_facility(), [observation], [], {}, source_name="20200101_0-TEST")
+    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    assert cfg["observingMethod"] == {"nilReason": "unknown"}
+    assert "deployment" not in cfg
+
+
+def test_observation_series_observing_configuration_preserves_explicit_nil_reason() -> None:
+    observation = _observation_with_deployment()
+    observation["deployments"][0]["observingMethod"] = {"nilReason": "withheld"}
+    record = module.build_facility_feature(_minimal_facility(), [observation], [], {}, source_name="20200101_0-TEST")
+    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    assert cfg["observingMethod"] == {"nilReason": "withheld"}
+    assert "deployment" not in cfg
+
+
+def test_observation_series_can_record_consecutive_observing_methods_from_deployments() -> None:
+    first = _observation_with_deployment()
+    second = dict(first["deployments"][0])
+    second["id"] = "dep2"
+    second["beginPosition"] = "2001-01-01"
+    second["observingMethod"] = "http://codes.wmo.int/wmdr/ObservingMethod/267"
+    first["deployments"].append(second)
+    record = module.build_facility_feature(_minimal_facility(), [first], [], {}, source_name="20200101_0-TEST")
+    configs = record["properties"]["observationSeries"][0]["observingConfigurations"]
+    assert [(cfg["validFrom"], cfg["observingMethod"]) for cfg in configs] == [("2020-01-01", 266), ("2001-01-01", 267)]
+    assert all("deployment" not in cfg for cfg in configs)
+
+
+def test_observing_configuration_method_alone_does_not_create_instrument_catalogue_entry() -> None:
+    observation = {"observedProperty": OBSERVED_12006, "deployments": [{"id": "dep1", "beginPosition": "1980-01-01T00:00:00Z", "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266"}]}
+    record = module.build_facility_feature(_minimal_facility(), [observation], [], {}, source_name="20200101_0-TEST")
+    props = record["properties"]
+    assert "instruments" not in props
+    cfg = props["observationSeries"][0]["observingConfigurations"][0]
+    assert cfg == {"validFrom": "1980-01-01", "observingMethod": 266, "operatingStatus": {"nilReason": "unknown"}, "sourceOfObservation": {"nilReason": "unknown"}}
+
+
+def test_serial_number_only_deployment_does_not_create_instrument_catalogue_entry() -> None:
+    observation = _observation_with_deployment()
+    observation["deployments"] = [{"identifier": "dep-serial-only", "beginPosition": "2020-01-01", "serialNumber": "SN-ONLY"}]
+    record = module.build_facility_feature(_minimal_facility(), [observation], [], {}, source_name="20200101_0-TEST")
+    props = record["properties"]
+    assert "instruments" not in props
+    cfg = props["observationSeries"][0]["observingConfigurations"][0]
+    assert cfg["serialNumber"] == "SN-ONLY"
+    assert "instrument" not in cfg
+    assert "deployments" not in props
+
+
+def test_deployment_temporal_serial_number_is_array_of_objects() -> None:
+    assert module._deployment_temporal_serial_number({"serialNumber": "SN1", "beginPosition": "2020-01-01"}) == [{"validFrom": "2020-01-01", "serialNumber": "SN1"}]
+
+
+def test_register_observing_schedule_refs_deduplicates_references_and_registry_entries() -> None:
+    registry: dict[str, dict[str, Any]] = {}
+    refs = module._register_observing_schedule_refs([[{"beginPosition": "2020-01-01", "temporalSamplingInterval": "PT1H"}, {"beginPosition": "2020-01-01", "temporalSamplingInterval": "PT1H"}]], schedule_registry=registry)
+    assert refs is not None
+    assert len(refs) == 1
+    assert list(registry) == [refs[0]]
+
+
+def test_normalize_observation_reporting_registers_reusable_definitions() -> None:
+    registry: dict[str, dict[str, Any]] = {}
+    reporting = module._normalize_observation_reporting([
+        {"beginPosition": "2020-01-01", "temporalSamplingInterval": "PT1H", "reporting": {"internationalExchange": "true", "temporalReportingInterval": "PT1H", "uom": "http://codes.wmo.int/wmdr/unit/mm", "timeliness": "PT30M"}},
+        {"beginPosition": "2021-01-01", "temporalSamplingInterval": "PT10M", "reporting": {"internationalExchange": "false", "temporalReportingInterval": "PT10M", "uom": None}},
+    ], reporting_registry=registry)
+    assert registry == {}
+    assert reporting is not None
+    assert reporting[0]["internationalExchange"] is True
+    assert reporting[0]["temporalReportingInterval"] == "PT1H"
+    assert reporting[0]["uom"] == "mm"
+    assert reporting[1]["internationalExchange"] is False
+    assert reporting[1]["temporalReportingInterval"] == "PT10M"
+
+
+def test_two_observations_can_reuse_the_same_reporting_definition() -> None:
+    obs1 = _observation_with_deployment()
+    obs2 = _observation_with_deployment() | {"observedProperty": OBSERVED_179}
+    record = module.build_facility_feature(_minimal_facility(), [obs1, obs2], [], {}, source_name="20200101_0-TEST")
+    props = record["properties"]
+    assert "reporting" not in props
+    assert all(observation["reportingProcedures"][0]["temporalReportingInterval"] == "PT1H" for observation in props["observationSeries"])
+
+
+def test_normalize_observation_links_to_embedded_deployments_by_id() -> None:
+    observation = module._normalize_observation(_observation_with_deployment(), index=1, facility_id="0-TEST")
+    assert "deployments" not in observation
+    assert "deployment" not in observation["observingConfigurations"][0]
+    assert "observingLocation" in observation["observingConfigurations"][0]
+    assert observation["programAffiliations"] == ["GAWregional", "GBON"]
+
+
+def test_main_runs_catalogue_post_processing_when_enabled(tmp_path: Path) -> None:
+    source = tmp_path / "wmdr10"
+    target = tmp_path / "wmdr2"
+    catalogue_records = target / "catalogue_representation"
+    catalogues = target / "catalogues"
+    source.mkdir()
+    payload = {
+        "header": {"dateStamp": "2020-01-02"},
+        "facility": _minimal_facility() | {"contact": {"individualName": "Jane Smith", "organisationName": "Example Org", "contactInfo": {"address": {"electronicMailAddress": "jane.smith@example.org"}, "phone": {"voice": "+41 1 234 56 78"}}, "role": "http://codes.wmo.int/wmdr/ResponsiblePartyRole/owner"}},
+        "observationSeries": [_observation_with_deployment()],
+        "deployments": [],
+    }
+    (source / "record.json").write_text(json.dumps(payload), encoding="utf-8")
+    config = tmp_path / "config.yaml"
+    config.write_text("\n".join([
+        "convert_wmdr10_json_to_wmdr2_json:",
+        f"  source: {source.as_posix()}",
+        f"  target: {target.as_posix()}",
+        "  recursive: true",
+        "  catalogues:",
+        "    enabled: true",
+        f"    records_path: {catalogue_records.as_posix()}",
+        f"    contacts_path: {(catalogues / 'contacts.json').as_posix()}",
+        f"    instruments_path: {(catalogues / 'instruments.json').as_posix()}",
+    ]), encoding="utf-8")
+    module.main(["--config", str(config)])
+    module.main(["--config", str(config)])
+    embedded = json.loads((target / "record.json").read_text(encoding="utf-8"))
+    rewritten = json.loads((catalogue_records / "record.json").read_text(encoding="utf-8"))
+    contacts = json.loads((catalogues / "contacts.json").read_text(encoding="utf-8"))["contacts"]
+    instruments = json.loads((catalogues / "instruments.json").read_text(encoding="utf-8"))["instruments"]
+    assert embedded["properties"]["contacts"][0]["emails"] == ["jane.smith@example.org"]
+    assert "instruments" not in rewritten["properties"]
+    assert rewritten["properties"]["contacts"] == [{"uid": "contact:jane.smith@example.org", "name": "Jane Smith", "organization": "Example Org", "roles": ["owner"], "links": [{"rel": "about", "href": "../catalogues/contacts.json#contact:jane.smith@example.org", "type": "application/json"}]}]
+    assert [contact["uid"] for contact in contacts] == ["contact:jane.smith@example.org"]
+    assert contacts[0]["phones"] == ["+41 1 234 56 78"]
+    assert len(instruments) == 1
+    cfg = rewritten["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    assert "deployment" not in cfg
+    assert cfg["instrument"] == instruments[0]["uid"]
+
+
+def test_observation_uses_observed_property_and_domain_object() -> None:
+    observation = module._normalize_observation(_observation_with_deployment(), index=1, facility_id="0-TEST")
+    assert observation["observedProperty"] == 12006
+    assert "observedVariable" not in observation
+    assert "observedDomain" not in observation
+    assert observation["observedFeature"] == {"domain": "atmosphere"}
+
+
+def test_deployment_vertical_distance_is_quantity_from_height_above_local_reference_surface() -> None:
+    record = module.build_facility_feature(_minimal_facility(), [{"observedProperty": OBSERVED_12006, "deployments": [{"id": "dep1", "heightAboveLocalReferenceSurface": {"@uom": "m", "#text": "0.0"}}]}], [], {}, source_name="20200101_0-TEST")
+    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    assert cfg["observingLocation"]["verticalDistanceFromReferenceSurface"] == {"value": 0.0, "uom": "m"}
+    assert "deployments" not in record["properties"]
+
+
+def test_deployment_temporal_geometry_uses_same_moving_point_model_as_facility() -> None:
+    locations = module._normalize_deployment({"id": "dep1", "geospatialLocation": {"geoLocation": "46 7 100", "beginPosition": "2021-01-01", "geopositioningMethod": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"}}, index=1, facility_id="0-TEST", schedule_registry={})
+    assert locations == [{"geometry": {"type": "Point", "coordinates": [7.0, 46.0, 100]}}]
+
+
+def test_contact_roles_drop_generic_iso_codelist_reference() -> None:
+    public, discovery = module._normalize_contact(
+        {
+            "organisationName": "Org",
+            "contactInfo": {"address": {"electronicMailAddress": "oscar@wmo.int"}},
+            "role": "gmxCodelists.xml#CI_RoleCode",
+        }
+    )
+    assert public == {"organization": "Org", "emails": ["oscar@wmo.int"]}
+    assert discovery == public
+
+
+def test_contact_roles_use_code_list_value_not_code_list_reference() -> None:
+    public, _ = module._normalize_contact(
+        {
+            "organisationName": "Org",
+            "contactInfo": {"address": {"electronicMailAddress": "oscar@wmo.int"}},
+            "role": {"@codeList": "gmxCodelists.xml#CI_RoleCode", "@codeListValue": "pointOfContact"},
+        }
+    )
+    assert public is not None
+    assert public["roles"] == ["pointOfContact"]
+
+
+def test_contact_roles_drop_generic_iso_role_codelist_reference_from_wmdr10() -> None:
+    record = module.convert_payload({
+        "facility": {
+            "identifier": "0-TEST",
+            "name": "Test",
+            "geospatialLocation": "46 7 100",
+            "contact": {
+                "organisationName": "Org",
+                "contactInfo": {"address": {"electronicMailAddress": "oscar@wmo.int"}},
+                "role": "gmxCodelists.xml#CI_RoleCode",
+            },
+        },
+        "observationSeries": [],
+    })
+    assert record["properties"]["contacts"] == [{"organization": "Org", "emails": ["oscar@wmo.int"]}]
+

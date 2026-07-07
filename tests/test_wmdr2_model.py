@@ -20,7 +20,7 @@ def _sample_payload() -> dict:
             "dateEstablished": "2020-01-01",
             "programAffiliation": [
                 {
-                    "programAffiliation": "GOSGeneral",
+                    "program": "GOSGeneral",
                     "beginPosition": "2020-01-01",
                     "reportingStatus": "operational",
                 }
@@ -44,7 +44,7 @@ def _sample_payload() -> dict:
                 "observedVariable": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
                 "observedGeometry": "point",
                 "applicationArea": ["weatherForecasting"],
-                "programAffiliation": "GOSGeneral",
+                "program": "GOSGeneral",
                 "deployments": [
                     {
                         "identifier": "dep-1",
@@ -99,9 +99,9 @@ def test_v0252_observation_contains_model_aligned_historical_objects() -> None:
     assert props["instruments"]
 
     observation = props["observationSeries"][0]
-    assert observation["id"].startswith("observationSeries:")
+    assert observation["uid"].startswith("observationSeries:")
     assert "deployments" not in observation
-    assert "reporting" in observation
+    assert "reportingProcedures" in observation
     assert "domain" not in observation
     assert "domainName" not in observation
     assert "observedDomain" not in observation
@@ -160,7 +160,7 @@ def test_v0252_reporting_official_status_and_observing_procedures_are_dated_obje
     assert observing_procedures[0]["strategy"] == "unknown"
     assert observing_procedures[0]["observingSchedules"] == [schedules[0]["uid"]]
 
-    reporting_defs = props["reporting"]
+    reporting_defs = props["reportingProcedures"]
     assert reporting_defs
     reporting_def = reporting_defs[0]
     assert reporting_def["id"].startswith("reporting:")
@@ -169,12 +169,12 @@ def test_v0252_reporting_official_status_and_observing_procedures_are_dated_obje
     assert reporting_def["levelOfData"] == "level1"
     assert reporting_def["timeliness"] == "PT30M"
 
-    historical_reporting = observation["reporting"]
+    historical_reporting = observation["reportingProcedures"]
     assert isinstance(historical_reporting, list)
     reporting = historical_reporting[0]
     assert reporting["date"] == "2020-01-01"
     assert reporting["strategy"] == "unknown"
-    assert reporting["reporting"] == reporting_def["id"]
+    assert reporting["reportingProcedures"] == reporting_def["id"]
     assert reporting["uom"] == "K"
     for key in ("internationalExchange", "temporalAggregate", "levelOfData", "timeliness"):
         assert key not in reporting
@@ -191,7 +191,7 @@ def test_v024_facility_histories_are_unwrapped() -> None:
 
     assert "environment" in props
     assert "temporalProgramAffiliation" not in props
-    assert "programAffiliation" in props
+    assert "programAffiliations" in props
 
     environment = props["environment"]
     assert isinstance(environment, list)
@@ -220,9 +220,83 @@ def test_v0252_schema_definitions_are_present() -> None:
 
     observation_props = defs["observation"]["properties"]
     assert "observedFeature" in observation_props
-    assert "deployments" not in observation_props
-    assert "reporting" in observation_props
+    assert observation_props["deployments"] is False
+    assert "reportingProcedures" in observation_props
     assert "officialStatus" in observation_props
     assert "observingProcedures" in observation_props
-    assert "deployments" not in observation_props
-    assert "reporting" in observation_props
+    assert observation_props["deployments"] is False
+    assert "reportingProcedures" in observation_props
+
+# v0.3.0 overrides: Deployment is gone; observing location/configuration carries instance context.
+
+def test_v0252_observation_contains_model_aligned_historical_objects() -> None:
+    record = convert_payload(_sample_payload(), source_name="sample")
+    props = record["properties"]
+    assert "deployments" not in props
+    assert props["instruments"]
+    observation = props["observationSeries"][0]
+    assert observation["uid"].startswith("observationSeries:")
+    assert "deployments" not in observation
+    assert "reportingProcedures" in observation
+    assert observation["observedFeature"]["domain"] == "atmosphere"
+    cfg = observation["observingConfigurations"][0]
+    assert cfg["validFrom"] == "2020-01-01"
+    assert "deployment" not in cfg
+    assert cfg["observingMethod"] == {"nilReason": "unknown"}
+    assert cfg["operatingStatus"] == "operational"
+    assert cfg["exposure"] == "good"
+    assert cfg["serialNumber"] == "SN-001"
+    assert cfg["instrument"].startswith("instrument:")
+    assert cfg["observingLocation"]["geometry"]["type"] == "Point"
+    assert cfg["observingLocation"]["referenceSurface"] == "ground"
+    assert cfg["observingLocation"]["verticalDistanceFromReferenceSurface"]["value"] == 2.0
+
+
+def test_v0252_reporting_official_status_and_observing_procedures_are_dated_objects() -> None:
+    record = convert_payload(_sample_payload(), source_name="sample")
+    props = record["properties"]
+    observation = props["observationSeries"][0]
+    schedules = props["schedules"]
+    assert schedules
+    assert schedules[0]["uid"].startswith("schedule_")
+    procedures = observation["observingProcedures"]
+    assert procedures[0]["validFrom"] == "2020-01-01"
+    assert procedures[0]["strategy"] == "continuous"
+    assert procedures[0]["observingSchedules"] == [schedules[0]["uid"]]
+    assert "reporting" not in props
+    reporting = observation["reportingProcedures"][0]
+    assert reporting["internationalExchange"] is True
+    assert reporting["temporalReportingInterval"] == "PT10M"
+    assert reporting["levelOfData"] == "level1"
+    assert reporting["timeliness"] == "PT30M"
+    assert reporting["uom"] == "K"
+    official = observation["officialStatus"]
+    assert official[0]["date"] == "2020-01-01"
+    assert official[0]["officialStatus"] == "primary"
+
+
+def test_v024_facility_histories_are_unwrapped() -> None:
+    record = convert_payload(_sample_payload(), source_name="sample")
+    props = record["properties"]
+    assert "environment" in props
+    assert "temporalProgramAffiliation" not in props
+    assert "programAffiliations" in props
+    environment = props["environment"]
+    assert isinstance(environment, list)
+    assert environment[0]["validFrom"] == "2020-01-01"
+    assert environment[0]["climateZone"] == "temperate"
+    assert environment[0]["surfaceRoughness"] == "low"
+
+
+def test_v0252_schema_definitions_are_present() -> None:
+    schema = json.loads((ROOT / "schemas" / "wmdr2-common.schema.json").read_text(encoding="utf-8"))
+    defs = schema["$defs"]
+    for name in ("observedFeature", "observingLocation", "reportingProcedure", "observingProcedure", "officialStatus", "environment", "programAffiliation", "territory", "schedule"):
+        assert name in defs
+    assert "deployment" in defs  # compatibility alias only; not emitted by v0.3.0 records
+    observation_props = defs["observationSeries"]["properties"]
+    assert "observedFeature" in observation_props
+    assert observation_props["deployments"] is False
+    assert "reportingProcedures" in observation_props
+    assert "officialStatus" in observation_props
+    assert "observingProcedures" in observation_props

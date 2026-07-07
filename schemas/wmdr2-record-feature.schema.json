@@ -1,65 +1,35 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-record-feature.schema.json",
-  "title": "WMDR2 facility-centric Feature",
+  "$id": "https://wmo.int/wmdr2/schemas/wmdr2-record-feature.schema.json",
+  "title": "WMDR2 v0.3.1 Facility Feature",
   "type": "object",
   "required": [
     "type",
     "id",
+    "geometry",
     "properties"
   ],
-  "additionalProperties": true,
   "properties": {
     "type": {
       "const": "Feature"
     },
     "id": {
       "type": "string",
-      "pattern": "^facility:"
+      "pattern": "^(wsi|facility|record):"
     },
     "geometry": {
-      "anyOf": [
-        {
-          "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry"
-        },
-        {
-          "type": "null"
-        }
-      ]
+      "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry"
     },
     "temporalGeometry": {
       "$ref": "wmdr2-common.schema.json#/$defs/temporalGeometry"
     },
     "time": {
-      "anyOf": [
-        {
-          "type": "object",
-          "properties": {
-            "interval": {
-              "type": "array",
-              "items": {
-                "$ref": "wmdr2-common.schema.json#/$defs/dateOrOpen"
-              },
-              "minItems": 2,
-              "maxItems": 2
-            }
-          },
-          "required": [
-            "interval"
-          ],
-          "additionalProperties": true
-        },
-        {
-          "type": "null"
-        }
-      ]
+      "$ref": "wmdr2-common.schema.json#/$defs/time"
     },
     "conformsTo": {
       "type": "array",
-      "minItems": 1,
-      "maxItems": 1,
       "items": {
-        "const": "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+        "type": "string"
       }
     },
     "properties": {
@@ -67,107 +37,6 @@
       "required": [
         "type",
         "title"
-      ],
-      "additionalProperties": true,
-      "allOf": [
-        {
-          "not": {
-            "required": [
-              "temporalProgramAffiliation"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalTerritory"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalReportingStatus"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "externalIds"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "facilitySet"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalClimateZone"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalSurfaceCover"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalPopulation"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalSurfaceRoughness"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "temporalGeometry"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "observations"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "historicalEnvironment"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "historicalProgramAffiliation"
-            ]
-          }
-        },
-        {
-          "not": {
-            "required": [
-              "historicalTerritory"
-            ]
-          }
-        }
       ],
       "properties": {
         "type": {
@@ -185,39 +54,120 @@
         "updated": {
           "type": "string"
         },
-        "contacts": {
+        "deployments": false,
+        "reporting": false,
+        "observationSeries": {
           "type": "array",
           "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/contact"
+            "type": "object",
+            "required": [
+              "uid",
+              "observedProperty",
+              "observedFeature",
+              "observingConfigurations"
+            ],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "observedProperty": {
+                "type": [
+                  "integer",
+                  "number",
+                  "string"
+                ]
+              },
+              "observedFeature": {
+                "type": "object",
+                "required": [
+                  "domain"
+                ],
+                "properties": {
+                  "domain": {
+                    "type": [
+                      "string",
+                      "integer"
+                    ]
+                  },
+                  "domainFeature": {
+                    "type": "string"
+                  },
+                  "featureName": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": true
+              },
+              "observedGeometry": {
+                "type": [
+                  "string",
+                  "integer",
+                  "number"
+                ]
+              },
+              "observingConfigurations": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "$ref": "wmdr2-common.schema.json#/$defs/observingConfiguration"
+                }
+              },
+              "observingProcedures": {
+                "type": "array",
+                "items": {
+                  "$ref": "wmdr2-common.schema.json#/$defs/observingProcedure"
+                }
+              },
+              "uid": {
+                "type": "string",
+                "pattern": "^observationSeries:"
+              },
+              "programAffiliations": {
+                "type": "array"
+              },
+              "reportingProcedures": {
+                "type": "array",
+                "items": {
+                  "$ref": "wmdr2-common.schema.json#/$defs/reportingProcedure"
+                }
+              }
+            },
+            "additionalProperties": true
           }
-        },
-        "keywords": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "links": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/link"
-          }
-        },
-        "facilitySets": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^facilitySet:"
-          }
-        },
-        "programAffiliation": {
-          "$ref": "wmdr2-common.schema.json#/$defs/programAffiliation"
-        },
-        "territory": {
-          "$ref": "wmdr2-common.schema.json#/$defs/territory"
         },
         "environment": {
-          "$ref": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json#/$defs/environment"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "validFrom"
+            ],
+            "properties": {
+              "validFrom": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "territory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "validFrom",
+              "territory"
+            ],
+            "properties": {
+              "validFrom": {
+                "type": "string"
+              },
+              "territory": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
         },
         "schedules": {
           "type": "array",
@@ -225,37 +175,91 @@
             "$ref": "wmdr2-common.schema.json#/$defs/schedule"
           }
         },
-        "observationSeries": {
-          "type": "array",
-          "items": {
-            "$ref": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json#/$defs/observationSeries"
-          }
-        },
         "instruments": {
           "type": "array",
           "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/instrument"
+            "type": "object",
+            "required": [
+              "uid"
+            ],
+            "properties": {
+              "uid": {
+                "type": "string",
+                "pattern": "^instrument:"
+              }
+            },
+            "additionalProperties": true
           }
         },
-        "reporting": {
+        "contacts": {
           "type": "array",
           "items": {
-            "$ref": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json#/$defs/reporting"
+            "type": "object",
+            "properties": {
+              "uid": {
+                "type": "string",
+                "pattern": "^contact:"
+              },
+              "roles": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": true
           }
         },
-        "deployments": {
+        "programAffiliations": {
           "type": "array",
           "items": {
-            "$ref": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json#/$defs/deployment"
-          }
-        },
-        "procedures": {
-          "type": "array",
-          "items": {
-            "$ref": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json#/$defs/procedure"
+            "type": "object",
+            "required": [
+              "validFrom",
+              "program"
+            ],
+            "properties": {
+              "validFrom": {
+                "type": "string"
+              },
+              "program": {
+                "oneOf": [
+                  {
+                    "type": [
+                      "string",
+                      "integer"
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": [
+                        "string",
+                        "integer"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "programSpecificFacilityId": {
+                "type": "string"
+              },
+              "programSpecificFacilityTitle": {
+                "type": "string"
+              },
+              "reportingStatus": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              }
+            },
+            "additionalProperties": true
           }
         }
-      }
+      },
+      "additionalProperties": true
     }
-  }
+  },
+  "additionalProperties": true
 }

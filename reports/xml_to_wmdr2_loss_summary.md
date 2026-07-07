@@ -9,9 +9,9 @@ It is a review aid, not a formal proof of lossless conversion.
 |---|---:|
 | XML files | 19 |
 | XML semantic leaf entries scanned | 7076 |
-| Matched entries | 4462 |
+| Matched entries | 4041 |
 | Ignored intentional/non-semantic entries | 304 |
-| Potentially lost entries | 2310 |
+| Potentially lost entries | 2731 |
 
 ## How to interpret the files
 
@@ -27,33 +27,33 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 
 | XML | Scanned | Matched | Ignored | Potentially lost |
 |---|---:|---:|---:|---:|
-| `resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml` | 348 | 202 | 14 | 132 |
-| `resources/wmdr10_xml_examples/20201007_0-156-10000-51056.xml` | 151 | 90 | 8 | 53 |
-| `resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml` | 187 | 122 | 11 | 54 |
-| `resources/wmdr10_xml_examples/20221124_0-578-0-92100.xml` | 70 | 59 | 6 | 5 |
-| `resources/wmdr10_xml_examples/20230331_0-250-1005-SARg.xml` | 52 | 36 | 3 | 13 |
-| `resources/wmdr10_xml_examples/20240806_0-840-11502-KominkoSlade.xml` | 225 | 150 | 7 | 68 |
-| `resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml` | 217 | 169 | 11 | 37 |
-| `resources/wmdr10_xml_examples/20250314_0-404-800-4AA01.xml` | 57 | 42 | 3 | 12 |
-| `resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml` | 422 | 297 | 22 | 103 |
-| `resources/wmdr10_xml_examples/20250529_0-410-0-22184.xml` | 61 | 56 | 1 | 4 |
-| `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | 1086 | 680 | 40 | 366 |
-| `resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml` | 419 | 249 | 13 | 157 |
-| `resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml` | 1120 | 643 | 64 | 413 |
-| `resources/wmdr10_xml_examples/20251218_0-20000-0-45004.xml` | 473 | 341 | 20 | 112 |
-| `resources/wmdr10_xml_examples/20260318_0-20008-0-ARO.xml` | 388 | 223 | 16 | 149 |
-| `resources/wmdr10_xml_examples/20260318_0-20008-0-DAV.xml` | 382 | 236 | 21 | 125 |
-| `resources/wmdr10_xml_examples/20260511_0-434-0-62061.xml` | 379 | 225 | 15 | 139 |
-| `resources/wmdr10_xml_examples/20260604_0-70-0-Lukavac.xml` | 45 | 38 | 3 | 4 |
-| `resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml` | 994 | 604 | 26 | 364 |
+| `resources/wmdr10_xml_examples/20200304_0-20000-0-06494.xml` | 348 | 200 | 14 | 134 |
+| `resources/wmdr10_xml_examples/20201007_0-156-10000-51056.xml` | 151 | 83 | 8 | 60 |
+| `resources/wmdr10_xml_examples/20220511_0-404-0-63707.xml` | 187 | 113 | 11 | 63 |
+| `resources/wmdr10_xml_examples/20221124_0-578-0-92100.xml` | 70 | 51 | 6 | 13 |
+| `resources/wmdr10_xml_examples/20230331_0-250-1005-SARg.xml` | 52 | 27 | 3 | 22 |
+| `resources/wmdr10_xml_examples/20240806_0-840-11502-KominkoSlade.xml` | 225 | 138 | 7 | 80 |
+| `resources/wmdr10_xml_examples/20241211_0-20008-0-THE.xml` | 217 | 138 | 11 | 68 |
+| `resources/wmdr10_xml_examples/20250314_0-404-800-4AA01.xml` | 57 | 32 | 3 | 22 |
+| `resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml` | 422 | 237 | 22 | 163 |
+| `resources/wmdr10_xml_examples/20250529_0-410-0-22184.xml` | 61 | 54 | 1 | 6 |
+| `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | 1086 | 592 | 40 | 454 |
+| `resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml` | 419 | 247 | 13 | 159 |
+| `resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml` | 1120 | 560 | 64 | 496 |
+| `resources/wmdr10_xml_examples/20251218_0-20000-0-45004.xml` | 473 | 308 | 20 | 145 |
+| `resources/wmdr10_xml_examples/20260318_0-20008-0-ARO.xml` | 388 | 212 | 16 | 160 |
+| `resources/wmdr10_xml_examples/20260318_0-20008-0-DAV.xml` | 382 | 204 | 21 | 157 |
+| `resources/wmdr10_xml_examples/20260511_0-434-0-62061.xml` | 379 | 214 | 15 | 150 |
+| `resources/wmdr10_xml_examples/20260604_0-70-0-Lukavac.xml` | 45 | 29 | 3 | 13 |
+| `resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml` | 994 | 602 | 26 | 366 |
 
 ## Potential losses by section
 
 | Section | Count |
 |---|---:|
-| deployment | 1963 |
-| observation | 164 |
-| facility | 126 |
+| deployment | 2024 |
+| facility | 388 |
+| observation | 262 |
 | contact | 57 |
 
 ## Most frequent unmatched XML paths
@@ -77,20 +77,29 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 | 56 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()` |
 | 51 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()` |
 | 51 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()` |
+| 48 | `/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/organisationName/CharacterString/text()` |
+| 48 | `/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/role/CI_RoleCode/@codeListValue` |
 | 45 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()` |
 | 42 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()` |
 | 41 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/validPeriod/TimePeriod/endPosition/text()` |
 | 41 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/validPeriod/TimePeriod/endPosition/text()` |
 | 37 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()` |
+| 35 | `/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/individualName/CharacterString/text()` |
+| 32 | `/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/electronicMailAddress/CharacterString/text()` |
 | 31 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/description/CharacterString/text()` |
+| 30 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/metadata/MD_Metadata/contact/CI_ResponsibleParty/role/CI_RoleCode/@codeListValue` |
 | 28 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/validPeriod/TimePeriod/endPosition/text()` |
 | 27 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/validPeriod/TimePeriod/endPosition/text()` |
+| 27 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/representativeness/@href` |
+| 27 | `/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/city/CharacterString/text()` |
+| 25 | `/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/deliveryPoint/CharacterString/text()` |
 | 24 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/endHour/text()` |
 | 24 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/endMinute/text()` |
 | 24 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/endWeekday/text()` |
 | 24 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/startMinute/text()` |
 | 24 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()` |
 | 23 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/startHour/text()` |
+| 23 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/metadata/MD_Metadata/contact/CI_ResponsibleParty/organisationName/CharacterString/text()` |
 | 22 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/endHour/text()` |
 | 22 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/endMinute/text()` |
 | 22 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/endWeekday/text()` |
@@ -99,17 +108,8 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 | 21 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/description/CharacterString/text()` |
 | 20 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()` |
 | 20 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL/text()` |
+| 20 | `/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/postalCode/CharacterString/text()` |
 | 19 | `/WIGOSMetadataRecord/headerInformation/Header/recordOwner/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/electronicMailAddress[]/CharacterString/text()` |
-| 19 | `/WIGOSMetadataRecord/headerInformation/Header/recordOwner/CI_ResponsibleParty/role/CI_RoleCode/@codeList` |
-| 19 | `/WIGOSMetadataRecord/headerInformation/Header/recordOwner/CI_ResponsibleParty/role/CI_RoleCode/@codeListValue` |
-| 18 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/facility/@href` |
-| 18 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/startMonth/text()` |
-| 18 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/startWeekday/text()` |
-| 17 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/applicationArea/@href` |
-| 17 | `/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/contactInfo/CI_Contact/address/CI_Address/deliveryPoint/CharacterString/text()` |
-| 15 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/diurnalBaseTime/text()` |
-| 14 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/endMonth/text()` |
-| 14 | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/applicationArea[]/@href` |
 
 ## Top grouped potential losses
 
@@ -142,6 +142,7 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 | 13 | `resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml` | observation | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/description/CharacterString/text()` | Archive |
 | 12 | `resources/wmdr10_xml_examples/20260318_0-20008-0-ARO.xml` | observation | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()` | WOUDC |
 | 11 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration[]/DataGeneration/schedule/Schedule/endMonth/text()` | 12 |
+| 11 | `resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml` | observation | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/metadata/MD_Metadata/contact/CI_ResponsibleParty/role/CI_RoleCode/@codeListValue` | owner |
 | 11 | `resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml` | observation | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/CharacterString/text()` | WDCGG |
 | 11 | `resources/wmdr10_xml_examples/20260318_0-20008-0-ARO.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()` | 23 |
 | 11 | `resources/wmdr10_xml_examples/20260318_0-20008-0-ARO.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()` | 59 |
@@ -151,6 +152,8 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 | 11 | `resources/wmdr10_xml_examples/20260318_0-20008-0-ARO.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()` | 0 |
 | 11 | `resources/wmdr10_xml_examples/20260318_0-20008-0-ARO.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()` | 1 |
 | 11 | `resources/wmdr10_xml_examples/20260318_0-20008-0-ARO.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()` | 1 |
+| 10 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | observation | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/metadata/MD_Metadata/contact/CI_ResponsibleParty/organisationName/CharacterString/text()` | WSL Institute for Snow and Avalanche Research SLF |
+| 10 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | observation | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/metadata/MD_Metadata/contact/CI_ResponsibleParty/role/CI_RoleCode/@codeListValue` | owner |
 | 10 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | observation | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/result/ResultSet/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/description/CharacterString/text()` | NRT |
 | 10 | `resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()` | 23 |
 | 10 | `resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()` | 59 |
@@ -193,6 +196,7 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 | 9 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | facility | `/WIGOSMetadataRecord/facility/ObservingFacility/facilityLog/FacilityLog/logEntry[]/EventReport/author/text()` | C. Fierz, 2020-08-05 |
 | 9 | `resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml` | observation | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/metadata/MD_Metadata/contact/CI_ResponsibleParty/organisationName/CharacterString/text()` | NOAA Earth System Research Laboratory - Global Monitoring Division |
 | 9 | `resources/wmdr10_xml_examples/20251218_0-20000-0-45004.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()` | 1 |
+| 8 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/representativeness/@href` | http://codes.wmo.int/wmdr/Representativeness/toposcale |
 | 8 | `resources/wmdr10_xml_examples/20250731_0-20000-0-06650.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/diurnalBaseTime/text()` | 06:00:00Z |
 | 8 | `resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()` | 59 |
 | 8 | `resources/wmdr10_xml_examples/20251001_0-20008-0-MKN.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation[]/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMonth/text()` | 12 |
@@ -210,11 +214,7 @@ They are *potential losses*, not automatically bugs. Some may be intentional bec
 | 8 | `resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMonth/text()` | 1 |
 | 8 | `resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startWeekday/text()` | 1 |
 | 8 | `resources/wmdr10_xml_examples/Blatten_20250729_0-20000-0-06725.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/deployedEquipment/Equipment/geospatialLocation/GeospatialLocation/geoLocation/Point/pos/text()` | 46.419478 7.821056 1535.0 |
-| 7 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/applicationArea[]/@href` | http://codes.wmo.int/wmdr/ApplicationArea/cryosphere |
-| 7 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endHour/text()` | 23 |
-| 7 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endMinute/text()` | 59 |
-| 7 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/endWeekday/text()` | 7 |
-| 7 | `resources/wmdr10_xml_examples/20250728_0-756-1-387493.xml` | deployment | `/WIGOSMetadataRecord/facility/ObservingFacility/observation[]/ObservingCapability/observation/OM_Observation/procedure/Process/deployment/Deployment/dataGeneration/DataGeneration/schedule/Schedule/startMinute/text()` | 0 |
+| 7 | `resources/wmdr10_xml_examples/20250504_0-20008-0-NRB.xml` | facility | `/WIGOSMetadataRecord/facility/ObservingFacility/responsibleParty[]/ResponsibleParty/responsibleParty/CI_ResponsibleParty/organisationName/CharacterString/text()` | Kenyan Meteorological Department |
 
 ## Review workflow
 

@@ -1,6 +1,6 @@
 {
   "type": "Feature",
-  "id": "facility:0-20008-0-NRB",
+  "id": "wsi:0-20008-0-NRB",
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -31,7 +31,8 @@
     "interval": [
       "1996-01-01",
       ".."
-    ]
+    ],
+    "resolution": "day"
   },
   "conformsTo": [
     "http://wigos.wmo.int/spec/wmdr/2/conf/core"
@@ -39,151 +40,22 @@
   "properties": {
     "type": "facility",
     "title": "Nairobi",
+    "description": "The station is located at 01° 18'S 36° 45' E at an altitude of 1795m and is within the compound of the Kenya Meteorological Department headquarters at Dagoretti Corner, Nairobi.",
     "created": "2025-05-04T00:00:00Z",
     "updated": "2025-05-04T00:00:00Z",
-    "description": "The station is located at 01° 18'S 36° 45' E at an altitude of 1795m and is within the compound of the Kenya Meteorological Department headquarters at Dagoretti Corner, Nairobi.",
+    "facilityType": "landFixed",
+    "wmoRegion": "africa",
+    "facilitySets": [
+      "facilitySet:Nairobi-Dagoretti-Corner"
+    ],
     "contacts": [
       {
-        "identifier": "contact:kenyan-meteorological-department--4e93cec6",
-        "organization": "Kenyan Meteorological Department",
-        "roles": [
-          "owner"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:kenyan-meteorological-department--4e93cec6",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:syprosenyadida1@gmail.com",
-        "name": "Nyandida,Syprose,Mrs",
-        "organization": "Kenyan Meteorological Department",
-        "roles": [
-          "pointOfContact"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:syprosenyadida1@gmail.com",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:joerg.klausen@meteoswiss.ch",
-        "name": "Klausen,Jörg,Dr.",
-        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
-        "roles": [
-          "pointOfContact"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:joerg.klausen@meteoswiss.ch",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:nguyo2000@yahoo.com",
-        "name": "Nguyo,John Kaniaru,Mr.",
-        "organization": "Kenyan Meteorological Department",
-        "roles": [
-          "principalInvestigator"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:nguyo2000@yahoo.com",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:gonzague.romanens@meteoswiss.ch",
-        "name": "Romanens,Gonzague,Mr",
-        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
-        "roles": [
-          "pointOfContact"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:gonzague.romanens@meteoswiss.ch",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:jokimi@yahoo.com",
-        "name": "Mitei,Johana",
-        "organization": "Kenyan Meteorological Department",
-        "roles": [
-          "pointOfContact"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:jokimi@yahoo.com",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:kmurageh@yahoo.co.uk",
-        "name": "Murageh,Josiah Kariuki",
-        "organization": "Kenyan Meteorological Department",
-        "roles": [
-          "pointOfContact"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:kmurageh@yahoo.co.uk",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:ckennethkibaara@yahoo.com",
-        "name": "chabari,Kenneth,Mr",
-        "organization": "Kenyan Meteorological Department",
-        "roles": [
-          "pointOfContact"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:ckennethkibaara@yahoo.com",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:waweru_k@yahoo.com",
-        "name": "Waweru,Amos,Mr",
-        "organization": "Kenyan Meteorological Department",
-        "roles": [
-          "principalInvestigator"
-        ],
-        "links": [
-          {
-            "rel": "about",
-            "href": "catalogues/contacts.json#contact:waweru_k@yahoo.com",
-            "type": "application/json"
-          }
-        ]
-      },
-      {
-        "identifier": "contact:oscar@wmo.int",
+        "uid": "contact:oscar@wmo.int",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "links": [
           {
             "rel": "about",
-            "href": "catalogues/contacts.json#contact:oscar@wmo.int",
+            "href": "../catalogues/contacts.json#contact:oscar@wmo.int",
             "type": "application/json"
           }
         ]
@@ -200,54 +72,9 @@
         "type": "text/html"
       }
     ],
-    "facilityType": "landFixed",
-    "wmoRegion": "africa",
-    "facilitySets": [
-      "facilitySet:Nairobi-Dagoretti-Corner"
-    ],
-    "programAffiliation": [
-      {
-        "date": "1996-01-01",
-        "programAffiliation": [
-          "GAWregional"
-        ],
-        "programSpecificFacilityId": "NRB",
-        "reportingStatus": "operational"
-      },
-      {
-        "date": "1996-01-01",
-        "programAffiliation": [
-          "SHADOZ"
-        ],
-        "programSpecificFacilityId": "Nairobi",
-        "reportingStatus": "operational"
-      },
-      {
-        "date": "2010-06-11",
-        "programAffiliation": [
-          "AERONET"
-        ],
-        "programSpecificFacilityId": "Nairobi",
-        "reportingStatus": "unknown"
-      },
-      {
-        "date": "2004-10-22",
-        "programAffiliation": [
-          "AERONET"
-        ],
-        "programSpecificFacilityId": "Nairobi",
-        "reportingStatus": "operational"
-      }
-    ],
-    "territory": [
-      {
-        "date": "2008-12-05",
-        "territory": "KEN"
-      }
-    ],
     "environment": [
       {
-        "date": "1996-01-01",
+        "validFrom": "1996-01-01",
         "climateZone": "warmTemperateFullyHumidWarmSummer",
         "surfaceCover": "urbanBuiltup",
         "topographyBathymetry": {
@@ -256,6 +83,498 @@
           "topographicContext": "hills",
           "altitudeOrDepth": "highAltitude"
         }
+      }
+    ],
+    "programAffiliations": [
+      {
+        "validFrom": "1996-01-01",
+        "program": "GAWregional",
+        "programSpecificFacilityId": "NRB",
+        "reportingStatus": "operational"
+      },
+      {
+        "validFrom": "1996-01-01",
+        "program": "SHADOZ",
+        "programSpecificFacilityId": "Nairobi",
+        "reportingStatus": "operational"
+      },
+      {
+        "validFrom": "2010-06-11",
+        "program": "AERONET",
+        "programSpecificFacilityId": "Nairobi",
+        "reportingStatus": "unknown"
+      },
+      {
+        "validFrom": "2004-10-22",
+        "program": "AERONET",
+        "programSpecificFacilityId": "Nairobi",
+        "reportingStatus": "operational"
+      }
+    ],
+    "territory": [
+      {
+        "validFrom": "2008-12-05",
+        "territory": "KEN"
+      }
+    ],
+    "observationSeries": [
+      {
+        "uid": "observationSeries:263-cfcad92713",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "observedProperty": 263,
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "observedGeometry": "totalColumn",
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "2019-03-20",
+            "observingLocation": {
+              "referenceSurface": "localGround",
+              "verticalDistanceFromReferenceSurface": {
+                "value": 4.0,
+                "uom": "m"
+              }
+            },
+            "observingMethod": {
+              "nilReason": "unknown"
+            },
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": "automaticReading",
+            "instrument": "instrument:Kipp-Zonen--Brewer-MkIII",
+            "serialNumber": "71",
+            "exposure": "class1"
+          }
+        ]
+      },
+      {
+        "uid": "observationSeries:263-ec5692a7c8",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "observedProperty": 263,
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "observedGeometry": "totalColumn",
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "2005-05-01",
+            "observingMethod": 106,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": "manualReading",
+            "instrument": "instrument:R-J-Beck-London--Dobson",
+            "serialNumber": "18",
+            "exposure": "class1"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "validFrom": "2005-05-01",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_297edd2e9625"
+            ]
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": true,
+            "uom": "unknown",
+            "temporalReportingInterval": "P11M25DT10H",
+            "dataPolicy": "noLimitation",
+            "levelOfData": "level1",
+            "strategy": "routine",
+            "reportingSchedules": [
+              "schedule_2a8d52d4124e"
+            ]
+          }
+        ]
+      },
+      {
+        "uid": "observationSeries:263-c70dc1ecc2",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
+        "observedProperty": 263,
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "observedGeometry": "totalColumn",
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "1984-04-19",
+            "observingMethod": 106,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": "unknown"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "validFrom": "1984-04-19",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_de0b96f4147d"
+            ]
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": true,
+            "uom": "DU",
+            "temporalReportingInterval": "PT1H",
+            "dataPolicy": "WMOEssential",
+            "levelOfData": "level1",
+            "timeStampMeaning": "middle",
+            "strategy": "routine",
+            "reportingSchedules": [
+              "schedule_f253213a5423"
+            ]
+          }
+        ]
+      },
+      {
+        "uid": "observationSeries:264-2e51a20eeb",
+        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
+        "observedProperty": 264,
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "observedGeometry": "verticalProfile",
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "2010-06-09",
+            "observingMethod": 107,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": "unknown"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "validFrom": "2010-06-09",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_516c4159d2af"
+            ]
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "uom": "unknown",
+            "temporalReportingInterval": "P1D",
+            "dataPolicy": "noLimitation",
+            "levelOfData": "level1",
+            "strategy": "routine",
+            "reportingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ]
+      },
+      {
+        "uid": "observationSeries:264-a90d06a387",
+        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
+        "observedProperty": 264,
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "observedGeometry": "verticalProfile",
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "1998-09-23",
+            "observingMethod": 107,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": "unknown"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "validFrom": "1998-09-23",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_516c4159d2af"
+            ]
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "uom": "unknown",
+            "temporalReportingInterval": "P1D",
+            "dataPolicy": "noLimitation",
+            "levelOfData": "level1",
+            "strategy": "routine",
+            "reportingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ]
+      },
+      {
+        "uid": "observationSeries:264-c166bd866a",
+        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
+        "observedProperty": 264,
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "observedGeometry": "verticalProfile",
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "1998-01-07",
+            "observingMethod": 107,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": "unknown"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "validFrom": "1998-01-07",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_433b0f703275"
+            ]
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": true,
+            "uom": "unknown",
+            "temporalReportingInterval": "PT1H",
+            "dataPolicy": "noLimitation",
+            "levelOfData": "level1",
+            "strategy": "routine",
+            "reportingSchedules": [
+              "schedule_f253213a5423"
+            ]
+          }
+        ]
+      },
+      {
+        "uid": "observationSeries:264-da9578bcb9",
+        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
+        "observedProperty": 264,
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "observedGeometry": "verticalProfile",
+        "programAffiliations": [
+          "GAWregional",
+          "SHADOZ"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "1984-05-10",
+            "observingMethod": 106,
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": "manualReading"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "validFrom": "1984-05-10",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_37fdd0f92288"
+            ]
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "uom": "DU",
+            "temporalReportingInterval": "P12D",
+            "dataPolicy": "WMOAdditional",
+            "levelOfData": "level2",
+            "numberOfObservationsInReportingInterval": "1",
+            "timeStampMeaning": "end",
+            "strategy": "routine",
+            "reportingSchedules": [
+              "schedule_c62aa516ea15"
+            ]
+          }
+        ]
+      },
+      {
+        "uid": "observationSeries:325-56324e70f2",
+        "title": "domain: atmosphere; geometry: totalColumn; variable: 325",
+        "observedProperty": 325,
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "observedGeometry": "totalColumn",
+        "programAffiliations": [
+          "GAWregional",
+          "AERONET"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "1996-01-01",
+            "observingLocation": {
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  36.8653,
+                  -1.33888,
+                  1650
+                ]
+              },
+              "referenceSurface": "naturalGround",
+              "verticalDistanceFromReferenceSurface": {
+                "value": 2.0,
+                "uom": "m"
+              }
+            },
+            "observingMethod": 244,
+            "operatingStatus": "unknown",
+            "sourceOfObservation": "automaticReading",
+            "instrument": "instrument:CIMEL--CE318TS9--Sun-Photometer",
+            "exposure": "class1"
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "uom": "unknown",
+            "strategy": "routine"
+          }
+        ]
+      },
+      {
+        "uid": "observationSeries:369-a0c48fd65f",
+        "title": "domain: atmosphere; geometry: point; variable: 369",
+        "observedProperty": 369,
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "observedGeometry": "point",
+        "programAffiliations": [
+          "GAWregional"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "2025-05-03",
+            "observingLocation": {
+              "referenceSurface": "roofTerrace",
+              "verticalDistanceFromReferenceSurface": {
+                "value": 2.0,
+                "uom": "m"
+              }
+            },
+            "observingMethod": 240,
+            "operatingStatus": "operational",
+            "sourceOfObservation": "automaticReading",
+            "serialNumber": "Fidas 6111",
+            "exposure": "class3"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "validFrom": "2025-05-03",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_f253213a5423"
+            ]
+          },
+          {
+            "validFrom": "2025-05-03",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_f00c47e63484"
+            ]
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": true,
+            "uom": "cm-3",
+            "temporalReportingInterval": "PT1H",
+            "dataPolicy": "WMOEssential",
+            "strategy": "routine",
+            "reportingSchedules": [
+              "schedule_f253213a5423"
+            ]
+          }
+        ]
+      },
+      {
+        "uid": "observationSeries:573-1735811219",
+        "title": "domain: atmosphere; geometry: point; variable: 573",
+        "observedProperty": 573,
+        "observedFeature": {
+          "domain": "atmosphere"
+        },
+        "observedGeometry": "point",
+        "programAffiliations": [
+          "GAWregional"
+        ],
+        "observingConfigurations": [
+          {
+            "validFrom": "1969-08-01",
+            "observingMethod": {
+              "nilReason": "unknown"
+            },
+            "operatingStatus": {
+              "nilReason": "unknown"
+            },
+            "sourceOfObservation": "unknown"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "validFrom": "1969-08-01",
+            "strategy": "continuous",
+            "observingSchedules": [
+              "schedule_516c4159d2af"
+            ]
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "uom": "unknown",
+            "temporalReportingInterval": "P1D",
+            "dataPolicy": "noLimitation",
+            "strategy": "routine",
+            "reportingSchedules": [
+              "schedule_1f99ffca9e0c"
+            ]
+          }
+        ]
       }
     ],
     "schedules": [
@@ -271,7 +590,8 @@
           }
         ],
         "wmo.int:aggregationInterval": "P11M25DT10H",
-        "uid": "schedule_9e5641253a75"
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "uid": "schedule_297edd2e9625"
       },
       {
         "@type": "Event",
@@ -299,7 +619,8 @@
           }
         ],
         "wmo.int:aggregationInterval": "PT1H",
-        "uid": "schedule_37de966e031c"
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "uid": "schedule_de0b96f4147d"
       },
       {
         "@type": "Event",
@@ -327,7 +648,37 @@
           }
         ],
         "wmo.int:aggregationInterval": "P1D",
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "uid": "schedule_516c4159d2af"
+      },
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "P1D",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "daily"
+          }
+        ],
+        "wmo.int:aggregationInterval": "P1D",
         "uid": "schedule_1f99ffca9e0c"
+      },
+      {
+        "@type": "Event",
+        "start": "0001-01-01T00:00:00",
+        "timeZone": "UTC",
+        "duration": "PT1H",
+        "recurrenceRules": [
+          {
+            "@type": "RecurrenceRule",
+            "frequency": "hourly"
+          }
+        ],
+        "wmo.int:aggregationInterval": "PT1H",
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "uid": "schedule_433b0f703275"
       },
       {
         "@type": "Event",
@@ -341,9 +692,9 @@
             "interval": 12
           }
         ],
-        "wmi.int:samplingFrequency": "PT12H",
+        "wmo.int:samplingFrequency": "PT12H",
         "wmo.int:aggregationInterval": "P12D",
-        "uid": "schedule_bd14994f5cb1"
+        "uid": "schedule_37fdd0f92288"
       },
       {
         "@type": "Event",
@@ -371,541 +722,9 @@
             "interval": 5
           }
         ],
-        "wmi.int:samplingFrequency": "PT5S",
+        "wmo.int:samplingFrequency": "PT5S",
         "wmo.int:aggregationInterval": "PT1H",
-        "uid": "schedule_ec594c822483"
-      }
-    ],
-    "reporting": [
-      {
-        "id": "reporting:2c5c81dbb8af",
-        "internationalExchange": true,
-        "temporalAggregate": "P11M25DT10H",
-        "dataPolicy": {
-          "dataPolicy": "noLimitation"
-        },
-        "levelOfData": "level1"
-      },
-      {
-        "id": "reporting:b28687843835",
-        "internationalExchange": true,
-        "temporalAggregate": "PT1H",
-        "dataPolicy": {
-          "dataPolicy": "WMOEssential"
-        },
-        "levelOfData": "level1",
-        "timeStampMeaning": "middle",
-        "dataFormat": "ascii"
-      },
-      {
-        "id": "reporting:825dd8638917",
-        "internationalExchange": false,
-        "temporalAggregate": "P1D",
-        "dataPolicy": {
-          "dataPolicy": "noLimitation"
-        },
-        "levelOfData": "level1"
-      },
-      {
-        "id": "reporting:a4864b95e591",
-        "internationalExchange": true,
-        "temporalAggregate": "PT1H",
-        "dataPolicy": {
-          "dataPolicy": "noLimitation"
-        },
-        "levelOfData": "level1"
-      },
-      {
-        "id": "reporting:23fd9781f90c",
-        "internationalExchange": false,
-        "temporalAggregate": "P12D",
-        "dataPolicy": {
-          "dataPolicy": "WMOAdditional"
-        },
-        "levelOfData": "level2",
-        "timeStampMeaning": "end",
-        "numberOfObservationsInReportingInterval": "1"
-      },
-      {
-        "id": "reporting:db5c5e6f45b1",
-        "internationalExchange": false
-      },
-      {
-        "id": "reporting:dde7708a619b",
-        "internationalExchange": true,
-        "temporalAggregate": "PT1H",
-        "dataPolicy": {
-          "dataPolicy": "WMOEssential"
-        }
-      },
-      {
-        "id": "reporting:55a2c9601278",
-        "internationalExchange": false,
-        "temporalAggregate": "P1D",
-        "dataPolicy": {
-          "dataPolicy": "noLimitation"
-        }
-      }
-    ],
-    "deployments": [
-      {
-        "id": "deployment:id_fdb01ce3-5f71-44fa-92f2-15672646c5da",
-        "instrument": "instrument:kipp-zonen--brewer-mkiii",
-        "serialNumber": "71",
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "localGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 4.0,
-          "uom": "m"
-        }
-      },
-      {
-        "id": "deployment:id_10307340-c9f1-478d-9d64-ad37dfbe938f",
-        "instrument": "instrument:r-j-beck-london--dobson",
-        "serialNumber": "18",
-        "sourceOfObservation": "manualReading"
-      },
-      {
-        "id": "deployment:id_c1094afe-39a2-4156-b2ac-3544fb9ae211",
-        "sourceOfObservation": "unknown"
-      },
-      {
-        "id": "deployment:id_e3db3fbf-3ec2-45f3-ad5a-50667fa0a8d9",
-        "sourceOfObservation": "unknown"
-      },
-      {
-        "id": "deployment:id_9eb29f52-8033-4951-85bc-211f84d36894",
-        "sourceOfObservation": "unknown"
-      },
-      {
-        "id": "deployment:id_1f189462-8091-48cf-b052-e09fb3dc829b",
-        "sourceOfObservation": "unknown"
-      },
-      {
-        "id": "deployment:id_7fac1804-438a-4ccf-b215-1148ddf23207",
-        "sourceOfObservation": "manualReading"
-      },
-      {
-        "id": "deployment:id_96ed967a-b01b-4769-8983-54b3655039e7",
-        "instrument": "instrument:cimel--ce318ts9-sun-photometer",
-        "sourceOfObservation": "automaticReading",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            36.8653,
-            -1.33888,
-            1650
-          ]
-        },
-        "referenceSurface": "naturalGround",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        }
-      },
-      {
-        "id": "deployment:id_e5770467-8ecb-4bc6-97bd-f3f4b4581b5d",
-        "serialNumber": "Fidas 6111",
-        "sourceOfObservation": "automaticReading",
-        "referenceSurface": "roofTerrace",
-        "verticalDistanceFromReferenceSurface": {
-          "value": 2.0,
-          "uom": "m"
-        }
-      },
-      {
-        "id": "deployment:id_99c1c0c5-0006-4b3d-9c64-a946e1a07aab",
-        "sourceOfObservation": "unknown"
-      }
-    ],
-    "observationSeries": [
-      {
-        "id": "observationSeries:263",
-        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": 263,
-        "observedGeometry": "totalColumn",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "GAWregional",
-          "SHADOZ"
-        ],
-        "observingConfigurations": [
-          {
-            "date": "2019-03-20",
-            "deployment": "deployment:id_fdb01ce3-5f71-44fa-92f2-15672646c5da",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "exposure": "class1"
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:263",
-        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": 263,
-        "observedGeometry": "totalColumn",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "GAWregional",
-          "SHADOZ"
-        ],
-        "observingConfigurations": [
-          {
-            "date": "2005-05-01",
-            "deployment": "deployment:id_10307340-c9f1-478d-9d64-ad37dfbe938f",
-            "observingMethod": 106,
-            "exposure": "class1"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "date": "2005-05-01",
-            "strategy": "unknown",
-            "observingSchedules": [
-              "schedule_9e5641253a75"
-            ]
-          },
-          {
-            "date": "2005-05-01",
-            "strategy": "unknown",
-            "observingSchedules": [
-              "schedule_2a8d52d4124e"
-            ]
-          }
-        ],
-        "reporting": [
-          {
-            "date": "2005-05-01",
-            "strategy": "unknown",
-            "uom": "unknown",
-            "reporting": "reporting:2c5c81dbb8af"
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:263",
-        "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": 263,
-        "observedGeometry": "totalColumn",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "GAWregional",
-          "SHADOZ"
-        ],
-        "officialStatus": [
-          {
-            "date": "1984-04-19",
-            "officialStatus": "primary"
-          }
-        ],
-        "observingConfigurations": [
-          {
-            "date": "1984-04-19",
-            "deployment": "deployment:id_c1094afe-39a2-4156-b2ac-3544fb9ae211",
-            "observingMethod": 106
-          }
-        ],
-        "observingProcedures": [
-          {
-            "date": "1984-04-19",
-            "strategy": "unknown",
-            "observingSchedules": [
-              "schedule_37de966e031c"
-            ]
-          },
-          {
-            "date": "1984-04-19",
-            "strategy": "unknown",
-            "observingSchedules": [
-              "schedule_f253213a5423"
-            ]
-          }
-        ],
-        "reporting": [
-          {
-            "date": "1984-04-19",
-            "strategy": "unknown",
-            "uom": "DU",
-            "reporting": "reporting:b28687843835"
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:264",
-        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
-        "observedProperty": 264,
-        "observedGeometry": "verticalProfile",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "GAWregional",
-          "SHADOZ"
-        ],
-        "observingConfigurations": [
-          {
-            "date": "2010-06-09",
-            "deployment": "deployment:id_e3db3fbf-3ec2-45f3-ad5a-50667fa0a8d9",
-            "observingMethod": 107
-          }
-        ],
-        "observingProcedures": [
-          {
-            "date": "2010-06-09",
-            "strategy": "unknown",
-            "observingSchedules": [
-              "schedule_1f99ffca9e0c"
-            ]
-          }
-        ],
-        "reporting": [
-          {
-            "date": "2010-06-09",
-            "strategy": "unknown",
-            "uom": "unknown",
-            "reporting": "reporting:825dd8638917"
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:264",
-        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
-        "observedProperty": 264,
-        "observedGeometry": "verticalProfile",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "GAWregional",
-          "SHADOZ"
-        ],
-        "observingConfigurations": [
-          {
-            "date": "1998-09-23",
-            "deployment": "deployment:id_9eb29f52-8033-4951-85bc-211f84d36894",
-            "observingMethod": 107
-          }
-        ],
-        "observingProcedures": [
-          {
-            "date": "1998-09-23",
-            "strategy": "unknown",
-            "observingSchedules": [
-              "schedule_1f99ffca9e0c"
-            ]
-          }
-        ],
-        "reporting": [
-          {
-            "date": "1998-09-23",
-            "strategy": "unknown",
-            "uom": "unknown",
-            "reporting": "reporting:825dd8638917"
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:264",
-        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
-        "observedProperty": 264,
-        "observedGeometry": "verticalProfile",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "GAWregional",
-          "SHADOZ"
-        ],
-        "observingConfigurations": [
-          {
-            "date": "1998-01-07",
-            "deployment": "deployment:id_1f189462-8091-48cf-b052-e09fb3dc829b",
-            "observingMethod": 107
-          }
-        ],
-        "observingProcedures": [
-          {
-            "date": "1998-01-07",
-            "strategy": "unknown",
-            "observingSchedules": [
-              "schedule_f253213a5423"
-            ]
-          }
-        ],
-        "reporting": [
-          {
-            "date": "1998-01-07",
-            "strategy": "unknown",
-            "uom": "unknown",
-            "reporting": "reporting:a4864b95e591"
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:264",
-        "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
-        "observedProperty": 264,
-        "observedGeometry": "verticalProfile",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "GAWregional",
-          "SHADOZ"
-        ],
-        "representativeness": "mesoscale",
-        "observingConfigurations": [
-          {
-            "date": "1984-05-10",
-            "deployment": "deployment:id_7fac1804-438a-4ccf-b215-1148ddf23207",
-            "observingMethod": 106
-          }
-        ],
-        "observingProcedures": [
-          {
-            "date": "1984-05-10",
-            "strategy": "unknown",
-            "observingSchedules": [
-              "schedule_bd14994f5cb1"
-            ]
-          },
-          {
-            "date": "1984-05-10",
-            "strategy": "unknown",
-            "observingSchedules": [
-              "schedule_c62aa516ea15"
-            ]
-          }
-        ],
-        "reporting": [
-          {
-            "date": "1984-05-10",
-            "strategy": "unknown",
-            "uom": "DU",
-            "reporting": "reporting:23fd9781f90c"
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:325",
-        "title": "domain: atmosphere; geometry: totalColumn; variable: 325",
-        "observedProperty": 325,
-        "observedGeometry": "totalColumn",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "GAWregional",
-          "AERONET"
-        ],
-        "observingConfigurations": [
-          {
-            "date": "1996-01-01",
-            "deployment": "deployment:id_96ed967a-b01b-4769-8983-54b3655039e7",
-            "observingMethod": 244,
-            "operatingStatus": "unknown",
-            "exposure": "class1"
-          }
-        ],
-        "reporting": [
-          {
-            "date": "1996-01-01",
-            "strategy": "unknown",
-            "uom": "unknown",
-            "reporting": "reporting:db5c5e6f45b1"
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:369",
-        "title": "domain: atmosphere; geometry: point; variable: 369",
-        "observedProperty": 369,
-        "observedGeometry": "point",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "GAWregional"
-        ],
-        "representativeness": "toposcale",
-        "observingConfigurations": [
-          {
-            "date": "2025-05-03",
-            "deployment": "deployment:id_e5770467-8ecb-4bc6-97bd-f3f4b4581b5d",
-            "observingMethod": 240,
-            "operatingStatus": "operational",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "date": "2025-05-03",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_f253213a5423"
-            ]
-          },
-          {
-            "date": "2025-05-03",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_ec594c822483"
-            ]
-          }
-        ],
-        "reporting": [
-          {
-            "date": "2025-05-03",
-            "strategy": "unknown",
-            "uom": "cm-3",
-            "reporting": "reporting:dde7708a619b"
-          }
-        ]
-      },
-      {
-        "id": "observationSeries:573",
-        "title": "domain: atmosphere; geometry: point; variable: 573",
-        "observedProperty": 573,
-        "observedGeometry": "point",
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "programAffiliation": [
-          "GAWregional"
-        ],
-        "observingConfigurations": [
-          {
-            "date": "1969-08-01",
-            "deployment": "deployment:id_99c1c0c5-0006-4b3d-9c64-a946e1a07aab",
-            "observingMethod": {
-              "nilReason": "unknown"
-            }
-          }
-        ],
-        "observingProcedures": [
-          {
-            "date": "1969-08-01",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_1f99ffca9e0c"
-            ]
-          }
-        ],
-        "reporting": [
-          {
-            "date": "1969-08-01",
-            "strategy": "unknown",
-            "uom": "unknown",
-            "reporting": "reporting:55a2c9601278"
-          }
-        ]
+        "uid": "schedule_f00c47e63484"
       }
     ]
   }
