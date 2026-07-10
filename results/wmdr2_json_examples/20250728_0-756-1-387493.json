@@ -1,6 +1,9 @@
 {
   "type": "Feature",
-  "id": "wsi:0-756-1-387493",
+  "id": "0-756-1-387493",
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -9,58 +12,1322 @@
       2394
     ]
   },
-  "temporalGeometry": {
-    "type": "MovingPoint",
-    "coordinates": [
-      [
-        9.946457,
-        46.752729,
-        2394
-      ]
-    ],
-    "dates": [
-      "2003-10-10"
-    ],
-    "methods": [
-      [
-        "map"
-      ]
-    ]
-  },
-  "time": {
-    "interval": [
-      "2002-10-01",
-      ".."
-    ],
-    "resolution": "day"
-  },
-  "conformsTo": [
-    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
-  ],
   "properties": {
     "type": "facility",
-    "title": "Flüela permafrost; Flüelapass",
-    "description": "The Flüela station is part of the Swiss Permafrost Monitoring Network (PERMOS; www.permos.ch). The station is important to monitor and analyse the evolution of ground temperature, permafrost thickness, and the degradation of ground ice in talus deposits, which are important forms of debris storage in mountain environments and can cause mass movements, subsidence or instability of mountain infrastructure. It is the first permafrost research site of the Swiss Alps (Haeberli 1975). Two boreholes were drilled in 2002, instrumented with thermistor chains, one being still in use with ground temperatures measured down to 25 m. The station also delivers data to the Swiss Inter cantonal Measurement and Information System (IMIS) network used by the Swiss Avalanche Warning Service WSL/SLF (https://whiterisk.ch/fr/conditions/measurements/station/IMIS/FLU2). _ Additional cryosphere measurements: - Snow (gentle grassy slope): Snow surface temperature Snow temperatures at 25, 50, and 100 cm above ground (from 2003 to 2020) - Permafrost (talus slope): Daily photographs of site and regular high resolution aerial photographs; Electrical Resistance Tomography (ERT) and seismic measurements were done in 1975 and from 2009 to 2012. _",
+    "title": "Flüela permafrost",
     "created": "2025-07-28T00:00:00Z",
     "updated": "2025-07-28T00:00:00Z",
-    "facilityType": "landFixed",
-    "wmoRegion": "europe",
-    "facilitySets": [
-      "facilitySet:Davos-Integrated-CryoNet-Cluster"
+    "additionalTitles": [
+      "Flüelapass"
     ],
-    "contacts": [
+    "description": "The Flüela station is part of the Swiss Permafrost Monitoring Network (PERMOS; www.permos.ch). The station is important to monitor and analyse the evolution of ground temperature, permafrost thickness, and the degradation of ground ice in talus deposits, which are important forms of debris storage in mountain environments and can cause mass movements, subsidence or instability of mountain infrastructure. It is the first permafrost research site of the Swiss Alps (Haeberli 1975). Two boreholes were drilled in 2002, instrumented with thermistor chains, one being still in use with ground temperatures measured down to 25 m. The station also delivers data to the Swiss Inter cantonal Measurement and Information System (IMIS) network used by the Swiss Avalanche Warning Service WSL/SLF (https://whiterisk.ch/fr/conditions/measurements/station/IMIS/FLU2). _ Additional cryosphere measurements: - Snow (gentle grassy slope): Snow surface temperature Snow temperatures at 25, 50, and 100 cm above ground (from 2003 to 2020) - Permafrost (talus slope): Daily photographs of site and regular high resolution aerial photographs; Electrical Resistance Tomography (ERT) and seismic measurements were done in 1975 and from 2009 to 2012. _",
+    "facilityType": "landFixed",
+    "territory": [
       {
-        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
-        "emails": [
-          "oscar@wmo.int"
-        ],
-        "links": [
+        "territory": "CHE",
+        "time": {
+          "interval": [
+            "2002-10-01",
+            ".."
+          ]
+        }
+      }
+    ],
+    "wmoRegion": "europe",
+    "observationSeries": [
+      {
+        "id": "observationSeries:210",
+        "title": "domain: atmosphere; variable: 210",
+        "observedProperty": 210,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
           {
-            "href": "https://oscar.wmo.int/surface",
-            "rel": "about",
-            "type": "text/html"
+            "time": {
+              "interval": [
+                "2003-11-04",
+                ".."
+              ]
+            },
+            "observingMethod": 204,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class3",
+            "configuration": "Unheated",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400.5
+              ]
+            },
+            "instrument": "instrument:campbell-scientific-arg100"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-01-17",
+                ".."
+              ]
+            }
+          },
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2009-07-10",
+                "2018-10-03"
+              ]
+            }
+          },
+          {
+            "observingSchedules": [
+              "schedule_4519c4b9f1"
+            ],
+            "time": {
+              "interval": [
+                "2003-11-04",
+                "2018-10-19"
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "kg.m-2",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          },
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "kg.m-2",
+            "reportingSchedules": [
+              "schedule_4519c4b9f1"
+            ]
           }
         ]
+      },
+      {
+        "id": "observationSeries:216",
+        "title": "domain: atmosphere; variable: 216",
+        "observedProperty": 216,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            },
+            "observingMethod": "inapplicable",
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class2",
+            "configuration": "Located in data logger casing",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.0,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400
+              ]
+            },
+            "instrument": "instrument:vaisala-oyj-vaisala-ptb110"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "hPa",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:224",
+        "title": "domain: atmosphere; variable: 224",
+        "observedProperty": 224,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2003-10-10",
+                ".."
+              ]
+            },
+            "observingMethod": 188,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class3",
+            "configuration": "Naturally ventilated multi-plate radiation shield",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400.5
+              ]
+            }
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            }
+          },
+          {
+            "observingSchedules": [
+              "schedule_4519c4b9f1"
+            ],
+            "time": {
+              "interval": [
+                "2003-10-10",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "degC",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          },
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "degC",
+            "reportingSchedules": [
+              "schedule_4519c4b9f1"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:12249",
+        "title": "domain: atmosphere; variable: 12249",
+        "observedProperty": 12249,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2003-10-10",
+                ".."
+              ]
+            },
+            "observingMethod": 250,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class3",
+            "configuration": "Naturally ventilated multi-plate radiation shield",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400.5
+              ]
+            }
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_4519c4b9f1"
+            ],
+            "time": {
+              "interval": [
+                "2003-10-10",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "percent",
+            "reportingSchedules": [
+              "schedule_4519c4b9f1"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:389",
+        "title": "domain: terrestrial; variable: 389",
+        "observedProperty": 389,
+        "observedDomain": {
+          "domain": "terrestrial"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2003-10-10",
+                "2020-06-24"
+              ]
+            },
+            "observingMethod": "inapplicable",
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class3",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 0.0,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2394
+              ]
+            },
+            "instrument": "instrument:campbell-scientific-107-temperature-probe"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-09-18",
+                "2020-06-24"
+              ]
+            }
+          },
+          {
+            "observingSchedules": [
+              "schedule_4519c4b9f1"
+            ],
+            "time": {
+              "interval": [
+                "2003-10-10",
+                "2020-06-24"
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "degC",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          },
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "degC",
+            "reportingSchedules": [
+              "schedule_4519c4b9f1"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:566",
+        "title": "domain: atmosphere; variable: 566",
+        "observedProperty": 566,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            },
+            "observingMethod": 265,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class3",
+            "configuration": "Ventilated",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400.5
+              ]
+            },
+            "instrument": "instrument:kipp-zonen-cnr-4"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": true,
+            "dataPolicy": "inapplicable",
+            "uom": "W.m-2",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:567",
+        "title": "domain: atmosphere; variable: 567",
+        "observedProperty": 567,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            },
+            "observingMethod": 265,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class2",
+            "configuration": "Ventilated",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400.5
+              ]
+            },
+            "instrument": "instrument:kipp-zonen-cnr-4"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": true,
+            "dataPolicy": "inapplicable",
+            "uom": "W.m-2",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:573",
+        "title": "domain: atmosphere; variable: 573",
+        "observedProperty": 573,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2018-09-18",
+                ".."
+              ]
+            },
+            "observingMethod": 266,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class3",
+            "configuration": "Ventilated",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400.5
+              ]
+            },
+            "instrument": "instrument:kipp-zonen-cnr-4"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2018-09-18",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": true,
+            "dataPolicy": "inapplicable",
+            "uom": "W.m-2",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:575",
+        "title": "domain: atmosphere; variable: 575",
+        "observedProperty": 575,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            },
+            "observingMethod": 266,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class2",
+            "configuration": "Ventilated",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400.5
+              ]
+            },
+            "instrument": "instrument:kipp-zonen-cnr-4"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": true,
+            "dataPolicy": "inapplicable",
+            "uom": "W.m-2",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:575",
+        "title": "domain: atmosphere; variable: 575",
+        "observedProperty": 575,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2003-10-10",
+                ".."
+              ]
+            },
+            "observingMethod": 266,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class2",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400.5
+              ]
+            }
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            }
+          },
+          {
+            "observingSchedules": [
+              "schedule_4519c4b9f1"
+            ],
+            "time": {
+              "interval": [
+                "2003-10-10",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "W.m-2",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          },
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "W.m-2",
+            "reportingSchedules": [
+              "schedule_4519c4b9f1"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:629",
+        "title": "domain: terrestrial; variable: 629",
+        "observedProperty": 629,
+        "observedDomain": {
+          "domain": "terrestrial"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2018-11-02",
+                ".."
+              ]
+            },
+            "observingMethod": 260,
+            "sourceOfObservation": "manualReading",
+            "exposure": "class3",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400.5
+              ]
+            }
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            }
+          },
+          {
+            "observingSchedules": [
+              "schedule_bd3601a4cc"
+            ],
+            "time": {
+              "interval": [
+                "2018-11-02",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "cm",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          },
+          {
+            "internationalExchange": true,
+            "dataPolicy": "inapplicable",
+            "uom": "cm",
+            "reportingSchedules": [
+              "schedule_bd3601a4cc"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:629",
+        "title": "domain: terrestrial; variable: 629",
+        "observedProperty": 629,
+        "observedDomain": {
+          "domain": "terrestrial"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2003-10-10",
+                "2018-11-02"
+              ]
+            },
+            "observingMethod": 260,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class3",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 6.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2400.5
+              ]
+            }
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_3d8aa0895e"
+            ],
+            "time": {
+              "interval": [
+                "2003-10-10",
+                "2018-11-02"
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": true,
+            "dataPolicy": "inapplicable",
+            "numberOfObservationsInReportingInterval": "1",
+            "timeliness": "PT30M",
+            "uom": "cm",
+            "reportingSchedules": [
+              "schedule_3d8aa0895e"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:12005",
+        "title": "domain: atmosphere; variable: 12005",
+        "observedProperty": 12005,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2003-10-10",
+                ".."
+              ]
+            },
+            "observingMethod": 63,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class3",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 7.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2401.5
+              ]
+            },
+            "instrument": "instrument:rm-young-wind-monitor-05103"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            }
+          },
+          {
+            "observingSchedules": [
+              "schedule_4519c4b9f1"
+            ],
+            "time": {
+              "interval": [
+                "2003-10-10",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "deg",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          },
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "deg",
+            "reportingSchedules": [
+              "schedule_4519c4b9f1"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:12006",
+        "title": "domain: atmosphere; variable: 12006",
+        "observedProperty": 12006,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2003-10-10",
+                ".."
+              ]
+            },
+            "observingMethod": 63,
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class3",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 7.5,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.946457,
+                46.752729,
+                2401.5
+              ]
+            },
+            "instrument": "instrument:rm-young-wind-monitor-05103"
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_f5169a5799"
+            ],
+            "time": {
+              "interval": [
+                "2019-09-18",
+                ".."
+              ]
+            }
+          },
+          {
+            "observingSchedules": [
+              "schedule_4519c4b9f1"
+            ],
+            "time": {
+              "interval": [
+                "2003-10-10",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "m.s-1",
+            "reportingSchedules": [
+              "schedule_f5169a5799"
+            ]
+          },
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "uom": "m.s-1",
+            "reportingSchedules": [
+              "schedule_4519c4b9f1"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:12014",
+        "title": "domain: terrestrial; variable: 12014",
+        "observedProperty": 12014,
+        "observedDomain": {
+          "domain": "terrestrial"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2002-10-01",
+                ".."
+              ]
+            },
+            "observingMethod": "inapplicable",
+            "sourceOfObservation": "automaticReading",
+            "exposure": "class2",
+            "verticalDistanceFromReferenceSurface": {
+              "value": -10.0,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.94516,
+                46.74792,
+                2394
+              ]
+            }
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_40156af88a"
+            ],
+            "time": {
+              "interval": [
+                "2013-02-02",
+                ".."
+              ]
+            },
+            "strategy": "discrete"
+          },
+          {
+            "observingSchedules": [
+              "schedule_1b0f7ffd16"
+            ],
+            "time": {
+              "interval": [
+                "2011-08-05",
+                "2013-02-01"
+              ]
+            }
+          },
+          {
+            "observingSchedules": [
+              "schedule_8a7891d4df"
+            ],
+            "time": {
+              "interval": [
+                "2002-10-01",
+                "2011-08-04"
+              ]
+            },
+            "strategy": "discrete"
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "levelOfData": "level2",
+            "numberOfObservationsInReportingInterval": "4380",
+            "timeliness": "P3M",
+            "uom": "degC",
+            "dataFormat": [
+              "csv"
+            ],
+            "reportingSchedules": [
+              "schedule_40156af88a"
+            ]
+          },
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "levelOfData": "level2",
+            "numberOfObservationsInReportingInterval": "1460",
+            "timeliness": "P3M",
+            "timeStampMeaning": "end",
+            "uom": "degC",
+            "dataFormat": [
+              "csv"
+            ],
+            "reportingSchedules": [
+              "schedule_1b0f7ffd16"
+            ]
+          },
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "levelOfData": "level2",
+            "numberOfObservationsInReportingInterval": "365",
+            "timeliness": "P3M",
+            "timeStampMeaning": "end",
+            "uom": "degC",
+            "dataFormat": [
+              "csv"
+            ],
+            "reportingSchedules": [
+              "schedule_8a7891d4df"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:12015",
+        "title": "domain: terrestrial; variable: 12015",
+        "observedProperty": 12015,
+        "observedDomain": {
+          "domain": "terrestrial"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2002-10-01",
+                ".."
+              ]
+            },
+            "observingMethod": "inapplicable",
+            "sourceOfObservation": "manualReading",
+            "exposure": "class2",
+            "verticalDistanceFromReferenceSurface": {
+              "value": -3.0,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.94516,
+                46.74792,
+                2394
+              ]
+            }
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_06ace5f7dc"
+            ],
+            "time": {
+              "interval": [
+                "2002-10-01",
+                ".."
+              ]
+            },
+            "strategy": "discrete"
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "levelOfData": "level2",
+            "numberOfObservationsInReportingInterval": "1",
+            "timeliness": "P3M",
+            "timeStampMeaning": "end",
+            "uom": "m",
+            "dataFormat": [
+              "csv"
+            ],
+            "reportingSchedules": [
+              "schedule_06ace5f7dc"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:12283",
+        "title": "domain: terrestrial; variable: 12283",
+        "observedProperty": 12283,
+        "observedDomain": {
+          "domain": "terrestrial"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2009-08-01",
+                ".."
+              ]
+            },
+            "observingMethod": "inapplicable",
+            "sourceOfObservation": "inapplicable",
+            "exposure": "class2",
+            "verticalDistanceFromReferenceSurface": {
+              "value": 0.0,
+              "uom": "m"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                9.95129,
+                46.7465,
+                2399
+              ]
+            }
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_c1868c5894"
+            ],
+            "time": {
+              "interval": [
+                "2009-08-01",
+                ".."
+              ]
+            },
+            "strategy": "discrete"
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "inapplicable",
+            "levelOfData": "level3",
+            "numberOfObservationsInReportingInterval": "1",
+            "timeliness": "P3M",
+            "uom": "m.a-1",
+            "dataFormat": [
+              "inapplicable"
+            ],
+            "reportingSchedules": [
+              "schedule_c1868c5894"
+            ]
+          }
+        ]
+      }
+    ],
+    "schedules": [
+      {
+        "wmo.int:samplingFrequency": "P1Y",
+        "wmo.int:aggregationInterval": "P12M",
+        "wmo.int:diurnalBaseTime": "01:00:00",
+        "start": "0001-01-01T01:00:00",
+        "duration": "PT22H59M",
+        "@type": "Event",
+        "uid": "schedule_06ace5f7dc"
+      },
+      {
+        "wmo.int:samplingFrequency": "PT10M",
+        "wmo.int:aggregationInterval": "PT1H",
+        "wmo.int:diurnalBaseTime": "01:00:00",
+        "start": "0001-01-01T00:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_1b0f7ffd16"
+      },
+      {
+        "wmo.int:aggregationInterval": "PT30M",
+        "wmo.int:diurnalBaseTime": "08:00:00",
+        "start": "0001-01-01T00:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_3d8aa0895e"
+      },
+      {
+        "wmo.int:samplingFrequency": "PT10M",
+        "wmo.int:aggregationInterval": "PT1H",
+        "wmo.int:diurnalBaseTime": "01:00:00",
+        "start": "0001-01-01T01:00:00",
+        "duration": "PT22H59M",
+        "@type": "Event",
+        "uid": "schedule_40156af88a"
+      },
+      {
+        "wmo.int:aggregationInterval": "PT30M",
+        "start": "0001-01-01T00:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_4519c4b9f1"
+      },
+      {
+        "wmo.int:samplingFrequency": "PT1H",
+        "wmo.int:aggregationInterval": "PT1H",
+        "wmo.int:diurnalBaseTime": "01:00:00",
+        "start": "0001-01-01T00:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_8a7891d4df"
+      },
+      {
+        "wmo.int:aggregationInterval": "PT30M",
+        "wmo.int:diurnalBaseTime": "07:00:00",
+        "start": "0001-01-01T00:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_bd3601a4cc"
+      },
+      {
+        "wmo.int:samplingFrequency": "P1Y",
+        "wmo.int:aggregationInterval": "PT1H",
+        "wmo.int:diurnalBaseTime": "01:00:00",
+        "start": "0001-01-01T00:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_c1868c5894"
+      },
+      {
+        "wmo.int:aggregationInterval": "PT10M",
+        "start": "0001-01-01T00:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_f5169a5799"
+      }
+    ],
+    "instruments": [
+      {
+        "id": "instrument:campbell-scientific-107-temperature-probe",
+        "manufacturer": "Campbell Scientific",
+        "model": "107 Temperature probe"
+      },
+      {
+        "id": "instrument:campbell-scientific-arg100",
+        "manufacturer": "Campbell Scientific",
+        "model": "ARG100"
+      },
+      {
+        "id": "instrument:kipp-zonen-cnr-4",
+        "manufacturer": "Kipp&Zonen",
+        "model": "CNR 4"
+      },
+      {
+        "id": "instrument:rm-young-wind-monitor-05103",
+        "manufacturer": "RM Young",
+        "model": "Wind Monitor 05103"
+      },
+      {
+        "id": "instrument:vaisala-oyj-vaisala-ptb110",
+        "manufacturer": "Vaisala Oyj",
+        "model": "VAISALA PTB110"
       }
     ],
     "keywords": [
@@ -80,1485 +1347,97 @@
         "type": "text/html"
       }
     ],
-    "environment": [
+    "contactAssignments": [
       {
-        "validFrom": "2002-10-01",
-        "climateZone": "polarTundra",
-        "surfaceCover": "grasslands",
-        "surfaceRoughness": "inapplicable",
-        "topographyBathymetry": {
-          "localTopography": "slope",
-          "relativeElevation": "middle",
-          "topographicContext": "rises",
-          "altitudeOrDepth": "highAltitude"
-        }
-      }
-    ],
-    "programAffiliations": [
-      {
-        "validFrom": "2002-10-01",
-        "program": "GCWCryoNet",
-        "programSpecificFacilityId": "39",
-        "reportingStatus": "operational"
-      },
-      {
-        "validFrom": "2003-10-10",
-        "program": "nonAffiliated",
-        "programSpecificFacilityId": "FLU2",
-        "reportingStatus": "operational"
-      }
-    ],
-    "territory": [
-      {
-        "validFrom": "2002-10-01",
-        "territory": "CHE"
-      }
-    ],
-    "observationSeries": [
-      {
-        "uid": "observationSeries:210-60956cc713",
-        "title": "domain: atmosphere; geometry: point; variable: 210",
-        "observedProperty": 210,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2003-11-04",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 204,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "instrument": "instrument:Campbell-Scientific--ARG100",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-01-17",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "validFrom": "2009-07-10",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "validFrom": "2003-11-04",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "kg.m-2",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "internationalExchange": false,
-            "uom": "kg.m-2",
-            "temporalReportingInterval": "PT30M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
+        "contact": "contact:marty@slf.ch",
+        "roles": [
+          "pointOfContact"
         ]
       },
       {
-        "uid": "observationSeries:216-9712e24f14",
-        "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": 216,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2019-09-18",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.0,
-                "uom": "m"
-              }
-            },
-            "observingMethod": "inapplicable",
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "instrument": "instrument:Vaisala-Oyj--VAISALA-PTB110",
-            "exposure": "class2"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "hPa",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:224-55edc04dde",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": 224,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2003-10-10",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 188,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "validFrom": "2003-10-10",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "degC",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "internationalExchange": false,
-            "uom": "degC",
-            "temporalReportingInterval": "PT30M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12249-d51926fd79",
-        "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": 12249,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2003-10-10",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 250,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2003-10-10",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "percent",
-            "temporalReportingInterval": "PT30M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:389-f23d6b7d70",
-        "title": "domain: terrestrial; geometry: point; variable: 389",
-        "observedProperty": 389,
-        "observedFeature": {
-          "domain": "terrestrial"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2003-10-10",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2394
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 0.0,
-                "uom": "m"
-              }
-            },
-            "observingMethod": "inapplicable",
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "instrument": "instrument:Campbell-Scientific--107-Temperature-probe",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "validFrom": "2003-10-10",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "degC",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "internationalExchange": false,
-            "uom": "degC",
-            "temporalReportingInterval": "PT30M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:566-74e5abaa67",
-        "title": "domain: atmosphere; geometry: point; variable: 566",
-        "observedProperty": 566,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2019-09-18",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 265,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "instrument": "instrument:Kipp-Zonen--CNR-4",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": true,
-            "uom": "W.m-2",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:567-b1935187a1",
-        "title": "domain: atmosphere; geometry: point; variable: 567",
-        "observedProperty": 567,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2019-09-18",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 265,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "instrument": "instrument:Kipp-Zonen--CNR-4",
-            "exposure": "class2"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": true,
-            "uom": "W.m-2",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:573-ddf18ef89d",
-        "title": "domain: atmosphere; geometry: point; variable: 573",
-        "observedProperty": 573,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2018-09-18",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 266,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "instrument": "instrument:Kipp-Zonen--CNR-4",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2018-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": true,
-            "uom": "W.m-2",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:575-b863be6c56",
-        "title": "domain: atmosphere; geometry: point; variable: 575",
-        "observedProperty": 575,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2019-09-18",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 266,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "instrument": "instrument:Kipp-Zonen--CNR-4",
-            "exposure": "class2"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": true,
-            "uom": "W.m-2",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:575-8f43414e35",
-        "title": "domain: atmosphere; geometry: point; variable: 575",
-        "observedProperty": 575,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2003-10-10",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 266,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "exposure": "class2"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "validFrom": "2003-10-10",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "W.m-2",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "internationalExchange": false,
-            "uom": "W.m-2",
-            "temporalReportingInterval": "PT30M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:629-9a6c084f2c",
-        "title": "domain: terrestrial; geometry: point; variable: 629",
-        "observedProperty": 629,
-        "observedFeature": {
-          "domain": "terrestrial"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2018-11-02",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 260,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "manualReading",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "validFrom": "2018-11-02",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_6bc1fc6f2eb4"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "cm",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "internationalExchange": true,
-            "uom": "cm",
-            "temporalReportingInterval": "PT30M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:629-5346ac6220",
-        "title": "domain: terrestrial; geometry: point; variable: 629",
-        "observedProperty": 629,
-        "observedFeature": {
-          "domain": "terrestrial"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2003-10-10",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2400.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 6.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 260,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2003-10-10",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_99360c3bc52a"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": true,
-            "uom": "cm",
-            "temporalReportingInterval": "PT30M",
-            "timeliness": "PT30M",
-            "dataPolicy": "inapplicable",
-            "numberOfObservationsInReportingInterval": "1",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12005-fbf2966e2d",
-        "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": 12005,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2003-10-10",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2401.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 7.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 63,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "instrument": "instrument:RM-Young--Wind-Monitor-05103",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "validFrom": "2003-10-10",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "deg",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "internationalExchange": false,
-            "uom": "deg",
-            "temporalReportingInterval": "PT30M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12006-8db69ea38d",
-        "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "observedProperty": 12006,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2003-10-10",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.946457,
-                  46.752729,
-                  2401.5
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 7.5,
-                "uom": "m"
-              }
-            },
-            "observingMethod": 63,
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "instrument": "instrument:RM-Young--Wind-Monitor-05103",
-            "exposure": "class3"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2019-09-18",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "validFrom": "2003-10-10",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "m.s-1",
-            "temporalReportingInterval": "PT10M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_dea9eeb0b28d"
-            ]
-          },
-          {
-            "internationalExchange": false,
-            "uom": "m.s-1",
-            "temporalReportingInterval": "PT30M",
-            "dataPolicy": "inapplicable",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_e6059433ed54"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12014-94ece011e1",
-        "title": "domain: terrestrial; geometry: verticalProfile; variable: 12014",
-        "observedProperty": 12014,
-        "observedFeature": {
-          "domain": "terrestrial"
-        },
-        "observedGeometry": "verticalProfile",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2002-10-01",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.94516,
-                  46.74792,
-                  2394
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": -10.0,
-                "uom": "m"
-              }
-            },
-            "observingMethod": "inapplicable",
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "exposure": "class2"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2013-02-02",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_24639b2ae6f8"
-            ]
-          },
-          {
-            "validFrom": "2013-02-02",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_b695ff38d689"
-            ]
-          },
-          {
-            "validFrom": "2011-08-05",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_cd07925148be"
-            ]
-          },
-          {
-            "validFrom": "2011-08-05",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_b695ff38d689"
-            ]
-          },
-          {
-            "validFrom": "2002-10-01",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_cd07925148be"
-            ]
-          },
-          {
-            "validFrom": "2002-10-01",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_2202d5b96a18"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "degC",
-            "temporalReportingInterval": "PT1H",
-            "timeliness": "P3M",
-            "dataPolicy": "inapplicable",
-            "levelOfData": "level2",
-            "numberOfObservationsInReportingInterval": "4380",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_f253213a5423"
-            ]
-          },
-          {
-            "internationalExchange": false,
-            "uom": "degC",
-            "temporalReportingInterval": "PT1H",
-            "timeliness": "P3M",
-            "dataPolicy": "inapplicable",
-            "levelOfData": "level2",
-            "numberOfObservationsInReportingInterval": "1460",
-            "timeStampMeaning": "end",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_f253213a5423"
-            ]
-          },
-          {
-            "internationalExchange": false,
-            "uom": "degC",
-            "temporalReportingInterval": "PT1H",
-            "timeliness": "P3M",
-            "dataPolicy": "inapplicable",
-            "levelOfData": "level2",
-            "numberOfObservationsInReportingInterval": "365",
-            "timeStampMeaning": "end",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_f253213a5423"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12015-46ce9e21da",
-        "title": "domain: terrestrial; geometry: point; variable: 12015",
-        "observedProperty": 12015,
-        "observedFeature": {
-          "domain": "terrestrial"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2002-10-01",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.94516,
-                  46.74792,
-                  2394
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": -3.0,
-                "uom": "m"
-              }
-            },
-            "observingMethod": "inapplicable",
-            "operatingStatus": "operational",
-            "sourceOfObservation": "manualReading",
-            "exposure": "class2"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2002-10-01",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_2c65a1769ef1"
-            ]
-          },
-          {
-            "validFrom": "2002-10-01",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_45104590f457"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "m",
-            "temporalReportingInterval": "P12M",
-            "timeliness": "P3M",
-            "dataPolicy": "inapplicable",
-            "levelOfData": "level2",
-            "numberOfObservationsInReportingInterval": "1",
-            "timeStampMeaning": "end",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_766f5a86f3af"
-            ]
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12283-f297df874e",
-        "title": "domain: terrestrial; geometry: point; variable: 12283",
-        "observedProperty": 12283,
-        "observedFeature": {
-          "domain": "terrestrial"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2009-08-01",
-            "observingLocation": {
-              "geometry": {
-                "type": "Point",
-                "coordinates": [
-                  9.95129,
-                  46.7465,
-                  2399
-                ]
-              },
-              "referenceSurface": "naturalGround",
-              "verticalDistanceFromReferenceSurface": {
-                "value": 0.0,
-                "uom": "m"
-              }
-            },
-            "observingMethod": "inapplicable",
-            "operatingStatus": "operational",
-            "sourceOfObservation": "inapplicable",
-            "exposure": "class2"
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "2009-08-01",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_cd07925148be"
-            ]
-          },
-          {
-            "validFrom": "2009-08-01",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_59f90ebcde76"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "m.a-1",
-            "temporalReportingInterval": "PT1H",
-            "timeliness": "P3M",
-            "dataPolicy": "inapplicable",
-            "levelOfData": "level3",
-            "numberOfObservationsInReportingInterval": "1",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_f253213a5423"
-            ]
-          }
+        "contact": "contact:phillips@slf.ch",
+        "roles": [
+          "principalInvestigator"
         ]
       }
     ],
-    "instruments": [
+    "contacts": [
       {
-        "uid": "instrument:Campbell-Scientific--ARG100",
-        "manufacturer": "Campbell Scientific",
-        "model": "ARG100",
-        "observingMethods": [
-          204
+        "identifier": "contact:marty@slf.ch",
+        "name": "Marty,Christoph,Dr",
+        "organization": "WSL Institute for Snow and Avalanche Research SLF",
+        "emails": [
+          {
+            "value": "marty@slf.ch"
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Davos Dorf",
+            "country": "CHE"
+          }
         ]
       },
       {
-        "uid": "instrument:Vaisala-Oyj--VAISALA-PTB110",
-        "manufacturer": "Vaisala Oyj",
-        "model": "VAISALA PTB110",
-        "observingMethods": [
-          "inapplicable"
+        "identifier": "contact:oscar@wmo.int",
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          },
+          {
+            "value": "https://oscar.wmo.int/surface/#/feedback"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
         ]
       },
       {
-        "uid": "instrument:Campbell-Scientific--107-Temperature-probe",
-        "manufacturer": "Campbell Scientific",
-        "model": "107 Temperature probe",
-        "observingMethods": [
-          "inapplicable"
-        ]
-      },
-      {
-        "uid": "instrument:Kipp-Zonen--CNR-4",
-        "manufacturer": "Kipp&Zonen",
-        "model": "CNR 4",
-        "observingMethods": [
-          265,
-          266
-        ]
-      },
-      {
-        "uid": "instrument:RM-Young--Wind-Monitor-05103",
-        "manufacturer": "RM Young",
-        "model": "Wind Monitor 05103",
-        "observingMethods": [
-          63
+        "identifier": "contact:phillips@slf.ch",
+        "name": "Phillips,Marcia,Dr",
+        "organization": "WSL Institute for Snow and Avalanche Research SLF",
+        "emails": [
+          {
+            "value": "phillips@slf.ch"
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Davos Dorf",
+            "country": "CHE"
+          }
         ]
       }
+    ]
+  },
+  "time": {
+    "interval": [
+      "2002-10-01",
+      ".."
     ],
-    "schedules": [
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT10M",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "minutely",
-            "interval": 10
-          }
-        ],
-        "wmo.int:aggregationInterval": "PT10M",
-        "uid": "schedule_dea9eeb0b28d"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT30M",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "minutely",
-            "interval": 30
-          }
-        ],
-        "wmo.int:aggregationInterval": "PT30M",
-        "uid": "schedule_e6059433ed54"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT30M",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "minutely",
-            "interval": 30
-          }
-        ],
-        "wmo.int:aggregationInterval": "PT30M",
-        "wmo.int:diurnalBaseTime": "07:00:00",
-        "uid": "schedule_6bc1fc6f2eb4"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT30M",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "minutely",
-            "interval": 30
-          }
-        ],
-        "wmo.int:aggregationInterval": "PT30M",
-        "wmo.int:diurnalBaseTime": "08:00:00",
-        "uid": "schedule_99360c3bc52a"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T01:00:00",
-        "timeZone": "UTC",
-        "duration": "PT1H",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "hourly"
-          }
-        ],
-        "wmo.int:aggregationInterval": "PT1H",
-        "wmo.int:diurnalBaseTime": "01:00:00",
-        "uid": "schedule_24639b2ae6f8"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT10M",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "minutely",
-            "interval": 10
-          }
-        ],
-        "wmo.int:samplingFrequency": "PT10M",
-        "wmo.int:aggregationInterval": "PT1H",
-        "uid": "schedule_b695ff38d689"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT1H",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "hourly"
-          }
-        ],
-        "wmo.int:aggregationInterval": "PT1H",
-        "wmo.int:diurnalBaseTime": "01:00:00",
-        "uid": "schedule_cd07925148be"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT1H",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "hourly"
-          }
-        ],
-        "wmo.int:samplingFrequency": "PT1H",
-        "wmo.int:aggregationInterval": "PT1H",
-        "uid": "schedule_2202d5b96a18"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT1H",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "hourly"
-          }
-        ],
-        "wmo.int:aggregationInterval": "PT1H",
-        "uid": "schedule_f253213a5423"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T01:00:00",
-        "timeZone": "UTC",
-        "duration": "P12M",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "daily"
-          }
-        ],
-        "wmo.int:aggregationInterval": "P12M",
-        "wmo.int:diurnalBaseTime": "01:00:00",
-        "uid": "schedule_2c65a1769ef1"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "P1Y",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "daily"
-          }
-        ],
-        "wmo.int:samplingFrequency": "P1Y",
-        "wmo.int:aggregationInterval": "P12M",
-        "uid": "schedule_45104590f457"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "P12M",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "daily"
-          }
-        ],
-        "wmo.int:aggregationInterval": "P12M",
-        "uid": "schedule_766f5a86f3af"
-      },
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "P1Y",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "daily"
-          }
-        ],
-        "wmo.int:samplingFrequency": "P1Y",
-        "wmo.int:aggregationInterval": "PT1H",
-        "uid": "schedule_59f90ebcde76"
-      }
+    "resolution": "P1D"
+  },
+  "temporalGeometry": {
+    "type": "MovingPoint",
+    "coordinates": [
+      [
+        9.946457,
+        46.752729,
+        2394
+      ]
+    ],
+    "dates": [
+      "2003-10-10"
+    ],
+    "methods": [
+      [
+        "map"
+      ]
     ]
   }
 }

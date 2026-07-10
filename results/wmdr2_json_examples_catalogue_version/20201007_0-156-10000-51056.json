@@ -1,6 +1,9 @@
 {
   "type": "Feature",
-  "id": "wsi:0-156-10000-51056",
+  "id": "0-156-10000-51056",
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -9,316 +12,262 @@
       3500
     ]
   },
-  "time": {
-    "interval": [
-      "2014-01-01",
-      ".."
-    ],
-    "resolution": "day"
-  },
-  "conformsTo": [
-    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
-  ],
   "properties": {
     "type": "facility",
     "title": "Muz Taw glacier",
-    "description": "Muz Taw glacier station located at the northern side of the Altay Mountains with an area of 4.27 km2. The elevation from glacier terminus to the highest point ranges from 3090 to 3800 m, and the glacier length is 3.7 km. The snow line of this glacier is 3310 m, and the ice volume is 0.28 km3 with an average ice thickness of 66 m. Now the Muz Taw glacier has shrunk extremely due to dramatic melting in the past few decades. The observation of Muz Taw glacier station began in 2014 which involved the observation of glacier mass balance, terminal change, movement speed, and the meteorological phenomena of glacial zone. Muz Taw glacier station is the GCW primary CryoNet Station.",
     "created": "2020-10-07T00:00:00Z",
     "updated": "2020-10-07T00:00:00Z",
+    "description": "Muz Taw glacier station located at the northern side of the Altay Mountains with an area of 4.27 km2. The elevation from glacier terminus to the highest point ranges from 3090 to 3800 m, and the glacier length is 3.7 km. The snow line of this glacier is 3310 m, and the ice volume is 0.28 km3 with an average ice thickness of 66 m. Now the Muz Taw glacier has shrunk extremely due to dramatic melting in the past few decades. The observation of Muz Taw glacier station began in 2014 which involved the observation of glacier mass balance, terminal change, movement speed, and the meteorological phenomena of glacial zone. Muz Taw glacier station is the GCW primary CryoNet Station.",
     "facilityType": "landOnIce",
-    "wmoRegion": "asia",
-    "contacts": [
-      {
-        "uid": "contact:oscar@wmo.int",
-        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
-        "links": [
-          {
-            "rel": "about",
-            "href": "../catalogues/contacts.json#contact:oscar@wmo.int",
-            "type": "application/json"
-          }
-        ]
-      }
-    ],
-    "keywords": [
-      "0-156-10000-51056",
-      "Muz Taw glacier"
-    ],
-    "environment": [
-      {
-        "validFrom": "2015-09-01",
-        "climateZone": "steppeColdArid"
-      }
-    ],
-    "programAffiliations": [
-      {
-        "validFrom": "2020-09-24",
-        "program": "GCWCryoNet",
-        "programSpecificFacilityId": "181",
-        "reportingStatus": "operational"
-      }
-    ],
     "territory": [
       {
-        "validFrom": "2015-09-01",
-        "territory": "CHN"
+        "territory": "CHN",
+        "time": {
+          "interval": [
+            "2015-09-01",
+            ".."
+          ]
+        }
       }
     ],
+    "wmoRegion": "asia",
     "observationSeries": [
       {
-        "uid": "observationSeries:224-9daa36cec1",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
+        "id": "observationSeries:224",
+        "title": "domain: atmosphere; variable: 224",
         "observedProperty": 224,
-        "observedFeature": {
+        "observedDomain": {
           "domain": "atmosphere"
         },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
         "observingConfigurations": [
           {
-            "validFrom": "2015-09-01",
-            "observingMethod": 183,
-            "operatingStatus": {
-              "nilReason": "unknown"
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
             },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": 183
           }
         ],
         "observingProcedures": [
           {
-            "validFrom": "2015-09-01",
-            "strategy": "continuous",
             "observingSchedules": [
-              "schedule_1f99ffca9e0c"
-            ]
+              "schedule_ef6e0e0727"
+            ],
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
+            }
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "temporalReportingInterval": "P1D",
-            "strategy": "routine",
             "reportingSchedules": [
-              "schedule_1f99ffca9e0c"
+              "schedule_ef6e0e0727"
             ]
           }
         ]
       },
       {
-        "uid": "observationSeries:12249-cde4d0bbbf",
-        "title": "domain: atmosphere; geometry: point; variable: 12249",
+        "id": "observationSeries:12249",
+        "title": "domain: atmosphere; variable: 12249",
         "observedProperty": 12249,
-        "observedFeature": {
+        "observedDomain": {
           "domain": "atmosphere"
         },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
         "observingConfigurations": [
           {
-            "validFrom": "2015-09-01",
-            "observingMethod": 183,
-            "operatingStatus": {
-              "nilReason": "unknown"
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
             },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": 183
           }
         ],
         "observingProcedures": [
           {
-            "validFrom": "2015-09-01",
-            "strategy": "continuous",
             "observingSchedules": [
-              "schedule_1f99ffca9e0c"
-            ]
+              "schedule_ef6e0e0727"
+            ],
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
+            }
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "temporalReportingInterval": "P1D",
-            "strategy": "routine",
             "reportingSchedules": [
-              "schedule_1f99ffca9e0c"
+              "schedule_ef6e0e0727"
             ]
           }
         ]
       },
       {
-        "uid": "observationSeries:10103-ab9d7925f6",
-        "title": "domain: terrestrial; geometry: totalColumn; variable: 10103",
+        "id": "observationSeries:10103",
+        "title": "domain: terrestrial; variable: 10103",
         "observedProperty": 10103,
-        "observedFeature": {
+        "observedDomain": {
           "domain": "terrestrial"
         },
-        "observedGeometry": "totalColumn",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
         "observingConfigurations": [
           {
-            "validFrom": "2015-09-01",
-            "observingMethod": 183,
-            "operatingStatus": {
-              "nilReason": "unknown"
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
             },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": 183
           }
         ],
         "observingProcedures": [
           {
-            "validFrom": "2015-09-01",
-            "strategy": "continuous",
             "observingSchedules": [
-              "schedule_766f5a86f3af"
-            ]
+              "schedule_c8ebbee373"
+            ],
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
+            }
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "temporalReportingInterval": "P12M",
-            "strategy": "routine",
             "reportingSchedules": [
-              "schedule_766f5a86f3af"
+              "schedule_c8ebbee373"
             ]
           }
         ]
       },
       {
-        "uid": "observationSeries:12005-6da5315be0",
-        "title": "domain: atmosphere; geometry: point; variable: 12005",
+        "id": "observationSeries:12005",
+        "title": "domain: atmosphere; variable: 12005",
         "observedProperty": 12005,
-        "observedFeature": {
+        "observedDomain": {
           "domain": "atmosphere"
         },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
         "observingConfigurations": [
           {
-            "validFrom": "2015-09-01",
-            "observingMethod": 183,
-            "operatingStatus": {
-              "nilReason": "unknown"
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
             },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": 183
           }
         ],
         "observingProcedures": [
           {
-            "validFrom": "2015-09-01",
-            "strategy": "continuous",
             "observingSchedules": [
-              "schedule_1f99ffca9e0c"
-            ]
+              "schedule_ef6e0e0727"
+            ],
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
+            }
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "temporalReportingInterval": "P1D",
-            "strategy": "routine",
             "reportingSchedules": [
-              "schedule_1f99ffca9e0c"
+              "schedule_ef6e0e0727"
             ]
           }
         ]
       },
       {
-        "uid": "observationSeries:12006-91f34d7d2f",
-        "title": "domain: atmosphere; geometry: point; variable: 12006",
+        "id": "observationSeries:12006",
+        "title": "domain: atmosphere; variable: 12006",
         "observedProperty": 12006,
-        "observedFeature": {
+        "observedDomain": {
           "domain": "atmosphere"
         },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
         "observingConfigurations": [
           {
-            "validFrom": "2015-09-01",
-            "observingMethod": 183,
-            "operatingStatus": {
-              "nilReason": "unknown"
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
             },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": 183
           }
         ],
         "observingProcedures": [
           {
-            "validFrom": "2015-09-01",
-            "strategy": "continuous",
             "observingSchedules": [
-              "schedule_1f99ffca9e0c"
-            ]
+              "schedule_ef6e0e0727"
+            ],
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
+            }
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "temporalReportingInterval": "P1D",
-            "strategy": "routine",
             "reportingSchedules": [
-              "schedule_1f99ffca9e0c"
+              "schedule_ef6e0e0727"
             ]
           }
         ]
       },
       {
-        "uid": "observationSeries:12010-00c90e15cb",
-        "title": "domain: terrestrial; geometry: totalColumn; variable: 12010",
+        "id": "observationSeries:12010",
+        "title": "domain: terrestrial; variable: 12010",
         "observedProperty": 12010,
-        "observedFeature": {
+        "observedDomain": {
           "domain": "terrestrial"
         },
-        "observedGeometry": "totalColumn",
-        "programAffiliations": [
-          "GCWCryoNet"
-        ],
         "observingConfigurations": [
           {
-            "validFrom": "2015-09-01",
-            "observingMethod": 183,
-            "operatingStatus": {
-              "nilReason": "unknown"
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
             },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": 183
           }
         ],
         "observingProcedures": [
           {
-            "validFrom": "2015-09-01",
-            "strategy": "continuous",
             "observingSchedules": [
-              "schedule_766f5a86f3af"
-            ]
+              "schedule_c8ebbee373"
+            ],
+            "time": {
+              "interval": [
+                "2015-09-01",
+                ".."
+              ]
+            }
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "temporalReportingInterval": "P12M",
-            "strategy": "routine",
             "reportingSchedules": [
-              "schedule_766f5a86f3af"
+              "schedule_c8ebbee373"
             ]
           }
         ]
@@ -326,33 +275,38 @@
     ],
     "schedules": [
       {
-        "@type": "Event",
+        "wmo.int:aggregationInterval": "P12M",
         "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
         "duration": "P1D",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "daily"
-          }
-        ],
-        "wmo.int:aggregationInterval": "P1D",
-        "uid": "schedule_1f99ffca9e0c"
+        "@type": "Event",
+        "uid": "schedule_c8ebbee373"
       },
       {
-        "@type": "Event",
+        "wmo.int:aggregationInterval": "P1D",
         "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "P12M",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "daily"
-          }
-        ],
-        "wmo.int:aggregationInterval": "P12M",
-        "uid": "schedule_766f5a86f3af"
+        "duration": "P1D",
+        "@type": "Event",
+        "uid": "schedule_ef6e0e0727"
+      }
+    ],
+    "keywords": [
+      "0-156-10000-51056",
+      "Muz Taw glacier"
+    ],
+    "contactAssignments": [
+      {
+        "contact": "contact:yuexiaoying@lzb.ac.cn",
+        "roles": [
+          "pointOfContact"
+        ]
       }
     ]
+  },
+  "time": {
+    "interval": [
+      "2014-01-01",
+      ".."
+    ],
+    "resolution": "P1D"
   }
 }

@@ -1,24 +1,56 @@
 #!/usr/bin/env python3
-"""Convert simplified WMDR 1.0 JSON records into WMDR2 v0.3.0 JSON.
+"""Convert simplified WMDR 1.0 JSON records into WMDR2 v0.3.1 JSON.
 
-The v0.3.0 target represented here follows the EA model under
-``resources/ea/wmdr2``:
+This script is both a command-line converter and an importable module.  It reads
+one simplified WMDR10 JSON file, an already generated WMDR2 Feature, or a
+directory of JSON files.  Directory conversion supports grouped input files with
+suffixes such as ``_header.json``, ``_facility.json``, ``_observations.json``
+and ``_deployments.json``.
 
-* ``Deployment`` is no longer a JSON/model class. The former deployment payload
-  is folded into ``ObservingConfiguration.observingLocation`` and, where useful,
-  into ``sourceOfObservation`` / instrument catalogue metadata.
-* ``ObservingConfiguration.validFrom`` is the history anchor for each
-  observation-series configuration.
-* ``ObservingProcedure.validFrom`` is retained for procedure/schedule history.
-* ``ReportingProcedure`` is the combined reporting/procedure object. It is
-  emitted inline under each observation series as ``reportingProcedures`` and may carry
-  ``spatialReportingInterval`` and one or more ``reportingSchedules``.
-* JSCalendar-like reporting schedules support the WMO extension property
-  ``wmo.int:diurnalBaseTime``.
+Configuration is the default execution mode for repository use.  Running
+``python convert_wmdr10_json_to_wmdr2_json.py`` without positional arguments
+loads ``config.yaml`` or ``config.yml`` from the current directory or one of its
+parents.  The converter reads the
+``convert_wmdr10_json_to_wmdr2_json`` section and uses ``source`` and ``target``
+as the default input and output paths.  The aliases ``input``/``input_path`` and
+``output``/``output_path`` are also accepted for compatibility.  Paths from the
+configuration file are resolved relative to the configuration file location.
+Command-line arguments remain available for ad-hoc conversion and override the
+configuration.  PyYAML is required for the normal no-argument configuration
+workflow.  Every file write is reported on stdout, so normal runs show that
+records and catalogue files are actually being produced.
 
-The module deliberately keeps the public helper names used by the v0.2.x tests
-and local workflows, but the semantics of deployment-related helpers now map to
-``ObservingLocation`` rather than to a reusable ``Deployment`` class.
+The public API is:
+
+* ``build_facility_feature(...)`` builds one WMDR2 GeoJSON Feature;
+* ``normalize_wmdr2_record(...)`` normalizes an already produced WMDR2 record;
+* ``convert_record(...)`` converts one in-memory object;
+* ``convert_file(...)`` converts one file;
+* ``convert_path(...)`` converts a file or directory;
+* ``main(...)`` implements the command-line interface.
+
+The v0.3.1 output conventions implemented here are:
+
+* Feature ``id`` is the bare WSI only, without any namespace prefix.
+* Reusable contacts are OGC Contact objects in ``properties.contacts``.
+* Context-specific contact-role use is represented as ``contactAssignments``.
+* Contact e-mails and phones are OGC-style objects with a required ``value``.
+* ``time.resolution`` is an ISO 8601 duration such as ``P1D``.
+* ``beginPosition``/``endPosition`` and ``validFrom``/``validTo`` are normalized to OGC Records-style ``time.interval``.
+* ``observingLocation`` is not emitted as a JSON wrapper.  Its useful members are
+  promoted into the surrounding observing configuration object.
+* ``reportingProcedures`` implement the v0.3.1 UML ReportingProcedure
+  attributes and are not time-bound.  Reporting cadence is represented by
+  reusable schedules referenced through ``reportingSchedules``; source
+  ``temporalReportingInterval`` values become schedule
+  ``wmo.int:aggregationInterval``.  ``duration`` is reserved for diurnal
+  coverage windows derived from coverage start/end times.
+* ``observingProcedures`` are time-bound and reference reusable schedules
+  through ``observingSchedules``.
+
+The converter avoids inventing values when the source metadata is absent.
+Unknown or nil WMDR10 fields are preserved as ``{"nilReason": ...}`` where
+possible, rather than replaced with guessed values.
 """
 
 from __future__ import annotations
@@ -34,39 +66,42 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple, cast
 
 try:
-    import yaml  # type: ignore
-except Exception:  # pragma: no cover
+    import yaml  # type: ignore[import-untyped]
+except Exception:  # pragma: no cover - optional dependency
     yaml = None
 
-OGC_RECORD_CORE_CONF = "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
-WMDR2_CORE_CONF = "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+VERSION = "0.3.1"
+ANNOUNCE_WRITES = True
 DEFAULT_PATTERN = "*.json"
 OUTPUT_SUFFIX = ".json"
 CANONICAL_SCHEDULE_START_DATE = "0001-01-01"
+OGC_RECORD_CORE_CONF = "http://www.opengis.net/spec/ogcapi-records-1/1.0/conf/record-core"
+WMDR2_CORE_CONF = "http://wigos.wmo.int/spec/wmdr/2/conf/core"
 _NULL_SENTINEL = "__WMDR2_NULL__"
+SOURCE_TEMPORAL_KEYS = {"beginPosition", "endPosition", "validFrom", "validTo"}
 
 EMPTY_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
     "facility": {"keywords": [], "links": []},
     "observation": {"keywords": [], "links": []},
+    "observingConfiguration": {"keywords": [], "links": []},
     "observingLocation": {"keywords": [], "links": []},
-    # legacy spelling retained as an accepted configuration key
     "deployment": {"keywords": [], "links": []},
 }
+
 DEFAULT_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
     "facility": {"keywords": ["identifier", "name"], "links": ["onlineResource"]},
     "observation": {"keywords": [], "links": []},
-    "observingLocation": {
-        "keywords": ["manufacturer", "model", "serialNumber", "sourceOfObservation", "observingMethod"],
-        "links": [],
-    },
-    "deployment": {
-        "keywords": ["manufacturer", "model", "serialNumber", "sourceOfObservation", "observingMethod"],
-        "links": [],
-    },
+    # Observation configurations are operational/technical history objects, not
+    # discovery records.  They may carry links when configured, but they do not
+    # emit keywords in v0.3.1.
+    "observingConfiguration": {"keywords": [], "links": []},
+    # Section aliases accepted for discovery-policy settings from older config files.
+    "observingLocation": {"keywords": [], "links": []},
+    "deployment": {"keywords": [], "links": []},
 }
+
 DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
 CODE_LIST_LABELS: Dict[str, Dict[str, str]] = {}
-
 
 # ---------------------------------------------------------------------------
 # Generic helpers
@@ -81,8 +116,28 @@ def _as_list(value: Any) -> List[Any]:
     return [value]
 
 
+def _as_mapping(value: Any) -> Mapping[str, Any]:
+    """Return *value* as a mapping, or an empty mapping.
+
+    This gives static analysis a non-optional mapping before ``.get`` is used.
+    WMDR10 source fields are frequently absent, ``None`` or scalar values.
+    """
+    if isinstance(value, Mapping):
+        return value
+    return {}
+
+
 def _as_dict(value: Any) -> Dict[str, Any]:
-    return value if isinstance(value, dict) else {}
+    if isinstance(value, Mapping):
+        return dict(value)
+    return {}
+
+
+def _strip_text(value: Any) -> Optional[str]:
+    if not isinstance(value, str):
+        return None
+    text = value.strip()
+    return text or None
 
 
 def _non_empty(value: Any) -> bool:
@@ -96,8 +151,58 @@ def _first_non_empty(*values: Any) -> Any:
     return None
 
 
+def _stable_json(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, default=str)
+
+
+def _uniq_dicts(items: Iterable[Mapping[str, Any]]) -> List[Dict[str, Any]]:
+    out: List[Dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in items:
+        cleaned = _clean_none(dict(item))
+        if not isinstance(cleaned, dict) or not cleaned:
+            continue
+        payload = _stable_json(cleaned)
+        if payload not in seen:
+            seen.add(payload)
+            out.append(cast(Dict[str, Any], cleaned))
+    return out
+
+
+def _uniq_scalars(items: Iterable[Any]) -> List[Any]:
+    out: List[Any] = []
+    seen: set[str] = set()
+    for item in items:
+        if item in (None, "", [], {}):
+            continue
+        key = _stable_json(item) if isinstance(item, (dict, list)) else str(item)
+        if key not in seen:
+            seen.add(key)
+            out.append(item)
+    return out
+
+
+def _slug(value: Any) -> str:
+    text = str(value or "").strip().lower()
+    text = re.sub(r"[^a-z0-9]+", "-", text)
+    text = re.sub(r"-{2,}", "-", text).strip("-")
+    return text or "value"
+
+
+def _sanitize_id(value: Any) -> str:
+    text = str(value or "").strip()
+    text = re.sub(r"\s+", "-", text)
+    text = re.sub(r"[^A-Za-z0-9._:/#-]+", "-", text)
+    return text.strip("-") or "record"
+
+
 def _clean_none(obj: Any, *, _path: Tuple[str, ...] = ()) -> Any:
-    """Remove empty members while preserving positional empty lists for methods."""
+    """Remove empty members while preserving explicit JSON null values.
+
+    JSON ``null`` can be meaningful in WMDR2 two-value arrays, so callers that
+    need to preserve nulls should use ``_preserve_nulls`` before this function
+    and ``_restore_null_sentinel`` afterwards.
+    """
 
     def preserve_empty_list(path: Tuple[str, ...]) -> bool:
         return len(path) >= 2 and path[-2:] in {
@@ -106,11 +211,11 @@ def _clean_none(obj: Any, *, _path: Tuple[str, ...] = ()) -> Any:
         }
 
     if isinstance(obj, dict):
-        cleaned = {k: _clean_none(v, _path=_path + (k,)) for k, v in obj.items()}
+        cleaned = {k: _clean_none(v, _path=_path + (str(k),)) for k, v in obj.items()}
         return {k: v for k, v in cleaned.items() if v not in (None, "", [], {})}
     if isinstance(obj, list):
-        cleaned = [_clean_none(v, _path=_path) for v in obj]
-        return [v for v in cleaned if v not in ("", {}) and (v != [] or preserve_empty_list(_path))]
+        cleaned_list = [_clean_none(v, _path=_path) for v in obj]
+        return [v for v in cleaned_list if v not in ("", {}) and (v != [] or preserve_empty_list(_path))]
     return obj
 
 
@@ -133,213 +238,47 @@ def _restore_null_sentinel(obj: Any) -> Any:
         return [_restore_null_sentinel(v) for v in obj]
     return obj
 
-
-def _stable_json(value: Any) -> str:
-    return json.dumps(value, sort_keys=True, ensure_ascii=False, default=str)
-
-
-def _uniq_dicts(items: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    out: List[Dict[str, Any]] = []
-    seen: set[str] = set()
-    for item in items:
-        payload = _stable_json(item)
-        if payload not in seen:
-            seen.add(payload)
-            out.append(item)
-    return out
+# ---------------------------------------------------------------------------
+# Date/time, codes and geometry
+# ---------------------------------------------------------------------------
 
 
-def _uniq_scalars(items: Iterable[Any]) -> List[Any]:
-    out: List[Any] = []
-    seen: set[str] = set()
-    for item in items:
-        if item in (None, "", [], {}):
-            continue
-        key = _stable_json(item) if isinstance(item, (dict, list)) else str(item)
-        if key not in seen:
-            seen.add(key)
-            out.append(item)
-    return out
-
-
-def _sanitize_id(text: Any) -> str:
-    raw = str(text).strip()
-    raw = re.sub(r"\s+", "-", raw)
-    raw = re.sub(r"[^A-Za-z0-9._:/#-]+", "-", raw)
-    return raw.strip("-") or "record"
-
-
-def _slug(text: Any) -> str:
-    raw = str(text).strip().lower()
-    raw = re.sub(r"[^a-z0-9]+", "-", raw)
-    raw = re.sub(r"-{2,}", "-", raw).strip("-")
-    return raw or "value"
-
-
-def _is_unknown_token(value: Any) -> bool:
-    if not isinstance(value, str):
-        return False
-    text = value.strip()
-    if text.startswith(("http://", "https://")):
-        text = text.rstrip("/#").rsplit("/", 1)[-1]
-    match = re.fullmatch(r"\(([^()]+)\)", text)
-    if match:
-        text = match.group(1)
-    return text.strip().lower() in {"unknown", "none", "null", "nil"}
-
-
-def _last_segment(value: Any) -> Optional[str]:
-    if not isinstance(value, str) or not value.strip():
-        return None
-    raw = value.strip().strip("<>").rstrip("/#")
-    match = re.fullmatch(r"\(([^()]+)\)", raw)
-    if match:
-        raw = match.group(1).strip()
-    if "/" in raw:
-        raw = raw.rsplit("/", 1)[-1]
-    elif "#" in raw:
-        raw = raw.rsplit("#", 1)[-1]
-    if _is_unknown_token(raw):
-        return "unknown"
-    return raw
-
-
-def _normalize_code_value(value: Any) -> Any:
-    if isinstance(value, dict):
-        value = _first_non_empty(
-            value.get("href"), value.get("url"), value.get("value"), value.get("#text"), value.get("text")
-        )
+def _normalize_time_resolution(value: Any) -> Any:
     if not isinstance(value, str):
         return value
     text = value.strip()
     if not text:
         return None
-    segment = _last_segment(text) or text
-    if _is_unknown_token(segment):
-        return "unknown"
-    if re.fullmatch(r"[+-]?\d+", segment):
-        try:
-            return int(segment)
-        except Exception:
-            return segment
-    return segment
-
-
-def _nil_reason(reason: Any = "unknown") -> Dict[str, str]:
-    normalized = _normalize_code_value(reason)
-    text = str(normalized).strip() if _non_empty(normalized) else "unknown"
-    return {"nilReason": text}
-
-
-def _parse_bool(value: Any) -> Optional[bool]:
-    if isinstance(value, bool):
-        return value
-    if isinstance(value, str):
-        low = value.strip().lower()
-        if low in {"true", "1", "yes", "y"}:
-            return True
-        if low in {"false", "0", "no", "n"}:
-            return False
-    return None
-
-
-def _normalize_code_or_nil_reason(value: Any) -> Any:
-    if isinstance(value, Mapping):
-        for key in ("nilReason", "@nilReason"):
-            if _non_empty(value.get(key)):
-                return _nil_reason(value.get(key))
-        if _parse_bool(value.get("nil")) is True or _parse_bool(value.get("@nil")) is True:
-            return _nil_reason("unknown")
-    normalized = _normalize_code_value(value)
-    if normalized == "unknown" or _is_unknown_token(normalized):
-        return _nil_reason("unknown")
-    if _non_empty(normalized) or isinstance(normalized, bool):
-        return normalized
-    return None
-
-
-def _compact_wmdr_code_value(value: Any) -> Any:
-    if isinstance(value, dict):
-        value = _first_non_empty(
-            value.get("href"), value.get("url"), value.get("value"), value.get("#text"), value.get("text")
-        )
-    if isinstance(value, str) and value.strip().startswith(("http://codes.wmo.int/wmdr/", "https://codes.wmo.int/wmdr/")):
-        return _normalize_code_value(value)
-    return value
-
-
-def _finalize_wmdr2_value(value: Any, *, key: Optional[str] = None) -> Any:
-    if isinstance(value, dict):
-        if set(value.keys()) == {"interval"} and value.get("interval") == ["..", ".."]:
-            return None
-        return {
-            child_key: (child_value if child_key in {"href", "url"} else _finalize_wmdr2_value(child_value, key=child_key))
-            for child_key, child_value in value.items()
-        }
-    if isinstance(value, list):
-        return [_finalize_wmdr2_value(item, key=key) for item in value]
-    if isinstance(value, str) and key not in {"href", "url"}:
-        return _compact_wmdr_code_value(value)
-    return value
-
-
-def _drop_source_metadata(obj: Any) -> Any:
-    metadata_keys = {"@gml:id", "gml:id", "@id", "@xmlns", "xmlns", "schemaLocation"}
-    if isinstance(obj, dict):
-        return {k: _drop_source_metadata(v) for k, v in obj.items() if k not in metadata_keys}
-    if isinstance(obj, list):
-        return [_drop_source_metadata(v) for v in obj]
-    return obj
-
-
-def _normalize_display_text(value: Any) -> Optional[str]:
-    if value is None:
-        return None
-    if isinstance(value, list):
-        parts = [_normalize_display_text(v) for v in value]
-        text = "; ".join(p for p in parts if p)
-        return text or None
-    if isinstance(value, dict):
-        value = _first_non_empty(value.get("description"), value.get("value"), value.get("#text"), value.get("text"))
-    text = str(value).strip()
-    if not text:
-        return None
-    if _is_unknown_token(text):
-        return "unknown"
-    return re.sub(r"\s+", " ", text)
-
-
-def _normalize_description_value(value: Any) -> Optional[str]:
-    if isinstance(value, list):
-        parts = [_normalize_description_value(v) for v in value]
-        return "\n\n".join(p for p in parts if p) or None
-    if isinstance(value, dict):
-        cleaned = _drop_source_metadata(value)
-        text = _first_non_empty(cleaned.get("description"), cleaned.get("value"), cleaned.get("#text"), cleaned.get("text"))
-        return _normalize_display_text(text) if text else _normalize_display_text(cleaned)
-    return _normalize_display_text(value)
-
-
-def _extract_scalar_values(value: Any) -> List[Any]:
-    out: List[Any] = []
-    if isinstance(value, dict):
-        for key in ("href", "url", "value", "#text"):
-            if _non_empty(value.get(key)):
-                out.append(value[key])
-        if not out:
-            for nested in value.values():
-                out.extend(_extract_scalar_values(nested))
-    elif isinstance(value, list):
-        for item in value:
-            out.extend(_extract_scalar_values(item))
-    else:
-        out.append(value)
-    return out
-
-
-# ---------------------------------------------------------------------------
-# Date/time, geometry and code-list helpers
-# ---------------------------------------------------------------------------
+    lower = text.lower()
+    mapping = {
+        "day": "P1D",
+        "daily": "P1D",
+        "d": "P1D",
+        "hour": "PT1H",
+        "hourly": "PT1H",
+        "h": "PT1H",
+        "minute": "PT1M",
+        "min": "PT1M",
+        "minutes": "PT1M",
+        "second": "PT1S",
+        "sec": "PT1S",
+        "seconds": "PT1S",
+    }
+    if lower in mapping:
+        return mapping[lower]
+    match = re.fullmatch(r"(\d+)\s*(d|day|days)", lower)
+    if match:
+        return f"P{match.group(1)}D"
+    match = re.fullmatch(r"(\d+)\s*(h|hour|hours)", lower)
+    if match:
+        return f"PT{match.group(1)}H"
+    match = re.fullmatch(r"(\d+)\s*(m|min|minute|minutes)", lower)
+    if match:
+        return f"PT{match.group(1)}M"
+    match = re.fullmatch(r"(\d+)\s*(s|sec|second|seconds)", lower)
+    if match:
+        return f"PT{match.group(1)}S"
+    return text
 
 
 def _normalize_date_value(value: Any) -> Optional[str]:
@@ -381,64 +320,307 @@ def _normalize_record_datetime(value: Any) -> Optional[str]:
     return None
 
 
-def _record_timestamps(header: Mapping[str, Any], *, source_name: Optional[str] = None) -> Dict[str, str]:
-    created = _normalize_record_datetime(
-        _first_non_empty(header.get("created"), header.get("dateCreated"), header.get("creationDate"), header.get("fileDateTime"), header.get("dateStamp"), source_name)
-    )
-    updated = _normalize_record_datetime(
-        _first_non_empty(header.get("updated"), header.get("dateUpdated"), header.get("updateDate"), header.get("modified"), header.get("fileDateTime"), header.get("dateStamp"), created)
-    )
-    out: Dict[str, str] = {}
-    if created:
-        out["created"] = created
-    if updated:
-        out["updated"] = updated
-    return out
-
-
-def _time_interval(start: Any, end: Any, *, resolution: Optional[str] = None) -> Optional[Dict[str, Any]]:
+def _time_interval(start: Any, end: Any = None, *, resolution: Any = None) -> Optional[Dict[str, Any]]:
     s = _normalize_date_value(start)
     e = _normalize_date_value(end) or ".."
     if s is None and e == "..":
         return None
     out: Dict[str, Any] = {"interval": [s or "..", e]}
-    if resolution:
-        out["resolution"] = resolution
+    normalized_resolution = _normalize_time_resolution(resolution)
+    if normalized_resolution:
+        out["resolution"] = normalized_resolution
     return out
 
 
 def _extract_interval(obj: Mapping[str, Any]) -> Tuple[Any, Any]:
     time_obj = obj.get("time")
-    if isinstance(time_obj, dict):
+    if isinstance(time_obj, Mapping):
         interval = time_obj.get("interval")
         if isinstance(interval, list) and interval:
             return (interval[0] if len(interval) > 0 else None, interval[1] if len(interval) > 1 else None)
         return _first_non_empty(time_obj.get("date"), time_obj.get("timestamp")), None
     return (
-        _first_non_empty(obj.get("validFrom"), obj.get("date"), obj.get("beginPosition"), obj.get("begin"), obj.get("start"), obj.get("dateEstablished")),
-        _first_non_empty(obj.get("endPosition"), obj.get("end"), obj.get("stop"), obj.get("dateClosed")),
+        _first_non_empty(
+            obj.get("validFrom"),
+            obj.get("date"),
+            obj.get("beginPosition"),
+            obj.get("begin"),
+            obj.get("from"),
+            obj.get("start"),
+            obj.get("dateEstablished"),
+        ),
+        _first_non_empty(obj.get("validTo"), obj.get("endPosition"), obj.get("end"), obj.get("stop"), obj.get("dateClosed")),
     )
 
 
 def _entry_date(item: Any, fallback: str = "..") -> str:
-    if isinstance(item, dict):
-        return _normalize_date_value(_first_non_empty(item.get("validFrom"), item.get("date"), item.get("beginPosition"), item.get("begin"), item.get("from"), item.get("start"))) or fallback
+    if isinstance(item, Mapping):
+        return _normalize_date_value(
+            _first_non_empty(
+                item.get("validFrom"),
+                item.get("date"),
+                item.get("beginPosition"),
+                item.get("begin"),
+                item.get("from"),
+                item.get("start"),
+            )
+        ) or fallback
     return fallback
 
 
-def _valid_from(item: Any, fallback: str = "..") -> str:
-    return _entry_date(item, fallback)
+def _is_unknown_token(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    text = value.strip()
+    if text.startswith(("http://", "https://")):
+        text = text.rstrip("/#").rsplit("/", 1)[-1]
+    match = re.fullmatch(r"\(([^()]+)\)", text)
+    if match:
+        text = match.group(1)
+    return text.strip().lower() in {"unknown", "none", "null", "nil"}
 
 
-def _temporal_begin_date(item: Any) -> str:
-    return _entry_date(item, "..")
+def _last_segment(value: Any) -> Optional[str]:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    raw = value.strip().strip("<>").rstrip("/#")
+    match = re.fullmatch(r"\(([^()]+)\)", raw)
+    if match:
+        raw = match.group(1).strip()
+    if "/" in raw:
+        raw = raw.rsplit("/", 1)[-1]
+    elif "#" in raw:
+        raw = raw.rsplit("#", 1)[-1]
+    if _is_unknown_token(raw):
+        return "unknown"
+    return raw
+
+
+def _normalize_code_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        value = _first_non_empty(value.get("href"), value.get("url"), value.get("value"), value.get("#text"), value.get("text"))
+    if not isinstance(value, str):
+        return value
+    text = value.strip()
+    if not text:
+        return None
+    segment = _last_segment(text) or text
+    if _is_unknown_token(segment):
+        return "unknown"
+    if re.fullmatch(r"[+-]?\d+", segment):
+        try:
+            return int(segment)
+        except Exception:
+            return segment
+    return segment
+
+
+def _compact_wmdr_code_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        value = _first_non_empty(value.get("href"), value.get("url"), value.get("value"), value.get("#text"), value.get("text"))
+    if isinstance(value, str) and value.strip().startswith(("http://codes.wmo.int/wmdr/", "https://codes.wmo.int/wmdr/")):
+        return _normalize_code_value(value)
+    return value
+
+
+def _nil_reason(reason: Any = "unknown") -> Dict[str, str]:
+    normalized = _normalize_code_value(reason)
+    text = str(normalized).strip() if _non_empty(normalized) else "unknown"
+    return {"nilReason": text}
+
+
+def _parse_bool(value: Any) -> Optional[bool]:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        text = value.strip().lower()
+        if text in {"true", "1", "yes", "y"}:
+            return True
+        if text in {"false", "0", "no", "n"}:
+            return False
+    return None
+
+
+def _normalize_diurnal_time(value: Any) -> str:
+    """Normalize WMDR diurnal base times to ``HH:MM:SS`` when possible.
+
+    Some WMDR10 examples contain compact times such as ``7`` or ``7:5``.
+    JSCalendar extension values in WMDR2 should be stable and comparable, so
+    recognized numeric clock values are zero-padded and clamped to the valid
+    24-hour range.  Non-clock values are returned unchanged.
+    """
+    text = str(value).strip()
+    match = re.fullmatch(r"(\d{1,2})(?::(\d{1,2}))?(?::(\d{1,2}))?Z?", text)
+    if not match:
+        return text
+    hour = min(max(int(match.group(1)), 0), 23)
+    minute = min(max(int(match.group(2) or 0), 0), 59)
+    second = min(max(int(match.group(3) or 0), 0), 59)
+    return f"{hour:02d}:{minute:02d}:{second:02d}"
+
+
+
+def _parse_diurnal_seconds(value: Any) -> Optional[int]:
+    """Return seconds after midnight for a compact WMDR clock value."""
+    if value in (None, "", [], {}):
+        return None
+    text = str(value).strip()
+    match = re.fullmatch(r"(\d{1,2})(?::(\d{1,2}))?(?::(\d{1,2}))?Z?", text)
+    if not match:
+        return None
+    hour = min(max(int(match.group(1)), 0), 23)
+    minute = min(max(int(match.group(2) or 0), 0), 59)
+    second = min(max(int(match.group(3) or 0), 0), 59)
+    return hour * 3600 + minute * 60 + second
+
+
+def _format_diurnal_seconds(seconds: int) -> str:
+    seconds = seconds % (24 * 3600)
+    hour = seconds // 3600
+    minute = (seconds % 3600) // 60
+    second = seconds % 60
+    return f"{hour:02d}:{minute:02d}:{second:02d}"
+
+
+def _iso_duration_from_seconds(seconds: int) -> Optional[str]:
+    """Return an ISO 8601 duration for a positive number of seconds."""
+    if seconds <= 0:
+        return None
+    days, remainder = divmod(seconds, 86400)
+    hours, remainder = divmod(remainder, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    if days and not (hours or minutes or seconds):
+        return f"P{days}D"
+    parts = []
+    if hours:
+        parts.append(f"{hours}H")
+    if minutes:
+        parts.append(f"{minutes}M")
+    if seconds:
+        parts.append(f"{seconds}S")
+    if days:
+        return f"P{days}DT{''.join(parts) or '0S'}"
+    return f"PT{''.join(parts) or '0S'}"
+
+
+def _coverage_time_seconds(source: Mapping[str, Any], prefix: str) -> Optional[int]:
+    """Extract a start/end clock from WMDR coverage fields."""
+    direct = _first_non_empty(source.get(f"{prefix}Time"), source.get(f"{prefix}ClockTime"))
+    parsed = _parse_diurnal_seconds(direct)
+    if parsed is not None:
+        return parsed
+    hour = _first_non_empty(source.get(f"{prefix}Hour"), source.get(f"{prefix}Hours"))
+    minute = _first_non_empty(source.get(f"{prefix}Minute"), source.get(f"{prefix}Minutes"), 0)
+    second = _first_non_empty(source.get(f"{prefix}Second"), source.get(f"{prefix}Seconds"), 0)
+    if hour in (None, "", [], {}):
+        return None
+    return _parse_diurnal_seconds(f"{hour}:{minute}:{second}")
+
+
+def _diurnal_coverage_fields(*sources: Mapping[str, Any]) -> Dict[str, str]:
+    """Build JSCalendar start/duration from WMDR diurnal coverage fields.
+
+    The real-world validity period is kept on the procedure instance.  The
+    reusable schedule uses the conventional dummy date and records only the
+    within-day coverage window, e.g. ``0001-01-01T06:00:00`` plus ``PT12H``.
+    """
+    for source in sources:
+        if not source:
+            continue
+        start_seconds = _coverage_time_seconds(source, "start")
+        end_seconds = _coverage_time_seconds(source, "end")
+        if start_seconds is None and end_seconds is None:
+            continue
+        if start_seconds is None:
+            start_seconds = 0
+        fields: Dict[str, str] = {"start": f"{CANONICAL_SCHEDULE_START_DATE}T{_format_diurnal_seconds(start_seconds)}"}
+        if end_seconds is not None:
+            adjusted_end = end_seconds
+            if adjusted_end <= start_seconds:
+                adjusted_end += 24 * 3600
+            duration = _iso_duration_from_seconds(adjusted_end - start_seconds)
+            if duration:
+                fields["duration"] = duration
+        return fields
+    return {}
+
+def _normalize_code_or_nil_reason(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        for key in ("nilReason", "@nilReason"):
+            if _non_empty(value.get(key)):
+                return _nil_reason(value.get(key))
+        if _parse_bool(value.get("nil")) is True or _parse_bool(value.get("@nil")) is True:
+            return _nil_reason("unknown")
+    normalized = _normalize_code_value(value)
+    if normalized == "unknown" or _is_unknown_token(normalized):
+        return _nil_reason("unknown")
+    if _non_empty(normalized) or isinstance(normalized, bool):
+        return normalized
+    return None
+
+
+WSI_PATTERN = r"(0|1|2|3)-([1-9]\d*)-([0-9]+)-([A-Za-z0-9._-]+)"
+
+
+def _is_valid_wsi(value: Any) -> bool:
+    return bool(re.fullmatch(WSI_PATTERN, str(value or "").strip()))
+
+
+def _normalize_single_facility_wsi(value: Any) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return "unknown"
+    while True:
+        lowered = text.lower()
+        changed = False
+        for prefix in ("wsi:", "wigos:", "facility:", "record:", "station:", "id:"):
+            if lowered.startswith(prefix):
+                text = text[len(prefix) :].strip()
+                changed = True
+                break
+        if not changed:
+            break
+    if "/" in text and re.search(r"\d+-\d+-\d+-[A-Za-z0-9._-]+$", text):
+        text = text.rstrip("/").rsplit("/", 1)[-1]
+    return text
+
+
+def _facility_wsi_values(value: Any) -> List[str]:
+    """Return syntactically valid WSI values from WMDR10 identifier shapes."""
+    values: List[str] = []
+    if value in (None, "", [], {}):
+        return values
+    if isinstance(value, Mapping):
+        for key in ("identifier", "wigosStationIdentifier", "wigosIdentifier", "wsi", "id", "value", "text", "#text"):
+            values.extend(_facility_wsi_values(value.get(key)))
+        return _uniq_scalars(values)
+    if isinstance(value, list):
+        for item in value:
+            values.extend(_facility_wsi_values(item))
+        return _uniq_scalars(values)
+    text = str(value).strip()
+    for candidate in re.split(r"\s*[,;]\s*", text):
+        normalized = _normalize_single_facility_wsi(candidate)
+        if _is_valid_wsi(normalized):
+            values.append(normalized)
+    return _uniq_scalars(values)
+
+
+def _normalize_facility_wsi(value: Any) -> str:
+    # Some legacy XML-derived records concatenate multiple WIGOS identifiers
+    # into one string.  The WMDR2 Feature id must be a single WSI, so keep the
+    # first syntactically valid WSI.
+    values = _facility_wsi_values(value)
+    if values:
+        return values[0]
+    return _normalize_single_facility_wsi(value)
 
 
 def _parse_pos_lon_lat_z(raw: Any) -> Optional[List[Any]]:
     if raw is None:
         return None
-    if isinstance(raw, dict):
-        coords_any: Any = raw.get("coordinates")
+    if isinstance(raw, Mapping):
+        coords_any = raw.get("coordinates")
         if isinstance(coords_any, list) and len(coords_any) >= 2:
             return coords_any
         for key in ("geoLocation", "pos", "value", "text", "geometry", "position"):
@@ -446,7 +628,7 @@ def _parse_pos_lon_lat_z(raw: Any) -> Optional[List[Any]]:
             if isinstance(val, str):
                 raw = val
                 break
-            if isinstance(val, dict):
+            if isinstance(val, Mapping):
                 nested = _parse_pos_lon_lat_z(val)
                 if nested:
                     return nested
@@ -460,6 +642,7 @@ def _parse_pos_lon_lat_z(raw: Any) -> Optional[List[Any]]:
             pass
     if len(nums) < 2:
         return None
+    # WMDR10 pos is generally lat lon z; GeoJSON is lon lat z.
     lat, lon = nums[0], nums[1]
     coords: List[Any] = [lon, lat]
     if len(nums) >= 3:
@@ -469,11 +652,10 @@ def _parse_pos_lon_lat_z(raw: Any) -> Optional[List[Any]]:
 
 
 def _geopositioning_methods(item: Any) -> List[str]:
-    if not isinstance(item, dict):
+    if not isinstance(item, Mapping):
         return []
-    raw = item.get("geopositioningMethod")
     methods: List[str] = []
-    for value in _as_list(raw):
+    for value in _as_list(item.get("geopositioningMethod")):
         compact = _compact_wmdr_code_value(value)
         if isinstance(compact, str) and compact.strip():
             methods.append(compact.strip())
@@ -487,7 +669,7 @@ def _facility_temporal_geometry_entries(source: Mapping[str, Any]) -> List[Dict[
         coords = _parse_pos_lon_lat_z(item)
         if coords is None:
             return
-        date = _temporal_begin_date(item)
+        date = _entry_date(item)
         entry: Dict[str, Any] = {"coordinates": coords, "date": date}
         methods = _geopositioning_methods(item)
         if methods:
@@ -498,6 +680,7 @@ def _facility_temporal_geometry_entries(source: Mapping[str, Any]) -> List[Dict[
         add(item)
     for item in _as_list(source.get("geospatialLocationHistory") or source.get("geometryHistory") or source.get("historicalLocation")):
         add(item)
+
     out: List[Dict[str, Any]] = []
     seen: set[str] = set()
     for _, _, entry in sorted(entries, key=lambda row: (row[0] == "..", row[0], row[1])):
@@ -508,15 +691,16 @@ def _facility_temporal_geometry_entries(source: Mapping[str, Any]) -> List[Dict[
     return out
 
 
-def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+def _temporal_geometry_extension(entries: Sequence[Mapping[str, Any]]) -> Optional[Dict[str, Any]]:
     coordinates: List[Any] = []
     dates: List[str] = []
     methods: List[List[str]] = []
     has_methods = False
     for entry in entries:
-        if "coordinates" not in entry:
+        coords = entry.get("coordinates")
+        if not isinstance(coords, list):
             continue
-        coordinates.append(entry["coordinates"])
+        coordinates.append(coords)
         dates.append(str(entry.get("date") or entry.get("validFrom") or ".."))
         raw_methods = entry.get("methods")
         entry_methods = [m for m in raw_methods if isinstance(m, str) and m] if isinstance(raw_methods, list) else []
@@ -533,7 +717,7 @@ def _temporal_geometry_extension(entries: Sequence[Dict[str, Any]]) -> Optional[
     return out
 
 
-def _facility_geometry_from_entries(entries: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+def _facility_geometry_from_entries(entries: Sequence[Mapping[str, Any]]) -> Optional[Dict[str, Any]]:
     for entry in reversed(list(entries)):
         coords = entry.get("coordinates")
         if isinstance(coords, list) and len(coords) >= 2:
@@ -549,7 +733,7 @@ def _point_geometry_from_entry(entry: Mapping[str, Any]) -> Optional[Dict[str, A
 
 
 def _extract_code_list_ref(value: Any) -> Tuple[Optional[str], Optional[str], Optional[str]]:
-    if isinstance(value, dict):
+    if isinstance(value, Mapping):
         value = _first_non_empty(value.get("href"), value.get("url"), value.get("value"), value.get("#text"))
     if not isinstance(value, str):
         return None, None, None
@@ -601,9 +785,8 @@ def _format_observation_title(value: Any, geometry_type: Any = None) -> Optional
     parts.append(variable_text)
     return "; ".join(parts)
 
-
 # ---------------------------------------------------------------------------
-# Config / file handling
+# File/config helpers
 # ---------------------------------------------------------------------------
 
 
@@ -616,7 +799,7 @@ def _load_config(path: Path) -> Dict[str, Any]:
         raise SystemExit(f"Cannot read config file {path}: {exc}") from exc
     if not isinstance(data, dict):
         raise SystemExit(f"Config file {path} must contain a top-level YAML mapping.")
-    return data
+    return cast(Dict[str, Any], data)
 
 
 def _walk_up_for_config(start: Path) -> List[Path]:
@@ -649,8 +832,8 @@ def _cfg_section(cfg: Mapping[str, Any]) -> Dict[str, Any]:
     section = cfg.get("convert_wmdr10_json_to_wmdr2_json")
     if isinstance(section, dict):
         return section
-    legacy = cfg.get("convert_wmdr10_json_to_wmdr2_geojson")
-    return legacy if isinstance(legacy, dict) else {}
+    alternate = cfg.get("convert_wmdr10_json_to_wmdr2_geojson")
+    return alternate if isinstance(alternate, dict) else {}
 
 
 def _format_loaded_config_hint(config_path: Optional[Path], section: Mapping[str, Any]) -> str:
@@ -659,14 +842,39 @@ def _format_loaded_config_hint(config_path: Optional[Path], section: Mapping[str
     keys = sorted(section.keys()) if section else []
     return f"Using config: {config_path} ({', '.join(keys) if keys else 'no converter section keys'})"
 
+def _cfg_mapping(value: Any) -> Mapping[str, Any]:
+    return value if isinstance(value, Mapping) else {}
+
+
+def _cfg_first(section: Mapping[str, Any], *names: str) -> Any:
+    for name in names:
+        value = section.get(name)
+        if value not in (None, "", [], {}):
+            return value
+    return None
+
+
+def _resolve_cli_or_config_path(value: Any, *, base_dir: Optional[Path], from_config: bool) -> Optional[Path]:
+    if value in (None, "", [], {}):
+        return None
+    path = Path(str(value)).expanduser()
+    if path.is_absolute():
+        return path
+    if from_config and base_dir is not None:
+        return base_dir / path
+    return Path.cwd() / path
+
+
+def _resolve_config_path(value: Any, *, base_dir: Optional[Path]) -> Optional[Path]:
+    return _resolve_cli_or_config_path(value, base_dir=base_dir, from_config=True)
+
 
 def _normalize_discovery_policy(section: Mapping[str, Any]) -> Dict[str, Dict[str, List[str]]]:
     raw = section.get("discovery")
     if not isinstance(raw, dict):
         return copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
     policy = copy.deepcopy(EMPTY_DISCOVERY_POLICY)
-    # accept both old 'deployment' and new 'observingLocation'
-    for entity in ("facility", "observation", "deployment", "observingLocation"):
+    for entity in ("facility", "observation", "observingConfiguration", "observingLocation", "deployment"):
         entity_cfg = raw.get(entity)
         if not isinstance(entity_cfg, dict):
             continue
@@ -674,8 +882,10 @@ def _normalize_discovery_policy(section: Mapping[str, Any]) -> Dict[str, Dict[st
             values = entity_cfg.get(bucket)
             if isinstance(values, list):
                 policy[entity][bucket] = [str(v).strip() for v in values if isinstance(v, str) and str(v).strip()]
-    if policy.get("deployment") and not policy.get("observingLocation"):
-        policy["observingLocation"] = copy.deepcopy(policy["deployment"])
+    if policy.get("deployment") and not policy.get("observingConfiguration"):
+        policy["observingConfiguration"] = copy.deepcopy(policy["deployment"])
+    if policy.get("observingLocation") and not policy.get("observingConfiguration"):
+        policy["observingConfiguration"] = copy.deepcopy(policy["observingLocation"])
     return policy
 
 
@@ -692,9 +902,11 @@ def _load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _write_json(path: Path, payload: Mapping[str, Any]) -> None:
+def _write_json(path: Path, payload: Mapping[str, Any], *, announce: bool = True) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if announce and ANNOUNCE_WRITES:
+        print(f"wrote {path}")
 
 
 def _detect_kind(path: Path, payload: Any) -> str:
@@ -714,11 +926,11 @@ def _detect_kind(path: Path, payload: Any) -> str:
             return "full"
         if any(k in payload for k in ("observedVariable", "observedProperty", "resultTime")):
             return "observationSeries"
-        if any(k in payload for k in ("sourceOfObservation", "manufacturer", "serialNumber", "referenceSurface")):
+        if any(k in payload for k in ("sourceOfObservation", "manufacturer", "serialNumber", "referenceSurface", "observingLocation")):
             return "deployments"
         if any(k in payload for k in ("fileDateTime", "recordOwner", "dateStamp")):
             return "header"
-        if any(k in payload for k in ("identifier", "name", "geospatialLocation")):
+        if any(k in payload for k in ("identifier", "wigosStationIdentifier", "name", "geospatialLocation")):
             return "facility"
     if isinstance(payload, list):
         first = next((x for x in payload if isinstance(x, dict)), None)
@@ -726,7 +938,7 @@ def _detect_kind(path: Path, payload: Any) -> str:
             return "unknown"
         if any(k in first for k in ("observedVariable", "observedProperty", "resultTime")):
             return "observationSeries"
-        if any(k in first for k in ("sourceOfObservation", "manufacturer", "serialNumber", "referenceSurface")):
+        if any(k in first for k in ("sourceOfObservation", "manufacturer", "serialNumber", "referenceSurface", "observingLocation")):
             return "deployments"
     return "unknown"
 
@@ -738,9 +950,8 @@ def _part_group_key(path: Path) -> str:
             return stem[: -len(suffix)]
     return stem
 
-
 # ---------------------------------------------------------------------------
-# Discovery, contacts, quantities, and status helpers
+# Discovery, contacts and quantities
 # ---------------------------------------------------------------------------
 
 
@@ -763,13 +974,30 @@ def _keywords_from_values(values: Iterable[Any]) -> List[str]:
     return out
 
 
+def _extract_scalar_values(value: Any) -> List[Any]:
+    out: List[Any] = []
+    if isinstance(value, Mapping):
+        for key in ("href", "url", "value", "#text"):
+            child = value.get(key)
+            if _non_empty(child):
+                out.append(child)
+        if not out:
+            for nested in value.values():
+                out.extend(_extract_scalar_values(nested))
+    elif isinstance(value, list):
+        for item in value:
+            out.extend(_extract_scalar_values(item))
+    else:
+        out.append(value)
+    return out
+
+
 def _collect_discovery_values(entity_type: str, source: Mapping[str, Any], bucket: str) -> List[Any]:
     values: List[Any] = []
-    # old callers may pass deployment; new policy uses observingLocation
-    policy = DISCOVERY_POLICY.get(entity_type) or DISCOVERY_POLICY.get("observingLocation", {})
+    policy = DISCOVERY_POLICY.get(entity_type) or DISCOVERY_POLICY.get("observingConfiguration", {})
     for key in policy.get(bucket, []):
         for item in _as_list(source.get(key)):
-            values.extend(_extract_scalar_values(item) if isinstance(item, dict) else [item])
+            values.extend(_extract_scalar_values(item) if isinstance(item, Mapping) else [item])
     return values
 
 
@@ -782,7 +1010,7 @@ def _about_link(href: str, *, title: Optional[str] = None, media_type: str = "te
 
 def _extract_links(source: Mapping[str, Any], entity_type: str) -> List[Dict[str, Any]]:
     links: List[Dict[str, Any]] = []
-    policy = DISCOVERY_POLICY.get(entity_type) or DISCOVERY_POLICY.get("observingLocation", {})
+    policy = DISCOVERY_POLICY.get(entity_type) or DISCOVERY_POLICY.get("observingConfiguration", {})
     for key in policy.get("links", []):
         for item in _as_list(source.get(key)):
             href: Optional[str] = None
@@ -790,21 +1018,22 @@ def _extract_links(source: Mapping[str, Any], entity_type: str) -> List[Dict[str
             media_type = "text/html"
             if isinstance(item, str) and item.strip():
                 href = item.strip()
-            elif isinstance(item, dict):
+            elif isinstance(item, Mapping):
                 raw_href = _first_non_empty(item.get("url"), item.get("href"), item.get("linkage"), item.get("value"))
                 if isinstance(raw_href, str) and raw_href.strip():
                     href = raw_href.strip()
-                if isinstance(item.get("title"), str):
-                    title = item["title"].strip()
-                if isinstance(item.get("type"), str):
-                    media_type = item["type"].strip()
+                raw_title = item.get("title")
+                if isinstance(raw_title, str):
+                    title = raw_title.strip()
+                raw_type = item.get("type")
+                if isinstance(raw_type, str):
+                    media_type = raw_type.strip()
             if href and href.startswith(("http://", "https://")):
                 links.append(_about_link(href, title=title, media_type=media_type))
     return _uniq_dicts(links)
 
 
 def _is_role_codelist_reference(value: Any) -> bool:
-    """Return True for ISO/GMX role codelist references, not role values."""
     if not isinstance(value, str):
         return False
     text = value.strip().strip("<>")
@@ -815,10 +1044,7 @@ def _is_role_codelist_reference(value: Any) -> bool:
 
 
 def _normalize_role(value: Any) -> Optional[str]:
-    if isinstance(value, dict):
-        # Prefer the selected codelist value over the codelist URI/reference.
-        # XML parsers commonly preserve both as @codeList and @codeListValue;
-        # only the latter is the concrete ISO role.
+    if isinstance(value, Mapping):
         for key in ("codeListValue", "@codeListValue", "role", "value", "#text", "text", "name"):
             candidate = value.get(key)
             if _is_role_codelist_reference(candidate):
@@ -826,8 +1052,6 @@ def _normalize_role(value: Any) -> Optional[str]:
             role = _normalize_role(candidate)
             if role:
                 return role
-        # Treat href/url/codeList as role values only when they are not merely
-        # links to the generic CI_RoleCode codelist.
         for key in ("href", "url", "codeList", "@codeList"):
             candidate = value.get(key)
             if _is_role_codelist_reference(candidate):
@@ -836,1506 +1060,1887 @@ def _normalize_role(value: Any) -> Optional[str]:
             if role:
                 return role
         return None
-    if not isinstance(value, str) or not value.strip():
+    if value is None:
         return None
-    text = value.strip().strip("<>")
+    text = str(value).strip()
+    if not text:
+        return None
     if _is_role_codelist_reference(text):
         return None
-    segment = _last_segment(text) or text
-    if _is_role_codelist_reference(segment) or _is_unknown_token(segment):
+    text = text.strip("<>").rstrip("/#")
+    if "/" in text:
+        text = text.rsplit("/", 1)[-1]
+    if "#" in text:
+        text = text.rsplit("#", 1)[-1]
+    text = text.lstrip("_")
+    if not text or _is_unknown_token(text):
         return None
-    return segment
+    return text
 
 
 def _normalize_roles(value: Any) -> List[str]:
     roles: List[str] = []
     for item in _as_list(value):
         role = _normalize_role(item)
-        if role and role not in roles:
+        if role:
             roles.append(role)
-    return roles
+    return sorted(dict.fromkeys(roles))
 
 
-def _sanitize_contact_roles(contact: Mapping[str, Any]) -> Dict[str, Any]:
-    """Drop generic CI_RoleCode references and retain only concrete roles."""
-    sanitized: Dict[str, Any] = dict(contact)
-    roles = _normalize_roles(sanitized.get("roles") or sanitized.get("role"))
-    sanitized.pop("role", None)
-    if roles:
-        sanitized["roles"] = roles
-    else:
-        sanitized.pop("roles", None)
-    return sanitized
-
-
-def _sanitize_contacts(contacts: Any) -> Optional[List[Dict[str, Any]]]:
-    out: List[Dict[str, Any]] = []
-    for contact in _as_list(contacts):
-        if isinstance(contact, Mapping):
-            out.append(_sanitize_contact_roles(contact))
-    return _uniq_dicts(_clean_none(out)) or None
-
-
-def _normalize_contact(raw: Any) -> Tuple[Optional[Dict[str, Any]], Optional[Dict[str, Any]]]:
-    if not isinstance(raw, dict):
-        return None, None
-    payload = raw.get("responsibleParty") if isinstance(raw.get("responsibleParty"), dict) else raw
-    if not isinstance(payload, dict):
-        return None, None
-    contact: Dict[str, Any] = {}
-    identifier = _first_non_empty(payload.get("@id"), payload.get("@gml:id"), raw.get("@id"), raw.get("@gml:id"))
-    if isinstance(identifier, str):
-        contact["identifier"] = identifier
-    for src_key, dst_key in (
-        ("individualName", "name"), ("name", "name"), ("title", "name"), ("positionName", "position"),
-        ("position", "position"), ("organisationName", "organization"), ("organizationName", "organization"), ("organization", "organization"),
-    ):
-        if dst_key in contact:
-            continue
-        value = _normalize_display_text(payload.get(src_key))
-        if value:
-            contact[dst_key] = value
-    info = _as_dict(payload.get("contactInfo"))
-    phone_obj = _as_dict(info.get("phone"))
-    phones = [str(v).strip() for v in _as_list(phone_obj.get("voice")) if isinstance(v, str) and v.strip()]
-    if phones:
-        contact["phones"] = _uniq_scalars(phones)
-    address_obj = _as_dict(info.get("address"))
-    emails = [str(e).strip() for e in _as_list(address_obj.get("electronicMailAddress")) if isinstance(e, str) and "@" in e]
-    if emails:
-        contact["emails"] = _uniq_scalars(emails)
-    direct_emails = [str(e).strip() for e in _as_list(payload.get("emails") or payload.get("email")) if isinstance(e, str) and "@" in e]
-    if direct_emails:
-        contact["emails"] = _uniq_scalars(_as_list(contact.get("emails")) + direct_emails)
-    direct_phones = [str(v).strip() for v in _as_list(payload.get("phones") or payload.get("phone")) if isinstance(v, str) and v.strip()]
-    if direct_phones:
-        contact["phones"] = _uniq_scalars(_as_list(contact.get("phones")) + direct_phones)
-    address: Dict[str, Any] = {}
-    delivery_points = [dp.strip() for dp in _as_list(address_obj.get("deliveryPoint")) if isinstance(dp, str) and dp.strip()]
-    if delivery_points:
-        address["deliveryPoint"] = delivery_points
-    for src_key in ("city", "administrativeArea", "postalCode", "country"):
-        value = _normalize_display_text(address_obj.get(src_key))
-        if value:
-            address[src_key] = value
-    if address:
-        contact["addresses"] = [address]
-    direct_addresses = [a for a in _as_list(payload.get("addresses") or payload.get("address")) if isinstance(a, dict)]
-    if direct_addresses:
-        existing_addresses = _as_list(contact.get("addresses"))
-        contact["addresses"] = _uniq_dicts(existing_addresses + [dict(a) for a in direct_addresses])
-    online = _as_dict(info.get("onlineResource"))
-    href = online.get("url") or online.get("href")
-    if isinstance(href, str) and href.strip():
-        contact["links"] = [_about_link(href.strip())]
-    direct_links = [dict(link) for link in _as_list(payload.get("links")) if isinstance(link, dict)]
-    if direct_links:
-        contact["links"] = _uniq_dicts(_as_list(contact.get("links")) + direct_links)
-    roles = _normalize_roles(_first_non_empty(payload.get("role"), raw.get("role"), payload.get("roles"), raw.get("roles")))
-    if roles:
-        contact["roles"] = roles
-    contact = _sanitize_contact_roles(contact)
-    if not any(k in contact for k in ("name", "organization", "emails", "phones", "addresses", "links")):
-        return None, None
-    extension = dict(contact)
-    valid_start, valid_end = _extract_interval(raw)
-    valid_time = _time_interval(valid_start, valid_end)
-    if valid_time:
-        extension["validTime"] = valid_time
-    return _clean_none(contact), _clean_none(extension)
-
-
-def _collect_contacts(*groups: Any) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-    ogc: List[Dict[str, Any]] = []
-    temporal: List[Dict[str, Any]] = []
-    for group in groups:
-        for item in _as_list(group):
-            a, b = _normalize_contact(item)
-            if a:
-                ogc.append(a)
-            if b:
-                temporal.append(b)
-    return _uniq_dicts(ogc), _uniq_dicts(temporal)
-
-
-def _normalize_official_status(value: Any) -> Optional[str]:
-    parsed = _parse_bool(value)
-    if parsed is True:
-        return "primary"
-    if parsed is False:
-        return "additional"
-    compact = _compact_wmdr_code_value(value)
-    if isinstance(compact, str):
-        text = compact.strip()
-        if not text or _is_unknown_token(text):
-            return None
-        return text
-    if compact in (None, "", [], {}):
-        return None
-    return str(compact)
-
-
-def _normalize_quantity_value(value: Any) -> Any:
-    if isinstance(value, bool) or value in (None, ""):
-        return None
-    if isinstance(value, (int, float)):
-        return float(value)
-    if isinstance(value, str):
-        text = value.strip()
+def _normalize_ogc_email(value: Any) -> Optional[Dict[str, Any]]:
+    if isinstance(value, Mapping):
+        raw_value = _first_non_empty(value.get("value"), value.get("email"), value.get("address"), value.get("href"), value.get("url"), value.get("#text"), value.get("text"))
+        text = _strip_text(raw_value)
         if not text:
             return None
-        try:
-            return float(text)
-        except ValueError:
-            return text
-    return value
-
-
-def _quantity_from_source(source: Any) -> Optional[Dict[str, Any]]:
-    uom = None
-    value = source
-    if isinstance(source, dict):
-        value = _first_non_empty(source.get("#text"), source.get("text"), source.get("value"))
-        uom = _first_non_empty(source.get("@uom"), source.get("uom"), source.get("unit"))
-    parsed = _normalize_quantity_value(value)
-    if parsed in (None, "", [], {}):
+        if text.startswith("mailto:"):
+            text = text.removeprefix("mailto:")
+        email: Dict[str, Any] = {"value": text}
+        roles = _normalize_roles(value.get("roles") or value.get("role"))
+        if roles:
+            email["roles"] = roles
+        return email
+    text = _strip_text(value)
+    if not text:
         return None
-    out: Dict[str, Any] = {"value": parsed}
-    if _non_empty(uom):
-        out["uom"] = _compact_wmdr_code_value(uom) if isinstance(uom, str) else uom
-    return _clean_none(out)
+    if text.startswith("mailto:"):
+        text = text.removeprefix("mailto:")
+    return {"value": text}
 
 
-def _normalize_vertical_distance_from_reference_surface(raw: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
-    source = _first_non_empty(
-        raw.get("heightAboveLocalReferenceSurface"),
-        raw.get("verticalDistanceFromReferenceSurface"),
-        raw.get("distanceFromReferenceSurface"),
-    )
-    if source in (None, "", [], {}):
-        return None
-    if isinstance(source, list):
-        for item in source:
-            q = _quantity_from_source(item)
-            if q:
-                return q
-        return None
-    return _quantity_from_source(source)
-
-
-# ---------------------------------------------------------------------------
-# Facility history and environment
-# ---------------------------------------------------------------------------
-
-
-def _entry_value(item: Any, preferred_key: str) -> Any:
-    if isinstance(item, dict):
-        if preferred_key in item:
-            return item.get(preferred_key)
-        rest = {k: v for k, v in item.items() if k not in {"date", "validFrom", "beginPosition", "endPosition", "from", "start", "to", "end", "begin"}}
-        if len(rest) == 1:
-            return next(iter(rest.values()))
-        return rest or None
-    return item
-
-
-def _temporal_object_from_item(item: Any, *, output_key: str, value_keys: Sequence[str], date_key: str = "validFrom") -> Optional[Dict[str, Any]]:
-    if isinstance(item, dict):
-        raw_value = _first_non_empty(*(item.get(k) for k in value_keys))
-        value = _normalize_code_value(raw_value) if isinstance(raw_value, (str, dict)) else raw_value
-        if value in (None, "", [], {}) or _is_unknown_token(value):
-            return None
-        return {date_key: _entry_date(item), output_key: value}
-    value = _normalize_code_value(item) if isinstance(item, str) else item
-    if value in (None, "", [], {}) or _is_unknown_token(value):
-        return None
-    return {date_key: "..", output_key: value}
-
-
-def _normalize_temporal_values(value: Any, *, output_key: str, value_keys: Sequence[str], date_key: str = "validFrom") -> Optional[List[Dict[str, Any]]]:
-    records = [_temporal_object_from_item(item, output_key=output_key, value_keys=value_keys, date_key=date_key) for item in _as_list(value)]
-    return _uniq_dicts(_clean_none([r for r in records if r])) or None
-
-
-def _normalize_temporal_climate_zone(value: Any) -> Optional[List[Dict[str, Any]]]:
-    return _normalize_temporal_values(value, output_key="climateZone", value_keys=("climateZone", "value", "href"))
-
-
-def _normalize_temporal_surface_cover(value: Any) -> Optional[List[Dict[str, Any]]]:
-    records = _normalize_temporal_values(value, output_key="surfaceCover", value_keys=("surfaceCover", "value", "href")) or []
-    for record, item in zip(records, _as_list(value)):
-        if isinstance(item, Mapping):
-            classification = _first_non_empty(item.get("surfaceClassification"), item.get("classification"))
-            if isinstance(classification, Mapping):
-                classification = _first_non_empty(classification.get("href"), classification.get("value"), classification.get("surfaceClassification"))
-            if _non_empty(classification):
-                record["surfaceClassification"] = _compact_wmdr_code_value(classification) if isinstance(classification, str) else classification
-    return _uniq_dicts(_clean_none(records)) or None
-
-
-def _parse_nullable_number(value: Any) -> Optional[float]:
-    if value in (None, "", [], {}) or isinstance(value, bool):
-        return None
-    if isinstance(value, (int, float)):
-        return float(value)
-    if isinstance(value, str):
-        text = value.strip()
-        if not text or _is_unknown_token(text):
-            return None
-        try:
-            return float(text)
-        except ValueError:
-            return None
-    return None
-
-
-def _parse_two_value_number_array(value: Any) -> Optional[List[Optional[float]]]:
-    if value in (None, "", [], {}):
-        return None
-    if isinstance(value, list):
-        values = [_parse_nullable_number(v) for v in value[:2]]
-    elif isinstance(value, str):
-        parts = [p for p in re.split(r"[,\s]+", value.strip()) if p]
-        values = [_parse_nullable_number(p) for p in parts[:2]]
-    else:
-        values = [_parse_nullable_number(value)]
-    while len(values) < 2:
-        values.append(None)
-    values = values[:2]
-    if all(v is None for v in values):
-        return None
-    return values
-
-
-def _parse_two_value_perimeter_array(value: Any) -> List[Optional[float]]:
-    parsed = _parse_two_value_number_array(value) or [10.0, 50.0]
-    if parsed[0] is None:
-        parsed[0] = 10.0
-    if parsed[1] is None:
-        parsed[1] = 50.0
-    return parsed
-
-
-def _normalize_temporal_population(value: Any) -> Optional[List[Dict[str, Any]]]:
-    records: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        valid_from = _entry_date(item, "..")
-        if isinstance(item, Mapping):
-            population = _parse_two_value_number_array(_first_non_empty(item.get("population"), item.get("value"), item.get("href")))
-            perimeter = _parse_two_value_perimeter_array(_first_non_empty(item.get("perimeter_km"), item.get("perimeterKm"), item.get("perimeter")))
-        else:
-            population = _parse_two_value_number_array(item)
-            perimeter = [10.0, 50.0]
-        if population is not None:
-            records.append({"validFrom": valid_from, "population": population, "perimeter_km": perimeter})
-    return _uniq_dicts(_clean_none(records)) or None
-
-
-def _normalize_temporal_surface_roughness(value: Any) -> Optional[List[Dict[str, Any]]]:
-    return _normalize_temporal_values(value, output_key="surfaceRoughness", value_keys=("surfaceRoughness", "roughness", "value", "href"))
-
-
-def _first_operating_status_value(raw: Mapping[str, Any]) -> Any:
-    raw_status = _first_non_empty(raw.get("operatingStatus"), raw.get("instrumentOperatingStatus"), raw.get("status"))
-    for item in _normalize_operating_status(raw_status):
-        if _non_empty(item.get("operatingStatus")):
-            return item.get("operatingStatus")
-    if isinstance(raw_status, Mapping):
-        raw_status = _first_non_empty(raw_status.get("operatingStatus"), raw_status.get("instrumentOperatingStatus"), raw_status.get("status"), raw_status.get("value"), raw_status.get("href"))
-    return _compact_wmdr_code_value(raw_status) if isinstance(raw_status, str) else raw_status
-
-
-def _normalize_operating_status(value: Any) -> List[Dict[str, Any]]:
-    out: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        if isinstance(item, Mapping):
-            raw = _first_non_empty(item.get("operatingStatus"), item.get("instrumentOperatingStatus"), item.get("status"), item.get("value"), item.get("href"))
-            date = _entry_date(item)
-        else:
-            raw = item
-            date = ".."
-        val = _compact_wmdr_code_value(raw) if isinstance(raw, str) else raw
-        if _non_empty(val):
-            out.append({"validFrom": date, "operatingStatus": val})
-    return _uniq_dicts(_clean_none(out))
-
-
-def _normalize_temporal_instrument_operating_status(value: Any) -> Optional[List[Dict[str, Any]]]:
-    records = []
-    for item in _normalize_operating_status(value if isinstance(value, Mapping) else {"instrumentOperatingStatus": value}):
-        if "operatingStatus" in item:
-            records.append({"validFrom": item.get("validFrom"), "instrumentOperatingStatus": item.get("operatingStatus")})
-    return _uniq_dicts(_clean_none(records)) or None
-
-
-def _normalize_historical_official_status(value: Any, *, fallback_date: str = "..") -> Optional[List[Dict[str, Any]]]:
-    records: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        if isinstance(item, Mapping):
-            raw = _first_non_empty(item.get("officialStatus"), item.get("status"), item.get("value"), item.get("href"))
-            date = _entry_date(item, fallback=fallback_date)
-        else:
-            raw = item
-            date = fallback_date
-        status = _normalize_official_status(raw)
-        if status:
-            # The XMI currently names this history anchor 'date'.
-            records.append({"date": date, "officialStatus": status})
-    return _uniq_dicts(_clean_none(records)) or None
-
-
-def _normalize_temporal_official_status(value: Any, *, fallback_date: str = "..", default_unknown: bool = False) -> Optional[List[Dict[str, Any]]]:
-    if value is None and default_unknown:
-        return [{"date": fallback_date, "officialStatus": "unknown"}]
-    return _normalize_historical_official_status(value if isinstance(value, Mapping) else {"officialStatus": value}, fallback_date=fallback_date)
-
-
-def _normalize_program_affiliations(value: Any) -> Optional[List[Any]]:
-    values: List[Any] = []
-    for item in _as_list(value):
-        raw = _first_non_empty(item.get("programAffiliation"), item.get("program"), item.get("href"), item.get("value")) if isinstance(item, Mapping) else item
-        if _non_empty(raw):
-            values.append(_compact_wmdr_code_value(raw) if isinstance(raw, str) else raw)
-    return _uniq_scalars(values) or None
-
-
-def _program_affiliation_values(value: Any) -> Optional[List[Any]]:
-    return _normalize_program_affiliations(value)
-
-
-def _normalize_historical_program_affiliation(value: Any, *, fallback_date: str) -> Optional[List[Dict[str, Any]]]:
-    records: List[Dict[str, Any]] = []
-
-    def add_record(item: Mapping[str, Any], reporting_status: Any = None, *, status_date: Any = None) -> None:
-        record: Dict[str, Any] = {"validFrom": _normalize_date_value(status_date) or _entry_date(item, fallback=fallback_date)}
-        programs = _normalize_program_affiliations(_first_non_empty(item.get("programAffiliation"), item.get("program"), item.get("href"), item.get("value")))
-        if programs:
-            record["program"] = programs[0] if len(programs) == 1 else programs
-        program_id = _first_non_empty(item.get("programSpecificFacilityId"), item.get("programSpecificFacilityIds"))
-        if _non_empty(program_id):
-            record["programSpecificFacilityId"] = program_id
-        status = reporting_status if reporting_status is not None else _first_non_empty(item.get("reportingStatus"), item.get("declaredReportingStatus"))
-        if _non_empty(status):
-            record["reportingStatus"] = _compact_wmdr_code_value(status) if isinstance(status, str) else status
-        if len(record) > 1:
-            records.append(record)
-
-    for item in _as_list(value):
-        if isinstance(item, Mapping):
-            statuses = _as_list(_first_non_empty(item.get("reportingStatus"), item.get("declaredReportingStatus")))
-            dict_statuses = [s for s in statuses if isinstance(s, Mapping)]
-            if dict_statuses:
-                for status_item in dict_statuses:
-                    status_value = _first_non_empty(status_item.get("reportingStatus"), status_item.get("declaredReportingStatus"), status_item.get("status"), status_item.get("value"), status_item.get("href"))
-                    add_record(item, status_value, status_date=_entry_date(status_item, fallback=_entry_date(item, fallback=fallback_date)))
-            else:
-                add_record(item)
-        elif _non_empty(item):
-            records.append({"validFrom": fallback_date, "program": _compact_wmdr_code_value(item) if isinstance(item, str) else item})
-    return _uniq_dicts(_clean_none(records)) or None
-
-
-def _normalize_temporal_program_affiliation(value: Any, *, fallback_date: str = "..") -> Optional[List[Dict[str, Any]]]:
-    return _normalize_historical_program_affiliation(value, fallback_date=fallback_date)
-
-
-def _normalize_historical_territory(value: Any, *, fallback_date: str) -> Optional[List[Dict[str, Any]]]:
-    records: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        if isinstance(item, Mapping):
-            territory = _first_non_empty(item.get("territory"), item.get("territoryName"), item.get("href"), item.get("value"))
-            date = _entry_date(item, fallback=fallback_date)
-        else:
-            territory = item
-            date = fallback_date
-        if _non_empty(territory):
-            records.append({"validFrom": date, "territory": _compact_wmdr_code_value(territory) if isinstance(territory, str) else territory})
-    return _uniq_dicts(_clean_none(records)) or None
-
-
-def _normalize_population_value(value: Any) -> Any:
-    if isinstance(value, dict):
-        raw_population = _first_non_empty(value.get("population"), value.get("value"), value.get("href"))
-        population = _parse_two_value_number_array(raw_population)
-        if population is None:
-            return raw_population
-        raw_perimeter = _first_non_empty(value.get("perimeter_km"), value.get("perimeterKm"), value.get("perimeter"))
-        perimeter = _parse_two_value_number_array(raw_perimeter) or [10.0, 50.0]
-        return {"population": population, "perimeter_km": perimeter}
-    parsed = _parse_two_value_number_array(value)
-    return parsed if parsed is not None else value
-
-
-def _topography_object(source: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
-    out: Dict[str, Any] = {}
-    container = _as_dict(source.get("topographyBathymetry") or source.get("topography") or source.get("bathymetry"))
-    merged: Dict[str, Any] = dict(container)
-    for key in ("localTopography", "relativeElevation", "topographicContext", "altitudeOrDepth"):
-        if key in source and key not in merged:
-            merged[key] = source[key]
-    for key in ("localTopography", "relativeElevation", "topographicContext", "altitudeOrDepth"):
-        value = merged.get(key)
-        if isinstance(value, Mapping):
-            value = _first_non_empty(value.get("value"), value.get("href"), value.get("#text"), value.get("text"))
-        if _non_empty(value) or isinstance(value, (int, float, bool)):
-            out[key] = _compact_wmdr_code_value(value) if isinstance(value, str) else value
-    return _clean_none(out) or None
-
-
-def _normalize_historical_environment(facility: Mapping[str, Any], *, fallback_date: str) -> Optional[List[Dict[str, Any]]]:
-    env_sources: List[Mapping[str, Any]] = []
-    if isinstance(facility.get("environment"), dict):
-        env_sources.append(facility["environment"])
-    env_sources.append(facility)
-    by_date: Dict[str, Dict[str, Any]] = {}
-
-    def record(date: str) -> Dict[str, Any]:
-        return by_date.setdefault(date, {"validFrom": date})
-
-    def add(date: str, key: str, value: Any) -> None:
-        if _non_empty(value) or isinstance(value, bool):
-            record(date)[key] = value
-
-    def add_history(source_value: Any, key: str, value_keys: Sequence[str], *, transform: Optional[Any] = None) -> None:
-        for item in _as_list(source_value):
-            date = _entry_date(item, fallback=fallback_date)
-            raw_value = _first_non_empty(*(item.get(k) for k in value_keys)) if isinstance(item, dict) else item
-            if raw_value in (None, "", [], {}):
-                continue
-            value = transform(item if key == "population" and isinstance(item, dict) else raw_value) if transform else (_compact_wmdr_code_value(raw_value) if isinstance(raw_value, str) else raw_value)
-            if key == "population" and isinstance(value, dict):
-                for sub_key, sub_value in value.items():
-                    add(date, sub_key, sub_value)
-            else:
-                add(date, key, value)
-
-    for source in env_sources:
-        for name in ("temporalClimateZone", "historicalClimateZone", "climateZone"):
-            add_history(source.get(name), "climateZone", ("climateZone", "value", "href"))
-        for name in ("temporalPopulation", "historicalPopulation", "population"):
-            add_history(source.get(name), "population", ("population", "value", "href"), transform=_normalize_population_value)
-        for name in ("temporalSurfaceCover", "historicalSurfaceCover", "surfaceCover"):
-            add_history(source.get(name), "surfaceCover", ("surfaceCover", "value", "href"))
-        for name in ("temporalSurfaceRoughness", "historicalSurfaceRoughness", "surfaceRoughness"):
-            add_history(source.get(name), "surfaceRoughness", ("surfaceRoughness", "roughness", "value", "href"))
-        for item in _as_list(source.get("environment")):
-            if isinstance(item, dict):
-                date = _entry_date(item, fallback=fallback_date)
-                r = record(date)
-                for key, value in item.items():
-                    if key in {"date", "validFrom"}:
-                        continue
-                    if _non_empty(value) or isinstance(value, bool):
-                        r[key] = value
-        topo = _topography_object(source)
-        if topo:
-            add(_entry_date(source, fallback=fallback_date), "topographyBathymetry", topo)
-    return _uniq_dicts(_clean_none([by_date[k] for k in sorted(by_date)])) or None
-
-
-def _normalize_environment(facility: Mapping[str, Any]) -> Optional[List[Dict[str, Any]]]:
-    start, _ = _extract_interval(facility)
-    return _normalize_historical_environment(facility, fallback_date=_normalize_date_value(start) or "..")
-
-
-def _normalize_temporal_data_policy(value: Any, *, fallback_date: str = "..") -> Optional[List[Dict[str, Any]]]:
-    records: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        if not isinstance(item, Mapping):
-            if _non_empty(item):
-                records.append({"validFrom": fallback_date, "dataPolicy": _compact_wmdr_code_value(item)})
-            continue
-        raw_policy = _first_non_empty(item.get("dataPolicy"), item.get("policy"), item.get("href"), item.get("value"))
-        if not _non_empty(raw_policy):
-            continue
-        record: Dict[str, Any] = {
-            "validFrom": _entry_date(item, fallback=fallback_date),
-            "dataPolicy": _compact_wmdr_code_value(raw_policy) if isinstance(raw_policy, str) else raw_policy,
-        }
-        if _non_empty(item.get("attribution")):
-            record["attribution"] = _preserve_nulls(item.get("attribution"))
-        records.append(record)
-    return _uniq_dicts(_clean_none(records)) or None
-
-
-def _facility_set_refs(value: Any) -> Optional[List[str]]:
-    refs: List[str] = []
-    for item in _as_list(value):
-        raw = _first_non_empty(item.get("facilitySet"), item.get("facilitySets"), item.get("href"), item.get("value"), item.get("identifier"), item.get("id")) if isinstance(item, dict) else item
-        if _non_empty(raw):
-            refs.append(f"facilitySet:{_sanitize_id(_compact_wmdr_code_value(raw))}")
-    return _uniq_scalars(refs) or None
-
-
-def facility_set_catalog_entry(value: Any, *, description: Optional[str] = None) -> Dict[str, Any]:
-    code = _sanitize_id(_compact_wmdr_code_value(value))
-    entry: Dict[str, Any] = {"uid": f"facilitySet:{code}", "title": code}
-    if _non_empty(description):
-        entry["description"] = str(description)
-    return entry
-
-
-def facility_set_catalog(values: Any) -> Dict[str, Any]:
-    entries = [facility_set_catalog_entry(ref.removeprefix("facilitySet:")) for ref in (_facility_set_refs(values) or [])]
-    return {"facilitySets": entries}
-
-
-def _copy_known_facility_properties(facility: Mapping[str, Any]) -> Dict[str, Any]:
-    out: Dict[str, Any] = {}
-    for key in ("facilityType", "wmoRegion", "surfaceCoverClassification", "timeZone", "regionOfOrigin"):
-        value = facility.get(key)
-        if _non_empty(value):
-            out[key] = _compact_wmdr_code_value(value) if isinstance(value, str) else value
-    facility_sets = _facility_set_refs(facility.get("facilitySet") or facility.get("facilitySets"))
-    if facility_sets:
-        out["facilitySets"] = facility_sets
-    return out
-
-
-# ---------------------------------------------------------------------------
-# Instruments, observing locations, schedules, reporting
-# ---------------------------------------------------------------------------
-
-
-def _legacy_deployment_source_identifier(raw: Mapping[str, Any], *, index: int, facility_id: str) -> str:
-    raw_id = _first_non_empty(raw.get("identifier"), raw.get("id"), raw.get("@gml:id"), raw.get("@id"), raw.get("uuid"))
-    if raw_id:
-        return _sanitize_id(raw_id)
-    seed = _stable_json(_clean_none(dict(raw)))
-    digest = hashlib.sha1(seed.encode("utf-8")).hexdigest()[:12]
-    return _sanitize_id(f"{facility_id}:observing-location:{index}:{digest}")
-
-
-# legacy name retained; no Deployment class is emitted in v0.3.0
-def _deployment_source_identifier(raw: Mapping[str, Any], *, index: int, facility_id: str) -> str:
-    return _legacy_deployment_source_identifier(raw, index=index, facility_id=facility_id)
-
-
-def _normalize_instrument_observed_property(raw: Mapping[str, Any]) -> Optional[List[Any]]:
-    value = _first_non_empty(raw.get("observedProperty"), raw.get("observedVariable"), raw.get("observableVariable"))
-    values: List[Any] = []
-    for item in _as_list(value):
-        raw_value = _first_non_empty(item.get("observedProperty"), item.get("observedVariable"), item.get("href"), item.get("value"), item.get("description"), item.get("label"), item.get("name")) if isinstance(item, dict) else item
-        compact = _compact_wmdr_code_value(raw_value) if isinstance(raw_value, (str, dict)) else raw_value
-        if _non_empty(compact) or isinstance(compact, (int, float, bool)):
-            values.append(compact)
-    return _uniq_scalars(values) or None
-
-
-def _normalize_instrument_observed_geometry(raw: Mapping[str, Any]) -> Optional[Any]:
-    value = _first_non_empty(raw.get("observedGeometry"), raw.get("observedGeometryType"), raw.get("observableGeometry"))
-    compact = _compact_wmdr_code_value(value) if isinstance(value, (str, dict)) else value
-    return compact if _non_empty(compact) else None
-
-
-def _normalize_vertical_range(raw: Mapping[str, Any]) -> Optional[Dict[str, float]]:
-    source = _first_non_empty(raw.get("verticalRange"), raw.get("observableVerticalRange"))
-    if isinstance(source, Mapping):
-        minimum = _normalize_quantity_value(_first_non_empty(source.get("min"), source.get("minimum"), source.get("lower")))
-        maximum = _normalize_quantity_value(_first_non_empty(source.get("max"), source.get("maximum"), source.get("upper")))
-    else:
-        minimum = _normalize_quantity_value(_first_non_empty(raw.get("verticalRangeMin"), raw.get("verticalRangeMinimum"), raw.get("minimumVerticalRange")))
-        maximum = _normalize_quantity_value(_first_non_empty(raw.get("verticalRangeMax"), raw.get("verticalRangeMaximum"), raw.get("maximumVerticalRange")))
-    if minimum is None or maximum is None:
-        return None
-    try:
-        return {"min": float(minimum), "max": float(maximum)}
-    except Exception:
-        return None
-
-
-def _instrument_source_values(raw: Mapping[str, Any]) -> Tuple[Any, Any]:
-    instrument = _as_dict(raw.get("instrument") or raw.get("equipment"))
-    return (
-        _first_non_empty(raw.get("manufacturer"), instrument.get("manufacturer"), instrument.get("make")),
-        _first_non_empty(raw.get("model"), instrument.get("model"), instrument.get("type")),
-    )
-
-
-def _is_substantive_instrument_value(value: Any) -> bool:
-    if value in (None, "", [], {}):
-        return False
-    if isinstance(value, str) and _is_unknown_token(value):
-        return False
-    return True
-
-
-def _instrument_record_id(raw: Mapping[str, Any], *, facility_id: str) -> Optional[str]:
-    manufacturer, model = _instrument_source_values(raw)
-    vertical_range = _normalize_vertical_range(raw)
-    if not any(_is_substantive_instrument_value(v) for v in (manufacturer, model, vertical_range)):
-        return None
-    parts = [_sanitize_id(str(v)) for v in (manufacturer, model) if _is_substantive_instrument_value(v)]
-    if parts:
-        return f"instrument:{'--'.join(parts)}"
-    seed = _stable_json({"verticalRange": vertical_range})
-    digest = hashlib.sha1(seed.encode("utf-8")).hexdigest()[:10]
-    return f"instrument:vertical-range--{digest}"
-
-
-def _instrument_ref_for_deployment(raw: Mapping[str, Any], *, facility_id: str) -> Optional[str]:
-    return _instrument_record_id(raw, facility_id=facility_id)
-
-
-def _scalar_reference(value: Any) -> Optional[str]:
-    if isinstance(value, str) and value.strip():
-        return value
-    if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):
-        for item in value:
-            if isinstance(item, str) and item.strip():
-                return item
-    return None
-
-
-def _observing_method_candidates(raw: Mapping[str, Any]) -> List[Any]:
-    instrument = _as_dict(raw.get("instrument") or raw.get("equipment"))
-    return [instrument.get("observingMethod"), instrument.get("observingMethods"), instrument.get("method"), raw.get("observingMethod"), raw.get("observingMethods"), raw.get("method"), raw.get("observingMethodDetails")]
-
-
-def _normalize_observing_method_values(raw: Mapping[str, Any]) -> List[Any]:
-    values: List[Any] = []
-    for candidate in _observing_method_candidates(raw):
-        for item in _as_list(candidate):
-            value = _normalize_code_or_nil_reason(item)
-            if value is not None:
-                values.append(value)
-    return _uniq_dicts(values)  # type: ignore[arg-type]
-
-
-def _normalize_instrument_observing_methods(raw: Mapping[str, Any]) -> Optional[List[Any]]:
-    values = [v for v in _normalize_observing_method_values(raw) if not (isinstance(v, Mapping) and "nilReason" in v)]
-    return values or None
-
-
-def _normalize_instrument(raw: Mapping[str, Any], *, facility_id: str) -> Optional[Dict[str, Any]]:
-    instrument_id = _instrument_record_id(raw, facility_id=facility_id)
-    if not instrument_id:
-        return None
-    manufacturer, model = _instrument_source_values(raw)
-    return _clean_none({
-        "uid": instrument_id,
-        "manufacturer": manufacturer if _is_substantive_instrument_value(manufacturer) else None,
-        "model": model if _is_substantive_instrument_value(model) else None,
-        "observingMethods": _normalize_instrument_observing_methods(raw),
-        "verticalRange": _normalize_vertical_range(raw),
-    })
-
-
-def _merge_catalogue_instrument(existing: Dict[str, Any], incoming: Dict[str, Any]) -> Dict[str, Any]:
-    merged = dict(existing)
-    for key, value in incoming.items():
-        if not _non_empty(value):
-            continue
-        if key not in merged or not _non_empty(merged.get(key)):
-            merged[key] = value
-        elif isinstance(merged[key], list):
-            merged[key] = _uniq_scalars([*merged[key], *_as_list(value)])
-        elif isinstance(merged[key], dict) and isinstance(value, Mapping):
-            nested = dict(merged[key])
-            for nk, nv in value.items():
-                if nk not in nested or not _non_empty(nested.get(nk)):
-                    nested[nk] = nv
-            merged[key] = nested
-    return _clean_none(merged)
-
-
-def _normalize_instruments(deployments: Sequence[Mapping[str, Any]], *, facility_id: str) -> List[Dict[str, Any]]:
-    by_id: Dict[str, Dict[str, Any]] = {}
-    for dep in deployments:
-        instrument = _normalize_instrument(dep, facility_id=facility_id)
-        if not instrument:
-            continue
-        iid = instrument.get("uid")
-        if isinstance(iid, str):
-            by_id[iid] = _merge_catalogue_instrument(by_id.get(iid, {}), instrument)
-    return list(by_id.values())
-
-
-def _observing_location_from_source(raw: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
-    entries = _facility_temporal_geometry_entries(raw)
-    geom = _facility_geometry_from_entries(entries)
-    if not geom:
-        coords = _parse_pos_lon_lat_z(_first_non_empty(raw.get("geospatialLocation"), raw.get("geometry"), raw.get("geoLocation")))
-        if coords:
-            geom = {"type": "Point", "coordinates": coords}
-    out: Dict[str, Any] = {
-        "geometry": geom,
-        "referenceSurface": _compact_wmdr_code_value(_first_non_empty(raw.get("referenceSurface"), raw.get("localReferenceSurface"))),
-        "relativeLocation": _normalize_display_text(_first_non_empty(raw.get("relativeLocation"), raw.get("location"))),
-        "verticalDistanceFromReferenceSurface": _normalize_vertical_distance_from_reference_surface(raw),
-    }
-    return _clean_none(out) or None
-
-
-# legacy public helper name: returns a list containing one ObservingLocation-like object
-def _normalize_deployment(raw: Mapping[str, Any], *, index: int, facility_id: str, schedule_registry: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
-    loc = _observing_location_from_source(raw)
-    if not loc:
-        return []
-    return [loc]
-
-
-# legacy public helper name; no deployment id is emitted in v0.3.0
-def _deployment_record_id(raw: Mapping[str, Any], *, index: int, facility_id: str) -> str:
-    return f"observingLocation:{_deployment_source_identifier(raw, index=index, facility_id=facility_id)}"
-
-
-def _normalize_diurnal_time(value: Any) -> Optional[str]:
-    if isinstance(value, dict):
-        value = _first_non_empty(value.get("value"), value.get("#text"), value.get("href"))
-    if value in (None, "", [], {}):
-        return None
-    text = str(value).strip().rstrip("Z")
-    match = re.fullmatch(r"(?P<h>\d{1,2})(?::(?P<m>\d{1,2}))?(?::(?P<s>\d{1,2}))?", text)
-    if not match:
-        return text
-    h = max(0, min(23, int(match.group("h"))))
-    m = max(0, min(59, int(match.group("m") or 0)))
-    s = max(0, min(59, int(match.group("s") or 0)))
-    return f"{h:02d}:{m:02d}:{s:02d}"
-
-
-def _schedule_start_datetime(raw: Mapping[str, Any]) -> str:
-    def as_int(value: Any, default: int = 0) -> int:
-        try:
-            return int(value)
-        except Exception:
-            return default
-
-    hour = max(0, min(23, as_int(_first_non_empty(raw.get("startHour"), raw.get("hour")), 0)))
-    minute = max(0, min(59, as_int(_first_non_empty(raw.get("startMinute"), raw.get("minute")), 0)))
-    return f"{CANONICAL_SCHEDULE_START_DATE}T{hour:02d}:{minute:02d}:00"
-
-
-def _iso_duration(value: Any) -> Optional[str]:
-    if isinstance(value, dict):
-        value = _first_non_empty(value.get("value"), value.get("#text"), value.get("href"))
-    if not isinstance(value, str):
-        return None
+def _normalize_phone_value(value: str) -> str:
     text = value.strip()
-    return text if re.match(r"^P", text) else None
+    # If the source already provides an international number, remove common
+    # presentation punctuation while preserving the leading '+'.  Also drop an
+    # international trunk marker such as '(0)', which is not part of E.164.
+    if text.startswith("+"):
+        text = re.sub(r"\(0\)", "", text)
+        text = re.sub(r"\(0", "(", text)
+        digits = re.sub(r"\D", "", text)
+        if digits:
+            return "+" + digits
+
+    digits_only = re.sub(r"\D", "", text)
+    # ``00`` is a conventional international call prefix in many WMDR10
+    # records.  Converting this prefix to ``+`` is a format normalization, not
+    # an inferred country code.  Local-only numbers and bare digit strings are
+    # preserved so that the strict OGC Contact schema can flag/comment them.
+    if digits_only.startswith("00") and len(digits_only) > 4:
+        candidate = digits_only[2:]
+        if candidate and candidate[0] != "0":
+            return "+" + candidate
+
+    # Without a country code marker there is not enough information to safely
+    # normalize to E.164.  Preserve the source value except for whitespace.
+    return re.sub(r"\s+", "", text)
 
 
-def _schedule_uid_from_event(event_without_uid: Mapping[str, Any]) -> str:
-    digest = hashlib.sha1(_stable_json(event_without_uid).encode("utf-8")).hexdigest()[:12]
-    return f"schedule_{digest}"
+def _normalize_ogc_phone(value: Any) -> Optional[Dict[str, Any]]:
+    if isinstance(value, Mapping):
+        raw_value = _first_non_empty(value.get("value"), value.get("phone"), value.get("number"), value.get("voice"), value.get("facsimile"), value.get("#text"), value.get("text"))
+        text = _strip_text(raw_value)
+        if not text:
+            return None
+        phone: Dict[str, Any] = {"value": _normalize_phone_value(text)}
+        roles = _normalize_roles(value.get("roles") or value.get("role"))
+        if roles:
+            phone["roles"] = roles
+        return phone
+    text = _strip_text(value)
+    if not text:
+        return None
+    return {"value": _normalize_phone_value(text)}
 
 
-def _flatten_schedule_candidates(value: Any, *, context: Optional[Mapping[str, Any]] = None) -> List[Dict[str, Any]]:
-    context = context or {}
-    out: List[Dict[str, Any]] = []
+def _normalize_ogc_address(value: Any) -> Optional[Dict[str, Any]]:
+    address_obj = _as_mapping(value)
+    if not address_obj:
+        text = _strip_text(value)
+        return {"deliveryPoint": [text]} if text else None
+    address: Dict[str, Any] = {}
+    delivery_points: List[str] = []
+    raw_delivery = _first_non_empty(address_obj.get("deliveryPoint"), address_obj.get("deliveryPoints"), address_obj.get("street"))
+    for item in _as_list(raw_delivery):
+        text = _strip_text(item)
+        if text:
+            delivery_points.append(text)
+    if delivery_points:
+        address["deliveryPoint"] = sorted(dict.fromkeys(delivery_points))
+    for key in ("city", "administrativeArea", "postalCode", "country"):
+        text = _strip_text(address_obj.get(key))
+        if text:
+            address[key] = text
+    roles = _normalize_roles(address_obj.get("roles") or address_obj.get("role"))
+    if roles:
+        address["roles"] = roles
+    return address or None
+
+
+def _normalize_link(value: Any) -> Optional[Dict[str, Any]]:
+    if isinstance(value, str):
+        href = value.strip()
+        return _about_link(href) if href.startswith(("http://", "https://")) else None
+    obj = _as_mapping(value)
+    if not obj:
+        return None
+    href = _strip_text(_first_non_empty(obj.get("href"), obj.get("url"), obj.get("linkage"), obj.get("value")))
+    if not href:
+        return None
+    link: Dict[str, Any] = {"href": href}
+    for key in ("rel", "type", "title", "hreflang"):
+        text = _strip_text(obj.get(key))
+        if text:
+            link[key] = text
+    if "rel" not in link:
+        link["rel"] = "about"
+    if "type" not in link:
+        link["type"] = "text/html"
+    return link
+
+
+def _normalize_ogc_contact(raw: Any) -> Optional[Dict[str, Any]]:
+    payload = _as_mapping(raw)
+    if not payload:
+        text = _strip_text(raw)
+        if not text:
+            return None
+        if "@" in text:
+            return {"emails": [{"value": text.removeprefix("mailto:")}]}
+        return {"organization": text}
+
+    contact: Dict[str, Any] = {}
+    for key in ("identifier", "name", "position", "organization", "hoursOfService", "contactInstructions"):
+        text = _strip_text(
+            _first_non_empty(
+                payload.get(key),
+                payload.get("individualName") if key == "name" else None,
+                payload.get("organisationName") if key == "organization" else None,
+            )
+        )
+        if text:
+            contact[key] = text
+
+    emails: List[Dict[str, Any]] = []
+    for key in ("emails", "email", "electronicMailAddress", "mail", "mailAddress"):
+        for item in _as_list(payload.get(key)):
+            email = _normalize_ogc_email(item)
+            if email:
+                emails.append(email)
+    info = _as_mapping(payload.get("contactInfo"))
+    address_obj = _as_mapping(info.get("address"))
+    for item in _as_list(address_obj.get("electronicMailAddress")):
+        email = _normalize_ogc_email(item)
+        if email:
+            emails.append(email)
+    if emails:
+        contact["emails"] = _uniq_dicts(emails)
+
+    phones: List[Dict[str, Any]] = []
+    for key in ("phones", "phone", "telephone", "voice", "facsimile"):
+        for item in _as_list(payload.get(key)):
+            phone = _normalize_ogc_phone(item)
+            if phone:
+                phones.append(phone)
+    phone_obj = _as_mapping(info.get("phone"))
+    for key in ("voice", "facsimile", "phone", "phones"):
+        for item in _as_list(phone_obj.get(key)):
+            phone = _normalize_ogc_phone(item)
+            if phone:
+                phones.append(phone)
+    if phones:
+        contact["phones"] = _uniq_dicts(phones)
+
+    addresses: List[Dict[str, Any]] = []
+    for key in ("addresses", "address"):
+        for item in _as_list(payload.get(key)):
+            address = _normalize_ogc_address(item)
+            if address:
+                addresses.append(address)
+    if address_obj:
+        address = _normalize_ogc_address(address_obj)
+        if address:
+            addresses.append(address)
+    if addresses:
+        contact["addresses"] = _uniq_dicts(addresses)
+
+    links: List[Dict[str, Any]] = []
+    for key in ("links", "link", "onlineResource", "url", "href"):
+        for item in _as_list(payload.get(key)):
+            link = _normalize_link(item)
+            if link:
+                links.append(link)
+    online = _as_mapping(info.get("onlineResource"))
+    if online:
+        link = _normalize_link(online)
+        if link:
+            links.append(link)
+    if links:
+        contact["links"] = _uniq_dicts(links)
+
+    roles = _normalize_roles(payload.get("roles") or payload.get("role"))
+    if roles:
+        contact["roles"] = roles
+
+    return contact or None
+
+
+def _contact_identifier(contact: Mapping[str, Any]) -> str:
+    identifier = _strip_text(contact.get("identifier"))
+    if identifier:
+        return identifier
+    emails = contact.get("emails")
+    if isinstance(emails, list):
+        for item in emails:
+            item_obj = _as_mapping(item)
+            value = _strip_text(item_obj.get("value"))
+            if value:
+                return f"contact:{value.lower()}"
+    base = _first_non_empty(contact.get("organization"), contact.get("name"), contact.get("position"), _stable_json(contact))
+    digest = hashlib.sha1(_stable_json(contact).encode("utf-8")).hexdigest()[:10]
+    return f"contact:{_slug(base)}-{digest}"
+
+
+def _merge_contact(existing: Mapping[str, Any], new_contact: Mapping[str, Any]) -> Dict[str, Any]:
+    merged: Dict[str, Any] = dict(existing)
+    for key, value in new_contact.items():
+        if key == "identifier":
+            merged[key] = value
+        elif key in {"emails", "phones", "addresses", "links"}:
+            merged[key] = _uniq_dicts([*_as_list(merged.get(key)), *_as_list(value)])
+        elif key == "roles":
+            merged[key] = sorted(dict.fromkeys([*(_normalize_roles(merged.get(key))), *(_normalize_roles(value))]))
+        elif key not in merged or merged.get(key) in (None, "", [], {}):
+            merged[key] = value
+    return merged
+
+
+def _register_contact(registry: Dict[str, Dict[str, Any]], raw_contact: Any) -> Optional[str]:
+    contact = _normalize_ogc_contact(raw_contact)
+    if not contact:
+        return None
+    identifier = _contact_identifier(contact)
+    contact["identifier"] = identifier
+    # WMDR roles are contextual contactAssignments.  The reusable OGC Contact
+    # registry must describe the party, not the party-in-this-context.
+    contact.pop("roles", None)
+    if identifier in registry:
+        registry[identifier] = _merge_contact(registry[identifier], contact)
+    else:
+        registry[identifier] = contact
+    return identifier
+
+
+def _assignment_from_contact(raw: Any, registry: Dict[str, Dict[str, Any]], fallback_roles: Any = None) -> Optional[Dict[str, Any]]:
+    if isinstance(raw, Mapping) and isinstance(raw.get("contact"), str):
+        contact_ref = _strip_text(raw.get("contact"))
+        roles = _normalize_roles(raw.get("roles") or raw.get("role") or fallback_roles)
+        if contact_ref and roles:
+            return {"contact": contact_ref, "roles": roles}
+    contact_id = _register_contact(registry, raw)
+    if not contact_id:
+        return None
+    payload = _as_mapping(raw)
+    roles = _normalize_roles(payload.get("roles") or payload.get("role") or fallback_roles)
+    if not roles:
+        return None
+    return {"contact": contact_id, "roles": roles}
+
+
+def _extract_contact_assignments_from_field(value: Any, registry: Dict[str, Dict[str, Any]], fallback_roles: Any = None) -> List[Dict[str, Any]]:
+    assignments: List[Dict[str, Any]] = []
     for item in _as_list(value):
-        if not isinstance(item, dict):
-            continue
-        merged: Dict[str, Any] = dict(context)
-        merged.update(item)
-        for nested_key in ("coverage", "Coverage", "sampling", "Sampling", "reporting"):
-            nested = item.get(nested_key)
-            if isinstance(nested, dict):
-                n = dict(merged)
-                n.update(nested)
-                out.append(n)
-        if any(k in item for k in ("temporalSamplingInterval", "samplingInterval", "sampleInterval", "temporalAggregate", "temporalReportingInterval", "reportingInterval", "internationalExchange", "uom", "dataPolicy", "levelOfData", "timeliness", "startHour", "diurnalBaseTime", "wmo.int:diurnalBaseTime", "spatialReportingInterval")):
-            out.append(merged)
+        assignment = _assignment_from_contact(item, registry, fallback_roles=fallback_roles)
+        if assignment:
+            assignments.append(assignment)
+    return _uniq_dicts(assignments)
+
+
+def _quantity(value: Any, uom: Any = None) -> Optional[Dict[str, Any]]:
+    raw_value = value
+    raw_uom = uom
+    if isinstance(value, Mapping):
+        raw_value = _first_non_empty(value.get("value"), value.get("#text"), value.get("text"))
+        raw_uom = _first_non_empty(value.get("uom"), value.get("unit"), value.get("@uom"), raw_uom)
+    if raw_value in (None, "", [], {}):
+        return None
+    if isinstance(raw_value, str):
+        text_value = raw_value.strip()
+        try:
+            raw_value = float(text_value)
+        except ValueError:
+            raw_value = text_value
+    out: Dict[str, Any] = {"value": raw_value}
+    if raw_uom not in (None, "", [], {}):
+        out["uom"] = raw_uom
     return out
 
 
-def _recurrence_rule_from_interval(interval: Optional[str]) -> Dict[str, Any]:
-    rule: Dict[str, Any] = {"@type": "RecurrenceRule", "frequency": "daily"}
-    if not interval:
-        return rule
-    if m := re.fullmatch(r"PT(\d+)M", interval):
-        rule = {"@type": "RecurrenceRule", "frequency": "minutely"}
-        if int(m.group(1)) != 1:
-            rule["interval"] = int(m.group(1))
-    elif m := re.fullmatch(r"PT(\d+)H", interval):
-        rule = {"@type": "RecurrenceRule", "frequency": "hourly"}
-        if int(m.group(1)) != 1:
-            rule["interval"] = int(m.group(1))
-    elif m := re.fullmatch(r"PT(\d+)S", interval):
-        rule = {"@type": "RecurrenceRule", "frequency": "secondly"}
-        if int(m.group(1)) != 1:
-            rule["interval"] = int(m.group(1))
-    return rule
+def _record_timestamps(header: Mapping[str, Any], *, source_name: Optional[str] = None) -> Dict[str, str]:
+    created = _normalize_record_datetime(
+        _first_non_empty(header.get("created"), header.get("dateCreated"), header.get("creationDate"), header.get("fileDateTime"), header.get("dateStamp"), source_name)
+    )
+    updated = _normalize_record_datetime(
+        _first_non_empty(header.get("updated"), header.get("dateUpdated"), header.get("updateDate"), header.get("modified"), header.get("fileDateTime"), header.get("dateStamp"), created)
+    )
+    out: Dict[str, str] = {}
+    if created:
+        out["created"] = created
+    if updated:
+        out["updated"] = updated
+    return out
+
+# ---------------------------------------------------------------------------
+# WMDR10 -> WMDR2 construction
+# ---------------------------------------------------------------------------
 
 
-def _jscalendar_observing_schedule(raw: Mapping[str, Any], *, time_zone: str = "UTC") -> Optional[Dict[str, Any]]:
-    reporting_any: Any = raw.get("reporting")
-    reporting: Mapping[str, Any] = cast(Mapping[str, Any], reporting_any) if isinstance(reporting_any, Mapping) else {}
-    interval = _iso_duration(_first_non_empty(raw.get("temporalSamplingInterval"), raw.get("samplingInterval"), raw.get("sampleInterval"), raw.get("interval"), raw.get("temporalAggregate"), reporting.get("temporalAggregate"), reporting.get("temporalReportingInterval")))
-    has_window = any(_non_empty(raw.get(k)) for k in ("startMonth", "endMonth", "startWeekday", "endWeekday", "startHour", "endHour", "startMinute", "endMinute"))
-    if not interval and not has_window:
-        return None
-    event_without_uid: Dict[str, Any] = {
-        "@type": "Event",
-        "start": _schedule_start_datetime(raw),
-        "timeZone": time_zone,
-        "duration": interval or "P1D",
-        "recurrenceRules": [_recurrence_rule_from_interval(interval)],
-    }
-    sampling_frequency = _iso_duration(_first_non_empty(raw.get("temporalSamplingInterval"), raw.get("samplingInterval"), raw.get("sampleInterval"), raw.get("interval")))
-    if sampling_frequency:
-        event_without_uid["wmo.int:samplingFrequency"] = sampling_frequency
-    aggregation_interval = _iso_duration(_first_non_empty(raw.get("temporalAggregate"), raw.get("temporalReportingInterval"), raw.get("reportingInterval"), reporting.get("temporalAggregate"), reporting.get("temporalReportingInterval"), reporting.get("reportingInterval")))
-    if aggregation_interval:
-        event_without_uid["wmo.int:aggregationInterval"] = aggregation_interval
-    diurnal = _normalize_diurnal_time(_first_non_empty(raw.get("wmo.int:diurnalBaseTime"), raw.get("diurnalBaseTime"), reporting.get("wmo.int:diurnalBaseTime"), reporting.get("diurnalBaseTime")))
-    if diurnal:
-        event_without_uid["wmo.int:diurnalBaseTime"] = diurnal
-    event = dict(event_without_uid)
-    event["uid"] = _schedule_uid_from_event(event_without_uid)
-    return _clean_none(event)
+def _split_source(source: Any) -> Tuple[Dict[str, Any], Dict[str, Any], List[Any], List[Any]]:
+    if not isinstance(source, Mapping):
+        return {}, {}, [], []
+    if source.get("type") == "Feature" and isinstance(source.get("properties"), Mapping):
+        props = _as_dict(source.get("properties"))
+        return props, {}, _as_list(props.get("observationSeries") or props.get("observations")), _as_list(props.get("deployments"))
+    facility = _as_dict(source.get("facility"))
+    header = _as_dict(source.get("header"))
+    observations = _as_list(_first_non_empty(source.get("observationSeries"), source.get("observations"), source.get("observation")))
+    deployments = _as_list(_first_non_empty(source.get("deployments"), source.get("deployment"), source.get("observingConfigurations")))
+    if not facility:
+        kind_keys = {"observedVariable", "observedProperty", "resultTime", "sourceOfObservation", "manufacturer", "serialNumber", "fileDateTime"}
+        if not any(key in source for key in kind_keys):
+            facility = dict(source)
+    return facility, header, observations, deployments
 
 
-def _jscalendar_reporting_schedule(raw: Mapping[str, Any], *, time_zone: str = "UTC") -> Optional[Dict[str, Any]]:
-    # For now reporting schedules use the same JSCalendar subset as observing schedules.
-    return _jscalendar_observing_schedule(raw, time_zone=time_zone)
+def _facility_identifier(facility: Mapping[str, Any], header: Mapping[str, Any]) -> str:
+    raw_values = (
+        facility.get("identifier"),
+        facility.get("wigosStationIdentifier"),
+        facility.get("wigosIdentifier"),
+        facility.get("wsi"),
+        facility.get("id"),
+        header.get("wigosStationIdentifier"),
+        header.get("identifier"),
+        header.get("id"),
+    )
+    for raw in raw_values:
+        values = _facility_wsi_values(raw)
+        if values:
+            return values[0]
+    return _normalize_facility_wsi(_first_non_empty(*raw_values))
 
 
-def _strip_misspelled_wmi_extensions(value: Any) -> Any:
-    """Remove the historic misspelled ``wmi.int`` JSCalendar extension aliases."""
-    if isinstance(value, dict):
-        return {k: _strip_misspelled_wmi_extensions(v) for k, v in value.items() if not k.startswith("wmi.int:")}
+
+
+def _title_values(value: Any) -> List[str]:
+    """Return ordered facility title/name strings from WMDR10 title shapes."""
+    values: List[str] = []
+    if value in (None, "", [], {}):
+        return values
+    if isinstance(value, Mapping):
+        for key in ("title", "name", "value", "text", "#text"):
+            values.extend(_title_values(value.get(key)))
+        return _uniq_scalars(values)
     if isinstance(value, list):
-        return [_strip_misspelled_wmi_extensions(item) for item in value]
-    return value
+        for item in value:
+            values.extend(_title_values(item))
+        return _uniq_scalars(values)
+    text = _strip_text(value)
+    return [text] if text else []
 
 
-def _register_observing_schedule_refs(value: Any, *, schedule_registry: Dict[str, Dict[str, Any]], time_zone: str = "UTC") -> Optional[List[str]]:
-    """Legacy helper retained for tests/local users.
+def _title_text(value: Any) -> Optional[str]:
+    """Return the primary OGC Records title string from WMDR10 title/name shapes."""
+    values = _title_values(value)
+    return values[0] if values else None
 
-    v0.3.0 still stores reusable JSCalendar schedule objects, while observing
-    procedures hold references to them. This helper deduplicates schedules by
-    uid and returns those uid references.
-    """
-    refs: List[str] = []
-    for group in _as_list(value):
-        for item in _as_list(group):
-            if not isinstance(item, Mapping):
-                continue
-            schedule = _jscalendar_observing_schedule(item, time_zone=time_zone)
-            if not schedule:
-                continue
-            refs.append(_schedule_registry_add(schedule_registry, schedule))
-    return _uniq_scalars(refs) or None
+def _description_text(value: Any) -> Optional[str]:
+    """Return an OGC Records description string from WMDR10 description shapes.
 
-
-def _deployment_temporal_serial_number(value: Any) -> Optional[List[Dict[str, Any]]]:
-    """Legacy helper retained after Deployment removal.
-
-    Serial numbers now describe the observing configuration/source instance, not
-    a reusable Deployment class. The helper returns v0.3.0 temporal objects.
-    """
-    records: List[Dict[str, Any]] = []
-    for item in _as_list(value):
-        if isinstance(item, Mapping):
-            serial = _first_non_empty(item.get("serialNumber"), item.get("serial"), item.get("value"), item.get("#text"))
-            date = _entry_date(item)
-        else:
-            serial = item
-            date = ".."
-        if _non_empty(serial):
-            records.append({"validFrom": date, "serialNumber": serial})
-    return _uniq_dicts(_clean_none(records)) or None
-
-
-def _schedule_registry_add(schedule_registry: Dict[str, Dict[str, Any]], schedule: Dict[str, Any]) -> str:
-    uid = schedule.get("uid")
-    if not isinstance(uid, str) or not uid:
-        uid = _schedule_uid_from_event({k: v for k, v in schedule.items() if k != "uid"})
-        schedule["uid"] = uid
-    schedule_registry[uid] = schedule
-    return uid
-
-
-def _normalize_observing_procedures(raw: Mapping[str, Any], *, schedule_registry: Dict[str, Dict[str, Any]], fallback_date: str = "..", time_zone: str = "UTC") -> Optional[List[Dict[str, Any]]]:
-    candidates = []
-    for key in ("coverage", "sampling", "observingProcedure", "observingProcedures"):
-        candidates.extend(_flatten_schedule_candidates(raw.get(key), context=raw))
-    if not candidates:
-        candidates = _flatten_schedule_candidates(raw, context={})
-    records: List[Dict[str, Any]] = []
-    for candidate in candidates:
-        schedule = _jscalendar_observing_schedule(candidate, time_zone=time_zone)
-        if not schedule:
-            continue
-        uid = _schedule_registry_add(schedule_registry, schedule)
-        strategy = _compact_wmdr_code_value(_first_non_empty(candidate.get("strategy"), candidate.get("observingStrategy"), raw.get("strategy"), raw.get("observingStrategy"), "continuous"))
-        records.append({"validFrom": _entry_date(candidate, fallback=fallback_date), "strategy": strategy, "observingSchedules": [uid]})
-    return _uniq_dicts(_clean_none(records)) or None
-
-
-def _normalize_reporting_scalar(value: Any) -> Any:
-    """Return a compact scalar for reporting fields that may arrive as WMDR10 wrappers.
-
-    Some XML-derived WMDR10 JSON payloads wrap reporting attributes such as
-    referenceDatum in nested objects, e.g. {"VerticalDatum": {"remarks":
-    "mean sea level"}}.  WMDR2 v0.3.0 keeps these fields as compact scalar
-    values in ReportingProcedure, so unwrap the most useful scalar rather than
-    leaking source wrapper objects into the output.
+    WMDR10/XML-derived data may carry descriptions as objects with their own
+    validity metadata, or as lists of such objects.  WMDR2 currently uses the
+    OGC Records ``description`` member, which is a string.  Preserve only the
+    recorded text here; do not invent a temporal description model.
     """
     if value in (None, "", [], {}):
         return None
     if isinstance(value, Mapping):
-        for key in ("href", "url", "value", "#text", "text", "code", "remarks", "description", "name", "title", "id", "identifier"):
-            if _non_empty(value.get(key)) or isinstance(value.get(key), (int, float, bool)):
-                return _normalize_reporting_scalar(value.get(key))
-        if len(value) == 1:
-            return _normalize_reporting_scalar(next(iter(value.values())))
-        for nested in value.values():
-            scalar = _normalize_reporting_scalar(nested)
-            if _non_empty(scalar) or isinstance(scalar, (int, float, bool)):
-                return scalar
-        return None
-    if isinstance(value, str):
-        compact = _compact_wmdr_code_value(value)
-        return compact if _non_empty(compact) else None
-    if isinstance(value, bool):
-        return value
-    if isinstance(value, int):
-        return value
-    if isinstance(value, float):
-        return int(value) if value.is_integer() else str(value)
-    return str(value)
+        text = _strip_text(
+            _first_non_empty(
+                value.get("description"),
+                value.get("value"),
+                value.get("text"),
+                value.get("#text"),
+                value.get("remarks"),
+                value.get("remark"),
+            )
+        )
+        return text
+    if isinstance(value, list):
+        parts: List[str] = []
+        for item in value:
+            text = _description_text(item)
+            if text and text not in parts:
+                parts.append(text)
+        return "\n\n".join(parts) if parts else None
+    return _strip_text(value)
 
 
-def _normalize_observation_reporting(raw_value: Any, reporting_registry: Optional[Dict[str, Dict[str, Any]]] = None, *, schedule_registry: Optional[Dict[str, Dict[str, Any]]] = None, fallback_date: str = "..", time_zone: str = "UTC") -> Optional[List[Dict[str, Any]]]:
-    """Normalize v0.3.0 inline ReportingProcedure objects.
+def _has_explicit_time_period(value: Mapping[str, Any]) -> bool:
+    """Return True if a temporal object carries an explicit period anchor."""
+    time_obj = _as_mapping(value.get("time"))
+    if isinstance(time_obj, Mapping) and _as_list(time_obj.get("interval")):
+        return True
+    return any(value.get(key) not in (None, "", [], {}) for key in ("beginPosition", "endPosition", "validFrom", "validTo"))
 
-    ``reporting_registry`` is accepted for backward compatibility but is not
-    populated anymore because v0.3.0 no longer emits reusable
-    ``properties.reporting`` definitions.
+
+def _normalize_program_affiliations(value: Any) -> List[Any]:
+    """Normalize program affiliations without inventing missing validity.
+
+    In v0.3.1 program affiliations are temporal objects in the public schema.
+    If the source only provides a bare program code, there is no recorded
+    validity period to publish, so the affiliation is not emitted.  This keeps
+    the generated WMDR2 record valid without fabricating ``time``.
     """
-    records: List[Dict[str, Any]] = []
-    for item in _as_list(raw_value):
-        if not isinstance(item, Mapping):
+    out: List[Dict[str, Any]] = []
+    for item in _as_list(value):
+        if isinstance(item, Mapping):
+            program = _first_non_empty(
+                item.get("program"),
+                item.get("programAffiliation"),
+                item.get("name"),
+                item.get("identifier"),
+                item.get("value"),
+                item.get("href"),
+                item.get("url"),
+            )
+            compact = _compact_wmdr_code_value(program)
+            if compact in (None, "", [], {}):
+                continue
+            if not _has_explicit_time_period(item):
+                continue
+            payload = dict(item)
+            payload.pop("name", None)
+            payload.pop("identifier", None)
+            payload.pop("value", None)
+            payload.pop("href", None)
+            payload.pop("url", None)
+            payload["program"] = compact
+            out.append(cast(Dict[str, Any], _normalize_node(payload, {})))
+        else:
+            # A scalar program affiliation has no recorded validity period.
+            # Do not emit an invalid temporal object and do not invent time.
             continue
-        reporting_any: Any = item.get("reporting")
-        reporting: Mapping[str, Any] = cast(Mapping[str, Any], reporting_any) if isinstance(reporting_any, Mapping) else {}
-        merged: Dict[str, Any] = dict(item)
-        merged.update(dict(reporting))
-        international = _parse_bool(merged.get("internationalExchange"))
-        if international is None and _non_empty(merged.get("internationalExchange")):
-            international = bool(merged.get("internationalExchange"))
-        schedule = _jscalendar_reporting_schedule(merged, time_zone=time_zone)
-        record: Dict[str, Any] = {
-            "internationalExchange": international,
-            "uom": _compact_wmdr_code_value(merged.get("uom")) if isinstance(merged.get("uom"), str) else merged.get("uom"),
-            "temporalReportingInterval": _iso_duration(_first_non_empty(merged.get("temporalReportingInterval"), merged.get("reportingInterval"), merged.get("temporalAggregate"))),
-            "spatialReportingInterval": _normalize_reporting_scalar(merged.get("spatialReportingInterval")),
-            "timeliness": _iso_duration(merged.get("timeliness")) or _normalize_reporting_scalar(merged.get("timeliness")),
-            "dataPolicy": _normalize_reporting_scalar(merged.get("dataPolicy")),
-            "levelOfData": _normalize_reporting_scalar(merged.get("levelOfData")),
-            "numberOfObservationsInReportingInterval": _normalize_reporting_scalar(merged.get("numberOfObservationsInReportingInterval")),
-            "referenceDatum": _normalize_reporting_scalar(merged.get("referenceDatum")),
-            "referenceTimeSource": _normalize_reporting_scalar(merged.get("referenceTimeSource")),
-            "timeStampMeaning": _normalize_reporting_scalar(merged.get("timeStampMeaning")),
-            "strategy": _compact_wmdr_code_value(_first_non_empty(merged.get("strategy"), merged.get("reportingStrategy"), "routine")),
-            "links": _extract_links(merged, "observation"),
-        }
-        if schedule:
-            if schedule_registry is not None:
-                record["reportingSchedules"] = [_schedule_registry_add(schedule_registry, schedule)]
-            else:
-                record["reportingSchedules"] = [schedule]
-        record = _clean_none(record)
-        if record:
-            records.append(record)
-    return _uniq_dicts(records) or None
+    return _uniq_dicts(out)
 
 
-def _normalize_observation_series_observing_configurations(raw: Mapping[str, Any], deployment_sources: Sequence[Mapping[str, Any]], *, facility_id: str, fallback_date: str = "..") -> List[Dict[str, Any]]:
-    records: List[Dict[str, Any]] = []
-    raw_method_values = _normalize_observing_method_values(raw)
-    for dep_index, source in enumerate(deployment_sources, start=1):
-        if not isinstance(source, Mapping):
+
+def _normalize_territories(value: Any) -> List[Dict[str, Any]]:
+    """Normalize WMDR10 territory values to the v0.3.1 temporal array shape.
+
+    The schema models ``properties.territory`` as an array of temporal objects.
+    WMDR10/XML-derived JSON often contains a single object with ``territoryName``
+    plus ``beginPosition``/``endPosition``.  Convert only records with an
+    explicit temporal anchor; do not invent time for scalar territory values.
+    """
+    out: List[Dict[str, Any]] = []
+    for item in _as_list(value):
+        if isinstance(item, Mapping):
+            raw_territory = _first_non_empty(
+                item.get("territory"),
+                item.get("territoryName"),
+                item.get("name"),
+                item.get("identifier"),
+                item.get("value"),
+                item.get("href"),
+                item.get("url"),
+                item.get("#text"),
+                item.get("text"),
+            )
+            territory = _compact_wmdr_code_value(raw_territory)
+            if territory in (None, "", [], {}):
+                continue
+            if not _has_explicit_time_period(item):
+                continue
+            payload: Dict[str, Any] = {"territory": territory}
+            start, end = _extract_interval(item)
+            interval = _time_interval(start, end)
+            if interval:
+                payload["time"] = interval
+            if "time" in payload:
+                out.append(payload)
+        else:
+            # A scalar territory value has no recorded validity period.
             continue
-        method_values = _normalize_observing_method_values(source) or raw_method_values or [_nil_reason("unknown")]
-        observing_location = _observing_location_from_source(source)
-        source_of_observation = _compact_wmdr_code_value(_first_non_empty(source.get("sourceOfObservation"), source.get("instrumentType"), source.get("source")))
-        instrument_ref = _instrument_ref_for_deployment(source, facility_id=facility_id)
-        for value in method_values:
-            record = {
-                "validFrom": _entry_date(source, fallback=fallback_date),
-                "observingLocation": observing_location,
-                "observingMethod": value,
-                "operatingStatus": _first_operating_status_value(source) or _nil_reason("unknown"),
-                "sourceOfObservation": source_of_observation or _nil_reason("unknown"),
-                "instrument": instrument_ref,
-                "serialNumber": _first_non_empty(source.get("serialNumber"), source.get("serial")),
-                "exposure": _compact_wmdr_code_value(source.get("exposure")) if isinstance(source.get("exposure"), str) else source.get("exposure"),
-            }
-            records.append(_clean_none(record))
-    if not records:
-        method_values = raw_method_values or [_nil_reason("unknown")]
-        for value in method_values:
-            records.append(_clean_none({
-                "validFrom": fallback_date,
-                "observingMethod": value,
-                "operatingStatus": _nil_reason("unknown"),
-                "sourceOfObservation": _nil_reason("unknown"),
-            }))
-    return _uniq_dicts(_clean_none(records))
+    return _uniq_dicts(out)
 
 
-def _observed_property_value(raw: Mapping[str, Any]) -> Any:
-    value = _first_non_empty(raw.get("observedProperty"), raw.get("observedVariable"), raw.get("observableVariable"))
-    return _compact_wmdr_code_value(value) if isinstance(value, (str, dict)) else value
+def _environment_from_facility(facility: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
+    env_src = _as_mapping(facility.get("environment"))
+    env: Dict[str, Any] = dict(env_src)
+    for key in (
+        "temporalClimateZone",
+        "temporalSurfaceCover",
+        "temporalPopulation",
+        "temporalPopulationDensities",
+        "temporalSurfaceRoughness",
+        "localTopography",
+        "relativeElevation",
+        "topographicContext",
+        "altitudeOrDepth",
+    ):
+        value = facility.get(key)
+        if value not in (None, "", [], {}):
+            env[key] = value
+    topo = _as_mapping(facility.get("temporalTopographyBathymetry"))
+    for key, value in topo.items():
+        if value not in (None, "", [], {}):
+            env[key] = value
+    return cast(Optional[Dict[str, Any]], _clean_none(env)) if env else None
 
 
-def _observed_feature_value(raw: Mapping[str, Any], observed_property: Any) -> Dict[str, Any]:
-    observed_feature_any: Any = raw.get("observedFeature")
-    observed_domain_any: Any = raw.get("observedDomain")
-    observed_feature: Mapping[str, Any] = cast(Mapping[str, Any], observed_feature_any) if isinstance(observed_feature_any, Mapping) else {}
-    observed_domain: Mapping[str, Any] = cast(Mapping[str, Any], observed_domain_any) if isinstance(observed_domain_any, Mapping) else {}
-    inferred_domain = _observed_domain_from_observed_variable(_first_non_empty(raw.get("observedVariable"), raw.get("observedProperty")))
-    domain_raw = _first_non_empty(observed_feature.get("domain"), observed_domain.get("domain"), raw.get("observedDomain"), inferred_domain)
-    if isinstance(domain_raw, Mapping):
-        domain_raw = _first_non_empty(domain_raw.get("domain"), domain_raw.get("href"), domain_raw.get("value"), inferred_domain)
-    out = {
-        "domain": _compact_wmdr_code_value(domain_raw) if isinstance(domain_raw, str) else domain_raw,
-        "domainFeature": _first_non_empty(observed_feature.get("domainFeature"), observed_domain.get("domainFeature"), raw.get("domainFeature")),
-        "featureName": _first_non_empty(observed_feature.get("featureName"), observed_domain.get("featureName"), raw.get("featureName")),
-    }
-    return _clean_none(out) or {"domain": "unknown"}
-
-
-
-def _observation_data_generation_sources(raw: Mapping[str, Any], deployment_sources: Sequence[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
-    """Collect data-generation/procedure/reporting sources from observation and former deployments."""
-    sources: List[Mapping[str, Any]] = []
-    for value in (raw.get("dataGeneration"), raw.get("dataGenerations")):
-        for item in _as_list(value):
-            if isinstance(item, Mapping):
-                sources.append(cast(Mapping[str, Any], item))
-    for source in deployment_sources:
-        for value in (source.get("dataGeneration"), source.get("dataGenerations")):
-            for item in _as_list(value):
-                if isinstance(item, Mapping):
-                    sources.append(cast(Mapping[str, Any], item))
-    return sources
-
-
-def _normalize_observing_procedure_history(raw: Mapping[str, Any], deployment_sources: Sequence[Mapping[str, Any]], *, schedule_registry: Dict[str, Dict[str, Any]], fallback_date: str = "..", time_zone: str = "UTC") -> Optional[List[Dict[str, Any]]]:
-    records: List[Dict[str, Any]] = []
-    data_sources = _observation_data_generation_sources(raw, deployment_sources)
-    if data_sources:
-        for item in data_sources:
-            records.extend(_normalize_observing_procedures(item, schedule_registry=schedule_registry, fallback_date=_entry_date(item, fallback=fallback_date), time_zone=time_zone) or [])
-    else:
-        records.extend(_normalize_observing_procedures(raw, schedule_registry=schedule_registry, fallback_date=fallback_date, time_zone=time_zone) or [])
-    return _uniq_dicts(_clean_none(records)) or None
-
-
-def _normalize_observation_reporting_history(raw: Mapping[str, Any], deployment_sources: Sequence[Mapping[str, Any]], *, reporting_registry: Optional[Dict[str, Dict[str, Any]]] = None, schedule_registry: Optional[Dict[str, Dict[str, Any]]] = None, fallback_date: str = "..", time_zone: str = "UTC") -> Optional[List[Dict[str, Any]]]:
-    values: List[Mapping[str, Any]] = []
-    data_sources = _observation_data_generation_sources(raw, deployment_sources)
-    if data_sources:
-        values.extend(data_sources)
-    else:
-        for item in _as_list(_first_non_empty(raw.get("reporting"), raw.get("reportingProcedures"), raw.get("coverage"), raw.get("sampling"))):
-            if isinstance(item, Mapping):
-                values.append(cast(Mapping[str, Any], item))
-    if not values:
+def _instrument_key(src: Mapping[str, Any]) -> Optional[str]:
+    manufacturer = _strip_text(src.get("manufacturer"))
+    model = _strip_text(src.get("model"))
+    if not manufacturer and not model:
         return None
-    return _normalize_observation_reporting(values, reporting_registry=reporting_registry, schedule_registry=schedule_registry, fallback_date=fallback_date, time_zone=time_zone)
+    return f"instrument:{_slug(manufacturer or 'unknown')}-{_slug(model or 'unknown')}"
 
 
-def _normalize_observation_official_status(raw: Mapping[str, Any], deployment_sources: Sequence[Mapping[str, Any]], *, fallback_date: str = "..") -> Optional[List[Dict[str, Any]]]:
-    records: List[Dict[str, Any]] = []
-    if _non_empty(raw.get("officialStatus")) or isinstance(raw.get("officialStatus"), bool):
-        records.extend(_normalize_temporal_official_status(raw.get("officialStatus"), fallback_date=fallback_date) or [])
-    for source in deployment_sources:
-        if _non_empty(source.get("officialStatus")) or isinstance(source.get("officialStatus"), bool):
-            records.extend(_normalize_temporal_official_status(source.get("officialStatus"), fallback_date=_entry_date(source, fallback=fallback_date)) or [])
-    return _uniq_dicts(_clean_none(records)) or None
-
-def _normalize_observation(raw: Mapping[str, Any], *, index: int, facility_id: str, schedule_registry: Optional[Dict[str, Dict[str, Any]]] = None, reporting_registry: Optional[Dict[str, Dict[str, Any]]] = None) -> Dict[str, Any]:
-    schedule_registry = schedule_registry if schedule_registry is not None else {}
-    reporting_registry = reporting_registry if reporting_registry is not None else {}
-    observed_property = _observed_property_value(raw)
-    fallback_date = _entry_date(raw, "..")
-    deployment_sources: List[Mapping[str, Any]] = [d for d in _as_list(raw.get("deployments") or raw.get("deployment") or raw.get("observingLocations") or raw.get("observingLocation")) if isinstance(d, Mapping)]
-    if not deployment_sources and isinstance(raw.get("observingConfigurations"), list):
-        # Accept already-converted legacy features and migrate their configuration shape.
-        for oc in raw.get("observingConfigurations", []):
-            if isinstance(oc, Mapping):
-                observing_location_any: Any = oc.get("observingLocation")
-                if isinstance(observing_location_any, Mapping):
-                    deployment_sources.append(cast(Mapping[str, Any], observing_location_any))
-    geometry = _first_non_empty(raw.get("observedGeometry"), raw.get("observedGeometryType"), raw.get("type"))
-    digest_source = _stable_json(_clean_none({"observedProperty": observed_property, "index": index, "date": fallback_date, "deploymentCount": len(deployment_sources)}))
-    digest = hashlib.sha1(digest_source.encode("utf-8")).hexdigest()[:10]
-    out: Dict[str, Any] = {
-        "uid": _first_non_empty(raw.get("uid"), raw.get("id"), f"observationSeries:{_sanitize_id(observed_property or index)}-{digest}"),
-        "title": _first_non_empty(raw.get("title"), _format_observation_title(_first_non_empty(raw.get("observedVariable"), raw.get("observedProperty")), geometry)),
-        "observedProperty": observed_property,
-        "observedFeature": _observed_feature_value(raw, observed_property),
-        "observedGeometry": _compact_wmdr_code_value(geometry) if isinstance(geometry, str) else geometry,
-        "programAffiliations": _program_affiliation_values(raw.get("programAffiliation") or raw.get("programAffiliations")),
-        "observingConfigurations": _normalize_observation_series_observing_configurations(raw, deployment_sources, facility_id=facility_id, fallback_date=fallback_date),
-        "observingProcedures": _normalize_observing_procedure_history(raw, deployment_sources, schedule_registry=schedule_registry, fallback_date=fallback_date),
-        "reportingProcedures": _normalize_observation_reporting_history(raw, deployment_sources, reporting_registry=reporting_registry, schedule_registry=schedule_registry, fallback_date=fallback_date),
-        "officialStatus": _normalize_observation_official_status(raw, deployment_sources, fallback_date=fallback_date),
-        "keywords": _keywords_from_values(_collect_discovery_values("observation", raw, "keywords")),
-        "links": _extract_links(raw, "observation"),
-    }
-    return _clean_none(out)
+def _instrument_from_source(src: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
+    identifier = _instrument_key(src)
+    if not identifier:
+        return None
+    instrument: Dict[str, Any] = {"id": identifier}
+    for key in ("manufacturer", "model", "description"):
+        text = _strip_text(src.get(key))
+        if text:
+            instrument[key] = text
+    # Catalogue item intentionally excludes serial number; serial-numbered
+    # instances belong to an observing configuration, not to the catalogue.
+    for key in ("observableProperties", "observableVariables", "observableGeometry", "observingMethods", "verticalRange"):
+        value = src.get(key)
+        if value not in (None, "", [], {}):
+            instrument[key] = value
+    return instrument
 
 
-def _normalize_observation_series(raw: Mapping[str, Any], *, index: int, facility_id: str, schedule_registry: Optional[Dict[str, Dict[str, Any]]] = None, reporting_registry: Optional[Dict[str, Dict[str, Any]]] = None) -> Dict[str, Any]:
-    return _normalize_observation(raw, index=index, facility_id=facility_id, schedule_registry=schedule_registry, reporting_registry=reporting_registry)
-
-
-def _all_observation_deployment_sources(observations: Sequence[Mapping[str, Any]], deployments: Sequence[Mapping[str, Any]]) -> List[Mapping[str, Any]]:
-    out: List[Mapping[str, Any]] = []
-    out.extend(d for d in deployments if isinstance(d, Mapping))
-    for obs in observations:
-        for dep in _as_list(obs.get("deployments") or obs.get("deployment") or obs.get("observingLocations") or obs.get("observingLocation")):
-            if isinstance(dep, Mapping):
-                out.append(dep)
+def _merge_instrument(existing: Mapping[str, Any], new: Mapping[str, Any]) -> Dict[str, Any]:
+    out = dict(existing)
+    for key, value in new.items():
+        if key not in out or out.get(key) in (None, "", [], {}):
+            out[key] = value
+        elif isinstance(out.get(key), list) or isinstance(value, list):
+            out[key] = _uniq_scalars([*_as_list(out.get(key)), *_as_list(value)])
     return out
 
 
-# ---------------------------------------------------------------------------
-# Facility feature construction and legacy feature migration
-# ---------------------------------------------------------------------------
+def _observing_configuration_from_source(src: Mapping[str, Any], instrument_registry: Dict[str, Dict[str, Any]], contact_registry: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
+    cfg: Dict[str, Any] = {}
+
+    start, end = _extract_interval(src)
+    interval = _time_interval(start, end)
+    if interval:
+        cfg["time"] = interval
+
+    # Promote observingLocation members into the configuration itself.
+    loc = _as_mapping(src.get("observingLocation"))
+    merged_src: Dict[str, Any] = dict(loc)
+    for key, value in src.items():
+        if key != "observingLocation" and key not in merged_src:
+            merged_src[key] = value
+
+    for key in ("observingMethod", "operatingStatus", "sourceOfObservation", "exposure", "referenceSurface"):
+        if key in merged_src:
+            cfg[key] = _normalize_code_or_nil_reason(merged_src.get(key))
+
+    for key in ("serialNumber", "location", "relativeLocation", "configuration", "description"):
+        text = _strip_text(merged_src.get(key))
+        if text:
+            cfg[key] = text
+
+    vertical = _quantity(
+        _first_non_empty(merged_src.get("verticalDistanceFromReferenceSurface"), merged_src.get("heightAboveLocalReferenceSurface"), merged_src.get("heightAboveReferenceSurface")),
+        _first_non_empty(merged_src.get("verticalDistanceFromReferenceSurfaceUom"), merged_src.get("heightAboveLocalReferenceSurfaceUom"), merged_src.get("uom")),
+    )
+    if vertical:
+        cfg["verticalDistanceFromReferenceSurface"] = vertical
+
+    temporal_entries = _facility_temporal_geometry_entries(merged_src)
+    if temporal_entries:
+        # The configuration already has ``time`` as its lifecycle anchor.  The
+        # location member is therefore simply ``geometry``; do not emit a
+        # second, configuration-level ``temporalGeometry`` wrapper.  If source
+        # history contains several positions, the latest known position is used
+        # for this configuration.
+        geometry = _point_geometry_from_entry(temporal_entries[-1])
+        if geometry:
+            cfg["geometry"] = geometry
+
+    instrument = _instrument_from_source(merged_src)
+    if instrument:
+        instrument_id = cast(str, instrument["id"])
+        if instrument_id in instrument_registry:
+            instrument_registry[instrument_id] = _merge_instrument(instrument_registry[instrument_id], instrument)
+        else:
+            instrument_registry[instrument_id] = instrument
+        cfg["instrument"] = instrument_id
+
+    contact_assignments: List[Dict[str, Any]] = []
+    for key in ("contacts", "contact", "responsibleParty", "operator", "maintainer"):
+        fallback = key if key not in {"contacts", "contact"} else None
+        contact_assignments.extend(_extract_contact_assignments_from_field(merged_src.get(key), contact_registry, fallback_roles=fallback))
+    if contact_assignments:
+        cfg["contactAssignments"] = _uniq_dicts(contact_assignments)
+
+    links = _extract_links(merged_src, "observingConfiguration")
+    if links:
+        cfg["links"] = links
+
+    return cast(Dict[str, Any], _clean_none(cfg))
 
 
-def _transform_legacy_feature_to_v030(record: Mapping[str, Any]) -> Dict[str, Any]:
-    """Migrate a v0.2.x-like Feature to v0.3.0 shape."""
-    result: Dict[str, Any] = copy.deepcopy(dict(record))
-    props_any: Any = result.setdefault("properties", {})
-    if not isinstance(props_any, dict):
-        return dict(record)
-    props: Dict[str, Any] = props_any
-    conforms = [c for c in _as_list(result.get("conformsTo")) if c != OGC_RECORD_CORE_CONF]
-    if WMDR2_CORE_CONF not in conforms:
-        conforms.append(WMDR2_CORE_CONF)
-    result["conformsTo"] = conforms
-    sanitized_contacts = _sanitize_contacts(props.get("contacts"))
-    if sanitized_contacts:
-        props["contacts"] = sanitized_contacts
+def _observed_domain_object(obs: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
+    raw = obs.get("observedDomain") or obs.get("observationDomain")
+    if isinstance(raw, Mapping):
+        domain = _first_non_empty(raw.get("domain"), raw.get("value"), raw.get("#text"), raw.get("text"))
+        out: Dict[str, Any] = {}
+        if domain not in (None, "", [], {}):
+            out["domain"] = _compact_wmdr_code_value(domain)
+        for key in ("domainFeature", "featureName", "observedFeatureDomainFeature", "observedFeatureName"):
+            value = raw.get(key)
+            if value not in (None, "", [], {}):
+                out_key = "domainFeature" if "Feature" in key else "featureName"
+                out[out_key] = value
+        return out or None
+    if raw not in (None, "", [], {}):
+        return {"domain": _compact_wmdr_code_value(raw)}
+    observed_property = _first_non_empty(obs.get("observedProperty"), obs.get("observedVariable"))
+    domain = _observed_domain_from_observed_variable(observed_property)
+    return {"domain": domain} if domain else None
+
+
+
+def _schedule_uid(schedule: Mapping[str, Any]) -> str:
+    payload = {key: value for key, value in schedule.items() if key not in {"uid", "id"}}
+    digest = hashlib.sha1(_stable_json(payload).encode("utf-8")).hexdigest()[:10]
+    return f"schedule_{digest}"
+
+
+def _normalize_schedule_object(raw: Any, *, kind: str = "shared") -> Optional[Dict[str, Any]]:
+    """Return a reusable JSCalendar-like schedule object.
+
+    WMDR2 v0.3.1 keeps one shared root-level schedule registry.  The same
+    schedule can be referenced from ``observingProcedures`` and
+    ``reportingProcedures`` when the observing and reporting rhythm is the same.
+    The reference context supplies the role; the schedule itself therefore has
+    no ``scheduleType`` discriminator.
+    """
+    if raw in (None, "", [], {}):
+        return None
+
+    if isinstance(raw, Mapping):
+        schedule: Dict[str, Any] = dict(raw)
     else:
-        props.pop("contacts", None)
-    if "schedules" in props:
-        props["schedules"] = _strip_misspelled_wmi_extensions(props.get("schedules"))
-    deployment_by_id: Dict[str, Mapping[str, Any]] = {}
-    for dep in _as_list(props.get("deployments")):
-        if isinstance(dep, Mapping) and isinstance(dep.get("id"), str):
-            deployment_by_id[dep["id"]] = dep
-    props.pop("deployments", None)
-    props.pop("reporting", None)
-    for old_key in ("environment", "programAffiliation", "territory"):
-        value = props.get(old_key)
-        if isinstance(value, list):
-            for item in value:
-                if isinstance(item, dict) and "date" in item and "validFrom" not in item and old_key != "officialStatus":
-                    item["validFrom"] = item.pop("date")
-    for obs in _as_list(props.get("observationSeries")):
-        if not isinstance(obs, dict):
-            continue
-        for proc in _as_list(obs.get("observingProcedures")):
-            if isinstance(proc, dict) and "date" in proc and "validFrom" not in proc:
-                proc["validFrom"] = proc.pop("date")
-        for cfg in _as_list(obs.get("observingConfigurations")):
-            if not isinstance(cfg, dict):
+        # A bare scalar is interpreted in the calling context: sampling
+        # frequency for observing, aggregation interval for reporting.
+        schedule = {"frequency": raw}
+
+    legacy_id = _strip_text(schedule.pop("id", None))
+    uid = _strip_text(schedule.get("uid")) or legacy_id
+    if uid and uid.startswith("schedule:"):
+        uid = "schedule_" + _slug(uid.removeprefix("schedule:"))
+
+    if "@type" not in schedule:
+        schedule["@type"] = "Event"
+    if "start" not in schedule and "startDate" in schedule:
+        schedule["start"] = schedule.pop("startDate")
+    if "start" not in schedule:
+        schedule["start"] = CANONICAL_SCHEDULE_START_DATE
+
+    sampling = _first_non_empty(
+        schedule.pop("samplingFrequency", None),
+        schedule.pop("temporalSamplingInterval", None),
+        schedule.get("wmo.int:samplingFrequency"),
+    )
+    if sampling not in (None, "", [], {}):
+        schedule["wmo.int:samplingFrequency"] = _normalize_time_resolution(sampling)
+
+    aggregation = _first_non_empty(
+        schedule.pop("aggregationInterval", None),
+        schedule.pop("temporalReportingInterval", None),
+        schedule.pop("temporalAggregate", None),
+        schedule.get("wmo.int:aggregationInterval"),
+    )
+    if aggregation not in (None, "", [], {}):
+        schedule["wmo.int:aggregationInterval"] = _normalize_time_resolution(aggregation)
+
+    duration = _first_non_empty(schedule.get("duration"), schedule.pop("coverageDuration", None), schedule.pop("diurnalDuration", None))
+    if duration not in (None, "", [], {}):
+        schedule["duration"] = _normalize_time_resolution(duration)
+
+    diurnal = _first_non_empty(
+        schedule.pop("diurnalBaseTime", None),
+        schedule.get("wmo.int:diurnalBaseTime"),
+    )
+    if diurnal not in (None, "", [], {}):
+        schedule["wmo.int:diurnalBaseTime"] = _normalize_diurnal_time(str(diurnal))
+
+    frequency = schedule.pop("frequency", None)
+    if frequency not in (None, "", [], {}):
+        if kind == "reporting" and "wmo.int:aggregationInterval" not in schedule:
+            schedule["wmo.int:aggregationInterval"] = _normalize_time_resolution(frequency)
+        elif "wmo.int:samplingFrequency" not in schedule:
+            schedule["wmo.int:samplingFrequency"] = _normalize_time_resolution(frequency)
+
+    if not uid:
+        uid = _schedule_uid(schedule)
+    schedule["uid"] = uid
+    return cast(Dict[str, Any], _clean_none(schedule))
+
+def _register_schedule(schedule: Optional[Mapping[str, Any]], registry: Dict[str, Dict[str, Any]], *, kind: str) -> Optional[str]:
+    if not schedule:
+        return None
+    normalized = _normalize_schedule_object(schedule, kind=kind)
+    if not normalized:
+        return None
+    uid = _strip_text(normalized.get("uid"))
+    if not uid:
+        return None
+    existing = registry.get(uid)
+    if existing:
+        registry[uid] = _merge_instrument(existing, normalized)
+    else:
+        registry[uid] = normalized
+    return uid
+
+
+def _schedule_from_source(src: Mapping[str, Any], *, kind: str) -> Optional[Dict[str, Any]]:
+    """Build a reusable shared schedule from observing/reporting source metadata.
+
+    The source context controls which explicit schedule object is preferred, but
+    when schedule information is inferred from WMDR10 data-generation/coverage
+    fields both observing and reporting procedures intentionally receive the
+    same normalized schedule object.  This allows the same root-level schedule
+    ``uid`` to be reused by ``observingSchedules`` and ``reportingSchedules``.
+    """
+    coverage = _as_mapping(src.get("coverage"))
+    sampling = _as_mapping(src.get("sampling"))
+    reporting_src = _as_mapping(src.get("reporting"))
+    reporting_coverage = _as_mapping(reporting_src.get("coverage"))
+
+    explicit_keys = (
+        ("observingSchedule", "observingSchedules")
+        if kind == "observing"
+        else ("reportingSchedule", "reportingSchedules")
+    )
+    raw = _first_non_empty(
+        *(src.get(key) for key in explicit_keys),
+        *(sampling.get(key) for key in ("observingSchedule", "schedule")),
+        *(reporting_src.get(key) for key in ("reportingSchedule", "reportingSchedules", "schedule")),
+        *(coverage.get(key) for key in ("observingSchedule", "reportingSchedule", "schedule")),
+        *(reporting_coverage.get(key) for key in ("reportingSchedule", "schedule")),
+        src.get("schedule"),
+    )
+    if raw not in (None, "", [], {}):
+        return _normalize_schedule_object(raw, kind=kind)
+
+    sampling_interval = _first_non_empty(
+        src.get("temporalSamplingInterval"),
+        sampling.get("temporalSamplingInterval"),
+        coverage.get("temporalSamplingInterval"),
+    )
+    aggregation_interval = _first_non_empty(
+        reporting_src.get("temporalReportingInterval"),
+        reporting_src.get("temporalAggregate"),
+        reporting_src.get("aggregationInterval"),
+        src.get("temporalReportingInterval"),
+        src.get("temporalAggregate"),
+        src.get("aggregationInterval"),
+        coverage.get("temporalReportingInterval"),
+        coverage.get("temporalAggregate"),
+        coverage.get("aggregationInterval"),
+        reporting_coverage.get("temporalReportingInterval"),
+        reporting_coverage.get("temporalAggregate"),
+        reporting_coverage.get("aggregationInterval"),
+    )
+    diurnal = _first_non_empty(
+        reporting_src.get("diurnalBaseTime"),
+        src.get("diurnalBaseTime"),
+        coverage.get("diurnalBaseTime"),
+        reporting_coverage.get("diurnalBaseTime"),
+    )
+
+    payload: Dict[str, Any] = {}
+    if sampling_interval not in (None, "", [], {}):
+        payload["wmo.int:samplingFrequency"] = sampling_interval
+    if aggregation_interval not in (None, "", [], {}):
+        payload["wmo.int:aggregationInterval"] = aggregation_interval
+    if diurnal not in (None, "", [], {}):
+        payload["wmo.int:diurnalBaseTime"] = diurnal
+
+    coverage_fields = _diurnal_coverage_fields(coverage, reporting_coverage, src, reporting_src)
+    payload.update(coverage_fields)
+
+    if not payload:
+        # Keep an explicit event/window duration only when it is supplied as a
+        # duration, not as a reporting interval.  Reporting intervals are mapped
+        # to wmo.int:aggregationInterval above.
+        duration = _first_non_empty(src.get("duration"), coverage.get("duration"), reporting_src.get("duration"), reporting_coverage.get("duration"))
+        if duration not in (None, "", [], {}):
+            payload["duration"] = duration
+
+    if not payload:
+        return None
+    return _normalize_schedule_object(payload, kind=kind)
+
+def _observing_procedure_from_source(src: Mapping[str, Any], schedule_registry: Dict[str, Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    schedule = _schedule_from_source(src, kind="observing")
+    if not schedule:
+        return None
+    uid = _register_schedule(schedule, schedule_registry, kind="observing")
+    if not uid:
+        return None
+    proc: Dict[str, Any] = {"observingSchedules": [uid]}
+    start, end = _extract_interval(src)
+    interval = _time_interval(start, end)
+    if interval:
+        proc["time"] = interval
+    strategy = _first_non_empty(src.get("strategy"), _as_mapping(src.get("sampling")).get("samplingStrategy"), src.get("samplingStrategy"))
+    if strategy not in (None, "", [], {}):
+        proc["strategy"] = _compact_wmdr_code_value(strategy)
+    return cast(Dict[str, Any], _clean_none(proc))
+
+
+
+def _compact_reporting_value(value: Any) -> Any:
+    """Compact a reporting-procedure scalar or code-list object."""
+    if isinstance(value, Mapping) and "dataPolicy" in value:
+        return _compact_wmdr_code_value(value.get("dataPolicy"))
+    return _compact_wmdr_code_value(value)
+
+
+def _compact_reporting_values(value: Any) -> Optional[List[Any]]:
+    values = []
+    for item in _as_list(value):
+        compacted = _compact_reporting_value(item)
+        if compacted not in (None, "", [], {}):
+            values.append(compacted)
+    return _uniq_scalars(values) or None
+
+def _reporting_procedure_from_source(src: Mapping[str, Any], contact_registry: Dict[str, Dict[str, Any]], schedule_registry: Dict[str, Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """Normalize a UML ReportingProcedure.
+
+    ReportingProcedure is not time-bound in the v0.3.1 UML model.  Temporal
+    reporting cadence from WMDR10 (for example ``temporalReportingInterval``)
+    is represented by a reusable ReportingSchedule referenced through
+    ``reportingSchedules``.
+    """
+    relevant_keys = {
+        "reporting",
+        "reportingProcedure",
+        "internationalExchange",
+        "dataFormat",
+        "dataPolicy",
+        "levelOfData",
+        "links",
+        "numberOfObservationsInReportingInterval",
+        "referenceDatum",
+        "referenceTimeSource",
+        "spatialReportingInterval",
+        "strategy",
+        "timeliness",
+        "timeStampMeaning",
+        "uom",
+        "reportingInterval",
+        "temporalReportingInterval",
+        "temporalAggregate",
+        "duration",
+        "reportingSchedule",
+        "reportingSchedules",
+        "coverage",
+        "contact",
+        "contacts",
+        "responsibleParty",
+    }
+    if not any(k in src for k in relevant_keys):
+        return None
+
+    reporting_src = _as_mapping(src.get("reporting"))
+    procedure_src = _as_mapping(src.get("reportingProcedure"))
+    merged: Dict[str, Any] = {**reporting_src, **procedure_src}
+    for key in relevant_keys:
+        if key in src and key not in merged:
+            merged[key] = src[key]
+
+    proc: Dict[str, Any] = {}
+
+    if "internationalExchange" in merged:
+        parsed_bool = _parse_bool(merged.get("internationalExchange"))
+        if parsed_bool is not None:
+            proc["internationalExchange"] = parsed_bool
+
+    scalar_keys = (
+        "dataPolicy",
+        "levelOfData",
+        "numberOfObservationsInReportingInterval",
+        "referenceDatum",
+        "spatialReportingInterval",
+        "strategy",
+        "timeliness",
+        "timeStampMeaning",
+        "uom",
+    )
+    for key in scalar_keys:
+        value = merged.get(key)
+        if value not in (None, "", [], {}):
+            proc[key] = _compact_reporting_value(value)
+
+    for key in ("dataFormat", "referenceTimeSource"):
+        values = _compact_reporting_values(merged.get(key))
+        if values:
+            proc[key] = values
+
+    links = _extract_links(merged, "reportingProcedure")
+    if not links:
+        raw_links = merged.get("links")
+        if isinstance(raw_links, list):
+            links = [dict(item) for item in raw_links if isinstance(item, Mapping)]
+    if links:
+        proc["links"] = _uniq_dicts(links)
+
+    # Build the schedule from the complete data-generation source, not only
+    # from the flattened reporting-procedure attributes.  This preserves the
+    # intended reuse where observing and reporting procedures point to the same
+    # schedule object when the same data-generation block provides sampling,
+    # aggregation and diurnal coverage information.
+    schedule_source: Dict[str, Any] = dict(src)
+    if reporting_src or procedure_src:
+        schedule_source["reporting"] = {**reporting_src, **procedure_src}
+    schedule = _schedule_from_source(schedule_source, kind="reporting")
+    if schedule:
+        uid = _register_schedule(schedule, schedule_registry, kind="reporting")
+        if uid:
+            proc["reportingSchedules"] = [uid]
+
+    assignments: List[Dict[str, Any]] = []
+    for key in ("contacts", "contact", "responsibleParty"):
+        fallback = key if key == "responsibleParty" else None
+        assignments.extend(_extract_contact_assignments_from_field(merged.get(key), contact_registry, fallback_roles=fallback))
+    if assignments:
+        proc["contactAssignments"] = _uniq_dicts(assignments)
+
+    return cast(Optional[Dict[str, Any]], _clean_none(proc))
+
+def _observation_series_from_source(
+    obs: Mapping[str, Any],
+    index: int,
+    deployments: Sequence[Any],
+    instrument_registry: Dict[str, Dict[str, Any]],
+    contact_registry: Dict[str, Dict[str, Any]],
+    schedule_registry: Dict[str, Dict[str, Any]],
+) -> Dict[str, Any]:
+    observed_property = _first_non_empty(obs.get("observedProperty"), obs.get("observedVariable"))
+    observed_geometry = _first_non_empty(obs.get("observedGeometry"), obs.get("observedGeometryType"), obs.get("geometryType"))
+    obs_id_base = _first_non_empty(obs.get("id"), obs.get("uid"))
+    if obs_id_base not in (None, "", [], {}):
+        series_id = _sanitize_id(obs_id_base)
+    elif observed_property not in (None, "", [], {}):
+        series_id = f"observationSeries:{_compact_wmdr_code_value(observed_property)}"
+    else:
+        series_id = f"observationSeries:{index + 1}"
+    series: Dict[str, Any] = {"id": series_id}
+
+    title = _strip_text(obs.get("title")) or _format_observation_title(observed_property, observed_geometry)
+    if title:
+        series["title"] = title
+    description = _strip_text(obs.get("description"))
+    if description:
+        series["description"] = description
+    if observed_property not in (None, "", [], {}):
+        series["observedProperty"] = _compact_wmdr_code_value(observed_property)
+    domain = _observed_domain_object(obs)
+    if domain:
+        series["observedDomain"] = domain
+    if observed_geometry not in (None, "", [], {}):
+        series["observedGeometry"] = _compact_wmdr_code_value(observed_geometry)
+
+    start, end = _extract_interval(obs)
+    interval = _time_interval(start, end)
+    if interval:
+        series["time"] = interval
+
+    configs: List[Dict[str, Any]] = []
+    raw_configs = _as_list(obs.get("observingConfigurations"))
+    local_deployments = _as_list(_first_non_empty(obs.get("deployments"), obs.get("deployment"), obs.get("deploymentRefs")))
+
+    def append_config(src_obj: Mapping[str, Any]) -> None:
+        cfg = _observing_configuration_from_source(src_obj, instrument_registry, contact_registry)
+        if cfg:
+            configs.append(cfg)
+
+    if raw_configs:
+        for cfg_src in raw_configs:
+            append_config(_as_mapping(cfg_src))
+    elif local_deployments:
+        for dep in local_deployments:
+            append_config(_as_mapping(dep))
+    elif deployments:
+        deployment_refs = {str(x) for x in _as_list(obs.get("deploymentRefs") or obs.get("deployment")) if x not in (None, "")}
+        for dep in deployments:
+            dep_obj = _as_mapping(dep)
+            dep_id = str(_first_non_empty(dep_obj.get("id"), dep_obj.get("identifier"), dep_obj.get("uid"), ""))
+            if deployment_refs and dep_id not in deployment_refs:
                 continue
-            if "date" in cfg and "validFrom" not in cfg:
-                cfg["validFrom"] = cfg.pop("date")
-            dep_ref = cfg.pop("deployment", None)
-            dep = deployment_by_id.get(dep_ref) if isinstance(dep_ref, str) else None
-            if dep and "observingLocation" not in cfg:
-                loc = _observing_location_from_source(dep)
-                if loc:
-                    cfg["observingLocation"] = loc
-                src = _first_non_empty(dep.get("sourceOfObservation"), dep.get("instrument"), dep.get("instrumentRef"))
-                if src and "sourceOfObservation" not in cfg:
-                    cfg["sourceOfObservation"] = src
-            if cfg.get("observingMethod") == "unknown":
-                cfg["observingMethod"] = _nil_reason("unknown")
-            cfg.setdefault("operatingStatus", _nil_reason("unknown"))
-            cfg.setdefault("sourceOfObservation", _nil_reason("unknown"))
-    return _clean_none(result)
+            append_config(dep_obj)
+    else:
+        append_config(obs)
+
+    if configs:
+        series["observingConfigurations"] = _uniq_dicts(configs)
+
+    reporting_sources: List[Mapping[str, Any]] = []
+    for item in _as_list(obs.get("dataGeneration")):
+        item_obj = _as_mapping(item)
+        if item_obj:
+            reporting_sources.append(item_obj)
+    for dep in local_deployments:
+        dep_obj = _as_mapping(dep)
+        for item in _as_list(dep_obj.get("dataGeneration")):
+            item_obj = _as_mapping(item)
+            if item_obj:
+                reporting_sources.append(item_obj)
+    if not reporting_sources:
+        reporting_sources = [obs]
+
+    observing_items: List[Dict[str, Any]] = []
+    reporting_items: List[Dict[str, Any]] = []
+    for reporting_source in reporting_sources:
+        observing = _observing_procedure_from_source(reporting_source, schedule_registry)
+        if observing:
+            observing_items.append(observing)
+        reporting = _reporting_procedure_from_source(reporting_source, contact_registry, schedule_registry)
+        if reporting:
+            reporting_items.append(reporting)
+    if observing_items:
+        series["observingProcedures"] = _uniq_dicts(observing_items)
+    if reporting_items:
+        series["reportingProcedures"] = _uniq_dicts(reporting_items)
+
+    assignments: List[Dict[str, Any]] = []
+    for key in ("contacts", "contact", "responsibleParty", "operator"):
+        fallback = key if key not in {"contacts", "contact"} else None
+        assignments.extend(_extract_contact_assignments_from_field(obs.get(key), contact_registry, fallback_roles=fallback))
+    if assignments:
+        series["contactAssignments"] = _uniq_dicts(assignments)
+
+    links = _extract_links(obs, "observation")
+    if links:
+        series["links"] = links
+    keywords = _keywords_from_values(_collect_discovery_values("observation", obs, "keywords"))
+    if keywords:
+        series["keywords"] = keywords
+
+    return cast(Dict[str, Any], _clean_none(series))
+
+
+def _collect_root_contacts(facility: Mapping[str, Any], header: Mapping[str, Any], registry: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
+    assignments: List[Dict[str, Any]] = []
+    for key in ("contacts", "contact", "responsibleParty"):
+        assignments.extend(_extract_contact_assignments_from_field(facility.get(key), registry))
+    # Record owner is a contextual facility-level role when present.
+    assignments.extend(_extract_contact_assignments_from_field(header.get("recordOwner"), registry, fallback_roles="owner"))
+    assignments.extend(_extract_contact_assignments_from_field(facility.get("owner"), registry, fallback_roles="owner"))
+    assignments.extend(_extract_contact_assignments_from_field(facility.get("operator"), registry, fallback_roles="operator"))
+    return _uniq_dicts(assignments)
 
 
 def build_facility_feature(
-    facility: Mapping[str, Any],
-    observation_series: Sequence[Mapping[str, Any]],
-    deployments: Sequence[Mapping[str, Any]],
-    header: Mapping[str, Any],
+    source: Optional[Any] = None,
     *,
+    facility: Optional[Mapping[str, Any]] = None,
+    header: Optional[Mapping[str, Any]] = None,
+    observations: Optional[Sequence[Any]] = None,
+    deployments: Optional[Sequence[Any]] = None,
     source_name: Optional[str] = None,
 ) -> Dict[str, Any]:
-    facility_id_raw = _first_non_empty(facility.get("identifier"), facility.get("wigosStationIdentifier"), source_name, "unknown")
-    facility_id_text = str(facility_id_raw).removeprefix("facility:").removeprefix("wsi:")
-    facility_id = _sanitize_id(facility_id_text)
-    root_id = f"wsi:{facility_id}"
-    start, end = _extract_interval(facility)
-    fallback_date = _normalize_date_value(start) or ".."
-    temporal_entries = _facility_temporal_geometry_entries(facility)
-    geometry = _facility_geometry_from_entries(temporal_entries) or {"type": "Point", "coordinates": [0.0, 0.0]}
-    temporal_geometry = _temporal_geometry_extension(temporal_entries)
+    """Build one WMDR2 v0.3.1 facility Feature.
 
+    ``source`` may be a combined object with ``facility``, ``header``,
+    ``observations``/``observationSeries`` and ``deployments`` members.  The
+    keyword arguments are useful when callers have already split WMDR10 input
+    into separate part files.
+    """
+    if isinstance(source, Mapping) and source.get("type") == "Feature":
+        return cast(Dict[str, Any], normalize_wmdr2_record(dict(source)))
+
+    src_facility, src_header, src_observations, src_deployments = _split_source(source) if source is not None else ({}, {}, [], [])
+    facility_obj = dict(facility or src_facility)
+    header_obj = dict(header or src_header)
+    observation_items = list(observations if observations is not None else src_observations)
+    deployment_items = list(deployments if deployments is not None else src_deployments)
+
+    wsi = _facility_identifier(facility_obj, header_obj)
+    temporal_entries = _facility_temporal_geometry_entries(facility_obj)
+    geometry = _facility_geometry_from_entries(temporal_entries)
+
+    contact_registry: Dict[str, Dict[str, Any]] = {}
+    instrument_registry: Dict[str, Dict[str, Any]] = {}
     schedule_registry: Dict[str, Dict[str, Any]] = {}
-    reporting_registry: Dict[str, Dict[str, Any]] = {}
-    observations: List[Dict[str, Any]] = []
-    for i, obs in enumerate(observation_series, start=1):
-        if not isinstance(obs, Mapping):
-            continue
-        obs_payload: Mapping[str, Any] = obs
-        if deployments and not any(k in obs for k in ("deployments", "deployment", "observingLocations", "observingLocation")):
-            merged_obs = dict(obs)
-            merged_obs["deployments"] = list(deployments)
-            obs_payload = merged_obs
-        observations.append(_normalize_observation_series(obs_payload, index=i, facility_id=facility_id, schedule_registry=schedule_registry, reporting_registry=reporting_registry))
-    all_deployment_sources = _all_observation_deployment_sources(observation_series, deployments)
-    instruments = _normalize_instruments(all_deployment_sources, facility_id=facility_id)
-    contacts, _temporal_contacts = _collect_contacts(
-        facility.get("contact"),
-        facility.get("contacts"),
-        header.get("contact") if isinstance(header, Mapping) else None,
-        header.get("contacts") if isinstance(header, Mapping) else None,
-        header.get("recordOwner") if isinstance(header, Mapping) else None,
-    )
+
+    facility_titles = _uniq_scalars(_title_values(facility_obj.get("name")) + _title_values(facility_obj.get("title")))
+    primary_title = facility_titles[0] if facility_titles else wsi
+    additional_titles = [title for title in facility_titles[1:] if title != primary_title]
 
     properties: Dict[str, Any] = {
         "type": "facility",
-        "title": _normalize_display_text(_first_non_empty(facility.get("name"), facility.get("title"), facility_id)),
-        "description": _normalize_description_value(_first_non_empty(facility.get("description"), facility.get("abstract"))),
-        **_record_timestamps(header, source_name=source_name),
-        **_copy_known_facility_properties(facility),
-        "contacts": contacts,
-        "keywords": _keywords_from_values(_collect_discovery_values("facility", facility, "keywords")),
-        "links": _extract_links(facility, "facility"),
-        "environment": _normalize_historical_environment(facility, fallback_date=fallback_date),
-        "programAffiliations": _normalize_historical_program_affiliation(facility.get("programAffiliation") or facility.get("programAffiliations"), fallback_date=fallback_date),
-        "territory": _normalize_historical_territory(facility.get("territory") or facility.get("territories"), fallback_date=fallback_date),
-        "observationSeries": observations,
-        "instruments": instruments,
-        "schedules": list(schedule_registry.values()) or None,
-        "officialStatus": _normalize_temporal_official_status(facility.get("officialStatus"), fallback_date=fallback_date),
-        "dataPolicy": _normalize_temporal_data_policy(facility.get("dataPolicy"), fallback_date=fallback_date),
+        "title": primary_title,
+        **_record_timestamps(header_obj, source_name=source_name),
     }
-    if not properties.get("keywords"):
-        properties.pop("keywords", None)
-    record: Dict[str, Any] = {
+    if additional_titles:
+        properties["additionalTitles"] = additional_titles
+    description = _description_text(facility_obj.get("description"))
+    if description:
+        properties["description"] = description
+    if _non_empty(facility_obj.get("facilityType")):
+        properties["facilityType"] = _compact_wmdr_code_value(facility_obj.get("facilityType"))
+    territory = _normalize_territories(facility_obj.get("territory"))
+    if territory:
+        properties["territory"] = territory
+    if _non_empty(facility_obj.get("wmoRegion")):
+        properties["wmoRegion"] = facility_obj.get("wmoRegion")
+
+    wsi_candidates: List[str] = []
+    for raw_identifier in (
+        facility_obj.get("identifier"),
+        facility_obj.get("wigosStationIdentifier"),
+        facility_obj.get("wigosIdentifier"),
+        facility_obj.get("wsi"),
+        facility_obj.get("id"),
+        header_obj.get("wigosStationIdentifier"),
+        header_obj.get("identifier"),
+        header_obj.get("id"),
+    ):
+        wsi_candidates.extend(_facility_wsi_values(raw_identifier))
+    additional_ids = [candidate for candidate in _uniq_scalars(wsi_candidates) if candidate != wsi]
+    if additional_ids:
+        properties["additionalIds"] = additional_ids
+
+    start, end = _extract_interval(facility_obj)
+    time_obj = _time_interval(start, end, resolution="P1D")
+    if time_obj:
+        properties["time"] = time_obj
+
+    temporal_geometry = _temporal_geometry_extension(temporal_entries)
+    if temporal_geometry:
+        properties["temporalGeometry"] = temporal_geometry
+
+    program_affiliations = _normalize_program_affiliations(
+        _first_non_empty(facility_obj.get("programAffiliations"), facility_obj.get("programAffiliation"), facility_obj.get("programs"))
+    )
+    if program_affiliations:
+        properties["programAffiliations"] = program_affiliations
+
+    env = _environment_from_facility(facility_obj)
+    if env:
+        properties["environment"] = env
+
+    contact_assignments = _collect_root_contacts(facility_obj, header_obj, contact_registry)
+    if contact_assignments:
+        properties["contactAssignments"] = contact_assignments
+
+    observation_series: List[Dict[str, Any]] = []
+    for index, obs_raw in enumerate(observation_items):
+        obs_obj = _as_mapping(obs_raw)
+        if not obs_obj:
+            continue
+        series = _observation_series_from_source(obs_obj, index, deployment_items, instrument_registry, contact_registry, schedule_registry)
+        if series:
+            observation_series.append(series)
+    if observation_series:
+        properties["observationSeries"] = observation_series
+    if schedule_registry:
+        properties["schedules"] = sorted(schedule_registry.values(), key=lambda item: str(item.get("uid")))
+
+    # Register instruments from deployments even if no observation referred to
+    # them, but keep the catalogue generic: no serial-number instance values.
+    for dep_raw in deployment_items:
+        dep_obj = _as_mapping(dep_raw)
+        instrument = _instrument_from_source(dep_obj)
+        if not instrument:
+            loc_obj = _as_mapping(dep_obj.get("observingLocation"))
+            instrument = _instrument_from_source(loc_obj)
+        if instrument:
+            instrument_id = cast(str, instrument["id"])
+            if instrument_id in instrument_registry:
+                instrument_registry[instrument_id] = _merge_instrument(instrument_registry[instrument_id], instrument)
+            else:
+                instrument_registry[instrument_id] = instrument
+
+    if instrument_registry:
+        properties["instruments"] = sorted(instrument_registry.values(), key=lambda item: str(item.get("id")))
+    if contact_registry:
+        properties["contacts"] = sorted(contact_registry.values(), key=lambda item: str(item.get("identifier")))
+
+    keywords = _keywords_from_values(_collect_discovery_values("facility", facility_obj, "keywords"))
+    if keywords:
+        properties["keywords"] = keywords
+    links = _extract_links(facility_obj, "facility")
+    if links:
+        properties["links"] = links
+
+    feature: Dict[str, Any] = {
         "type": "Feature",
-        "id": root_id,
-        "geometry": geometry,
-        "temporalGeometry": temporal_geometry,
-        "time": _time_interval(start or fallback_date, end, resolution="day"),
+        "id": wsi,
         "conformsTo": [WMDR2_CORE_CONF],
+        "geometry": geometry,
         "properties": properties,
     }
-    return _strip_misspelled_wmi_extensions(_restore_null_sentinel(_finalize_wmdr2_value(_clean_none(record))))
+    if "time" in properties:
+        feature["time"] = properties.pop("time")
+    if "temporalGeometry" in properties:
+        feature["temporalGeometry"] = properties.pop("temporalGeometry")
+    return cast(Dict[str, Any], normalize_wmdr2_record(feature))
+
+# ---------------------------------------------------------------------------
+# v0.3.1 normalizer for generated or existing WMDR2 records
+# ---------------------------------------------------------------------------
 
 
-def _payload_parts(payload: Mapping[str, Any]) -> Tuple[Mapping[str, Any], List[Mapping[str, Any]], List[Mapping[str, Any]], Mapping[str, Any]]:
-    header_any: Any = payload.get("header")
-    facility_any: Any = payload.get("facility")
-    header: Mapping[str, Any] = cast(Mapping[str, Any], header_any) if isinstance(header_any, Mapping) else {}
-    facility: Mapping[str, Any] = cast(Mapping[str, Any], facility_any) if isinstance(facility_any, Mapping) else {}
-    observations_raw: Any = _first_non_empty(payload.get("observationSeries"), payload.get("observations"), [])
-    deployments_raw: Any = payload.get("deployments") or []
-    observations: List[Mapping[str, Any]] = [cast(Mapping[str, Any], x) for x in _as_list(observations_raw) if isinstance(x, Mapping)]
-    deployments: List[Mapping[str, Any]] = [cast(Mapping[str, Any], x) for x in _as_list(deployments_raw) if isinstance(x, Mapping)]
-    if not facility and any(k in payload for k in ("identifier", "name", "geospatialLocation")):
-        facility = payload
-    if isinstance(facility, Mapping) and any(k in payload for k in ("contact", "contacts", "recordOwner")):
-        merged_facility: Dict[str, Any] = dict(facility)
-        if "contact" not in merged_facility and "contact" in payload:
-            merged_facility["contact"] = payload.get("contact")
-        if "contacts" not in merged_facility and "contacts" in payload:
-            merged_facility["contacts"] = payload.get("contacts")
-        if "contacts" not in merged_facility and "recordOwner" in payload:
-            merged_facility["contacts"] = payload.get("recordOwner")
-        facility = merged_facility
-    return facility, observations, deployments, header
+def _normalize_time_members(payload: Dict[str, Any]) -> None:
+    """Normalize WMDR10/source temporal anchors to OGC Records ``time``.
+
+    Public WMDR2 JSON must not expose WMDR10 ``beginPosition``/``endPosition``
+    or the transitional v0.3.0 ``validFrom``/``validTo`` fields.  Any such
+    source anchors found on an object are converted to ``time.interval`` and
+    then removed from the object.
+    """
+    time_obj = payload.get("time")
+    if isinstance(time_obj, Mapping):
+        normalized = dict(time_obj)
+        if "resolution" in normalized:
+            normalized["resolution"] = _normalize_time_resolution(normalized.get("resolution"))
+        payload["time"] = normalized
+    elif "time" in payload and payload.get("time") in (None, "", [], {}):
+        payload.pop("time", None)
+
+    has_source_temporal = any(key in payload for key in SOURCE_TEMPORAL_KEYS)
+    if has_source_temporal:
+        start = _first_non_empty(payload.get("validFrom"), payload.get("beginPosition"))
+        end = _first_non_empty(payload.get("validTo"), payload.get("endPosition"))
+        interval = _time_interval(start, end, resolution=payload.get("resolution"))
+        for key in SOURCE_TEMPORAL_KEYS:
+            payload.pop(key, None)
+        payload.pop("resolution", None)
+        if interval:
+            existing = payload.get("time")
+            if isinstance(existing, Mapping):
+                merged = dict(interval)
+                merged.update(existing)
+                payload["time"] = merged
+            else:
+                payload["time"] = interval
+
+
+def _promote_observing_location(payload: Dict[str, Any]) -> None:
+    loc = payload.pop("observingLocation", None)
+    loc_obj = _as_mapping(loc)
+    if not loc_obj:
+        return
+    for key, value in loc_obj.items():
+        if key in SOURCE_TEMPORAL_KEYS:
+            continue
+        if key not in payload or payload.get(key) in (None, "", [], {}):
+            payload[key] = value
+        elif isinstance(payload.get(key), list) or isinstance(value, list):
+            payload[key] = _uniq_scalars([*_as_list(payload.get(key)), *_as_list(value)])
+    loc_start, loc_end = _extract_interval(loc_obj)
+    # Use the former wrapper's time only when the surrounding object has no
+    # own temporal anchor.  If both exist, the surrounding
+    # ObservingConfiguration remains the lifecycle anchor.
+    if "time" not in payload and not any(key in payload for key in SOURCE_TEMPORAL_KEYS):
+        interval = _time_interval(loc_start, loc_end)
+        if interval:
+            payload["time"] = interval
+
+
+def _geometry_from_temporal_geometry(value: Any) -> Optional[Dict[str, Any]]:
+    """Return the latest point geometry from a legacy temporalGeometry object."""
+    obj = _as_mapping(value)
+    coordinates = obj.get("coordinates")
+    if isinstance(coordinates, list) and coordinates:
+        latest = coordinates[-1]
+        if isinstance(latest, list):
+            try:
+                numbers = [float(item) for item in latest[:3]]
+            except (TypeError, ValueError):
+                return None
+            if len(numbers) >= 2:
+                return {"type": "Point", "coordinates": numbers}
+    if obj.get("type") == "Point" and isinstance(obj.get("coordinates"), list):
+        return cast(Dict[str, Any], obj)
+    return None
+
+
+def _normalize_contact_arrays(payload: Dict[str, Any], registry: Dict[str, Dict[str, Any]], *, is_root_properties: bool = False) -> None:
+    assignments: List[Dict[str, Any]] = []
+
+    existing_assignments = payload.pop("contactReferences", None)
+    for item in _as_list(existing_assignments):
+        assignment = _assignment_from_contact(item, registry)
+        if assignment:
+            assignments.append(assignment)
+
+    existing_contact_roles = payload.get("contactRoles")
+    if existing_contact_roles is not None:
+        payload.pop("contactRoles", None)
+        for item in _as_list(existing_contact_roles):
+            assignment = _assignment_from_contact(item, registry)
+            if assignment:
+                assignments.append(assignment)
+
+    existing_contact_assignments = payload.get("contactAssignments")
+    if existing_contact_assignments is not None:
+        payload.pop("contactAssignments", None)
+        for item in _as_list(existing_contact_assignments):
+            assignment = _assignment_from_contact(item, registry)
+            if assignment:
+                assignments.append(assignment)
+
+    raw_contacts = payload.get("contacts")
+    if raw_contacts is not None:
+        # At root properties, contacts is the reusable OGC Contact registry.  In
+        # nested WMDR objects, contacts is interpreted as source/contextual party
+        # information and becomes contactAssignments.
+        payload.pop("contacts", None)
+        for item in _as_list(raw_contacts):
+            contact = _normalize_ogc_contact(item)
+            if not contact:
+                continue
+            identifier = _contact_identifier(contact)
+            contact["identifier"] = identifier
+            if identifier in registry:
+                registry[identifier] = _merge_contact(registry[identifier], contact)
+            else:
+                registry[identifier] = contact
+            roles = _normalize_roles(contact.get("roles"))
+            if not is_root_properties and roles:
+                assignments.append({"contact": identifier, "roles": roles})
+
+    if assignments:
+        payload["contactAssignments"] = _uniq_dicts(assignments)
+
+
+def _normalize_node(node: Any, registry: Dict[str, Dict[str, Any]], *, is_root: bool = False, is_root_properties: bool = False) -> Any:
+    if isinstance(node, list):
+        return [_normalize_node(item, registry) for item in node]
+    if not isinstance(node, dict):
+        return node
+
+    payload: Dict[str, Any] = {}
+    for key, value in node.items():
+        # The root GeoJSON Feature.properties object needs special handling so
+        # that its reusable ``contacts`` registry is not first interpreted as a
+        # nested contextual contact list.
+        if is_root and key == "properties":
+            payload[key] = value
+        elif key in {"beginPosition", "endPosition", "validFrom", "validTo", "contactReferences", "contactRoles", "contacts", "contactAssignments", "observingLocation"}:
+            payload[key] = value
+        else:
+            payload[key] = _normalize_node(value, registry)
+
+    if is_root and "id" in payload:
+        payload["id"] = _normalize_facility_wsi(payload.get("id"))
+
+    if not is_root and "temporalGeometry" in payload:
+        temporal_geometry = payload.pop("temporalGeometry", None)
+        if "geometry" not in payload or payload.get("geometry") in (None, "", [], {}):
+            geometry = _geometry_from_temporal_geometry(temporal_geometry)
+            if geometry:
+                payload["geometry"] = geometry
+
+    if (
+        "keywords" in payload
+        and "observingMethod" in payload
+        and any(
+            key in payload
+            for key in (
+                "time",
+                "geometry",
+                "instrument",
+                "referenceSurface",
+                "verticalDistanceFromReferenceSurface",
+                "sourceOfObservation",
+                "operatingStatus",
+                "exposure",
+                "serialNumber",
+            )
+        )
+    ):
+        payload.pop("keywords", None)
+
+    _promote_observing_location(payload)
+    _normalize_time_members(payload)
+    _normalize_contact_arrays(payload, registry, is_root_properties=is_root_properties)
+
+    # Normalize email/phone object shape if a reusable contact object is seen.
+    if any(key in payload for key in ("emails", "phones", "addresses")) and any(key in payload for key in ("identifier", "organization", "name")):
+        contact = _normalize_ogc_contact(payload)
+        if contact:
+            payload = contact
+
+    props = payload.get("properties")
+    if isinstance(props, dict):
+        payload["properties"] = _normalize_node(props, registry, is_root_properties=True)
+
+    if is_root_properties:
+        name_values = _title_values(payload.pop("name", None))
+        title_values = _title_values(payload.get("title"))
+        existing_additional_titles = _title_values(payload.get("additionalTitles"))
+        facility_titles = _uniq_scalars(name_values + title_values)
+        if facility_titles:
+            primary_title = facility_titles[0]
+            payload["title"] = primary_title
+            additional_titles = [
+                title
+                for title in _uniq_scalars(facility_titles[1:] + existing_additional_titles)
+                if title != primary_title
+            ]
+            if additional_titles:
+                payload["additionalTitles"] = additional_titles
+            else:
+                payload.pop("additionalTitles", None)
+        elif "title" in payload:
+            payload.pop("title", None)
+        payload["contacts"] = sorted(registry.values(), key=lambda item: str(item.get("identifier")))
+
+    return payload
+
+
+def _finalize_wmdr2_value(value: Any, *, key: Optional[str] = None) -> Any:
+    if isinstance(value, dict):
+        if set(value.keys()) == {"interval"} and value.get("interval") == ["..", ".."]:
+            return None
+        return {
+            child_key: (child_value if child_key in {"href", "url"} else _finalize_wmdr2_value(child_value, key=child_key))
+            for child_key, child_value in value.items()
+        }
+    if isinstance(value, list):
+        return [_finalize_wmdr2_value(item, key=key) for item in value]
+    if isinstance(value, str) and key not in {"href", "url", "id", "identifier", "contact", "instrument", "reportingSchedules", "observingSchedules"}:
+        return _compact_wmdr_code_value(value)
+    return value
+
+
+def _find_source_temporal_keys(value: Any, *, path: Tuple[str, ...] = ()) -> List[str]:
+    """Return paths where source/transitional temporal keys remain."""
+    found: List[str] = []
+    if isinstance(value, Mapping):
+        for key, child in value.items():
+            child_path = path + (str(key),)
+            if key in SOURCE_TEMPORAL_KEYS:
+                found.append("/" + "/".join(child_path))
+            found.extend(_find_source_temporal_keys(child, path=child_path))
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            found.extend(_find_source_temporal_keys(child, path=path + (str(index),)))
+    return found
+
+
+
+def _normalize_procedure_schedule_structure(record: Any) -> None:
+    """Apply v0.3.1 procedure/schedule placement rules in-place.
+
+    * ``reportingProcedures`` are not time-bound in the v0.3 UML model, so
+      they must not carry ``time``.
+    * ``observingProcedures`` are time-bound and reference reusable root-level
+      schedules using ``observingSchedules``.
+    * ``reportingProcedures`` reference reusable root-level schedules using
+      ``reportingSchedules``.
+    """
+    if not isinstance(record, dict):
+        return
+    props = _as_mapping(record.get("properties"))
+    if not isinstance(props, dict):
+        return
+
+    root_schedules: Dict[str, Dict[str, Any]] = {}
+    for item in _as_list(props.get("schedules")):
+        item_obj = _as_mapping(item)
+        schedule = _normalize_schedule_object(item, kind="shared")
+        if schedule:
+            uid = _strip_text(schedule.get("uid"))
+            if uid:
+                root_schedules[uid] = schedule
+
+    for series in _as_list(props.get("observationSeries")):
+        series_obj = _as_mapping(series)
+        if not isinstance(series_obj, dict):
+            continue
+
+        for item in _as_list(series_obj.pop("schedules", None)):
+            schedule = _normalize_schedule_object(item, kind="observing")
+            if schedule:
+                uid = _strip_text(schedule.get("uid"))
+                if uid:
+                    root_schedules[uid] = schedule
+
+        for proc in _as_list(series_obj.get("observingProcedures")):
+            proc_obj = _as_mapping(proc)
+            if not isinstance(proc_obj, dict):
+                continue
+            refs: List[str] = [str(ref) for ref in _as_list(proc_obj.get("observingSchedules")) if ref not in (None, "") and not isinstance(ref, Mapping)]
+            for item in _as_list(proc_obj.pop("schedules", None)):
+                schedule = _normalize_schedule_object(item, kind="observing")
+                if schedule:
+                    uid = _strip_text(schedule.get("uid"))
+                    if uid:
+                        root_schedules[uid] = schedule
+                        refs.append(uid)
+            if refs:
+                proc_obj["observingSchedules"] = _uniq_scalars(refs)
+
+        for proc in _as_list(series_obj.get("reportingProcedures")):
+            proc_obj = _as_mapping(proc)
+            if not isinstance(proc_obj, dict):
+                continue
+            proc_obj.pop("time", None)
+            legacy_interval = _first_non_empty(
+                proc_obj.pop("temporalReportingInterval", None),
+                proc_obj.pop("temporalAggregate", None),
+                proc_obj.pop("wmo.int:aggregationInterval", None),
+            )
+            refs: List[str] = [str(ref) for ref in _as_list(proc_obj.get("reportingSchedules")) if ref not in (None, "") and not isinstance(ref, Mapping)]
+            if legacy_interval not in (None, "", [], {}):
+                schedule = _normalize_schedule_object({"wmo.int:aggregationInterval": legacy_interval}, kind="reporting")
+                if schedule:
+                    uid = _strip_text(schedule.get("uid"))
+                    if uid:
+                        root_schedules[uid] = schedule
+                        refs.append(uid)
+            for item in _as_list(proc_obj.pop("schedules", None)):
+                schedule = _normalize_schedule_object(item, kind="reporting")
+                if schedule:
+                    uid = _strip_text(schedule.get("uid"))
+                    if uid:
+                        root_schedules[uid] = schedule
+                        refs.append(uid)
+            # Also accept schedule objects accidentally embedded directly in reportingSchedules.
+            for item in _as_list(proc_obj.get("reportingSchedules")):
+                if isinstance(item, Mapping):
+                    schedule = _normalize_schedule_object(item, kind="reporting")
+                    if schedule:
+                        uid = _strip_text(schedule.get("uid"))
+                        if uid:
+                            root_schedules[uid] = schedule
+                            refs.append(uid)
+            if refs:
+                proc_obj["reportingSchedules"] = _uniq_scalars(refs)
+
+    if root_schedules:
+        props["schedules"] = sorted(root_schedules.values(), key=lambda item: str(item.get("uid")))
+    elif "schedules" in props:
+        props.pop("schedules", None)
+
+
+def _normalize_facility_additional_ids(record: Any) -> Any:
+    if not isinstance(record, dict):
+        return record
+    props = record.get("properties")
+    if not isinstance(props, dict):
+        return record
+    primary_id = _normalize_facility_wsi(record.get("id")) if record.get("id") is not None else None
+    candidates: List[str] = []
+    candidates.extend(_facility_wsi_values(props.get("additionalIds")))
+    legacy_identifiers = props.pop("identifiers", None)
+    candidates.extend(_facility_wsi_values(legacy_identifiers))
+    additional_ids = [
+        candidate
+        for candidate in _uniq_scalars(candidates)
+        if _is_valid_wsi(candidate) and candidate != primary_id
+    ]
+    if additional_ids:
+        props["additionalIds"] = additional_ids
+    else:
+        props.pop("additionalIds", None)
+    return record
+
+
+def normalize_wmdr2_record(record: Any) -> Any:
+    """Normalize a WMDR2 record to v0.3.1 JSON conventions."""
+    if not isinstance(record, dict):
+        return record
+    registry: Dict[str, Dict[str, Any]] = {}
+    normalized = _normalize_node(copy.deepcopy(record), registry, is_root=True)
+    _normalize_procedure_schedule_structure(normalized)
+    finalized = _finalize_wmdr2_value(normalized)
+    preserved = _preserve_nulls(finalized)
+    cleaned = _clean_none(preserved)
+    restored = _restore_null_sentinel(cleaned)
+    restored = _normalize_facility_additional_ids(restored)
+    remaining_source_temporal_keys = _find_source_temporal_keys(restored)
+    if remaining_source_temporal_keys:
+        raise ValueError(
+            "WMDR2 v0.3.1 record still contains source temporal key(s): "
+            + ", ".join(remaining_source_temporal_keys[:20])
+        )
+    return restored
+
+# ---------------------------------------------------------------------------
+# Conversion orchestration
+# ---------------------------------------------------------------------------
+
+
+def convert_record(record: Any, *, source_name: Optional[str] = None) -> Dict[str, Any]:
+    return build_facility_feature(record, source_name=source_name)
+
+
+def convert_file(input_path: Path, output_path: Path) -> Path:
+    payload = _load_json(input_path)
+    result = convert_record(payload, source_name=input_path.name)
+    _write_json(output_path, result)
+    return output_path
+
+
+def _write_group_output(group: str, parts: Mapping[str, Any], output_root: Path) -> Path:
+    facility = _as_mapping(parts.get("facility"))
+    header = _as_mapping(parts.get("header"))
+    observations = _as_list(parts.get("observationSeries"))
+    deployments = _as_list(parts.get("deployments"))
+    result = build_facility_feature(
+        None,
+        facility=facility,
+        header=header,
+        observations=observations,
+        deployments=deployments,
+        source_name=f"{group}.json",
+    )
+    out_path = output_root / f"{group}{OUTPUT_SUFFIX}"
+    _write_json(out_path, result)
+    return out_path
+
+
+def convert_path(input_path: Path, output_path: Path, *, pattern: str = DEFAULT_PATTERN, recursive: bool = True, verbose: bool = False) -> List[Path]:
+    files = _iter_json_files(input_path, pattern=pattern, recursive=recursive)
+    if input_path.is_file():
+        target = output_path if output_path.suffix.lower() == ".json" else output_path / input_path.name
+        return [convert_file(input_path, target)]
+
+    output_path.mkdir(parents=True, exist_ok=True)
+    grouped: Dict[str, Dict[str, Any]] = {}
+    standalone: List[Path] = []
+    for path in files:
+        payload = _load_json(path)
+        kind = _detect_kind(path, payload)
+        if kind in {"header", "facility", "observationSeries", "deployments"} and path.stem.lower().endswith(("_header", "_facility", "_observations", "_deployments")):
+            key = _part_group_key(path)
+            grouped.setdefault(key, {})[kind] = payload
+        else:
+            standalone.append(path)
+
+    written: List[Path] = []
+    for path in standalone:
+        rel = path.relative_to(input_path)
+        target = output_path / rel
+        if target.suffix.lower() != ".json":
+            target = target.with_suffix(".json")
+        written.append(convert_file(path, target))
+        if verbose:
+            print(f"converted {path} -> {target}")
+
+    for group, parts in sorted(grouped.items()):
+        target = _write_group_output(group, parts, output_path)
+        written.append(target)
+        if verbose:
+            print(f"converted grouped parts {group} -> {target}")
+    return written
+
+
+def _load_code_list_labels(path: Path) -> None:
+    if not path.exists():
+        return
+    with path.open("r", encoding="utf-8", newline="") as fh:
+        reader = csv.DictReader(fh)
+        for row in reader:
+            domain = _first_non_empty(row.get("domain"), row.get("codeList"), row.get("list"))
+            code = _first_non_empty(row.get("code"), row.get("identifier"), row.get("id"), row.get("notation"))
+            label = _first_non_empty(row.get("label"), row.get("prefLabel"), row.get("title"))
+            if isinstance(domain, str) and isinstance(code, str) and isinstance(label, str):
+                CODE_LIST_LABELS.setdefault(domain, {})[code.lstrip("_")] = label
+
+
+def _load_code_list_labels_from_config(section: Mapping[str, Any], *, base_dir: Optional[Path], cli_path: Optional[Path]) -> None:
+    if cli_path is not None:
+        _load_code_list_labels(cli_path)
+        return
+
+    simple = _cfg_first(section, "code_list_labels", "codeListLabelsCsv")
+    simple_path = _resolve_config_path(simple, base_dir=base_dir)
+    if simple_path is not None:
+        _load_code_list_labels(simple_path)
+
+    # Historical config.yaml files may use:
+    #
+    # codeListLabels:
+    #   files:
+    #     - path: wmdr_observed_variable_labels.csv
+    #
+    # Load all such files if present.
+    code_list_labels = _cfg_mapping(section.get("codeListLabels"))
+    files = code_list_labels.get("files")
+    for item in _as_list(files):
+        item_map = _as_mapping(item)
+        label_path = _resolve_config_path(item_map.get("path"), base_dir=base_dir)
+        if label_path is not None:
+            _load_code_list_labels(label_path)
+
+
+def _collect_catalogue_items_from_records(record_paths: Iterable[Path]) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    contacts: List[Mapping[str, Any]] = []
+    instruments: List[Mapping[str, Any]] = []
+    for record_path in record_paths:
+        try:
+            record = _load_json(record_path)
+        except Exception:
+            continue
+        props = _as_mapping(_as_mapping(record).get("properties"))
+        for contact in _as_list(props.get("contacts")):
+            contact_obj = _as_mapping(contact)
+            if contact_obj:
+                contacts.append(contact_obj)
+        for instrument in _as_list(props.get("instruments")):
+            instrument_obj = _as_mapping(instrument)
+            if instrument_obj:
+                instruments.append(instrument_obj)
+    return _uniq_dicts(contacts), _uniq_dicts(instruments)
+
+
+def _remove_inline_catalogue_items(record_paths: Iterable[Path]) -> None:
+    for record_path in record_paths:
+        try:
+            record = _load_json(record_path)
+        except Exception:
+            continue
+        if not isinstance(record, dict):
+            continue
+        props = _as_mapping(record.get("properties"))
+        if not isinstance(props, Mapping):
+            continue
+        new_props = dict(props)
+        new_props.pop("contacts", None)
+        new_props.pop("instruments", None)
+        record["properties"] = new_props
+        _write_json(record_path, record)
+
+
+def _write_catalogue_outputs(
+    record_paths: Iterable[Path],
+    *,
+    contacts_path: Optional[Path],
+    instruments_path: Optional[Path],
+    remove_inline: bool = True,
+) -> None:
+    contacts, instruments = _collect_catalogue_items_from_records(record_paths)
+    if contacts_path is not None:
+        _write_json(contacts_path, {"contacts": contacts})
+    if instruments_path is not None:
+        _write_json(instruments_path, {"instruments": instruments})
+    if remove_inline:
+        _remove_inline_catalogue_items(record_paths)
+
 
 
 def convert_payload(payload: Any, *, source_name: Optional[str] = None) -> Dict[str, Any]:
-    if not isinstance(payload, Mapping):
-        raise ValueError("WMDR10 JSON payload must be a mapping")
-    facility, observations, deployments, header = _payload_parts(payload)
-    if not facility:
-        facility = {"identifier": source_name or "unknown", "name": source_name or "unknown"}
-    return build_facility_feature(facility, observations, deployments, header, source_name=source_name)
+    """Backward-compatible public alias for in-memory conversion."""
+    return convert_record(payload, source_name=source_name)
 
 
-
-def convert_wmdr10_json_to_wmdr2_json(payload: Any, *, source_name: Optional[str] = None) -> Dict[str, Any]:
-    """Backward-compatible public alias for convert_payload."""
-    return convert_payload(payload, source_name=source_name)
-
-def convert_group(group: Mapping[str, Any], *, source_name: Optional[str] = None) -> Dict[str, Any]:
-    return convert_payload(group, source_name=source_name)
+def convert_wmdr10_json_to_wmdr2_json(payload: Any) -> Dict[str, Any]:
+    """Backward-compatible public alias used by older tests and notebooks."""
+    return convert_record(payload)
 
 
-def convert_record(payload: Any, *, source_name: Optional[str] = None) -> Dict[str, Any]:
-    return convert_payload(payload, source_name=source_name)
-
-
-def convert_file(source: Path | str, target_dir: Path | str) -> Path:
-    source_path = Path(source)
-    target_path = Path(target_dir)
-    payload = _load_json(source_path)
-    converted = convert_payload(payload, source_name=source_path.stem)
-    output = target_path / f"{source_path.stem}{OUTPUT_SUFFIX}"
-    _write_json(output, converted)
-    return output
-
-
-def _load_code_list_labels(config: Mapping[str, Any], *, base_dir: Optional[Path] = None) -> Dict[str, Dict[str, str]]:
-    base_dir = base_dir or Path.cwd()
-    labels: Dict[str, Dict[str, str]] = {}
-    raw = config.get("codeListLabels") if isinstance(config, Mapping) else None
-    files = raw.get("files") if isinstance(raw, Mapping) else None
-    for file_name in _as_list(files):
-        path = Path(str(file_name))
-        if not path.is_absolute():
-            path = base_dir / path
-        if not path.exists():
-            continue
-        with path.open(newline="", encoding="utf-8") as fh:
-            reader = csv.DictReader(fh)
-            for row in reader:
-                domain = (row.get("domain") or "").strip()
-                code = (row.get("code") or "").strip().lstrip("_")
-                label = (row.get("label") or row.get("title") or "").strip()
-                if domain and code and label:
-                    labels.setdefault(domain, {})[code] = label
-    return labels
-
-
-
-def _contact_identifier(contact: Mapping[str, Any]) -> str:
-    """Return stable contact catalogue uid, preserving e-mail addresses."""
-    for email in _as_list(contact.get("emails") or contact.get("email")):
-        if isinstance(email, str) and "@" in email:
-            return f"contact:{email.strip().lower()}"
-    raw_name = _normalize_display_text(contact.get("name")) or ""
-    raw_org = _normalize_display_text(contact.get("organization")) or ""
-    seed = "--".join(part for part in (_slug(raw_name), _slug(raw_org)) if part)
-    if not seed:
-        seed = _slug(_stable_json(contact))
-    return f"contact:{seed}"
-
-
-def _catalogue_inline_contact(contact: Mapping[str, Any], uid: str) -> Dict[str, Any]:
-    inline: Dict[str, Any] = {"uid": uid}
-    for key in ("name", "organization", "roles"):
-        value = contact.get(key)
-        if _non_empty(value):
-            inline[key] = value
-    inline["links"] = [
-        {
-            "rel": "about",
-            "href": f"../catalogues/contacts.json#{uid}",
-            "type": "application/json",
-        }
-    ]
-    return _clean_none(inline)
-
-def _run_catalogue_post_processing(target: Path, catalogues: Mapping[str, Any]) -> None:
-    if not catalogues.get("enabled"):
-        return
-    if "source" in catalogues:
-        raise SystemExit("catalogues.source is obsolete; use catalogues.records_path, contacts_path and instruments_path")
-    records_path = Path(str(catalogues.get("records_path") or target / "catalogue_representation"))
-    contacts_path = Path(str(catalogues.get("contacts_path") or target / "catalogues" / "contacts.json"))
-    instruments_path = Path(str(catalogues.get("instruments_path") or target / "catalogues" / "instruments.json"))
-    contacts: Dict[str, Dict[str, Any]] = {}
-    instruments: Dict[str, Dict[str, Any]] = {}
-    for path in sorted(target.glob("*.json")):
-        record = _load_json(path)
-        props = record.get("properties") if isinstance(record, Mapping) else None
-        if not isinstance(props, dict):
-            continue
-        rewritten = copy.deepcopy(record)
-        rewritten_props = rewritten.get("properties", {})
-        # Contact catalogue: full details go to contacts.json; the catalogue
-        # representation keeps a compact actionable link plus human-readable
-        # name/organization/roles.  Embedded full records remain untouched.
-        inline_contacts: List[Dict[str, Any]] = []
-        for c in _as_list(props.get("contacts")):
-            if not isinstance(c, Mapping):
-                continue
-            entry = _sanitize_contact_roles(c)
-            cid = _contact_identifier(entry)
-            entry["uid"] = cid
-            entry.pop("id", None)
-            entry.pop("identifier", None)
-            contacts[cid] = entry
-            inline_contacts.append(_catalogue_inline_contact(entry, cid))
-        if inline_contacts:
-            rewritten_props["contacts"] = inline_contacts
-        for inst in _as_list(props.get("instruments")):
-            if not isinstance(inst, Mapping):
-                continue
-            inst_uid = inst.get("uid") or inst.get("id")
-            if not isinstance(inst_uid, str):
-                continue
-            entry = dict(inst)
-            entry["uid"] = inst_uid
-            entry.pop("id", None)
-            instruments[inst_uid] = entry
-        rewritten_props.pop("instruments", None)
-        _write_json(records_path / path.name, rewritten)
-    if contacts:
-        _write_json(contacts_path, {"contacts": sorted(contacts.values(), key=lambda x: x.get("uid", ""))})
-    if instruments:
-        _write_json(instruments_path, {"instruments": sorted(instruments.values(), key=lambda x: x.get("uid", ""))})
-
-
-def _convert_source_to_target(source: Path, target: Path, *, pattern: str = DEFAULT_PATTERN, recursive: bool = True) -> int:
-    files = _iter_json_files(source, pattern=pattern, recursive=recursive)
-    count = 0
-    for path in files:
-        if path.is_relative_to(target) if hasattr(path, "is_relative_to") else False:
-            continue
-        rel = path.relative_to(source) if source.is_dir() else Path(path.name)
-        out = target / rel.with_suffix(OUTPUT_SUFFIX)
-        payload = _load_json(path)
-        converted = convert_payload(payload, source_name=path.stem)
-        _write_json(out, converted)
-        count += 1
-    return count
-
-
-def main(argv: Optional[Sequence[str]] = None) -> None:
-    parser = argparse.ArgumentParser(description="Convert WMDR10 JSON to WMDR2 v0.3.0 JSON")
-    parser.add_argument("--config", type=Path)
-    parser.add_argument("--source", type=Path)
-    parser.add_argument("--target", type=Path)
-    parser.add_argument("--pattern", default=None)
-    parser.add_argument("--no-recursive", action="store_true")
-    args = parser.parse_args(argv)
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Convert simplified WMDR10 JSON to WMDR2 v0.3.1 JSON. "
+            "With no positional arguments, paths are read from config.yaml."
+        )
+    )
+    parser.add_argument("input", nargs="?", help="Input JSON file or directory; overrides config source/input.")
+    parser.add_argument("output", nargs="?", help="Output JSON file or directory; overrides config target/output.")
+    parser.add_argument("--input", dest="input_opt", help="Input JSON file or directory; overrides config source/input.")
+    parser.add_argument("--output", dest="output_opt", help="Output JSON file or directory; overrides config target/output.")
+    # Backward-compatible aliases used by the XML converter and older E2E tests.
+    parser.add_argument("--source", dest="source_opt", help="Alias for --input; overrides config source/input.")
+    parser.add_argument("--target", dest="target_opt", help="Alias for --output; overrides config target/output.")
+    parser.add_argument("--config", type=Path, help="Config file path. Defaults to config.yaml/config.yml found from the repo root.")
+    parser.add_argument("--pattern", default=None, help="Input glob pattern for directory conversion.")
+    parser.add_argument("--no-recursive", action="store_true", help="Do not recurse into input subdirectories.")
+    parser.add_argument("--code-list-labels", type=Path, help="Optional CSV with code-list labels; overrides config code-list label files.")
+    parser.add_argument("--version", action="version", version=f"%(prog)s {VERSION}")
+    parser.add_argument("--verbose", action="store_true")
+    args = parser.parse_args(list(argv) if argv is not None else None)
 
     config_path = _discover_config_path(args.config)
-    cfg: Dict[str, Any] = _load_config(config_path) if config_path else {}
-    section = _cfg_section(cfg)
-    print(_format_loaded_config_hint(config_path, section))
+    config_dir: Optional[Path] = config_path.parent if config_path is not None else None
+    section: Dict[str, Any] = {}
+    if config_path is not None:
+        section = _cfg_section(_load_config(config_path))
+        if args.verbose:
+            print(_format_loaded_config_hint(config_path, section))
+    elif not (args.input_opt or args.source_opt or args.input or args.output_opt or args.target_opt or args.output):
+        parser.error("missing config.yaml; run from the repository root or pass --config, input and output paths")
 
-    global DISCOVERY_POLICY, CODE_LIST_LABELS
+    global DISCOVERY_POLICY
     DISCOVERY_POLICY = _normalize_discovery_policy(section)
-    if config_path:
-        CODE_LIST_LABELS = _load_code_list_labels(section, base_dir=config_path.parent)
 
-    catalogues = section.get("catalogues") if isinstance(section.get("catalogues"), Mapping) else {}
-    if isinstance(catalogues, Mapping) and "source" in catalogues:
-        raise SystemExit("catalogues.source is obsolete; use catalogues.records_path, contacts_path and instruments_path")
+    _load_code_list_labels_from_config(section, base_dir=config_dir, cli_path=args.code_list_labels)
 
-    source = args.source or (Path(str(section["source"])) if section.get("source") else None)
-    target = args.target or (Path(str(section["target"])) if section.get("target") else None)
-    if source is None or target is None:
-        raise SystemExit("source and target are required, either by CLI or config")
-    pattern = args.pattern or str(section.get("pattern") or DEFAULT_PATTERN)
-    recursive = not args.no_recursive and bool(section.get("recursive", True))
-    count = _convert_source_to_target(source, target, pattern=pattern, recursive=recursive)
-    _run_catalogue_post_processing(target, catalogues if isinstance(catalogues, Mapping) else {})
-    print(f"Converted {count} WMDR10 JSON record(s) to {target}")
+    config_input = _cfg_first(section, "source", "input", "input_path")
+    config_output = _cfg_first(section, "target", "output", "output_path")
+    cli_input = args.input_opt or args.source_opt or args.input
+    cli_output = args.output_opt or args.target_opt or args.output
 
+    input_path = _resolve_cli_or_config_path(cli_input or config_input, base_dir=config_dir, from_config=cli_input is None)
+    output_path = _resolve_cli_or_config_path(cli_output or config_output, base_dir=config_dir, from_config=cli_output is None)
+    if input_path is None:
+        parser.error("missing input path; set convert_wmdr10_json_to_wmdr2_json.source in config.yaml or pass an input path")
+    if output_path is None:
+        parser.error("missing output path; set convert_wmdr10_json_to_wmdr2_json.target in config.yaml or pass an output path")
+
+    pattern = args.pattern or str(_cfg_first(section, "pattern") or DEFAULT_PATTERN)
+    recursive_value = section.get("recursive")
+    recursive = False if args.no_recursive else bool(True if recursive_value is None else recursive_value)
+
+    written = convert_path(input_path, output_path, pattern=pattern, recursive=recursive, verbose=args.verbose)
+
+    catalogues = _cfg_mapping(section.get("catalogues"))
+    catalogues_enabled = bool(catalogues.get("enabled"))
+    if catalogues_enabled:
+        records_path = _resolve_config_path(_cfg_first(catalogues, "records_path", "recordsPath"), base_dir=config_dir)
+        if records_path is None:
+            records_path = output_path
+
+        if records_path.resolve() == output_path.resolve():
+            catalogue_records = written
+        else:
+            catalogue_records = convert_path(input_path, records_path, pattern=pattern, recursive=recursive, verbose=args.verbose)
+
+        contacts_path = _resolve_config_path(_cfg_first(catalogues, "contacts_path", "contactsPath"), base_dir=config_dir)
+        instruments_path = _resolve_config_path(_cfg_first(catalogues, "instruments_path", "instrumentsPath"), base_dir=config_dir)
+        _write_catalogue_outputs(
+            catalogue_records,
+            contacts_path=contacts_path,
+            instruments_path=instruments_path,
+            remove_inline=True,
+        )
+        if args.verbose:
+            if contacts_path is not None:
+                print(f"wrote contacts catalogue -> {contacts_path}")
+            if instruments_path is not None:
+                print(f"wrote instruments catalogue -> {instruments_path}")
+
+    return 0
 
 if __name__ == "__main__":  # pragma: no cover
-    main()
+    raise SystemExit(main())

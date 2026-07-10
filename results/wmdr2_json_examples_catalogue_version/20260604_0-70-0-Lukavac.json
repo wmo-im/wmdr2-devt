@@ -1,6 +1,9 @@
 {
   "type": "Feature",
-  "id": "wsi:0-70-0-Lukavac",
+  "id": "0-70-0-Lukavac",
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -8,6 +11,72 @@
       44.5213,
       188.17
     ]
+  },
+  "properties": {
+    "type": "facility",
+    "title": "LUKAVAC",
+    "created": "2026-06-04T00:00:00Z",
+    "updated": "2026-06-04T00:00:00Z",
+    "facilityType": "underwaterFixed",
+    "territory": [
+      {
+        "territory": "BIH",
+        "time": {
+          "interval": [
+            "2019-08-05",
+            ".."
+          ]
+        }
+      }
+    ],
+    "wmoRegion": "europe",
+    "observationSeries": [
+      {
+        "id": "observationSeries:166",
+        "title": "domain: terrestrial; variable: 166",
+        "observedProperty": 166,
+        "observedDomain": {
+          "domain": "terrestrial"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2019-08-05",
+                ".."
+              ]
+            },
+            "observingMethod": 356
+          }
+        ]
+      }
+    ],
+    "keywords": [
+      "0-70-0-Lukavac",
+      "LUKAVAC"
+    ],
+    "links": [
+      {
+        "href": "https://www.fhmzbih.gov.ba/latinica/index.php",
+        "rel": "about",
+        "type": "text/html"
+      }
+    ],
+    "contactAssignments": [
+      {
+        "contact": "contact:merima.trako@fhmzbih.gov.ba",
+        "roles": [
+          "pointOfContact"
+        ]
+      }
+    ]
+  },
+  "time": {
+    "interval": [
+      "2019-08-05",
+      ".."
+    ],
+    "resolution": "P1D"
   },
   "temporalGeometry": {
     "type": "MovingPoint",
@@ -25,93 +94,6 @@
       [
         "gps"
       ]
-    ]
-  },
-  "time": {
-    "interval": [
-      "2019-08-05",
-      ".."
-    ],
-    "resolution": "day"
-  },
-  "conformsTo": [
-    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
-  ],
-  "properties": {
-    "type": "facility",
-    "title": "LUKAVAC",
-    "created": "2026-06-04T00:00:00Z",
-    "updated": "2026-06-04T00:00:00Z",
-    "facilityType": "underwaterFixed",
-    "wmoRegion": "europe",
-    "contacts": [
-      {
-        "uid": "contact:oscar@wmo.int",
-        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
-        "links": [
-          {
-            "rel": "about",
-            "href": "../catalogues/contacts.json#contact:oscar@wmo.int",
-            "type": "application/json"
-          }
-        ]
-      }
-    ],
-    "keywords": [
-      "0-70-0-Lukavac",
-      "LUKAVAC"
-    ],
-    "links": [
-      {
-        "href": "https://www.fhmzbih.gov.ba/latinica/index.php",
-        "rel": "about",
-        "type": "text/html"
-      }
-    ],
-    "environment": [
-      {
-        "validFrom": "2019-08-05",
-        "climateZone": "snowFullyHumidWarmSummer"
-      }
-    ],
-    "programAffiliations": [
-      {
-        "validFrom": "2019-08-05",
-        "program": "WHYCOS",
-        "reportingStatus": "operational"
-      }
-    ],
-    "territory": [
-      {
-        "validFrom": "2019-08-05",
-        "territory": "BIH"
-      }
-    ],
-    "observationSeries": [
-      {
-        "uid": "observationSeries:166-fc7520628d",
-        "title": "domain: terrestrial; geometry: point; variable: 166",
-        "observedProperty": 166,
-        "observedFeature": {
-          "domain": "terrestrial"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "WHYCOS"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2019-08-05",
-            "observingMethod": 356,
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      }
     ]
   }
 }

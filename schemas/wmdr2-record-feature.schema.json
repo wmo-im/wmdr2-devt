@@ -1,52 +1,488 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://wmo.int/wmdr2/schemas/wmdr2-record-feature.schema.json",
-  "title": "WMDR2 v0.3.1 Facility Feature",
-  "type": "object",
-  "required": [
-    "type",
-    "id",
-    "geometry",
-    "properties"
-  ],
+  "$id": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-record-feature.schema.json",
+  "title": "WMDR station metadata record definition",
+  "description": "WMDR station metadata record definition",
   "properties": {
-    "type": {
-      "const": "Feature"
-    },
     "id": {
       "type": "string",
-      "pattern": "^(wsi|facility|record):"
-    },
-    "geometry": {
-      "$ref": "wmdr2-common.schema.json#/$defs/pointGeometry"
-    },
-    "temporalGeometry": {
-      "$ref": "wmdr2-common.schema.json#/$defs/temporalGeometry"
-    },
-    "time": {
-      "$ref": "wmdr2-common.schema.json#/$defs/time"
+      "description": "WIGOS station identifier",
+      "pattern": "^(0|1|2|3)-([1-9]\\d*)-([0-9]+)-([A-Za-z0-9._-]+)$"
     },
     "conformsTo": {
       "type": "array",
+      "contains": {
+        "const": "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+      }
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "Feature"
+      ]
+    },
+    "geometry": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/pointGeometry"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "temporalGeometry": {
+      "$ref": "#/$defs/temporalGeometry"
+    },
+    "time": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/timeObject"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "properties": {
+      "$ref": "#/$defs/facilityProperties"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/link"
+      }
+    }
+  },
+  "required": [
+    "type",
+    "id",
+    "conformsTo",
+    "geometry",
+    "properties"
+  ],
+  "type": "object",
+  "additionalProperties": true,
+  "$defs": {
+    "dateOrOpen": {
+      "type": "string",
+      "anyOf": [
+        {
+          "const": ".."
+        },
+        {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        {
+          "pattern": "^\\d{4}-\\d{2}$"
+        },
+        {
+          "pattern": "^\\d{4}$"
+        }
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z?$"
+    },
+    "dateField": {
+      "type": "object",
+      "required": [
+        "time"
+      ],
+      "properties": {
+        "time": {
+          "$ref": "#/$defs/timePeriod"
+        },
+        "date": false
+      },
+      "additionalProperties": true
+    },
+    "codeValue": {
+      "description": "WMDR codelist value. Accepts compact token, numeric code, URI, nilReason object, or structured value.",
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "object",
+        "array",
+        "boolean",
+        "null"
+      ]
+    },
+    "nilReason": {
+      "type": "object",
+      "required": [
+        "nilReason"
+      ],
+      "properties": {
+        "nilReason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "quantity": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "integer",
+            "string"
+          ]
+        },
+        "uom": {
+          "$ref": "#/$defs/codeValue"
+        }
+      },
+      "additionalProperties": true
+    },
+    "pointGeometry": {
+      "type": "object",
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Point"
+          ]
+        },
+        "coordinates": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "temporalGeometry": {
+      "type": "object",
+      "required": [
+        "type",
+        "coordinates",
+        "dates"
+      ],
+      "properties": {
+        "type": {
+          "const": "MovingPoint"
+        },
+        "coordinates": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 3,
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "dates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dateOrOpen"
+          }
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "timeObject": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/dateOrOpen"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "interval": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/dateOrOpen"
+          }
+        },
+        "resolution": {
+          "type": "string",
+          "description": "Temporal resolution as an ISO 8601 duration, for example P1D.",
+          "pattern": "^(-?)P(?=\\d|T\\d)(?:(\\d+)Y)?(?:(\\d+)M)?(?:(\\d+)([DW]))?(?:T(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+(?:\\.\\d+)?)S)?)?$"
+        }
+      },
+      "additionalProperties": true
+    },
+    "link": {
+      "type": "object",
+      "required": [
+        "href"
+      ],
+      "properties": {
+        "rel": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "href": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "contact": {
+      "type": "object",
+      "description": "Reusable OGC Records Contact object. WMDR contextual roles are held in contactAssignment objects at the entity where the contact occurs.",
+      "anyOf": [
+        {
+          "required": [
+            "organization"
+          ]
+        },
+        {
+          "required": [
+            "name"
+          ]
+        },
+        {
+          "required": [
+            "identifier"
+          ]
+        }
+      ],
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "description": "A value uniquely identifying this reusable contact. WMDR2 converter-generated identifiers use contact:<stable-id>."
+        },
+        "name": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "logo": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/link"
+            },
+            {
+              "type": "object",
+              "required": [
+                "rel",
+                "type"
+              ],
+              "properties": {
+                "rel": {
+                  "const": "icon"
+                }
+              }
+            }
+          ]
+        },
+        "phones": {
+          "type": "array",
+          "description": "Telephone numbers at which contact can be made.",
+          "items": {
+            "type": "object",
+            "required": [
+              "value"
+            ],
+            "properties": {
+              "value": {
+                "type": "string",
+                "description": "The phone number itself, normalized to E.164 where possible.",
+                "pattern": "^\\+[1-9]{1}[0-9]{3,14}$"
+              },
+              "roles": {
+                "$ref": "#/$defs/contactRole"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "emails": {
+          "type": "array",
+          "description": "Email addresses at which contact can be made.",
+          "items": {
+            "type": "object",
+            "required": [
+              "value"
+            ],
+            "properties": {
+              "value": {
+                "type": "string",
+                "format": "email"
+              },
+              "roles": {
+                "$ref": "#/$defs/contactRole"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "addresses": {
+          "type": "array",
+          "description": "Physical locations at which contact can be made.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "deliveryPoint": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "city": {
+                "type": "string"
+              },
+              "administrativeArea": {
+                "type": "string"
+              },
+              "postalCode": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "roles": {
+                "$ref": "#/$defs/contactRole"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "links": {
+          "type": "array",
+          "description": "On-line information about the contact.",
+          "items": {
+            "$ref": "#/$defs/contactLink"
+          }
+        },
+        "hoursOfService": {
+          "type": "string"
+        },
+        "contactInstructions": {
+          "type": "string"
+        },
+        "roles": {
+          "$ref": "#/$defs/contactRole"
+        }
+      },
+      "additionalProperties": true
+    },
+    "contactRole": {
+      "description": "The set of named duties, job functions and/or permissions associated with a contact occurrence.",
+      "type": "array",
+      "minItems": 1,
       "items": {
         "type": "string"
       }
     },
-    "properties": {
+    "contactLink": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/link"
+        },
+        {
+          "type": "object",
+          "required": [
+            "type"
+          ]
+        }
+      ]
+    },
+    "contactAssignment": {
+      "type": "object",
+      "description": "WMDR association between an entity and a reusable OGC Contact. The same contact identifier may be assigned different roles at facility, ObservationSeries, ReportingProcedure, or other scopes.",
+      "required": [
+        "contact",
+        "roles"
+      ],
+      "properties": {
+        "contact": {
+          "type": "string",
+          "pattern": "^contact:",
+          "description": "Reference to properties.contacts[].identifier."
+        },
+        "roles": {
+          "$ref": "#/$defs/contactRole"
+        }
+      },
+      "additionalProperties": false
+    },
+    "facilityProperties": {
       "type": "object",
       "required": [
         "type",
         "title"
       ],
       "properties": {
+        "title": {
+          "type": "string",
+          "description": "facility name (primary)"
+        },
+        "additionalTitles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "description": "additional facility names"
+          }
+        },
+        "additionalIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "description": "additional WIGOS Station Identifiers (WSI)",
+            "pattern": "^(0|1|2|3)-([1-9]\\d*)-([0-9]+)-([A-Za-z0-9\\._-]+)$"
+          }
+        },
         "type": {
           "const": "facility"
         },
-        "title": {
-          "type": "string"
+        "facilityType": {
+          "type": "string",
+          "description": "Station/platform type",
+          "$comment": "https://codes.wmo.int/wmdr/FacilityType"
         },
-        "description": {
-          "type": "string"
+        "wmoRegion": {
+          "type": "string",
+          "description": "WMO Region",
+          "$comment": "https://codes.wmo.int/wmdr/WMORegion"
+        },
+        "contacts": {
+          "type": "array",
+          "description": "Reusable Contact registry for this WMDR2 record, using the OGC Records Contact model.",
+          "items": {
+            "$ref": "#/$defs/contact"
+          }
         },
         "created": {
           "type": "string"
@@ -54,212 +490,596 @@
         "updated": {
           "type": "string"
         },
-        "deployments": false,
-        "reporting": false,
-        "observationSeries": {
+        "description": {
+          "type": "string"
+        },
+        "keywords": {
           "type": "array",
           "items": {
-            "type": "object",
-            "required": [
-              "uid",
-              "observedProperty",
-              "observedFeature",
-              "observingConfigurations"
-            ],
-            "properties": {
-              "title": {
-                "type": "string"
-              },
-              "observedProperty": {
-                "type": [
-                  "integer",
-                  "number",
-                  "string"
-                ]
-              },
-              "observedFeature": {
-                "type": "object",
-                "required": [
-                  "domain"
-                ],
-                "properties": {
-                  "domain": {
-                    "type": [
-                      "string",
-                      "integer"
-                    ]
-                  },
-                  "domainFeature": {
-                    "type": "string"
-                  },
-                  "featureName": {
-                    "type": "string"
-                  }
-                },
-                "additionalProperties": true
-              },
-              "observedGeometry": {
-                "type": [
-                  "string",
-                  "integer",
-                  "number"
-                ]
-              },
-              "observingConfigurations": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "$ref": "wmdr2-common.schema.json#/$defs/observingConfiguration"
-                }
-              },
-              "observingProcedures": {
-                "type": "array",
-                "items": {
-                  "$ref": "wmdr2-common.schema.json#/$defs/observingProcedure"
-                }
-              },
-              "uid": {
-                "type": "string",
-                "pattern": "^observationSeries:"
-              },
-              "programAffiliations": {
-                "type": "array"
-              },
-              "reportingProcedures": {
-                "type": "array",
-                "items": {
-                  "$ref": "wmdr2-common.schema.json#/$defs/reportingProcedure"
-                }
-              }
-            },
-            "additionalProperties": true
+            "type": "string"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "facilitySets": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         },
         "environment": {
           "type": "array",
           "items": {
-            "type": "object",
-            "required": [
-              "validFrom"
-            ],
-            "properties": {
-              "validFrom": {
-                "type": "string"
-              }
-            },
-            "additionalProperties": true
+            "$ref": "#/$defs/environment"
           }
         },
         "territory": {
           "type": "array",
           "items": {
-            "type": "object",
-            "required": [
-              "validFrom",
-              "territory"
-            ],
-            "properties": {
-              "validFrom": {
-                "type": "string"
-              },
-              "territory": {
-                "type": "string"
-              }
-            },
-            "additionalProperties": true
-          }
-        },
-        "schedules": {
-          "type": "array",
-          "items": {
-            "$ref": "wmdr2-common.schema.json#/$defs/schedule"
-          }
-        },
-        "instruments": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": [
-              "uid"
-            ],
-            "properties": {
-              "uid": {
-                "type": "string",
-                "pattern": "^instrument:"
-              }
-            },
-            "additionalProperties": true
-          }
-        },
-        "contacts": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "uid": {
-                "type": "string",
-                "pattern": "^contact:"
-              },
-              "roles": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            },
-            "additionalProperties": true
+            "$ref": "#/$defs/territory"
           }
         },
         "programAffiliations": {
           "type": "array",
           "items": {
-            "type": "object",
-            "required": [
-              "validFrom",
-              "program"
-            ],
-            "properties": {
-              "validFrom": {
-                "type": "string"
-              },
-              "program": {
-                "oneOf": [
-                  {
-                    "type": [
-                      "string",
-                      "integer"
-                    ]
-                  },
-                  {
-                    "type": "array",
-                    "items": {
-                      "type": [
-                        "string",
-                        "integer"
-                      ]
-                    }
-                  }
-                ]
-              },
-              "programSpecificFacilityId": {
-                "type": "string"
-              },
-              "programSpecificFacilityTitle": {
-                "type": "string"
-              },
-              "reportingStatus": {
-                "type": [
-                  "string",
-                  "integer"
-                ]
-              }
-            },
-            "additionalProperties": true
+            "$ref": "#/$defs/programAffiliation"
+          }
+        },
+        "programAffiliation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/programAffiliation"
+          }
+        },
+        "instruments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/instrument"
+          }
+        },
+        "observationSeries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observationSeries"
+          }
+        },
+        "schedules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/schedule"
+          }
+        },
+        "contactAssignments": {
+          "type": "array",
+          "description": "Facility-level contact-role associations. The referenced contact details are in properties.contacts.",
+          "items": {
+            "$ref": "#/$defs/contactAssignment"
           }
         }
       },
       "additionalProperties": true
+    },
+    "environment": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/dateField"
+        }
+      ],
+      "properties": {
+        "climateZone": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "surfaceCover": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "surfaceRoughness": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "population": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "perimeter_km": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        },
+        "topographyBathymetry": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "time": {
+          "$ref": "#/$defs/timePeriod"
+        },
+        "date": false
+      },
+      "additionalProperties": true
+    },
+    "territory": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/dateField"
+        }
+      ],
+      "properties": {
+        "territory": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "time": {
+          "$ref": "#/$defs/timePeriod"
+        }
+      },
+      "additionalProperties": true
+    },
+    "programAffiliation": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/dateField"
+        }
+      ],
+      "properties": {
+        "programSpecificFacilityId": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "programSpecificFacilityTitle": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "program": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "programAffiliation": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "reportingStatus": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "time": {
+          "$ref": "#/$defs/timePeriod"
+        },
+        "date": false
+      },
+      "additionalProperties": true
+    },
+    "instrument": {
+      "type": "object",
+      "anyOf": [
+        {
+          "required": [
+            "uid"
+          ]
+        },
+        {
+          "required": [
+            "id"
+          ]
+        }
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^instrument:"
+        },
+        "uid": {
+          "type": "string",
+          "pattern": "^instrument:"
+        },
+        "observingMethods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "manufacturer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verticalRange": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "observationSeries": {
+      "type": "object",
+      "anyOf": [
+        {
+          "required": [
+            "uid"
+          ]
+        },
+        {
+          "required": [
+            "id"
+          ]
+        }
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^observationSeries:"
+        },
+        "uid": {
+          "type": "string",
+          "pattern": "^observationSeries:"
+        },
+        "title": {
+          "type": "string"
+        },
+        "observedProperty": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "observedFeature": {
+          "$ref": "#/$defs/observedFeature"
+        },
+        "observedGeometry": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "applicationArea": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "representativeness": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "programAffiliations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "programAffiliation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact"
+          }
+        },
+        "observingConfigurations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observingConfiguration"
+          }
+        },
+        "observingProcedures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observingProcedure"
+          }
+        },
+        "reportingProcedures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reportingProcedure"
+          }
+        },
+        "reporting": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/reportingProcedure"
+          }
+        },
+        "officialStatus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/officialStatus"
+          }
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "contactAssignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contactAssignment"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "observedFeature": {
+      "type": "object",
+      "required": [
+        "domain"
+      ],
+      "properties": {
+        "domain": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "domainFeature": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "featureName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "observingConfiguration": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/dateField"
+        }
+      ],
+      "required": [
+        "observingMethod"
+      ],
+      "properties": {
+        "observingMethod": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "operatingStatus": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "sourceOfObservation": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "instrument": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exposure": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "time": {
+          "$ref": "#/$defs/timePeriod"
+        },
+        "geometry": {
+          "$ref": "#/$defs/pointGeometry"
+        },
+        "referenceSurface": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "verticalDistanceFromReferenceSurface": {
+          "$ref": "#/$defs/quantity"
+        },
+        "date": false,
+        "observingLocation": false,
+        "keywords": false,
+        "temporalGeometry": false
+      },
+      "additionalProperties": true
+    },
+    "observingProcedure": {
+      "type": "object",
+      "properties": {
+        "strategy": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "observingSchedules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "time": {
+          "$ref": "#/$defs/timePeriod"
+        },
+        "date": false
+      },
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "$ref": "#/$defs/dateField"
+        }
+      ]
+    },
+    "reportingProcedure": {
+      "type": "object",
+      "properties": {
+        "dataFormat": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "dataPolicy": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "internationalExchange": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "levelOfData": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "numberOfObservationsInReportingInterval": {
+          "type": [
+            "number",
+            "integer",
+            "string",
+            "null"
+          ]
+        },
+        "referenceDatum": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "referenceTimeSource": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "spatialReportingInterval": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "strategy": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "timeliness": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timeStampMeaning": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "uom": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "reportingSchedules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^schedule_"
+          }
+        },
+        "reporting": {
+          "type": "string"
+        },
+        "temporalReportingInterval": false,
+        "temporalAggregate": false,
+        "wmo.int:aggregationInterval": false,
+        "time": false,
+        "date": false,
+        "contactAssignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contactAssignment"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "officialStatus": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/dateField"
+        }
+      ],
+      "properties": {
+        "officialStatus": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "time": {
+          "$ref": "#/$defs/timePeriod"
+        },
+        "date": false
+      },
+      "additionalProperties": true
+    },
+    "schedule": {
+      "type": "object",
+      "required": [
+        "uid"
+      ],
+      "properties": {
+        "uid": {
+          "type": "string",
+          "pattern": "^schedule_"
+        },
+        "@type": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "recurrenceRules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "recurrenceOverrides": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "timeZone": {
+          "type": "string"
+        },
+        "wmo.int:samplingFrequency": {
+          "type": "string"
+        },
+        "wmo.int:aggregationInterval": {
+          "type": "string"
+        },
+        "wmo.int:diurnalBaseTime": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "timePeriod": {
+      "type": "object",
+      "required": [
+        "interval"
+      ],
+      "properties": {
+        "interval": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/dateOrOpen"
+          }
+        },
+        "resolution": {
+          "$ref": "#/$defs/timeObject/properties/resolution"
+        }
+      },
+      "additionalProperties": true
     }
-  },
-  "additionalProperties": true
+  }
 }

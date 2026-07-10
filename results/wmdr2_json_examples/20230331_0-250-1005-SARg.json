@@ -1,6 +1,9 @@
 {
   "type": "Feature",
-  "id": "wsi:0-250-1005-SARg",
+  "id": "0-250-1005-SARg",
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -9,36 +12,75 @@
       2850
     ]
   },
-  "time": {
-    "interval": [
-      "1949-01-01",
-      ".."
-    ],
-    "resolution": "day"
-  },
-  "conformsTo": [
-    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
-  ],
   "properties": {
     "type": "facility",
     "title": "Sarennes Glacier",
     "created": "2023-03-31T00:00:00Z",
     "updated": "2023-03-31T00:00:00Z",
     "facilityType": "landOnIce",
-    "wmoRegion": "europe",
-    "contacts": [
+    "territory": [
       {
-        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
-        "emails": [
-          "oscar@wmo.int"
-        ],
-        "links": [
+        "territory": "FRA",
+        "time": {
+          "interval": [
+            "1949-01-01",
+            ".."
+          ]
+        }
+      }
+    ],
+    "wmoRegion": "europe",
+    "observationSeries": [
+      {
+        "id": "observationSeries:12010",
+        "title": "domain: terrestrial; variable: 12010",
+        "observedProperty": 12010,
+        "observedDomain": {
+          "domain": "terrestrial"
+        },
+        "observingConfigurations": [
           {
-            "href": "https://oscar.wmo.int/surface",
-            "rel": "about",
-            "type": "text/html"
+            "time": {
+              "interval": [
+                "1949-01-01",
+                ".."
+              ]
+            },
+            "observingMethod": {
+              "nilReason": "unknown"
+            }
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_c6cc25203e"
+            ],
+            "time": {
+              "interval": [
+                "1949-01-01",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "reportingSchedules": [
+              "schedule_c6cc25203e"
+            ]
           }
         ]
+      }
+    ],
+    "schedules": [
+      {
+        "wmo.int:aggregationInterval": "PT1H",
+        "start": "0001-01-01T00:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_c6cc25203e"
       }
     ],
     "keywords": [
@@ -52,82 +94,66 @@
         "type": "text/html"
       }
     ],
-    "programAffiliations": [
+    "contactAssignments": [
       {
-        "validFrom": "1949-01-01",
-        "program": [
-          "nonAffiliated"
+        "contact": "contact:delphine.six@univ-grenoble-alpes.fr",
+        "roles": [
+          "principalInvestigator"
         ]
       }
     ],
-    "territory": [
+    "contacts": [
       {
-        "validFrom": "1949-01-01",
-        "territory": "FRA"
-      }
-    ],
-    "observationSeries": [
-      {
-        "uid": "observationSeries:12010-36c80e5c3d",
-        "title": "domain: terrestrial; geometry: unknown; variable: 12010",
-        "observedProperty": 12010,
-        "observedFeature": {
-          "domain": "terrestrial"
-        },
-        "observedGeometry": "unknown",
-        "programAffiliations": [
-          "nonAffiliated"
-        ],
-        "observingConfigurations": [
+        "identifier": "contact:delphine.six@univ-grenoble-alpes.fr",
+        "name": "SIX,Delphine,Mme",
+        "organization": "Université Grenoble-Alpes",
+        "emails": [
           {
-            "validFrom": "1949-01-01",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "value": "delphine.six@univ-grenoble-alpes.fr"
           }
         ],
-        "observingProcedures": [
+        "phones": [
           {
-            "validFrom": "1949-01-01",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_f253213a5423"
-            ]
+            "value": "+33476824239"
           }
         ],
-        "reportingProcedures": [
+        "addresses": [
           {
-            "internationalExchange": false,
-            "temporalReportingInterval": "PT1H",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_f253213a5423"
-            ]
+            "deliveryPoint": [
+              "UGA - IGE CS 40700"
+            ],
+            "city": "Grenoble",
+            "postalCode": "38058",
+            "country": "FRA"
           }
         ]
-      }
-    ],
-    "schedules": [
+      },
       {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT1H",
-        "recurrenceRules": [
+        "identifier": "contact:oscar@wmo.int",
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
           {
-            "@type": "RecurrenceRule",
-            "frequency": "hourly"
+            "value": "oscar@wmo.int"
+          },
+          {
+            "value": "https://oscar.wmo.int/surface/#/feedback"
           }
         ],
-        "wmo.int:aggregationInterval": "PT1H",
-        "uid": "schedule_f253213a5423"
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ]
       }
     ]
+  },
+  "time": {
+    "interval": [
+      "1949-01-01",
+      ".."
+    ],
+    "resolution": "P1D"
   }
 }

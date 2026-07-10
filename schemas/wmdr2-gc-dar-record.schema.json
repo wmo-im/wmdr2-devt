@@ -2,33 +2,442 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://wmo.int/wmdr2/schemas/wmdr2-gc-dar-record.schema.json",
   "title": "WMDR2 GC-DAR discovery record",
+  "description": "Reduced discovery / catalogue view derived from a WMDR2 facility record. This schema is not the full WMDR2 facility-record validation schema; use wmdr2-record-feature.schema.json for that. WMDR2 v0.3.1 public records must not contain source/transitional temporal keys beginPosition, endPosition, validFrom, or validTo; use time.interval instead.",
   "type": "object",
-  "required": ["type", "id", "properties"],
+  "required": [
+    "type",
+    "id",
+    "properties"
+  ],
   "properties": {
-    "type": {"const": "Feature"},
-    "id": {"type": "string"},
-    "geometry": {"type": ["object", "null"]},
-    "time": {"type": "object"},
-    "conformsTo": {"type": "array", "items": {"type": "string"}},
+    "type": {
+      "const": "Feature"
+    },
+    "id": {
+      "$ref": "#/$defs/wsi"
+    },
+    "geometry": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/pointGeometry"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "time": {
+      "$ref": "#/$defs/time"
+    },
+    "conformsTo": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/link"
+      }
+    },
     "properties": {
       "type": "object",
-      "required": ["profile", "type"],
+      "required": [
+        "profile",
+        "type"
+      ],
       "properties": {
-        "type": {"const": "facility"},
-        "profile": {"const": "wmdr2-gc-dar"},
-        "title": {"type": "string"},
-        "description": {"type": "string"},
-        "keywords": {"type": "array"},
-        "territory": {"type": ["string", "integer"]},
-        "programAffiliations": {"type": "array"},
-        "observedProperty": {"type": "array"},
-        "observedFeatureDomain": {"type": "array"},
-        "observationSeries": {"type": "array"},
-        "provenance": {"type": "object"},
-        "retrieval": {"type": "object"}
+        "type": {
+          "const": "facility"
+        },
+        "profile": {
+          "const": "wmdr2-gc-dar"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "territory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "programAffiliations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "observedProperty": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "observedFeatureDomain": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "observedFeatureDomainFeature": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
+        },
+        "observedFeatureName": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observationSeries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^observationSeries:"
+              },
+              "title": {
+                "type": "string"
+              },
+              "observedProperty": {
+                "$ref": "#/$defs/codeValue"
+              },
+              "observedFeature": {
+                "type": "object"
+              },
+              "observedGeometry": {
+                "$ref": "#/$defs/codeValue"
+              },
+              "contactAssignments": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/contactAssignment"
+                }
+              }
+            }
+          }
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contact"
+          }
+        },
+        "contactAssignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contactAssignment"
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "retrieval": {
+          "type": "object",
+          "additionalProperties": true
+        }
       },
       "additionalProperties": true
-    }
+    },
+    "beginPosition": false,
+    "endPosition": false,
+    "validFrom": false,
+    "validTo": false
   },
-  "additionalProperties": true
+  "additionalProperties": true,
+  "$defs": {
+    "wsi": {
+      "type": "string",
+      "description": "Bare WIGOS Station Identifier. Namespace prefixes such as wsi:, facility:, and record: are not permitted here.",
+      "pattern": "^[0-3]-[0-9]+-[0-9]+-[A-Za-z0-9._-]+$"
+    },
+    "dateOrOpen": {
+      "type": "string",
+      "anyOf": [
+        {
+          "const": ".."
+        },
+        {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        {
+          "format": "date-time"
+        }
+      ]
+    },
+    "isoDuration": {
+      "type": "string",
+      "description": "ISO 8601 duration, for example P1D, PT1H, or PT10M.",
+      "pattern": "^P(?!$)(?:\\d+(?:[.,]\\d+)?Y)?(?:\\d+(?:[.,]\\d+)?M)?(?:\\d+(?:[.,]\\d+)?W)?(?:\\d+(?:[.,]\\d+)?D)?(?:T(?:\\d+(?:[.,]\\d+)?H)?(?:\\d+(?:[.,]\\d+)?M)?(?:\\d+(?:[.,]\\d+)?S)?)?$",
+      "not": {
+        "const": "P"
+      }
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "interval": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/dateOrOpen"
+          }
+        },
+        "resolution": {
+          "$ref": "#/$defs/isoDuration"
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
+      }
+    },
+    "pointGeometry": {
+      "type": "object",
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "properties": {
+        "type": {
+          "const": "Point"
+        },
+        "coordinates": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
+      },
+      "additionalProperties": true
+    },
+    "codeValue": {
+      "description": "Compact codelist value, URI, number, structured value, or null.",
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "object",
+        "array",
+        "boolean",
+        "null"
+      ]
+    },
+    "link": {
+      "type": "object",
+      "required": [
+        "href"
+      ],
+      "properties": {
+        "href": {
+          "type": "string"
+        },
+        "rel": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
+      },
+      "additionalProperties": true
+    },
+    "contact": {
+      "type": "object",
+      "description": "Reusable OGC Contact object. Contextual WMDR roles should normally be expressed with contactAssignments, not only here, so the same party can be reused with different roles in different contexts.",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "pattern": "^contact:"
+        },
+        "name": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "phones": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/phone"
+          }
+        },
+        "emails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/email"
+          }
+        },
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/address"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "hoursOfService": {
+          "type": "string"
+        },
+        "contactInstructions": {
+          "type": "string"
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
+      },
+      "additionalProperties": true
+    },
+    "email": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "string",
+          "format": "email"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
+      },
+      "additionalProperties": true
+    },
+    "phone": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
+      },
+      "additionalProperties": true
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "deliveryPoint": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "city": {
+          "type": "string"
+        },
+        "administrativeArea": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
+      },
+      "additionalProperties": true
+    },
+    "contactAssignment": {
+      "type": "object",
+      "required": [
+        "contact",
+        "roles"
+      ],
+      "properties": {
+        "contact": {
+          "type": "string",
+          "pattern": "^contact:",
+          "description": "Reference to properties.contacts[].identifier."
+        },
+        "roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
+      },
+      "additionalProperties": false
+    }
+  }
 }

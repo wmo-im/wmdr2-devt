@@ -1,6 +1,9 @@
 {
   "type": "Feature",
-  "id": "wsi:0-404-800-4AA01",
+  "id": "0-404-800-4AA01",
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -8,6 +11,101 @@
       -0.36172,
       1813
     ]
+  },
+  "properties": {
+    "type": "facility",
+    "title": "Sagana",
+    "created": "2025-03-14T00:00:00Z",
+    "updated": "2025-03-14T00:00:00Z",
+    "additionalTitles": [
+      "Sagana in Tana Basin"
+    ],
+    "facilityType": "lakeRiverFixed",
+    "territory": [
+      {
+        "territory": "KEN",
+        "time": {
+          "interval": [
+            "1947-09-01",
+            ".."
+          ]
+        }
+      }
+    ],
+    "wmoRegion": "africa",
+    "observationSeries": [
+      {
+        "id": "observationSeries:12252",
+        "title": "domain: ocean; variable: 12252",
+        "observedProperty": 12252,
+        "observedDomain": {
+          "domain": "ocean"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "1947-09-01",
+                ".."
+              ]
+            },
+            "observingMethod": 356
+          }
+        ],
+        "observingProcedures": [
+          {
+            "observingSchedules": [
+              "schedule_c6cc25203e"
+            ],
+            "time": {
+              "interval": [
+                "1947-09-01",
+                ".."
+              ]
+            }
+          }
+        ],
+        "reportingProcedures": [
+          {
+            "internationalExchange": false,
+            "dataPolicy": "unknown",
+            "uom": "m",
+            "reportingSchedules": [
+              "schedule_c6cc25203e"
+            ]
+          }
+        ]
+      }
+    ],
+    "schedules": [
+      {
+        "wmo.int:aggregationInterval": "PT1H",
+        "start": "0001-01-01T00:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_c6cc25203e"
+      }
+    ],
+    "keywords": [
+      "0-404-800-4AA01",
+      "Sagana",
+      "Sagana in Tana Basin"
+    ],
+    "contactAssignments": [
+      {
+        "contact": "contact:jtmuiruri@gmail.com",
+        "roles": [
+          "pointOfContact"
+        ]
+      }
+    ]
+  },
+  "time": {
+    "interval": [
+      "1947-09-01",
+      ".."
+    ],
+    "resolution": "P1D"
   },
   "temporalGeometry": {
     "type": "MovingPoint",
@@ -25,118 +123,6 @@
       [
         "gps"
       ]
-    ]
-  },
-  "time": {
-    "interval": [
-      "1947-09-01",
-      ".."
-    ],
-    "resolution": "day"
-  },
-  "conformsTo": [
-    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
-  ],
-  "properties": {
-    "type": "facility",
-    "title": "Sagana; Sagana in Tana Basin",
-    "created": "2025-03-14T00:00:00Z",
-    "updated": "2025-03-14T00:00:00Z",
-    "facilityType": "lakeRiverFixed",
-    "wmoRegion": "africa",
-    "contacts": [
-      {
-        "uid": "contact:oscar@wmo.int",
-        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
-        "links": [
-          {
-            "rel": "about",
-            "href": "../catalogues/contacts.json#contact:oscar@wmo.int",
-            "type": "application/json"
-          }
-        ]
-      }
-    ],
-    "keywords": [
-      "0-404-800-4AA01",
-      "Sagana",
-      "Sagana in Tana Basin"
-    ],
-    "programAffiliations": [
-      {
-        "validFrom": "1947-09-01",
-        "program": "WHYCOS",
-        "reportingStatus": "operational"
-      }
-    ],
-    "territory": [
-      {
-        "validFrom": "1947-09-01",
-        "territory": "KEN"
-      }
-    ],
-    "observationSeries": [
-      {
-        "uid": "observationSeries:12252-ca06a31932",
-        "title": "domain: ocean; geometry: verticalProfile; variable: 12252",
-        "observedProperty": 12252,
-        "observedFeature": {
-          "domain": "ocean"
-        },
-        "observedGeometry": "verticalProfile",
-        "programAffiliations": [
-          "WHYCOS"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "1947-09-01",
-            "observingMethod": 356,
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ],
-        "observingProcedures": [
-          {
-            "validFrom": "1947-09-01",
-            "strategy": "continuous",
-            "observingSchedules": [
-              "schedule_f253213a5423"
-            ]
-          }
-        ],
-        "reportingProcedures": [
-          {
-            "internationalExchange": false,
-            "uom": "m",
-            "temporalReportingInterval": "PT1H",
-            "dataPolicy": "unknown",
-            "strategy": "routine",
-            "reportingSchedules": [
-              "schedule_f253213a5423"
-            ]
-          }
-        ]
-      }
-    ],
-    "schedules": [
-      {
-        "@type": "Event",
-        "start": "0001-01-01T00:00:00",
-        "timeZone": "UTC",
-        "duration": "PT1H",
-        "recurrenceRules": [
-          {
-            "@type": "RecurrenceRule",
-            "frequency": "hourly"
-          }
-        ],
-        "wmo.int:aggregationInterval": "PT1H",
-        "uid": "schedule_f253213a5423"
-      }
     ]
   }
 }

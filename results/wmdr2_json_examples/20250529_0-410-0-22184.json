@@ -1,6 +1,9 @@
 {
   "type": "Feature",
-  "id": "wsi:0-410-0-22184",
+  "id": "0-410-0-22184",
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -9,28 +12,125 @@
       0
     ]
   },
-  "time": {
-    "interval": [
-      "2014-01-14",
-      "2024-09-30"
-    ],
-    "resolution": "day"
-  },
-  "conformsTo": [
-    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
-  ],
   "properties": {
     "type": "facility",
     "title": "Chujado",
     "created": "2025-05-29T00:00:00Z",
     "updated": "2025-05-29T00:00:00Z",
     "facilityType": "seaFixed",
+    "territory": [
+      {
+        "territory": "KOR",
+        "time": {
+          "interval": [
+            "2014-01-14",
+            ".."
+          ]
+        }
+      }
+    ],
     "wmoRegion": "asia",
+    "observationSeries": [
+      {
+        "id": "observationSeries:95",
+        "title": "domain: ocean; variable: 95",
+        "observedProperty": 95,
+        "observedDomain": {
+          "domain": "ocean"
+        }
+      },
+      {
+        "id": "observationSeries:98",
+        "title": "domain: ocean; variable: 98",
+        "observedProperty": 98,
+        "observedDomain": {
+          "domain": "ocean"
+        }
+      },
+      {
+        "id": "observationSeries:99",
+        "title": "domain: ocean; variable: 99",
+        "observedProperty": 99,
+        "observedDomain": {
+          "domain": "ocean"
+        }
+      },
+      {
+        "id": "observationSeries:100",
+        "title": "domain: ocean; variable: 100",
+        "observedProperty": 100,
+        "observedDomain": {
+          "domain": "ocean"
+        }
+      },
+      {
+        "id": "observationSeries:216",
+        "title": "domain: atmosphere; variable: 216",
+        "observedProperty": 216,
+        "observedDomain": {
+          "domain": "atmosphere"
+        }
+      },
+      {
+        "id": "observationSeries:224",
+        "title": "domain: atmosphere; variable: 224",
+        "observedProperty": 224,
+        "observedDomain": {
+          "domain": "atmosphere"
+        }
+      },
+      {
+        "id": "observationSeries:12249",
+        "title": "domain: atmosphere; variable: 12249",
+        "observedProperty": 12249,
+        "observedDomain": {
+          "domain": "atmosphere"
+        }
+      },
+      {
+        "id": "observationSeries:12005",
+        "title": "domain: atmosphere; variable: 12005",
+        "observedProperty": 12005,
+        "observedDomain": {
+          "domain": "atmosphere"
+        }
+      },
+      {
+        "id": "observationSeries:12006",
+        "title": "domain: atmosphere; variable: 12006",
+        "observedProperty": 12006,
+        "observedDomain": {
+          "domain": "atmosphere"
+        }
+      }
+    ],
+    "keywords": [
+      "0-410-0-22184",
+      "Chujado"
+    ],
+    "contactAssignments": [
+      {
+        "contact": "contact:korea-meteorology-administration-7003125dba",
+        "roles": [
+          "owner"
+        ]
+      }
+    ],
     "contacts": [
       {
+        "identifier": "contact:korea-meteorology-administration-7003125dba",
+        "organization": "Korea Meteorology Administration"
+      },
+      {
+        "identifier": "contact:oscar@wmo.int",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
-          "oscar@wmo.int"
+          {
+            "value": "oscar@wmo.int"
+          },
+          {
+            "value": "https://oscar.wmo.int/surface/#/feedback"
+          }
         ],
         "links": [
           {
@@ -40,259 +140,13 @@
           }
         ]
       }
-    ],
-    "keywords": [
-      "0-410-0-22184",
-      "Chujado"
-    ],
-    "programAffiliations": [
-      {
-        "validFrom": "2024-09-30",
-        "program": "GOSGeneral",
-        "reportingStatus": "closed"
-      }
-    ],
-    "territory": [
-      {
-        "validFrom": "2014-01-14",
-        "territory": "KOR"
-      }
-    ],
-    "observationSeries": [
-      {
-        "uid": "observationSeries:95-c3f83cdf09",
-        "title": "domain: ocean; geometry: point; variable: 95",
-        "observedProperty": 95,
-        "observedFeature": {
-          "domain": "ocean"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "..",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:98-7b7756fd01",
-        "title": "domain: ocean; geometry: point; variable: 98",
-        "observedProperty": 98,
-        "observedFeature": {
-          "domain": "ocean"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "..",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:99-db19850bec",
-        "title": "domain: ocean; geometry: point; variable: 99",
-        "observedProperty": 99,
-        "observedFeature": {
-          "domain": "ocean"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "..",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:100-fedb75885b",
-        "title": "domain: ocean; geometry: point; variable: 100",
-        "observedProperty": 100,
-        "observedFeature": {
-          "domain": "ocean"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "..",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:216-98a0d45f94",
-        "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": 216,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "..",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:224-76499d9112",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": 224,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "..",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12249-9c05b739e1",
-        "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": 12249,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "..",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12005-8a387bac99",
-        "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": 12005,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "..",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12006-3d63bb0d96",
-        "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "observedProperty": 12006,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "..",
-            "observingMethod": {
-              "nilReason": "unknown"
-            },
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      }
     ]
+  },
+  "time": {
+    "interval": [
+      "2014-01-14",
+      "2024-09-30"
+    ],
+    "resolution": "P1D"
   }
 }

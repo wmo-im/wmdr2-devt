@@ -1,6 +1,9 @@
 {
   "type": "Feature",
-  "id": "wsi:0-578-0-92100",
+  "id": "0-578-0-92100",
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
   "geometry": {
     "type": "Point",
     "coordinates": [
@@ -8,6 +11,162 @@
       -71.9563,
       1235
     ]
+  },
+  "properties": {
+    "type": "facility",
+    "title": "TROLL AIRFIELD",
+    "created": "2022-11-24T00:00:00Z",
+    "updated": "2022-11-24T00:00:00Z",
+    "facilityType": "landOnIce",
+    "territory": [
+      {
+        "territory": "NOR",
+        "time": {
+          "interval": [
+            "2007-01-01",
+            ".."
+          ]
+        }
+      }
+    ],
+    "wmoRegion": "antarctica",
+    "observationSeries": [
+      {
+        "id": "observationSeries:216",
+        "title": "domain: atmosphere; variable: 216",
+        "observedProperty": 216,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2007-01-01",
+                ".."
+              ]
+            },
+            "observingMethod": 111
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:224",
+        "title": "domain: atmosphere; variable: 224",
+        "observedProperty": 224,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2007-01-01",
+                ".."
+              ]
+            },
+            "observingMethod": 188
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:12249",
+        "title": "domain: atmosphere; variable: 12249",
+        "observedProperty": 12249,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2022-11-22",
+                ".."
+              ]
+            },
+            "observingMethod": 254
+          }
+        ]
+      },
+      {
+        "id": "observationSeries:12005",
+        "title": "domain: atmosphere; variable: 12005",
+        "observedProperty": 12005,
+        "observedDomain": {
+          "domain": "atmosphere"
+        },
+        "observingConfigurations": [
+          {
+            "time": {
+              "interval": [
+                "2007-01-01",
+                ".."
+              ]
+            },
+            "observingMethod": 63
+          }
+        ]
+      }
+    ],
+    "keywords": [
+      "0-578-0-92100",
+      "TROLL AIRFIELD"
+    ],
+    "contactAssignments": [
+      {
+        "contact": "contact:christina.pedersen@npolar.no",
+        "roles": [
+          "principalInvestigator"
+        ]
+      }
+    ],
+    "contacts": [
+      {
+        "identifier": "contact:christina.pedersen@npolar.no",
+        "name": "Pedersen,Christina Alsvik,Dr.",
+        "organization": "Norwegian Polar Institute",
+        "emails": [
+          {
+            "value": "christina.pedersen@npolar.no"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Norwegian Polar Institute"
+            ],
+            "city": "Tromsø",
+            "country": "NOR"
+          }
+        ]
+      },
+      {
+        "identifier": "contact:oscar@wmo.int",
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          },
+          {
+            "value": "https://oscar.wmo.int/surface/#/feedback"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ]
+      }
+    ]
+  },
+  "time": {
+    "interval": [
+      "2007-01-01",
+      ".."
+    ],
+    "resolution": "P1D"
   },
   "temporalGeometry": {
     "type": "MovingPoint",
@@ -25,163 +184,6 @@
       [
         "map"
       ]
-    ]
-  },
-  "time": {
-    "interval": [
-      "2007-01-01",
-      ".."
-    ],
-    "resolution": "day"
-  },
-  "conformsTo": [
-    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
-  ],
-  "properties": {
-    "type": "facility",
-    "title": "TROLL AIRFIELD",
-    "created": "2022-11-24T00:00:00Z",
-    "updated": "2022-11-24T00:00:00Z",
-    "facilityType": "landOnIce",
-    "wmoRegion": "antarctica",
-    "contacts": [
-      {
-        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
-        "emails": [
-          "oscar@wmo.int"
-        ],
-        "links": [
-          {
-            "href": "https://oscar.wmo.int/surface",
-            "rel": "about",
-            "type": "text/html"
-          }
-        ]
-      }
-    ],
-    "keywords": [
-      "0-578-0-92100",
-      "TROLL AIRFIELD"
-    ],
-    "programAffiliations": [
-      {
-        "validFrom": "2022-11-22",
-        "program": "GOSGeneral",
-        "reportingStatus": "operational"
-      },
-      {
-        "validFrom": "2022-11-22",
-        "program": "nonAffiliated",
-        "reportingStatus": "operational"
-      }
-    ],
-    "territory": [
-      {
-        "validFrom": "2007-01-01",
-        "territory": "NOR"
-      }
-    ],
-    "observationSeries": [
-      {
-        "uid": "observationSeries:216-3ade9de2c0",
-        "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": 216,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2007-01-01",
-            "observingMethod": 111,
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:224-1b5962cc82",
-        "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": 224,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2007-01-01",
-            "observingMethod": 188,
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12249-fb0c212660",
-        "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": 12249,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2022-11-22",
-            "observingMethod": 254,
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      },
-      {
-        "uid": "observationSeries:12005-6da5315be0",
-        "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": 12005,
-        "observedFeature": {
-          "domain": "atmosphere"
-        },
-        "observedGeometry": "point",
-        "programAffiliations": [
-          "nonAffiliated",
-          "GOSGeneral"
-        ],
-        "observingConfigurations": [
-          {
-            "validFrom": "2007-01-01",
-            "observingMethod": 63,
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
-          }
-        ]
-      }
     ]
   }
 }
