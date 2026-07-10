@@ -110,6 +110,17 @@
         "null"
       ]
     },
+    "singleCodeValue": {
+      "description": "Single WMDR codelist value. Accepts compact token, numeric code, URI, nilReason object, structured value, boolean, or null; arrays are not valid for 0..1 properties.",
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "object",
+        "boolean",
+        "null"
+      ]
+    },
     "nilReason": {
       "type": "object",
       "required": [
@@ -683,6 +694,7 @@
           "type": "string",
           "pattern": "^instrument:"
         },
+        "serialNumber": false,
         "observingMethods": {
           "type": "array",
           "items": {
@@ -854,7 +866,7 @@
           "$ref": "#/$defs/codeValue"
         },
         "operatingStatus": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/singleCodeValue"
         },
         "sourceOfObservation": {
           "$ref": "#/$defs/codeValue"
@@ -863,7 +875,13 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "pattern": "^instrument:"
+        },
+        "serialNumber": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Serial number of the instrument instance used in this observing configuration, when known. Omit when unknown."
         },
         "exposure": {
           "$ref": "#/$defs/codeValue"

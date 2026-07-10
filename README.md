@@ -225,7 +225,7 @@ Programme affiliations at facility level are temporal objects because the statio
 }
 ```
 
-Serial numbers are not part of the instrument catalogue because they identify individual items, not catalogue entries.  When serial-numbered source information cannot be represented without changing catalogue semantics, it should not be promoted into `properties.instruments[]`.
+Serial numbers are not part of the instrument catalogue because they identify individual items, not catalogue entries.  They are optional instance metadata on `observingConfigurations[]`.  An instrument can therefore be documented through the catalogue reference even when the serial number is unknown.  In that case, omit `serialNumber`; do not create a catalogue-specific instrument instance.
 
 ## Observation series
 
@@ -257,7 +257,7 @@ An observation series describes observations of one property or closely related 
 
 ## Observing configurations
 
-`observingConfigurations[]` is the time-bound history of how and where an observation series is made.  It is the place for observing method, operating status, source of observation, instrument reference, exposure, local geometry, reference surface, and vertical distance.
+`observingConfigurations[]` is the time-bound history of how and where an observation series is made.  It is the place for observing method, optional operating status, source of observation, instrument reference, optional serial number, exposure, local geometry, reference surface, and vertical distance.
 
 ```json
 {
@@ -266,6 +266,7 @@ An observation series describes observations of one property or closely related 
   "operatingStatus": "operational",
   "sourceOfObservation": "automaticReading",
   "instrument": "instrument:thermo--49i",
+  "serialNumber": "SN-001",
   "exposure": "good",
   "geometry": {
     "type": "Point",
@@ -279,7 +280,7 @@ An observation series describes observations of one property or closely related 
 }
 ```
 
-An observing configuration requires `observingMethod` and a `time` interval.  Use `{"nilReason": "unknown"}` for an explicitly unknown method.  Do not emit discovery keywords or a nested location wrapper here; the relevant location fields are represented directly on the configuration.
+An observing configuration requires `observingMethod` and a `time` interval.  `operatingStatus` has cardinality 0..1 and is emitted only when recorded.  `serialNumber` also has cardinality 0..1 and is emitted only when the instrument instance serial number is known; a missing serial number does not prevent documenting the instrument via `instrument`.  Use `{"nilReason": "unknown"}` for an explicitly unknown method.  Do not emit discovery keywords or a nested location wrapper here; the relevant location fields are represented directly on the configuration.
 
 ## Observing procedures
 

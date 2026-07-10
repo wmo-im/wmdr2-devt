@@ -910,3 +910,17 @@ def test_normalize_existing_record_converts_legacy_identifiers_to_additional_ids
     assert normalized["properties"]["additionalIds"] == ["0-756-1-Blatten"]
     assert "identifiers" not in normalized["properties"]
 
+
+
+def test_operating_status_is_not_fabricated_when_absent() -> None:
+    record = converter.convert_payload(_payload(), source_name="20200102_0-20008-0-THE")
+    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    assert "operatingStatus" not in cfg
+
+
+def test_serial_number_stays_on_observing_configuration_not_instrument_catalogue() -> None:
+    record = converter.convert_payload(_payload(), source_name="20200102_0-20008-0-THE")
+    props = record["properties"]
+    cfg = props["observationSeries"][0]["observingConfigurations"][0]
+    assert cfg["serialNumber"] == "SN1"
+    assert all("serialNumber" not in instrument for instrument in props["instruments"])

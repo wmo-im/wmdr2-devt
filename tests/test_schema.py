@@ -102,3 +102,28 @@ def test_schema_accepts_aggregation_interval_on_reusable_schedule() -> None:
     ]
     errors = list(_validator().iter_errors(record))
     assert errors == []
+
+
+def test_schema_accepts_serial_number_on_observing_configuration() -> None:
+    record = _valid_record()
+    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    cfg["serialNumber"] = "SN-001"
+    errors = list(_validator().iter_errors(record))
+    assert errors == []
+
+
+def test_schema_rejects_serial_number_on_instrument_catalogue_entry() -> None:
+    record = _valid_record()
+    record["properties"]["instruments"] = [
+        {"id": "instrument:maker-model", "manufacturer": "Maker", "model": "Model", "serialNumber": "SN-001"}
+    ]
+    errors = list(_validator().iter_errors(record))
+    assert errors
+
+
+def test_schema_rejects_multiple_operating_status_values_on_observing_configuration() -> None:
+    record = _valid_record()
+    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    cfg["operatingStatus"] = ["operational", "standby"]
+    errors = list(_validator().iter_errors(record))
+    assert errors
