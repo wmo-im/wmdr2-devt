@@ -81,12 +81,12 @@ def test_last_segment(raw: Any, expected: str | None) -> None:
 
 
 @pytest.mark.parametrize(("raw", "expected"), [
-    ("12006", 12006),
-    ("001", 1),
+    ("12006", "12006"),
+    ("001", "001"),
     ("http://codes.wmo.int/wmdr/unit/mm", "mm"),
     ("(unknown)", "unknown"),
     ("abc", "abc"),
-    (5, 5),
+    (5, "5"),
     ({"href": "http://codes.wmo.int/wmdr/LevelOfData/level1"}, "level1"),
 ])
 def test_normalize_code_value(raw: Any, expected: Any) -> None:
@@ -98,7 +98,7 @@ def test_normalize_code_value(raw: Any, expected: Any) -> None:
     ("https://codes.wmo.int/wmdr/FacilityType/landFixed", "landFixed"),
     ("http://example.org/not-wmdr/value", "http://example.org/not-wmdr/value"),
     ({"href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"}, "GBON"),
-    (12006, 12006),
+    (12006, "12006"),
 ])
 def test_compact_wmdr_code_value(raw: Any, expected: Any) -> None:
     assert converter._compact_wmdr_code_value(raw) == expected

@@ -1,17 +1,17 @@
-# WMDR2 development model v0.3.1
+# WMDR2 development model v0.3.2
 
 This repository contains the current development version of the simplified WMDR2 JSON representation, converter utilities, JSON Schemas, generated examples, and tests.  The format is intended to represent WIGOS station metadata in an OGC Records / GeoJSON-oriented structure while preserving the information that can be recovered from WMDR 1.0 source records without inventing missing metadata.
 
-The current model version described here is **WMDR2 v0.3.1**.
+The current model version described here is **WMDR2 v0.3.2**.
 
 ## Design principles
 
-The v0.3.1 model follows these principles.
+The v0.3.2 model follows these principles.
 
 1. A WMDR2 station record is a GeoJSON `Feature` whose root `id` is the primary WIGOS Station Identifier.
 2. Facility names and identifiers are normalized to one primary value plus explicit additional values.
 3. Time-varying properties use a `time` object with an interval; older source-specific temporal field names are not part of the public model.
-4. The useful content of observing-location and instrument-placement history is represented directly in `observingConfigurations[]`.
+4. The useful content of source equipment and configuration history is represented directly in `observingConfigurations[]`; no nested location wrapper is emitted.
 5. Reusable contacts, instruments, and schedules are registries in the facility record and are referenced from the places where they are used.
 6. The converter must preserve recorded information and must not fabricate validity dates, phone country codes, instrument serial numbers, observing methods, or programme affiliations.
 7. Source examples that cannot validate without inventing information are explicitly commented in the end-to-end tests rather than being silently “fixed”.
@@ -215,7 +215,7 @@ Programme affiliations at facility level are temporal objects because the statio
       "id": "instrument:thermo--49i",
       "manufacturer": "Thermo",
       "model": "49i",
-      "observingMethods": [266],
+      "observingMethods": ["266"],
       "verticalRange": {
         "min": 0.0,
         "max": 30.0
@@ -235,14 +235,14 @@ An observation series describes observations of one property or closely related 
 {
   "id": "observationSeries:0-20008-0-THE--12006",
   "title": "Air temperature",
-  "observedProperty": 12006,
+  "observedProperty": "12006",
   "observedFeature": {
     "domain": "atmosphere",
     "domainFeature": "nearSurface",
     "featureName": "air"
   },
   "observedGeometry": "point",
-  "applicationArea": "weather",
+  "applicationAreas": ["weather"],
   "representativeness": "local",
   "programAffiliations": ["GBON"],
   "observingConfigurations": [],
@@ -255,6 +255,10 @@ An observation series describes observations of one property or closely related 
 
 `observedFeature.domain` is required when `observedFeature` is present.  `domainFeature` and `featureName` allow more specific description where the source contains it.
 
+Code-list values are emitted as JSON strings, even when the source code is numeric-looking.  For example, an observed-property code such as `12006` is represented as `"12006"`, not as the JSON number `12006`.
+
+`applicationAreas[]` is always an array in WMDR2.  The XML-derived WMDR1 source may contain singular `applicationArea` values; the WMDR2 converter collects them into the plural list.
+
 ## Observing configurations
 
 `observingConfigurations[]` is the time-bound history of how and where an observation series is made.  It is the place for observing method, optional operating status, source of observation, instrument reference, optional serial number, exposure, local geometry, reference surface, and vertical distance.
@@ -262,7 +266,7 @@ An observation series describes observations of one property or closely related 
 ```json
 {
   "time": {"interval": ["2020-01-01", ".."]},
-  "observingMethod": 266,
+  "observingMethod": "266",
   "operatingStatus": "operational",
   "sourceOfObservation": "automaticReading",
   "instrument": "instrument:thermo--49i",
@@ -281,6 +285,8 @@ An observation series describes observations of one property or closely related 
 ```
 
 An observing configuration requires `observingMethod` and a `time` interval.  `operatingStatus` has cardinality 0..1 and is emitted only when recorded.  `serialNumber` also has cardinality 0..1 and is emitted only when the instrument instance serial number is known; a missing serial number does not prevent documenting the instrument via `instrument`.  Use `{"nilReason": "unknown"}` for an explicitly unknown method.  Do not emit discovery keywords or a nested location wrapper here; the relevant location fields are represented directly on the configuration.
+
+If the source carries a temporal operating-status history, the converter creates separate observing-configuration entries, each with its own `time.interval` and scalar `operatingStatus`.  It must not emit an array-valued `operatingStatus` inside one configuration.
 
 ## Observing procedures
 
@@ -438,6 +444,8 @@ schemas/wmdr2-record-feature.schema.json
 
 This schema validates the full WMDR2 facility record as a GeoJSON Feature.  It uses JSON Schema draft 2020-12.
 
+The schema describes the public WMDR2 output only.  Source-side structures used internally by the WMDR1 conversion path are not public schema properties.
+
 Other schemas in the repository may validate catalogue views or discovery profiles.  They are not substitutes for validating a full WMDR2 facility record.
 
 ## Test policy
@@ -459,14 +467,34 @@ The end-to-end tests deliberately distinguish between:
 
 A source record being marked invalid at XML level does not automatically mean its WMDR2 projection must fail schema validation.  Conversely, if a WMDR2 record lacks required metadata and the source does not provide it, the test should comment that example as non-validating instead of making the converter invent values.
 
+### PR-22 schema compatibility check
+
+The optional PR-22 compatibility validator checks generated WMDR2 examples against the current `wmo-im/wmdr2` PR-22 schema.  It is intentionally a transition check, not the native WMDR2-devt validator.  The script applies temporary in-memory adaptations, such as `observationSeries` to `observingCapabilities`, and does not modify examples on disk.
+
+Run it through pytest by setting the path to the bundled PR-22 schema:
+
+```bash
+WMDR2_PR22_BUNDLED_SCHEMA=/path/to/wmdr2/schemas/wmdr2-bundled.json \
+pytest -q -m pr22_schema
+```
+
+Or run the script directly:
+
+```bash
+python scripts/validate_wmdr2_examples_pr22.py \
+  --paths results/wmdr2_json_examples \
+  --schema /path/to/wmdr2/schemas/wmdr2-bundled.json \
+  --allow-known-nonvalidating
+```
+
 ## Current non-goals
 
-The v0.3.1 development model deliberately does not try to solve the following by inference:
+The v0.3.2 development model deliberately does not try to solve the following by inference:
 
 - deriving country codes for local phone numbers;
 - constructing validity intervals where no time anchor is recorded;
 - turning individual serial-numbered items into catalogue entries;
-- guessing observing methods, exposure, or source of observation;
+- guessing observing methods, application areas, exposure, or source of observation;
 - forcing observing and reporting procedures to share schedules when their temporal patterns differ.
 
 These constraints keep the converter faithful to the source metadata and keep schema validation meaningful.

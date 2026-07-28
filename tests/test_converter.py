@@ -12,6 +12,10 @@ import convert_wmdr10_json_to_wmdr2_json as converter
 OBSERVED_12006 = "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
 OBSERVED_179 = "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/179"
 GEOMETRY_POINT = "http://codes.wmo.int/wmdr/Geometry/point"
+APPLICATION_NOWCASTING = "http://codes.wmo.int/wmdr/ApplicationArea/nowcasting"
+APPLICATION_AVIATION = "http://codes.wmo.int/wmdr/ApplicationArea/aviation"
+PROGRAM_GBON = "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+PROGRAM_GOS = "http://codes.wmo.int/wmdr/ProgramAffiliation/GOS"
 
 
 def _walk_dicts(value: Any):
@@ -140,6 +144,91 @@ def test_facility_identifier_is_bare_wsi(raw: str, expected: str) -> None:
     assert converter._normalize_facility_wsi(raw) == expected
 
 
+def test_observation_series_preserves_xml_converter_observation_series_metadata() -> None:
+    payload = {
+        "header": {"dateStamp": "2020-01-02"},
+        "facility": {
+            "identifier": "0-20000-0-TEST",
+            "name": "Test",
+            "geospatialLocation": "46 7 500",
+        },
+        "observationSeries": [
+            {
+                "observedProperty": OBSERVED_12006,
+                # The XML -> WMDR1 converter emits this WMDR1 field as
+                # ``type``; WMDR2 publishes it as ``observedGeometry``.
+                "type": GEOMETRY_POINT,
+                "programAffiliation": [
+                    {"programAffiliation": PROGRAM_GBON, "beginPosition": "2020-01-01"},
+                    {"href": PROGRAM_GOS, "beginPosition": "2020-01-01"},
+                    {"programAffiliation": PROGRAM_GBON, "beginPosition": "2021-01-01"},
+                ],
+                "deployments": [
+                    {
+                        "beginPosition": "2020-01-01",
+                        "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+                        # XML WMDR1 has applicationArea on Deployment, but
+                        # WMDR2 publishes it on ObservationSeries.
+                        "applicationArea": {"href": APPLICATION_NOWCASTING},
+                    },
+                    {
+                        "beginPosition": "2021-01-01",
+                        "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+                        "applicationArea": {"applicationArea": APPLICATION_AVIATION},
+                    },
+                ],
+            }
+        ],
+    }
+
+    record = converter.convert_payload(payload, source_name="20200102_0-20000-0-TEST")
+    observation = record["properties"]["observationSeries"][0]
+
+    assert observation["observedGeometry"] == "point"
+    assert observation["applicationAreas"] == ["nowcasting", "aviation"]
+    assert "applicationArea" not in observation
+    assert observation["programAffiliations"] == ["GBON", "GOS"]
+    assert "programAffiliation" not in observation
+
+
+def test_numeric_codelist_values_are_emitted_as_strings() -> None:
+    payload = {
+        "header": {"dateStamp": "2020-01-02"},
+        "facility": {
+            "identifier": "0-20000-0-TEST",
+            "name": "Test",
+            "geospatialLocation": "46 7 500",
+        },
+        "observationSeries": [
+            {
+                "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
+                "type": "http://codes.wmo.int/wmdr/Geometry/point",
+                "applicationArea": 10,
+                "deployments": [
+                    {
+                        "beginPosition": "2020-01-01",
+                        "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+                        "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+                        "heightAboveLocalReferenceSurface": {"@uom": "m", "#text": "2.0"},
+                    }
+                ],
+            }
+        ],
+    }
+
+    record = converter.convert_payload(payload, source_name="20200102_0-20000-0-TEST")
+    observation = record["properties"]["observationSeries"][0]
+    cfg = observation["observingConfigurations"][0]
+
+    assert observation["observedProperty"] == "12006"
+    assert observation["observedGeometry"] == "point"
+    assert observation["applicationAreas"] == ["10"]
+    assert cfg["observingMethod"] == "266"
+    assert cfg["referenceSurface"] == "localGround"
+    assert cfg["verticalDistanceFromReferenceSurface"] == {"value": 2.0, "uom": "m"}
+
+
+
 def test_convert_payload_emits_current_v031_shape() -> None:
     record = converter.convert_payload(_payload(), source_name="20200102_0-20008-0-THE")
     props = record["properties"]
@@ -151,15 +240,14 @@ def test_convert_payload_emits_current_v031_shape() -> None:
     assert record["conformsTo"] == ["http://wigos.wmo.int/spec/wmdr/2/conf/core"]
     assert record["time"] == {"interval": ["2020-01-01", ".."], "resolution": "P1D"}
     assert observation["id"] == "observationSeries:12006"
-    assert observation["observedProperty"] == 12006
+    assert observation["observedProperty"] == "12006"
     assert observation["observedGeometry"] == "point"
     assert observation["observedDomain"] == {"domain": "atmosphere"}
 
-    assert "observingLocation" not in cfg
     assert "temporalGeometry" not in cfg
     assert "keywords" not in cfg
     assert cfg["time"] == {"interval": ["2020-01-01", ".."]}
-    assert cfg["observingMethod"] == 266
+    assert cfg["observingMethod"] == "266"
     assert cfg["sourceOfObservation"] == "automaticReading"
     assert cfg["referenceSurface"] == "localGround"
     assert cfg["verticalDistanceFromReferenceSurface"] == {"value": 2.0, "uom": "m"}
@@ -202,6 +290,124 @@ def test_convert_payload_emits_current_v031_shape() -> None:
     assert all(forbidden.isdisjoint(item) for item in _walk_dicts(record))
 
 
+
+def test_xml_derived_deployment_equipment() -> None:
+    payload = {
+        "facility": {
+            "identifier": "0-20008-0-THE",
+            "name": "Test station",
+            "geospatialLocation": {
+                "geoLocation": {"pos": "46.0 7.0 500"},
+                "beginPosition": "2020-01-01",
+            },
+        },
+        "observation": [
+            {
+                "observedProperty": {"href": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/572"},
+                "type": {"href": "http://codes.wmo.int/wmdr/Geometry/point"},
+                "programAffiliation": {"href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAW"},
+                "deployments": [
+                    {
+                        "validFrom": "2020-01-01",
+                        "deployedEquipment": {
+                            "Equipment": {
+                                "manufacturer": "Kipp&Zonen",
+                                "model": "CHP 1",
+                                "observingMethod": {
+                                    "href": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/264"
+                                },
+                                "geospatialLocation": {
+                                    "geoLocation": {"pos": "40.634 22.956 60.0"}
+                                },
+                            }
+                        },
+                        "heightAboveLocalReferenceSurface": "20.0",
+                        "heightAboveLocalReferenceSurfaceUom": "m",
+                        "localReferenceSurface": {
+                            "href": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+                        },
+                        "applicationArea": {
+                            "href": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
+                        },
+                        "sourceOfObservation": {
+                            "href": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+                        },
+                        "instrumentOperatingStatus": {
+                            "instrumentOperatingStatus": {
+                                "href": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+                            }
+                        },
+                    }
+                ],
+            }
+        ],
+    }
+
+    record = converter.convert_payload(payload)
+    observation = record["properties"]["observationSeries"][0]
+    cfg = observation["observingConfigurations"][0]
+
+    assert observation["observedProperty"] == "572"
+    assert observation["observedGeometry"] == "point"
+    assert observation["applicationAreas"] == ["atmosphericCompositionMonitoring"]
+    assert observation["programAffiliations"] == ["GAW"]
+    assert cfg["observingMethod"] == "264"
+    assert cfg["operatingStatus"] == "operational"
+    assert cfg["sourceOfObservation"] == "automaticReading"
+    assert cfg["referenceSurface"] == "localGround"
+    assert cfg["verticalDistanceFromReferenceSurface"] == {"value": 20.0, "uom": "m"}
+    assert cfg["geometry"] == {"type": "Point", "coordinates": [22.956, 40.634, 60]}
+    assert cfg["instrument"] == "instrument:kipp-zonen-chp-1"
+    assert record["properties"]["instruments"] == [
+        {"id": "instrument:kipp-zonen-chp-1", "manufacturer": "Kipp&Zonen", "model": "CHP 1"}
+    ]
+
+
+def test_temporal_operating_status_history_splits_observing_configurations() -> None:
+    payload = {
+        "header": {"dateStamp": "2020-01-02"},
+        "facility": {
+            "identifier": "0-20000-0-TEST",
+            "name": "Test",
+            "geospatialLocation": "46 7 500",
+        },
+        "observationSeries": [
+            {
+                "observedProperty": OBSERVED_12006,
+                "type": GEOMETRY_POINT,
+                "deployments": [
+                    {
+                        "beginPosition": "2020-01-01",
+                        "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+                        "instrumentOperatingStatus": [
+                            {
+                                "instrumentOperatingStatus": "operational",
+                                "beginPosition": "2020-01-01",
+                                "endPosition": "2020-12-31",
+                            },
+                            {
+                                "instrumentOperatingStatus": "inactive",
+                                "beginPosition": "2021-01-01",
+                                "endPosition": "..",
+                            },
+                        ],
+                    }
+                ],
+            }
+        ],
+    }
+
+    record = converter.convert_payload(payload, source_name="20200102_0-20000-0-TEST")
+    configs = record["properties"]["observationSeries"][0]["observingConfigurations"]
+
+    assert [cfg["operatingStatus"] for cfg in configs] == ["operational", "inactive"]
+    assert [cfg["time"]["interval"] for cfg in configs] == [
+        ["2020-01-01", "2020-12-31"],
+        ["2021-01-01", ".."],
+    ]
+    assert all(not isinstance(cfg["operatingStatus"], list) for cfg in configs)
+
+
 def test_normalize_existing_record_converts_all_source_temporal_keys() -> None:
     legacy = {
         "type": "Feature",
@@ -224,11 +430,7 @@ def test_normalize_existing_record_converts_all_source_temporal_keys() -> None:
                         {
                             "beginPosition": "2020-03-01",
                             "endPosition": "2024-03-01",
-                            "observingLocation": {
-                                "beginPosition": "2020-04-01",
-                                "endPosition": "2025-04-01",
-                                "referenceSurface": "localGround",
-                            },
+                            "referenceSurface": "localGround",
                         }
                     ],
                 }
@@ -280,42 +482,6 @@ def test_normalize_existing_record_renames_configuration_temporal_geometry_to_ge
     assert "temporalGeometry" not in cfg
     assert "keywords" not in cfg
     assert cfg["geometry"] == {"type": "Point", "coordinates": [7.1, 46.1, 101.0]}
-
-
-def test_normalize_existing_record_promotes_observing_location_and_time() -> None:
-    legacy = {
-        "type": "Feature",
-        "id": "wsi:0-TEST",
-        "geometry": {"type": "Point", "coordinates": [7.0, 46.0, 100]},
-        "conformsTo": ["http://wigos.wmo.int/spec/wmdr/2/conf/core"],
-        "time": {"interval": ["2020-01-01", ".."], "resolution": "day"},
-        "properties": {
-            "type": "facility",
-            "title": "Test",
-            "observationSeries": [
-                {
-                    "id": "observationSeries:test",
-                    "observingConfigurations": [
-                        {
-                            "validFrom": "2020-01-01",
-                            "observingLocation": {
-                                "referenceSurface": "localGround",
-                                "verticalDistanceFromReferenceSurface": {"value": 2, "uom": "m"},
-                            },
-                        }
-                    ],
-                }
-            ],
-        },
-    }
-    record = converter.normalize_wmdr2_record(legacy)
-    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
-    assert record["id"] == "0-TEST"
-    assert record["time"]["resolution"] == "P1D"
-    assert cfg["time"] == {"interval": ["2020-01-01", ".."]}
-    assert cfg["referenceSurface"] == "localGround"
-    assert "validFrom" not in cfg
-    assert "observingLocation" not in cfg
 
 
 def test_normalize_existing_record_removes_time_from_reporting_procedures() -> None:

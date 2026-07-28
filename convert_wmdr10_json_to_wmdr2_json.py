@@ -37,8 +37,9 @@ The v0.3.1 output conventions implemented here are:
 * Contact e-mails and phones are OGC-style objects with a required ``value``.
 * ``time.resolution`` is an ISO 8601 duration such as ``P1D``.
 * ``beginPosition``/``endPosition`` and ``validFrom``/``validTo`` are normalized to OGC Records-style ``time.interval``.
-* ``observingLocation`` is not emitted as a JSON wrapper.  Its useful members are
-  promoted into the surrounding observing configuration object.
+* WMDR1 ``deployment`` source objects are converted to WMDR2
+  ``observingConfigurations``.  The converter does not emit a WMDR2
+  ``deployment`` object.
 * ``reportingProcedures`` implement the v0.3.1 UML ReportingProcedure
   attributes and are not time-bound.  Reporting cadence is represented by
   reusable schedules referenced through ``reportingSchedules``; source
@@ -84,8 +85,6 @@ EMPTY_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
     "facility": {"keywords": [], "links": []},
     "observation": {"keywords": [], "links": []},
     "observingConfiguration": {"keywords": [], "links": []},
-    "observingLocation": {"keywords": [], "links": []},
-    "deployment": {"keywords": [], "links": []},
 }
 
 DEFAULT_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
@@ -95,9 +94,6 @@ DEFAULT_DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = {
     # discovery records.  They may carry links when configured, but they do not
     # emit keywords in v0.3.1.
     "observingConfiguration": {"keywords": [], "links": []},
-    # Section aliases accepted for discovery-policy settings from older config files.
-    "observingLocation": {"keywords": [], "links": []},
-    "deployment": {"keywords": [], "links": []},
 }
 
 DISCOVERY_POLICY: Dict[str, Dict[str, List[str]]] = copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
@@ -397,8 +393,24 @@ def _last_segment(value: Any) -> Optional[str]:
 
 
 def _normalize_code_value(value: Any) -> Any:
+    """Normalize a controlled-vocabulary value to its compact string code.
+
+    WMDR code-list members are identifiers, even when their final URI segment
+    is composed only of digits, for example
+    ``.../ObservedVariableAtmosphere/12006`` or ``.../ObservingMethod/266``.
+    Emit these as JSON strings, not JSON numbers, so generated WMDR2 examples
+    align with the official schema and do not require PR-22 validator casts.
+
+    Only values that explicitly pass through codelist normalization are changed
+    here.  Numeric quantities, coordinates, heights, counts, and dates do not
+    use this helper and therefore remain numeric where appropriate.
+    """
     if isinstance(value, Mapping):
         value = _first_non_empty(value.get("href"), value.get("url"), value.get("value"), value.get("#text"), value.get("text"))
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, int):
+        return str(value)
     if not isinstance(value, str):
         return value
     text = value.strip()
@@ -407,20 +419,53 @@ def _normalize_code_value(value: Any) -> Any:
     segment = _last_segment(text) or text
     if _is_unknown_token(segment):
         return "unknown"
-    if re.fullmatch(r"[+-]?\d+", segment):
-        try:
-            return int(segment)
-        except Exception:
-            return segment
+    # Keep numeric-looking codelist identifiers as strings.  They are not
+    # measured values and should not be emitted as JSON numbers.
     return segment
 
 
 def _compact_wmdr_code_value(value: Any) -> Any:
     if isinstance(value, Mapping):
         value = _first_non_empty(value.get("href"), value.get("url"), value.get("value"), value.get("#text"), value.get("text"))
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, int):
+        return str(value)
     if isinstance(value, str) and value.strip().startswith(("http://codes.wmo.int/wmdr/", "https://codes.wmo.int/wmdr/")):
         return _normalize_code_value(value)
     return value
+
+
+def _compact_wmdr_code_values(value: Any, *nested_keys: str) -> List[Any]:
+    """Return compact WMDR code values from scalar, list, href object, or nested object.
+
+    The XML -> WMDR1 converter emits codelist values as URI strings,
+    ``{"href": ...}`` objects, or field-named wrappers such as
+    ``{"programAffiliation": ...}``.  ObservationSeries-level fields are plain
+    codelist values in WMDR2, so this helper extracts the recorded codes
+    without carrying over WMDR1 temporal wrappers.
+    """
+    values: List[Any] = []
+    for item in _as_list(value):
+        raw: Any = item
+        if isinstance(item, Mapping) and nested_keys:
+            raw = _first_non_empty(
+                *(item.get(key) for key in nested_keys),
+                item.get("href"),
+                item.get("url"),
+                item.get("value"),
+                item.get("#text"),
+                item.get("text"),
+            )
+        compact = _compact_wmdr_code_value(raw)
+        if compact not in (None, "", [], {}):
+            values.append(compact)
+    return _uniq_scalars(values)
+
+
+def _first_compact_wmdr_code_value(value: Any, *nested_keys: str) -> Any:
+    values = _compact_wmdr_code_values(value, *nested_keys)
+    return values[0] if values else None
 
 
 def _nil_reason(reason: Any = "unknown") -> Dict[str, str]:
@@ -874,7 +919,7 @@ def _normalize_discovery_policy(section: Mapping[str, Any]) -> Dict[str, Dict[st
     if not isinstance(raw, dict):
         return copy.deepcopy(DEFAULT_DISCOVERY_POLICY)
     policy = copy.deepcopy(EMPTY_DISCOVERY_POLICY)
-    for entity in ("facility", "observation", "observingConfiguration", "observingLocation", "deployment"):
+    for entity in ("facility", "observation", "observingConfiguration"):
         entity_cfg = raw.get(entity)
         if not isinstance(entity_cfg, dict):
             continue
@@ -882,10 +927,6 @@ def _normalize_discovery_policy(section: Mapping[str, Any]) -> Dict[str, Dict[st
             values = entity_cfg.get(bucket)
             if isinstance(values, list):
                 policy[entity][bucket] = [str(v).strip() for v in values if isinstance(v, str) and str(v).strip()]
-    if policy.get("deployment") and not policy.get("observingConfiguration"):
-        policy["observingConfiguration"] = copy.deepcopy(policy["deployment"])
-    if policy.get("observingLocation") and not policy.get("observingConfiguration"):
-        policy["observingConfiguration"] = copy.deepcopy(policy["observingLocation"])
     return policy
 
 
@@ -926,7 +967,7 @@ def _detect_kind(path: Path, payload: Any) -> str:
             return "full"
         if any(k in payload for k in ("observedVariable", "observedProperty", "resultTime")):
             return "observationSeries"
-        if any(k in payload for k in ("sourceOfObservation", "manufacturer", "serialNumber", "referenceSurface", "observingLocation")):
+        if any(k in payload for k in ("sourceOfObservation", "deployedEquipment", "manufacturer", "serialNumber", "referenceSurface", "localReferenceSurface")):
             return "deployments"
         if any(k in payload for k in ("fileDateTime", "recordOwner", "dateStamp")):
             return "header"
@@ -938,7 +979,7 @@ def _detect_kind(path: Path, payload: Any) -> str:
             return "unknown"
         if any(k in first for k in ("observedVariable", "observedProperty", "resultTime")):
             return "observationSeries"
-        if any(k in first for k in ("sourceOfObservation", "manufacturer", "serialNumber", "referenceSurface", "observingLocation")):
+        if any(k in first for k in ("sourceOfObservation", "deployedEquipment", "manufacturer", "serialNumber", "referenceSurface", "localReferenceSurface")):
             return "deployments"
     return "unknown"
 
@@ -1634,6 +1675,142 @@ def _merge_instrument(existing: Mapping[str, Any], new: Mapping[str, Any]) -> Di
     return out
 
 
+def _unwrap_named_source_object(value: Any, *names: str) -> Any:
+    """Unwrap conservative XML-derived same-concept wrappers.
+
+    The XML -> WMDR1 stage preserves source XML concepts such as
+    ``deployedEquipment`` and may leave class-name wrappers such as
+    ``Equipment`` or field-name wrappers such as ``instrumentOperatingStatus``.
+    This helper unwraps only the explicitly requested names.
+    """
+    current = value
+    normalized_names = {_key.lower() for _key in names}
+    while isinstance(current, Mapping) and len(current) == 1:
+        (key, child), = current.items()
+        if str(key).lower() not in normalized_names:
+            break
+        current = child
+    return current
+
+
+def _first_mapping(value: Any, *wrapper_names: str) -> Mapping[str, Any]:
+    for item in _as_list(value):
+        item = _unwrap_named_source_object(item, *wrapper_names)
+        if isinstance(item, Mapping):
+            return item
+    return {}
+
+
+def _equipment_from_deployment(src: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Return the XML-derived equipment object nested in a WMDR1 deployment.
+
+    WMDR1 XML records place manufacturer/model, the equipment-level
+    ``geospatialLocation``, and often the ``observingMethod`` inside
+    ``wmdr:deployedEquipment/wmdr:Equipment``.  The stage-1 XML -> WMDR1 JSON
+    converter preserves that structure, so the WMDR1 -> WMDR2 converter
+    reads the equipment source object directly.
+    """
+    return _first_mapping(
+        _first_non_empty(src.get("deployedEquipment"), src.get("equipment")),
+        "deployedEquipment",
+        "Equipment",
+        "equipment",
+    )
+
+
+def _normalize_code_member_or_nil_reason(value: Any, *nested_keys: str) -> Any:
+    if isinstance(value, Mapping):
+        for key in ("nilReason", "@nilReason"):
+            if _non_empty(value.get(key)):
+                return _nil_reason(value.get(key))
+        if _parse_bool(value.get("nil")) is True or _parse_bool(value.get("@nil")) is True:
+            return _nil_reason("unknown")
+        if nested_keys:
+            nested = _first_non_empty(
+                *(value.get(key) for key in nested_keys),
+                value.get("href"),
+                value.get("url"),
+                value.get("value"),
+                value.get("#text"),
+                value.get("text"),
+            )
+            if nested not in (None, "", [], {}):
+                return _normalize_code_or_nil_reason(nested)
+    return _normalize_code_or_nil_reason(value)
+
+
+def _status_history_entries(src: Mapping[str, Any]) -> List[Mapping[str, Any]]:
+    """Return XML-derived temporal operating-status entries, if present.
+
+    The XML -> WMDR1 converter can preserve a deployment-level
+    ``instrumentOperatingStatus`` history as a list of objects.  A WMDR2
+    ``observingConfiguration`` has one scalar ``operatingStatus`` and one
+    validity interval, so such histories must be split into several
+    configurations rather than copied as a list-valued operatingStatus.
+    """
+    raw = _first_non_empty(src.get("instrumentOperatingStatus"), src.get("operatingStatus"))
+    entries: List[Mapping[str, Any]] = []
+    for item in _as_list(raw):
+        unwrapped = _unwrap_named_source_object(item, "instrumentOperatingStatus", "operatingStatus")
+        if not isinstance(unwrapped, Mapping):
+            continue
+        status_value = _first_non_empty(
+            unwrapped.get("instrumentOperatingStatus"),
+            unwrapped.get("operatingStatus"),
+            unwrapped.get("href"),
+            unwrapped.get("url"),
+            unwrapped.get("value"),
+            unwrapped.get("#text"),
+            unwrapped.get("text"),
+        )
+        start, end = _extract_interval(unwrapped)
+        if status_value not in (None, "", [], {}) and (start not in (None, "", [], {}) or end not in (None, "", [], {})):
+            entries.append(unwrapped)
+    return entries
+
+
+def _configuration_source_variants(src: Mapping[str, Any]) -> List[Mapping[str, Any]]:
+    """Split one WMDR1 deployment/config source by operating-status history.
+
+    For a single scalar status, return the source unchanged.  For a temporal
+    status history, return one source copy per status period so the downstream
+    observing-configuration normalizer can emit a scalar operatingStatus.
+    """
+    status_entries = _status_history_entries(src)
+    if len(status_entries) <= 1:
+        return [src]
+
+    variants: List[Mapping[str, Any]] = []
+    for status_entry in status_entries:
+        status_value = _first_non_empty(
+            status_entry.get("instrumentOperatingStatus"),
+            status_entry.get("operatingStatus"),
+            status_entry.get("href"),
+            status_entry.get("url"),
+            status_entry.get("value"),
+            status_entry.get("#text"),
+            status_entry.get("text"),
+        )
+        start, end = _extract_interval(status_entry)
+        time = _time_interval(start, end)
+        variant: Dict[str, Any] = dict(src)
+        variant.pop("instrumentOperatingStatus", None)
+        variant.pop("operatingStatus", None)
+        if time:
+            # Prefer the explicit status interval for this split
+            # configuration.  Do not keep source temporal aliases that would
+            # otherwise override or conflict with it during normalization.
+            variant.pop("validFrom", None)
+            variant.pop("validTo", None)
+            variant.pop("beginPosition", None)
+            variant.pop("endPosition", None)
+            variant.pop("date", None)
+            variant["time"] = time
+        variant["instrumentOperatingStatus"] = status_value
+        variants.append(variant)
+    return variants
+
+
 def _observing_configuration_from_source(src: Mapping[str, Any], instrument_registry: Dict[str, Dict[str, Any]], contact_registry: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
     cfg: Dict[str, Any] = {}
 
@@ -1642,16 +1819,32 @@ def _observing_configuration_from_source(src: Mapping[str, Any], instrument_regi
     if interval:
         cfg["time"] = interval
 
-    # Promote observingLocation members into the configuration itself.
-    loc = _as_mapping(src.get("observingLocation"))
-    merged_src: Dict[str, Any] = dict(loc)
+    # Merge the XML-derived deployment with its deployed equipment.  Equipment
+    # carries fields such as manufacturer/model, geospatialLocation and often
+    # observingMethod; deployment carries the lifecycle, reference surface,
+    # application area, source of observation, exposure and data generation.
+    # Deployment-level values take precedence when the same key exists.
+    equipment_src = _equipment_from_deployment(src)
+    merged_src: Dict[str, Any] = dict(equipment_src)
     for key, value in src.items():
-        if key != "observingLocation" and key not in merged_src:
+        if key == "deployedEquipment":
+            continue
+        if value not in (None, "", [], {}):
             merged_src[key] = value
 
-    for key in ("observingMethod", "operatingStatus", "sourceOfObservation", "exposure", "referenceSurface"):
-        if key in merged_src:
-            cfg[key] = _normalize_code_or_nil_reason(merged_src.get(key))
+    code_fields = {
+        "observingMethod": ("observingMethod",),
+        "operatingStatus": ("operatingStatus", "instrumentOperatingStatus"),
+        "sourceOfObservation": ("sourceOfObservation",),
+        "exposure": ("exposure",),
+        "referenceSurface": ("referenceSurface", "localReferenceSurface"),
+    }
+    for target_key, source_keys in code_fields.items():
+        raw_value = _first_non_empty(*(merged_src.get(key) for key in source_keys))
+        if raw_value not in (None, "", [], {}):
+            normalized = _normalize_code_member_or_nil_reason(raw_value, *source_keys)
+            if normalized not in (None, "", [], {}):
+                cfg[target_key] = normalized
 
     for key in ("serialNumber", "location", "relativeLocation", "configuration", "description"):
         text = _strip_text(merged_src.get(key))
@@ -2040,7 +2233,11 @@ def _observation_series_from_source(
     schedule_registry: Dict[str, Dict[str, Any]],
 ) -> Dict[str, Any]:
     observed_property = _first_non_empty(obs.get("observedProperty"), obs.get("observedVariable"))
-    observed_geometry = _first_non_empty(obs.get("observedGeometry"), obs.get("observedGeometryType"), obs.get("geometryType"))
+    # The XML -> WMDR1 JSON converter emits the WMDR1 observed-geometry
+    # codelist value as ``type``.  WMDR2 publishes that value as
+    # ``observedGeometry``.  Keep the mapping deliberately narrow: do not
+    # guess additional aliases that the upstream converter does not emit.
+    observed_geometry = _first_non_empty(obs.get("observedGeometry"), obs.get("type"))
     obs_id_base = _first_non_empty(obs.get("id"), obs.get("uid"))
     if obs_id_base not in (None, "", [], {}):
         series_id = _sanitize_id(obs_id_base)
@@ -2057,12 +2254,41 @@ def _observation_series_from_source(
     if description:
         series["description"] = description
     if observed_property not in (None, "", [], {}):
-        series["observedProperty"] = _compact_wmdr_code_value(observed_property)
+        series["observedProperty"] = _first_compact_wmdr_code_value(observed_property)
     domain = _observed_domain_object(obs)
     if domain:
         series["observedDomain"] = domain
     if observed_geometry not in (None, "", [], {}):
-        series["observedGeometry"] = _compact_wmdr_code_value(observed_geometry)
+        series["observedGeometry"] = _first_compact_wmdr_code_value(observed_geometry)
+
+    local_deployments = _as_list(_first_non_empty(obs.get("deployments"), obs.get("deployment"), obs.get("deploymentRefs")))
+
+    application_area_sources: List[Any] = [obs.get("applicationArea")]
+    # In the WMDR1 XML source, ``applicationArea`` is encoded on
+    # ``wmdr:Deployment``.  The XML -> WMDR1 JSON converter preserves that
+    # field in the nested observation ``deployments`` list, so lift only this
+    # known source field to the WMDR2 ObservationSeries level.
+    for dep in local_deployments:
+        dep_obj = _as_mapping(dep)
+        if dep_obj:
+            application_area_sources.append(dep_obj.get("applicationArea"))
+
+    application_area_values: List[Any] = []
+    for source_value in application_area_sources:
+        application_area_values.extend(_compact_wmdr_code_values(source_value, "applicationArea"))
+    application_area_values = _uniq_scalars(application_area_values)
+    if application_area_values:
+        # WMDR2 models application areas as a multi-valued ObservationSeries
+        # property.  Keep the source mapping narrow, but always emit the
+        # canonical plural field and cardinality.
+        series["applicationAreas"] = application_area_values
+
+    program_affiliation_values = _compact_wmdr_code_values(
+        obs.get("programAffiliation"),
+        "programAffiliation",
+    )
+    if program_affiliation_values:
+        series["programAffiliations"] = program_affiliation_values
 
     start, end = _extract_interval(obs)
     interval = _time_interval(start, end)
@@ -2071,12 +2297,12 @@ def _observation_series_from_source(
 
     configs: List[Dict[str, Any]] = []
     raw_configs = _as_list(obs.get("observingConfigurations"))
-    local_deployments = _as_list(_first_non_empty(obs.get("deployments"), obs.get("deployment"), obs.get("deploymentRefs")))
 
     def append_config(src_obj: Mapping[str, Any]) -> None:
-        cfg = _observing_configuration_from_source(src_obj, instrument_registry, contact_registry)
-        if cfg:
-            configs.append(cfg)
+        for config_source in _configuration_source_variants(src_obj):
+            cfg = _observing_configuration_from_source(config_source, instrument_registry, contact_registry)
+            if cfg:
+                configs.append(cfg)
 
     if raw_configs:
         for cfg_src in raw_configs:
@@ -2267,8 +2493,7 @@ def build_facility_feature(
         dep_obj = _as_mapping(dep_raw)
         instrument = _instrument_from_source(dep_obj)
         if not instrument:
-            loc_obj = _as_mapping(dep_obj.get("observingLocation"))
-            instrument = _instrument_from_source(loc_obj)
+            instrument = _instrument_from_source(_equipment_from_deployment(dep_obj))
         if instrument:
             instrument_id = cast(str, instrument["id"])
             if instrument_id in instrument_registry:
@@ -2339,28 +2564,6 @@ def _normalize_time_members(payload: Dict[str, Any]) -> None:
                 payload["time"] = merged
             else:
                 payload["time"] = interval
-
-
-def _promote_observing_location(payload: Dict[str, Any]) -> None:
-    loc = payload.pop("observingLocation", None)
-    loc_obj = _as_mapping(loc)
-    if not loc_obj:
-        return
-    for key, value in loc_obj.items():
-        if key in SOURCE_TEMPORAL_KEYS:
-            continue
-        if key not in payload or payload.get(key) in (None, "", [], {}):
-            payload[key] = value
-        elif isinstance(payload.get(key), list) or isinstance(value, list):
-            payload[key] = _uniq_scalars([*_as_list(payload.get(key)), *_as_list(value)])
-    loc_start, loc_end = _extract_interval(loc_obj)
-    # Use the former wrapper's time only when the surrounding object has no
-    # own temporal anchor.  If both exist, the surrounding
-    # ObservingConfiguration remains the lifecycle anchor.
-    if "time" not in payload and not any(key in payload for key in SOURCE_TEMPORAL_KEYS):
-        interval = _time_interval(loc_start, loc_end)
-        if interval:
-            payload["time"] = interval
 
 
 def _geometry_from_temporal_geometry(value: Any) -> Optional[Dict[str, Any]]:
@@ -2443,7 +2646,7 @@ def _normalize_node(node: Any, registry: Dict[str, Dict[str, Any]], *, is_root: 
         # nested contextual contact list.
         if is_root and key == "properties":
             payload[key] = value
-        elif key in {"beginPosition", "endPosition", "validFrom", "validTo", "contactReferences", "contactRoles", "contacts", "contactAssignments", "observingLocation"}:
+        elif key in {"beginPosition", "endPosition", "validFrom", "validTo", "contactReferences", "contactRoles", "contacts", "contactAssignments"}:
             payload[key] = value
         else:
             payload[key] = _normalize_node(value, registry)
@@ -2478,7 +2681,6 @@ def _normalize_node(node: Any, registry: Dict[str, Dict[str, Any]], *, is_root: 
     ):
         payload.pop("keywords", None)
 
-    _promote_observing_location(payload)
     _normalize_time_members(payload)
     _normalize_contact_arrays(payload, registry, is_root_properties=is_root_properties)
 

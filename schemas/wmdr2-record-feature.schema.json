@@ -110,17 +110,6 @@
         "null"
       ]
     },
-    "singleCodeValue": {
-      "description": "Single WMDR codelist value. Accepts compact token, numeric code, URI, nilReason object, structured value, boolean, or null; arrays are not valid for 0..1 properties.",
-      "type": [
-        "string",
-        "number",
-        "integer",
-        "object",
-        "boolean",
-        "null"
-      ]
-    },
     "nilReason": {
       "type": "object",
       "required": [
@@ -694,7 +683,6 @@
           "type": "string",
           "pattern": "^instrument:"
         },
-        "serialNumber": false,
         "observingMethods": {
           "type": "array",
           "items": {
@@ -716,7 +704,8 @@
         "verticalRange": {
           "type": "object",
           "additionalProperties": true
-        }
+        },
+        "serialNumber": false
       },
       "additionalProperties": true
     },
@@ -755,8 +744,12 @@
         "observedGeometry": {
           "$ref": "#/$defs/codeValue"
         },
-        "applicationArea": {
-          "$ref": "#/$defs/codeValue"
+        "applicationAreas": {
+          "type": "array",
+          "description": "Application areas for which the observation series is intended or used.",
+          "items": {
+            "$ref": "#/$defs/codeValue"
+          }
         },
         "representativeness": {
           "$ref": "#/$defs/codeValue"
@@ -875,13 +868,7 @@
           "type": [
             "string",
             "null"
-          ],
-          "pattern": "^instrument:"
-        },
-        "serialNumber": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Serial number of the instrument instance used in this observing configuration, when known. Omit when unknown."
+          ]
         },
         "exposure": {
           "$ref": "#/$defs/codeValue"
@@ -899,7 +886,6 @@
           "$ref": "#/$defs/quantity"
         },
         "date": false,
-        "observingLocation": false,
         "keywords": false,
         "temporalGeometry": false
       },
@@ -1098,6 +1084,17 @@
         }
       },
       "additionalProperties": true
+    },
+    "singleCodeValue": {
+      "description": "Single WMDR codelist value. Arrays are intentionally excluded for scalar fields such as observingConfiguration.operatingStatus.",
+      "type": [
+        "string",
+        "number",
+        "integer",
+        "object",
+        "boolean",
+        "null"
+      ]
     }
   }
 }
