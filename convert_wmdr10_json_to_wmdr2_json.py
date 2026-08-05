@@ -1615,28 +1615,98 @@ def _normalize_territories(value: Any) -> List[Dict[str, Any]]:
     return _uniq_dicts(out)
 
 
-def _environment_from_facility(facility: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
-    env_src = _as_mapping(facility.get("environment"))
-    env: Dict[str, Any] = dict(env_src)
-    for key in (
-        "temporalClimateZone",
-        "temporalSurfaceCover",
-        "temporalPopulation",
-        "temporalPopulationDensities",
-        "temporalSurfaceRoughness",
-        "localTopography",
-        "relativeElevation",
-        "topographicContext",
-        "altitudeOrDepth",
+def _named_code_value(item: Any, key: str) -> Any:
+    """Return a compact code value for *key* from a WMDR10 source object."""
+    if isinstance(item, Mapping):
+        value = _first_non_empty(item.get(key), item.get("href"), item.get("url"), item.get("value"), item.get("#text"), item.get("text"))
+    else:
+        value = item
+    return _compact_wmdr_code_value(value)
+
+
+def _environment_merge_key(entry: Mapping[str, Any], ordinal: int) -> str:
+    time_obj = entry.get("time")
+    if isinstance(time_obj, Mapping):
+        return _stable_json(time_obj)
+    # Environment members without explicit time should not be merged merely
+    # because they all lack time; preserve source occurrence boundaries.
+    return f"__untimed_{ordinal}"
+
+
+def _environment_from_facility(facility: Mapping[str, Any]) -> List[Dict[str, Any]]:
+    """Build WMDR2 facility environment history entries from WMDR10 fields.
+
+    WMDR10/XML source records carry facility environment metadata as direct
+    facility members such as ``climateZone``, ``surfaceCover``,
+    ``surfaceRoughness`` and ``topographyBathymetry``.  WMDR2 emits these as
+    ``properties.environment[]`` entries.
+    """
+    entries: List[Dict[str, Any]] = []
+
+    def append_entry(raw: Any, field_name: str, value: Any) -> None:
+        if value in (None, "", [], {}):
+            return
+        entry: Dict[str, Any] = {field_name: value}
+        if isinstance(raw, Mapping):
+            start, end = _extract_interval(raw)
+            interval = _time_interval(start, end)
+            if interval:
+                entry["time"] = interval
+        cleaned = _clean_none(entry)
+        if isinstance(cleaned, dict) and cleaned:
+            entries.append(cleaned)
+
+    for source_key, target_key in (
+        ("climateZone", "climateZone"),
+        ("surfaceRoughness", "surfaceRoughness"),
     ):
-        value = facility.get(key)
-        if value not in (None, "", [], {}):
-            env[key] = value
-    topo = _as_mapping(facility.get("temporalTopographyBathymetry"))
-    for key, value in topo.items():
-        if value not in (None, "", [], {}):
-            env[key] = value
-    return cast(Optional[Dict[str, Any]], _clean_none(env)) if env else None
+        for raw in _as_list(facility.get(source_key)):
+            append_entry(raw, target_key, _named_code_value(raw, source_key))
+
+    for raw in _as_list(facility.get("surfaceCover")):
+        value = _named_code_value(raw, "surfaceCover")
+        if value in (None, "", [], {}):
+            continue
+        surface_cover: Dict[str, Any] = {"value": value}
+        if isinstance(raw, Mapping):
+            scheme = _first_non_empty(
+                _named_code_value(raw, "surfaceCoverClassification"),
+                _named_code_value(raw, "scheme"),
+            )
+            if scheme not in (None, "", [], {}):
+                surface_cover["scheme"] = scheme
+        append_entry(raw, "surfaceCover", surface_cover)
+
+    for raw in _as_list(facility.get("topographyBathymetry")):
+        if not isinstance(raw, Mapping):
+            continue
+        topo: Dict[str, Any] = {}
+        for key in ("localTopography", "relativeElevation", "topographicContext", "altitudeOrDepth"):
+            value = _named_code_value(raw, key)
+            if value not in (None, "", [], {}):
+                topo[key] = value
+        append_entry(raw, "topographyBathymetry", topo)
+
+    existing_environment = facility.get("environment")
+    if isinstance(existing_environment, list):
+        for raw in existing_environment:
+            if isinstance(raw, Mapping):
+                cleaned = _clean_none(dict(raw))
+                if isinstance(cleaned, dict) and cleaned:
+                    entries.append(cleaned)
+    elif isinstance(existing_environment, Mapping):
+        cleaned = _clean_none(dict(existing_environment))
+        if isinstance(cleaned, dict) and cleaned:
+            entries.append(cleaned)
+
+    merged: Dict[str, Dict[str, Any]] = {}
+    for index, entry in enumerate(entries):
+        key = _environment_merge_key(entry, index)
+        if key not in merged:
+            merged[key] = {}
+        merged[key].update(entry)
+
+    return _uniq_dicts(merged.values())
 
 
 def _instrument_key(src: Mapping[str, Any]) -> Optional[str]:
@@ -2466,9 +2536,9 @@ def build_facility_feature(
     if program_affiliations:
         properties["programAffiliations"] = program_affiliations
 
-    env = _environment_from_facility(facility_obj)
-    if env:
-        properties["environment"] = env
+    environment = _environment_from_facility(facility_obj)
+    if environment:
+        properties["environment"] = environment
 
     contact_assignments = _collect_root_contacts(facility_obj, header_obj, contact_registry)
     if contact_assignments:

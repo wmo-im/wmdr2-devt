@@ -289,13 +289,13 @@ def main(argv: list[str] | None = None) -> int:
         "--paths",
         nargs="+",
         type=Path,
-        default=["results/wmdr2_json_examples"],
+        default=[Path("results/wmdr2_json_examples")],
         help="JSON example file(s) or directory/directories to validate.",
     )
     parser.add_argument(
         "--schema",
         type=Path,
-        default=Path("schemas/wmdr2-bundled.json"),
+        default=Path("~/Public/git/wmdr2/schemas/wmdr2-bundled.json").expanduser(),
         help="Schema to validate against. Default: schemas/wmdr2-bundled.json",
     )
     parser.add_argument(

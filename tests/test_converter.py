@@ -956,6 +956,48 @@ def test_program_affiliation_with_explicit_time_is_emitted_as_temporal_object() 
     ]
 
 
+
+
+def test_facility_environment_is_emitted_as_time_bound_entries() -> None:
+    record = converter.convert_record({
+        "facility": {
+            "identifier": "0-20000-0-06650",
+            "name": "Example",
+            "geospatialLocation": "46 7 500",
+            "climateZone": {
+                "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/equatorialSavannahDrySummer",
+                "beginPosition": "2009-01-06",
+            },
+            "surfaceCover": {
+                "surfaceCover": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/mosaicForest",
+                "surfaceCoverClassification": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009",
+                "beginPosition": "2009-01-06",
+            },
+            "topographyBathymetry": {
+                "localTopography": "http://codes.wmo.int/wmdr/LocalTopography/slope",
+                "relativeElevation": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
+                "topographicContext": "http://codes.wmo.int/wmdr/TopographicContext/rises",
+                "altitudeOrDepth": "http://codes.wmo.int/wmdr/AltitudeOrDepth/veryHighAltitude",
+                "beginPosition": "2009-01-06",
+            },
+        }
+    })
+
+    assert record["properties"]["environment"] == [
+        {
+            "time": {"interval": ["2009-01-06", ".."]},
+            "climateZone": "equatorialSavannahDrySummer",
+            "surfaceCover": {"value": "mosaicForest", "scheme": "globCover2009"},
+            "topographyBathymetry": {
+                "localTopography": "slope",
+                "relativeElevation": "middle",
+                "topographicContext": "rises",
+                "altitudeOrDepth": "veryHighAltitude",
+            },
+        }
+    ]
+
+
 def test_facility_territory_is_temporal_array_when_source_has_time() -> None:
     record = converter.convert_record({
         "facility": {

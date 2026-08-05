@@ -575,7 +575,20 @@
           "$ref": "#/$defs/codeValue"
         },
         "surfaceCover": {
-          "$ref": "#/$defs/codeValue"
+          "type": "object",
+          "description": "Surface cover code value together with the classification scheme used for that value.",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "$ref": "#/$defs/codeValue"
+            },
+            "scheme": {
+              "$ref": "#/$defs/codeValue"
+            }
+          },
+          "additionalProperties": false
         },
         "surfaceRoughness": {
           "$ref": "#/$defs/codeValue"
