@@ -17,10 +17,10 @@
     "title": "LUKAVAC",
     "created": "2026-06-04T00:00:00Z",
     "updated": "2026-06-04T00:00:00Z",
-    "facilityType": "underwaterFixed",
+    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/underwaterFixed",
     "territory": [
       {
-        "territory": "BIH",
+        "territory": "http://codes.wmo.int/wmdr/TerritoryName/BIH",
         "time": {
           "interval": [
             "2019-08-05",
@@ -29,10 +29,10 @@
         }
       }
     ],
-    "wmoRegion": "europe",
+    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
     "environment": [
       {
-        "climateZone": "snowFullyHumidWarmSummer",
+        "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/snowFullyHumidWarmSummer",
         "time": {
           "interval": [
             "2019-08-05",
@@ -45,13 +45,13 @@
       {
         "id": "observationSeries:166",
         "title": "domain: terrestrial; geometry: point; variable: 166",
-        "observedProperty": "166",
-        "observedDomain": {
-          "domain": "terrestrial"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/166",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "WHYCOS"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/WHYCOS"
         ],
         "observingConfigurations": [
           {
@@ -61,7 +61,7 @@
                 ".."
               ]
             },
-            "observingMethod": "356"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/356"
           }
         ]
       }
@@ -112,12 +112,14 @@
         "emails": [
           {
             "value": "oscar@wmo.int"
-          },
-          {
-            "value": "https://oscar.wmo.int/surface/#/feedback"
           }
         ],
         "links": [
+          {
+            "href": "https://oscar.wmo.int/surface/#/feedback",
+            "rel": "about",
+            "type": "text/html"
+          },
           {
             "href": "https://oscar.wmo.int/surface",
             "rel": "about",
@@ -148,7 +150,7 @@
     ],
     "methods": [
       [
-        "gps"
+        "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
       ]
     ]
   }

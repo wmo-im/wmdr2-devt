@@ -17,10 +17,10 @@
     "title": "TROLL AIRFIELD",
     "created": "2022-11-24T00:00:00Z",
     "updated": "2022-11-24T00:00:00Z",
-    "facilityType": "landOnIce",
+    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landOnIce",
     "territory": [
       {
-        "territory": "NOR",
+        "territory": "http://codes.wmo.int/wmdr/TerritoryName/NOR",
         "time": {
           "interval": [
             "2007-01-01",
@@ -29,19 +29,19 @@
         }
       }
     ],
-    "wmoRegion": "antarctica",
+    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/antarctica",
     "observationSeries": [
       {
         "id": "observationSeries:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": "216",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "nonAffiliated",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -51,21 +51,21 @@
                 ".."
               ]
             },
-            "observingMethod": "111"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
           }
         ]
       },
       {
         "id": "observationSeries:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": "224",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "nonAffiliated",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -75,21 +75,21 @@
                 ".."
               ]
             },
-            "observingMethod": "188"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
           }
         ]
       },
       {
         "id": "observationSeries:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": "12249",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "nonAffiliated",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -99,21 +99,21 @@
                 ".."
               ]
             },
-            "observingMethod": "254"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254"
           }
         ]
       },
       {
         "id": "observationSeries:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": "12005",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "nonAffiliated",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -123,7 +123,7 @@
                 ".."
               ]
             },
-            "observingMethod": "63"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
           }
         ]
       }
@@ -166,12 +166,14 @@
         "emails": [
           {
             "value": "oscar@wmo.int"
-          },
-          {
-            "value": "https://oscar.wmo.int/surface/#/feedback"
           }
         ],
         "links": [
+          {
+            "href": "https://oscar.wmo.int/surface/#/feedback",
+            "rel": "about",
+            "type": "text/html"
+          },
           {
             "href": "https://oscar.wmo.int/surface",
             "rel": "about",
@@ -202,7 +204,7 @@
     ],
     "methods": [
       [
-        "map"
+        "http://codes.wmo.int/wmdr/GeopositioningMethod/map"
       ]
     ]
   }

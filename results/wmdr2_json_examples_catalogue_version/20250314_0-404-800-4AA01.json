@@ -20,10 +20,10 @@
     "additionalTitles": [
       "Sagana in Tana Basin"
     ],
-    "facilityType": "lakeRiverFixed",
+    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/lakeRiverFixed",
     "territory": [
       {
-        "territory": "KEN",
+        "territory": "http://codes.wmo.int/wmdr/TerritoryName/KEN",
         "time": {
           "interval": [
             "1947-09-01",
@@ -32,18 +32,18 @@
         }
       }
     ],
-    "wmoRegion": "africa",
+    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/africa",
     "observationSeries": [
       {
         "id": "observationSeries:12252",
         "title": "domain: ocean; geometry: verticalProfile; variable: 12252",
-        "observedProperty": "12252",
-        "observedDomain": {
-          "domain": "ocean"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableOcean/12252",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/ocean"
         },
-        "observedGeometry": "verticalProfile",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
         "programAffiliations": [
-          "WHYCOS"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/WHYCOS"
         ],
         "observingConfigurations": [
           {
@@ -53,13 +53,13 @@
                 ".."
               ]
             },
-            "observingMethod": "356"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/356"
           }
         ],
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -72,10 +72,13 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "unknown",
-            "uom": "m",
+            "dataPolicy": {
+              "nilReason": "unknown"
+            },
+            "uom": "http://codes.wmo.int/wmdr/unit/m",
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -83,11 +86,10 @@
     ],
     "schedules": [
       {
-        "wmo.int:aggregationInterval": "PT1H",
         "start": "0001-01-01T00:00:00",
         "duration": "PT23H59M",
         "@type": "Event",
-        "uid": "schedule_c6cc25203e"
+        "uid": "schedule_b38624328b"
       }
     ],
     "keywords": [
@@ -125,7 +127,7 @@
     ],
     "methods": [
       [
-        "gps"
+        "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
       ]
     ]
   }

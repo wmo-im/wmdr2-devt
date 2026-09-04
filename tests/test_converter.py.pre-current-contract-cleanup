@@ -191,6 +191,44 @@ def test_observation_series_preserves_xml_converter_observation_series_metadata(
     assert "programAffiliation" not in observation
 
 
+def test_numeric_codelist_values_are_emitted_as_strings() -> None:
+    payload = {
+        "header": {"dateStamp": "2020-01-02"},
+        "facility": {
+            "identifier": "0-20000-0-TEST",
+            "name": "Test",
+            "geospatialLocation": "46 7 500",
+        },
+        "observationSeries": [
+            {
+                "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
+                "type": "http://codes.wmo.int/wmdr/Geometry/point",
+                "applicationArea": 10,
+                "deployments": [
+                    {
+                        "beginPosition": "2020-01-01",
+                        "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+                        "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
+                        "heightAboveLocalReferenceSurface": {"@uom": "m", "#text": "2.0"},
+                    }
+                ],
+            }
+        ],
+    }
+
+    record = converter.convert_payload(payload, source_name="20200102_0-20000-0-TEST")
+    observation = record["properties"]["observationSeries"][0]
+    cfg = observation["observingConfigurations"][0]
+
+    assert observation["observedProperty"] == OBSERVED_12006
+    assert observation["observedGeometry"] == GEOMETRY_POINT
+    assert observation["applicationAreas"] == ["10"]
+    assert cfg["observingMethod"] == "http://codes.wmo.int/wmdr/ObservingMethod/266"
+    assert cfg["referenceSurface"] == "localGround"
+    assert cfg["verticalDistanceFromReferenceSurface"] == {"value": 2.0, "uom": "m"}
+
+
+
 def test_convert_payload_emits_current_v031_shape() -> None:
     record = converter.convert_payload(_payload(), source_name="20200102_0-20008-0-THE")
     props = record["properties"]
@@ -220,7 +258,7 @@ def test_convert_payload_emits_current_v031_shape() -> None:
     schedules = {schedule["uid"]: schedule for schedule in props["schedules"]}
 
     assert "time" not in reporting
-    assert reporting["temporalReportingInterval"] == "PT1H"
+    assert "temporalReportingInterval" not in reporting
     assert reporting["internationalExchange"] is True
     assert reporting["uom"] == "http://codes.wmo.int/wmdr/unit/mm"
     assert reporting["reportingSchedules"][0] in schedules
@@ -368,6 +406,115 @@ def test_temporal_operating_status_history_splits_observing_configurations() -> 
         ["2021-01-01", ".."],
     ]
     assert all(not isinstance(cfg["operatingStatus"], list) for cfg in configs)
+
+
+def test_normalize_existing_record_converts_all_source_temporal_keys() -> None:
+    legacy = {
+        "type": "Feature",
+        "id": "wsi:0-TEST",
+        "geometry": {"type": "Point", "coordinates": [7.0, 46.0, 100]},
+        "conformsTo": ["http://wigos.wmo.int/spec/wmdr/2/conf/core"],
+        "time": {"interval": ["2020-01-01", ".."], "resolution": "day"},
+        "properties": {
+            "type": "facility",
+            "title": "Test",
+            "programAffiliations": [
+                {"program": "GBON", "beginPosition": "2020-01-01", "endPosition": "2022-01-01"}
+            ],
+            "observationSeries": [
+                {
+                    "id": "observationSeries:test",
+                    "beginPosition": "2020-02-01",
+                    "endPosition": "2023-02-01",
+                    "observingConfigurations": [
+                        {
+                            "beginPosition": "2020-03-01",
+                            "endPosition": "2024-03-01",
+                            "referenceSurface": "localGround",
+                        }
+                    ],
+                }
+            ],
+        },
+    }
+    record = converter.normalize_wmdr2_record(legacy)
+    props = record["properties"]
+    series = props["observationSeries"][0]
+    cfg = series["observingConfigurations"][0]
+    assert props["programAffiliations"][0]["time"] == {"interval": ["2020-01-01", "2022-01-01"]}
+    assert "time" not in series
+    assert cfg["time"] == {"interval": ["2020-03-01", "2024-03-01"]}
+    assert cfg["referenceSurface"] == "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+    forbidden = {"beginPosition", "endPosition", "validFrom", "validTo"}
+    assert all(forbidden.isdisjoint(item) for item in _walk_dicts(record))
+
+
+def test_normalize_existing_record_renames_configuration_temporal_geometry_to_geometry() -> None:
+    legacy = {
+        "type": "Feature",
+        "id": "0-TEST",
+        "geometry": {"type": "Point", "coordinates": [7.0, 46.0, 100]},
+        "conformsTo": ["http://wigos.wmo.int/spec/wmdr/2/conf/core"],
+        "properties": {
+            "type": "facility",
+            "title": "Test",
+            "observationSeries": [
+                {
+                    "id": "observationSeries:test",
+                    "observingConfigurations": [
+                        {
+                            "observingMethod": {"nilReason": "unknown"},
+                            "time": {"interval": ["2020-01-01", ".."]},
+                            "temporalGeometry": {
+                                "type": "MovingPoint",
+                                "coordinates": [[7.0, 46.0, 100], [7.1, 46.1, 101]],
+                                "dates": ["2020-01-01", "2021-01-01"],
+                            },
+                            "keywords": ["legacy-keyword"],
+                        }
+                    ],
+                }
+            ],
+        },
+    }
+    record = converter.normalize_wmdr2_record(legacy)
+    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    assert "temporalGeometry" not in cfg
+    assert "keywords" not in cfg
+    assert cfg["geometry"] == {"type": "Point", "coordinates": [7.1, 46.1, 101.0]}
+
+
+def test_normalize_existing_record_removes_time_from_reporting_procedures() -> None:
+    legacy = {
+        "type": "Feature",
+        "id": "0-TEST",
+        "geometry": {"type": "Point", "coordinates": [7.0, 46.0, 100]},
+        "properties": {
+            "type": "facility",
+            "title": "Test",
+            "observationSeries": [
+                {
+                    "id": "observationSeries:test",
+                    "reportingProcedures": [
+                        {
+                            "time": {"interval": ["2020-01-01", ".."]},
+                            "internationalExchange": True,
+                            "reportingSchedules": ["schedule_abc"],
+                        }
+                    ],
+                }
+            ],
+            "schedules": [{"uid": "schedule_abc", "@type": "Event", "wmo.int:aggregationInterval": "PT1H"}],
+        },
+    }
+    record = converter.normalize_wmdr2_record(legacy)
+    reporting = record["properties"]["observationSeries"][0]["reportingProcedures"][0]
+    assert "time" not in reporting
+    assert reporting["temporalReportingInterval"] == "PT1H"
+    assert reporting["reportingSchedules"] == ["schedule_abc"]
+    schedule = {item["uid"]: item for item in record["properties"]["schedules"]}["schedule_abc"]
+    assert "wmo.int:aggregationInterval" not in schedule
+    assert "duration" not in schedule
 
 
 def test_contact_registry_does_not_freeze_contextual_roles() -> None:
@@ -556,6 +703,32 @@ def test_normalize_code_or_nil_reason_keeps_explicit_unknown_as_nil_reason() -> 
     assert converter._normalize_code_or_nil_reason({"nilReason": "withheld"}) == {"nilReason": "withheld"}
 
 
+def test_normalizer_accepts_contact_references_alias_but_outputs_contact_assignments() -> None:
+    record = {
+        "type": "Feature",
+        "id": "0-20000-0-TEST",
+        "conformsTo": ["http://wigos.wmo.int/spec/wmdr/2/conf/core"],
+        "geometry": {"type": "Point", "coordinates": [7, 46, 100]},
+        "time": {"interval": ["2020-01-01", ".."], "resolution": "day"},
+        "properties": {
+            "type": "facility",
+            "title": "Test",
+            "contactReferences": [
+                {"contact": "contact:ops@example.org", "roles": ["owner"]}
+            ],
+            "contacts": [{"identifier": "contact:ops@example.org", "emails": ["ops@example.org"]}],
+        },
+    }
+    normalized = converter.normalize_wmdr2_record(record)
+    assert "contactReferences" not in normalized["properties"]
+    assert normalized["properties"]["contactAssignments"] == [
+        {"contact": "contact:ops@example.org", "roles": ["owner"]}
+    ]
+    assert normalized["properties"]["contacts"] == [
+        {"identifier": "contact:ops@example.org", "emails": [{"value": "ops@example.org"}]}
+    ]
+
+
 def test_reporting_procedure_matches_v031_uml_attributes_and_uses_reusable_schedule() -> None:
     record = converter.convert_payload(
         {
@@ -609,7 +782,7 @@ def test_reporting_procedure_matches_v031_uml_attributes_and_uses_reusable_sched
     assert procedure["referenceTimeSource"] == ["UTC", "http://codes.wmo.int/wmdr/ReferenceTimeSource/gps"]
     schedule_uid = procedure["reportingSchedules"][0]
     schedule = {item["uid"]: item for item in record["properties"]["schedules"]}[schedule_uid]
-    assert "wmo.int:aggregationInterval" not in schedule
+    assert reporting["temporalReportingInterval"] == "PT1H"
     assert "wmo.int:aggregationInterval" not in schedule
     assert schedule["wmo.int:diurnalBaseTime"] == "06:00:00"
     assert "duration" not in schedule
@@ -898,6 +1071,57 @@ def test_facility_id_is_first_wsi_from_identifier_list() -> None:
     assert converted["properties"]["additionalIds"] == ["0-756-1-Blatten", "0-999-0-SHOULD-NOT-WIN"]
 
 
+def test_normalize_existing_record_uses_name_before_title() -> None:
+    record = {
+        "type": "Feature",
+        "id": "0-20008-0-MKN",
+        "geometry": None,
+        "properties": {
+            "type": "facility",
+            "name": ["Mt. Kenya", "Mount Kenya"],
+            "title": "Legacy title",
+            "time": {"interval": ["2009-01-06", ".."], "resolution": "P1D"},
+        },
+    }
+    normalized = converter.normalize_wmdr2_record(record)
+    assert normalized["properties"]["title"] == "Mt. Kenya"
+    assert normalized["properties"]["additionalTitles"] == ["Mount Kenya", "Legacy title"]
+    assert "name" not in normalized["properties"]
+
+def test_normalize_existing_record_converts_title_list_to_title_and_additional_titles() -> None:
+    record = {
+        "type": "Feature",
+        "id": "0-20008-0-MKN",
+        "geometry": None,
+        "properties": {
+            "type": "facility",
+            "title": ["Mt. Kenya", "Mount Kenya"],
+            "time": {"interval": ["2009-01-06", ".."], "resolution": "P1D"},
+        },
+    }
+    normalized = converter.normalize_wmdr2_record(record)
+    assert normalized["properties"]["title"] == "Mt. Kenya"
+    assert normalized["properties"]["additionalTitles"] == ["Mount Kenya"]
+
+
+def test_normalize_existing_record_converts_legacy_identifiers_to_additional_ids() -> None:
+    record = {
+        "type": "Feature",
+        "id": "0-20000-0-06725",
+        "geometry": None,
+        "properties": {
+            "type": "facility",
+            "title": "Blatten",
+            "identifiers": ["0-20000-0-06725", "0-756-1-Blatten"],
+            "time": {"interval": ["2000-08-17", ".."], "resolution": "P1D"},
+        },
+    }
+    normalized = converter.normalize_wmdr2_record(record)
+    assert normalized["properties"]["additionalIds"] == ["0-756-1-Blatten"]
+    assert "identifiers" not in normalized["properties"]
+
+
+
 def test_operating_status_is_not_fabricated_when_absent() -> None:
     record = converter.convert_payload(_payload(), source_name="20200102_0-20008-0-THE")
     cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
@@ -910,29 +1134,3 @@ def test_serial_number_stays_on_observing_configuration_not_instrument_catalogue
     cfg = props["observationSeries"][0]["observingConfigurations"][0]
     assert cfg["serialNumber"] == "SN1"
     assert all("serialNumber" not in instrument for instrument in props["instruments"])
-
-
-def test_contact_url_misfiled_as_email_is_preserved_as_link() -> None:
-    contact = converter._normalize_ogc_contact(
-        {
-            "organization": "WMO",
-            "contactInfo": {
-                "address": {
-                    "electronicMailAddress": [
-                        "oscar@wmo.int",
-                        "https://oscar.wmo.int/surface/#/feedback",
-                    ]
-                }
-            },
-        }
-    )
-
-    assert contact is not None
-    assert contact["emails"] == [{"value": "oscar@wmo.int"}]
-    assert contact["links"] == [
-        {
-            "href": "https://oscar.wmo.int/surface/#/feedback",
-            "rel": "about",
-            "type": "text/html",
-        }
-    ]

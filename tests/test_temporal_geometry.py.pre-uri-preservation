@@ -36,7 +36,7 @@ def test_converter_emits_aligned_temporal_geometry_methods() -> None:
         "type": "MovingPoint",
         "coordinates": [[7.0, 46.0, 100], [7.1, 46.1, 101]],
         "dates": ["2020-01-01", "2021-01-01"],
-        "methods": [["http://codes.wmo.int/wmdr/GeopositioningMethod/gps"], []],
+        "methods": [["gps"], []],
     }
     _temporal_geometry_validator().validate(temporal_geometry)
 
@@ -53,5 +53,5 @@ def test_temporal_geometry_schema_rejects_invalid_methods(methods: Any) -> None:
 
 
 def test_clean_none_preserves_empty_temporal_geometry_method_slots() -> None:
-    payload = {"temporalGeometry": {"methods": [["http://codes.wmo.int/wmdr/GeopositioningMethod/gps"], []]}}
+    payload = {"temporalGeometry": {"methods": [["gps"], []]}}
     assert converter._clean_none(payload) == payload

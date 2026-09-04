@@ -17,10 +17,10 @@
     "title": "AL-FATAYEH",
     "created": "2026-05-11T00:00:00Z",
     "updated": "2026-05-11T00:00:00Z",
-    "facilityType": "landFixed",
+    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
     "territory": [
       {
-        "territory": "LBY",
+        "territory": "http://codes.wmo.int/wmdr/TerritoryName/LBY",
         "time": {
           "interval": [
             "2026-05-01",
@@ -29,10 +29,10 @@
         }
       }
     ],
-    "wmoRegion": "africa",
+    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/africa",
     "environment": [
       {
-        "climateZone": "steppeHotArid",
+        "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/steppeHotArid",
         "time": {
           "interval": [
             "2026-05-01",
@@ -40,14 +40,14 @@
           ]
         },
         "surfaceCover": {
-          "value": "mosaicVegetation",
-          "scheme": "globCover2009"
+          "value": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/mosaicVegetation",
+          "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
         },
         "topographyBathymetry": {
           "localTopography": "unknown",
-          "relativeElevation": "middle",
-          "topographicContext": "valleys",
-          "altitudeOrDepth": "lowAltitude"
+          "relativeElevation": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
+          "topographicContext": "http://codes.wmo.int/wmdr/TopographicContext/valleys",
+          "altitudeOrDepth": "http://codes.wmo.int/wmdr/AltitudeOrDepth/lowAltitude"
         }
       }
     ],
@@ -55,14 +55,14 @@
       {
         "id": "observationSeries:210",
         "title": "domain: atmosphere; geometry: point; variable: 210",
-        "observedProperty": "210",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -75,12 +75,9 @@
             "observingMethod": {
               "nilReason": "unknown"
             },
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "exposure": {
-              "nilReason": "unknown"
-            },
-            "referenceSurface": "seaSurface",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/seaSurface",
             "verticalDistanceFromReferenceSurface": {
               "value": 2.0,
               "uom": "m"
@@ -98,7 +95,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -111,12 +108,13 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "WMOEssential",
+            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential",
             "referenceTimeSource": [
               "unknown"
             ],
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -124,14 +122,14 @@
       {
         "id": "observationSeries:210",
         "title": "domain: atmosphere; geometry: point; variable: 210",
-        "observedProperty": "210",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -141,14 +139,14 @@
                 ".."
               ]
             },
-            "observingMethod": "212",
-            "sourceOfObservation": "automaticReading"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/212",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
           }
         ],
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -161,8 +159,9 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -170,14 +169,14 @@
       {
         "id": "observationSeries:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": "216",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -190,8 +189,8 @@
             "observingMethod": {
               "nilReason": "unknown"
             },
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
             "geometry": {
               "type": "Point",
               "coordinates": [
@@ -205,7 +204,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -218,22 +217,24 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "WMOEssential",
+            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential",
             "timeStampMeaning": "unknown",
             "referenceTimeSource": [
               "unknown"
             ],
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           },
           {
             "internationalExchange": true,
-            "dataPolicy": "WMOEssential",
+            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential",
             "levelOfData": "unknown",
-            "uom": "hPa",
+            "uom": "http://codes.wmo.int/wmdr/unit/hPa",
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -241,14 +242,14 @@
       {
         "id": "observationSeries:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": "216",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -258,14 +259,14 @@
                 ".."
               ]
             },
-            "observingMethod": "111",
-            "sourceOfObservation": "automaticReading"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
           }
         ],
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -278,8 +279,9 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -287,14 +289,14 @@
       {
         "id": "observationSeries:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": "224",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -307,9 +309,9 @@
             "observingMethod": {
               "nilReason": "unknown"
             },
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "referenceSurface": "seaSurface",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/seaSurface",
             "verticalDistanceFromReferenceSurface": {
               "value": 2.0,
               "uom": "m"
@@ -327,7 +329,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -340,10 +342,11 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "WMOEssential",
-            "uom": "degC",
+            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential",
+            "uom": "http://codes.wmo.int/wmdr/unit/degC",
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -351,14 +354,14 @@
       {
         "id": "observationSeries:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": "224",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -368,14 +371,14 @@
                 ".."
               ]
             },
-            "observingMethod": "188",
-            "sourceOfObservation": "automaticReading"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
           }
         ],
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -388,8 +391,9 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -397,14 +401,14 @@
       {
         "id": "observationSeries:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": "12249",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -417,8 +421,8 @@
             "observingMethod": {
               "nilReason": "unknown"
             },
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
             "geometry": {
               "type": "Point",
               "coordinates": [
@@ -432,7 +436,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -445,12 +449,13 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "WMOEssential",
+            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential",
             "referenceTimeSource": [
               "unknown"
             ],
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -458,14 +463,14 @@
       {
         "id": "observationSeries:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": "12249",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -475,14 +480,14 @@
                 ".."
               ]
             },
-            "observingMethod": "338",
-            "sourceOfObservation": "automaticReading"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/338",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
           }
         ],
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -495,8 +500,9 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -504,14 +510,14 @@
       {
         "id": "observationSeries:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": "12005",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -524,11 +530,8 @@
             "observingMethod": {
               "nilReason": "unknown"
             },
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "exposure": {
-              "nilReason": "unknown"
-            },
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
             "geometry": {
               "type": "Point",
               "coordinates": [
@@ -542,7 +545,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -556,14 +559,15 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "WMOEssential",
+            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential",
             "timeStampMeaning": "unknown",
             "uom": "unknown",
             "referenceTimeSource": [
               "unknown"
             ],
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -571,14 +575,14 @@
       {
         "id": "observationSeries:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": "12005",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -588,9 +592,9 @@
                 ".."
               ]
             },
-            "observingMethod": "176",
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/176",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
             "geometry": {
               "type": "Point",
               "coordinates": [
@@ -604,7 +608,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -617,14 +621,16 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           },
           {
             "internationalExchange": false,
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -632,14 +638,14 @@
       {
         "id": "observationSeries:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "observedProperty": "12006",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -652,8 +658,8 @@
             "observingMethod": {
               "nilReason": "unknown"
             },
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
             "geometry": {
               "type": "Point",
               "coordinates": [
@@ -667,7 +673,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -680,10 +686,11 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "WMOEssential",
+            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential",
             "uom": "unknown",
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -691,14 +698,14 @@
       {
         "id": "observationSeries:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "observedProperty": "12006",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "GBON",
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -708,14 +715,14 @@
                 ".."
               ]
             },
-            "observingMethod": "176",
-            "sourceOfObservation": "automaticReading"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/176",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
           }
         ],
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -728,8 +735,9 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -737,11 +745,10 @@
     ],
     "schedules": [
       {
-        "wmo.int:aggregationInterval": "PT1H",
         "start": "0001-01-01T00:00:00",
         "duration": "PT23H59M",
         "@type": "Event",
-        "uid": "schedule_c6cc25203e"
+        "uid": "schedule_b38624328b"
       }
     ],
     "keywords": [

@@ -1,20 +1,62 @@
 # WMDR2 development model v0.3.2
 
-This repository contains the current development version of the simplified WMDR2 JSON representation, converter utilities, JSON Schemas, generated examples, and tests.  The format is intended to represent WIGOS station metadata in an OGC Records / GeoJSON-oriented structure while preserving the information that can be recovered from WMDR 1.0 source records without inventing missing metadata.
+This repository contains the current development version of the simplified WMDR2 JSON representation, converter utilities, JSON Schemas, generated examples, and tests.
 
-The current model version described here is **WMDR2 v0.3.2**.
+The format represents WIGOS station metadata in an OGC Records / GeoJSON-oriented structure. The conversion path is intended to preserve information available in WMDR 1.0 source records, use stable controlled-concept identifiers, and avoid inventing metadata that is not present in the source.
+
+The current model version described here is WMDR2 v0.3.2. The schema has been tightened to make the intended core contract explicit while retaining the existing conceptual model.
 
 ## Design principles
 
-The v0.3.2 model follows these principles.
+The current model follows these principles.
 
-1. A WMDR2 station record is a GeoJSON `Feature` whose root `id` is the primary WIGOS Station Identifier.
+1. A WMDR2 station record is a GeoJSON `Feature` whose root `id` is the primary WIGOS Station Identifier (WSI).
 2. Facility names and identifiers are normalized to one primary value plus explicit additional values.
-3. Time-varying properties use a `time` object with an interval; older source-specific temporal field names are not part of the public model.
-4. The useful content of source equipment and configuration history is represented directly in `observingConfigurations[]`; no nested location wrapper is emitted.
+3. Time-varying properties use a `time` object with an interval. Older source-specific temporal field names are not part of the public model.
+4. Source equipment and configuration history is represented directly in `observingConfigurations[]`; no nested deployment/location wrapper is emitted.
 5. Reusable contacts, instruments, and schedules are registries in the facility record and are referenced from the places where they are used.
-6. The converter must preserve recorded information and must not fabricate validity dates, phone country codes, instrument serial numbers, observing methods, or programme affiliations.
-7. Source examples that cannot validate without inventing information are explicitly commented in the end-to-end tests rather than being silently “fixed”.
+6. Controlled values use absolute concept URIs. Existing canonical WMO identifiers such as `http://codes.wmo.int/...` are preserved; the converter does not contract them to notations or rewrite `http://` identifiers to `https://`.
+7. Mandatory controlled properties may use `{"nilReason": "..."}` where the model explicitly allows a nil reason. Optional controlled properties are omitted when unknown rather than populated with a nil reason.
+8. The converter preserves recorded information and must not fabricate validity dates, phone country codes, instrument serial numbers, observing methods, source of observation, data policy, programme affiliations, operating status, or other missing metadata.
+9. Source-derived records that cannot satisfy the tightened schema without invented information are handled explicitly by the end-to-end test policy; converter regressions remain hard failures.
+
+## Controlled values and code-list URIs
+
+Reviewed controlled properties are represented by absolute concept URIs, for example:
+
+```json
+{
+  "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
+  "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
+  "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+  "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+  "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+}
+```
+
+The schema accepts absolute HTTP(S) URIs. This does **not** imply that identifiers should be changed from `http://` to `https://`: URI identity is preserved from the source/registry.
+
+For a mandatory controlled property where the information is explicitly unknown, the schema may allow a nil reason:
+
+```json
+{
+  "observingMethod": {
+    "nilReason": "unknown"
+  }
+}
+```
+
+For an optional controlled property, unknown means omission. For example, `operatingStatus` is optional and non-nillable:
+
+```json
+{
+  "time": {"interval": ["2020-01-01", ".."]},
+  "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+  "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+}
+```
+
+The converter therefore omits an absent or explicitly unknown optional `operatingStatus`; it does not manufacture `"unknown"`.
 
 ## Record shape
 
@@ -23,7 +65,9 @@ A WMDR2 facility record has this top-level shape:
 ```json
 {
   "id": "0-20008-0-THE",
-  "conformsTo": ["http://wigos.wmo.int/spec/wmdr/2/conf/core"],
+  "conformsTo": [
+    "http://wigos.wmo.int/spec/wmdr/2/conf/core"
+  ],
   "type": "Feature",
   "geometry": {
     "type": "Point",
@@ -33,7 +77,9 @@ A WMDR2 facility record has this top-level shape:
     "type": "MovingPoint",
     "coordinates": [[22.957, 40.631, 60.0]],
     "dates": ["1982-03-13"],
-    "methods": [[]]
+    "methods": [
+      ["http://codes.wmo.int/wmdr/GeopositioningMethod/gps"]
+    ]
   },
   "time": {
     "interval": ["1982-03-13", ".."],
@@ -56,14 +102,14 @@ A WMDR2 facility record has this top-level shape:
 | `conformsTo` | Conformance classes. A core record contains `http://wigos.wmo.int/spec/wmdr/2/conf/core`. |
 | `type` | Always `Feature`. |
 | `geometry` | Latest or representative GeoJSON point geometry. Coordinates are GeoJSON order: longitude, latitude, optional elevation. |
-| `temporalGeometry` | Optional movement or location-history extension. It uses aligned `coordinates`, `dates`, and optional `methods` arrays. |
-| `time` | Overall validity or temporal extent of the record. |
+| `temporalGeometry` | Optional movement/location-history extension using aligned `coordinates`, `dates`, and optional controlled-URI `methods` arrays. |
+| `time` | Facility temporal extent, i.e. establishment/closure of the facility. |
 | `properties` | Facility metadata and related WMDR metadata blocks. |
 | `links` | OGC-style links about the record. |
 
 ## Facility properties
 
-`properties.type` is always `facility`.  The facility object carries the primary description of the station and registries for reusable objects.
+`properties.type` is always `facility`. The facility object carries the primary description of the station and registries for reusable objects.
 
 ```json
 {
@@ -71,10 +117,9 @@ A WMDR2 facility record has this top-level shape:
   "title": "Flüela permafrost",
   "additionalTitles": ["Flüelapass"],
   "additionalIds": ["0-756-1-387493"],
-  "facilityType": "landFixed",
-  "wmoRegion": "southWestPacific",
+  "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
+  "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/6",
   "description": "Example station description.",
-  "keywords": ["GCW", "permafrost"],
   "contacts": [],
   "contactAssignments": [],
   "instruments": [],
@@ -82,6 +127,10 @@ A WMDR2 facility record has this top-level shape:
   "schedules": []
 }
 ```
+
+`facilityType` is mandatory and controlled. `wmoRegion` is optional and controlled.
+
+Facility operating status is **not stored as a duplicate facility-level property**. Where an overall facility status is needed, it is derived from programme-specific affiliation/reporting status. For example, a facility may still be operational overall while observations for one programme have stopped.
 
 ### Facility names and identifiers
 
@@ -94,17 +143,17 @@ The converter applies deterministic primary/additional rules.
 | First recorded facility name | `properties.title` |
 | Further recorded facility names | `properties.additionalTitles[]` |
 
-`additionalIds[]` contains only values that match the WSI pattern:
+`additionalIds[]` contains only values matching the WSI pattern:
 
 ```text
 ^(0|1|2|3)-([1-9]\d*)-([0-9]+)-([A-Za-z0-9._-]+)$
 ```
 
-This rule avoids hiding alternate official station identifiers while keeping the root feature identifier single-valued.
+This avoids hiding alternate official station identifiers while keeping the root feature identifier single-valued.
 
 ## Time model
 
-Temporal metadata is represented with OGC-style `time` objects.
+Temporal metadata is represented with OGC-style `time` objects:
 
 ```json
 {
@@ -115,13 +164,30 @@ Temporal metadata is represented with OGC-style `time` objects.
 }
 ```
 
-The interval is a two-element array.  Each endpoint is either a date-like value (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`) or `..` for open or unknown.  `time.resolution`, where present, is an ISO 8601 duration such as `P1D`, `PT1H`, or `PT10M`.
+The interval is a two-element array. Each endpoint is either a date-like value (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`) or `..` for an open/unknown end. `time.resolution`, where present, is an ISO 8601 duration such as `P1D`, `PT1H`, or `PT10M`.
 
-The same structure is used for facility histories, territories, programme affiliations, observing configurations, observing procedures, and official status entries.  When a source record does not provide a required time anchor for a time-varying object, the converter should not invent one.  Such source-derived examples are treated as intentionally non-validating in the end-to-end test policy until the source metadata is corrected.
+The same structure is used for facility histories, territories, programme affiliations, observing configurations, observing procedures, and other time-bound metadata.
+
+When a source record does not provide a required time anchor for a time-varying object, the converter does not invent one.
+
+### Observation-series temporal extent
+
+`ObservationSeries` does **not** carry an independent `time` property.
+
+Its temporal extent is derived from `ObservingConfiguration.time`:
+
+- each observing-configuration interval contributes to the observation-series temporal extent;
+- an interval is excluded only when its `operatingStatus`, when present, explicitly denotes that observations were not collected;
+- absence of `operatingStatus` means that no status assertion was made and does **not** exclude the interval;
+- detailed gaps and status history remain in `observingConfigurations[]`.
+
+A catalogue/discovery projection may reduce these intervals to a simple envelope (earliest start to latest/open end), but that projection can hide gaps and is therefore not the authoritative history.
+
+The classification of operating-status concepts into collecting/non-collecting states is a semantic rule and is better enforced in application/semantic validation than by JSON Schema alone.
 
 ## Spatial model
 
-The root `geometry` is the current or representative facility position.  The optional root `temporalGeometry` records location history:
+The root `geometry` is the current or representative facility position. The optional root `temporalGeometry` records location history:
 
 ```json
 {
@@ -131,15 +197,18 @@ The root `geometry` is the current or representative facility position.  The opt
     [7.1, 46.1, 101.0]
   ],
   "dates": ["2000-01-01", "2020-01-01"],
-  "methods": [[], ["gps"]]
+  "methods": [
+    [],
+    ["http://codes.wmo.int/wmdr/GeopositioningMethod/gps"]
+  ]
 }
 ```
 
-`coordinates`, `dates`, and `methods` are aligned by array index.  Empty method arrays are allowed when the source does not record the position method.
+`coordinates`, `dates`, and `methods` are aligned by array index. Empty method arrays are allowed when the source does not record the positioning method.
 
 ## Contacts
 
-Reusable contacts are stored in `properties.contacts[]` using the OGC Records Contact model.  Contact roles in WMDR are contextual, so they are represented separately through `contactAssignments[]` at the facility or observation-series level.
+Reusable contacts are stored in `properties.contacts[]` using the OGC Records Contact model. Contact roles in WMDR are contextual, so they are represented separately through `contactAssignments[]` at the facility or observation-series level.
 
 ```json
 {
@@ -147,8 +216,12 @@ Reusable contacts are stored in `properties.contacts[]` using the OGC Records Co
     {
       "identifier": "contact:met-service-example",
       "organization": "Example Meteorological Service",
-      "emails": [{"value": "ops@example.org"}],
-      "phones": [{"value": "+41123456789"}],
+      "emails": [
+        {"value": "ops@example.org"}
+      ],
+      "phones": [
+        {"value": "+41123456789"}
+      ],
       "links": [
         {
           "rel": "about",
@@ -167,7 +240,9 @@ Reusable contacts are stored in `properties.contacts[]` using the OGC Records Co
 }
 ```
 
-Phone values follow the strict OGC Contact schema used in this repository and must be E.164-style values when emitted.  The converter may normalize clearly international numbers, for example `00...` to `+...`, but it must not infer a country code for local-only source values.
+Phone values follow the strict OGC Contact schema used in this repository and must be E.164-style when emitted. The converter may normalize clearly international numbers, for example `00...` to `+...`, but it must not infer a country code for a local-only value.
+
+Some historical OSCAR/Surface records contain an HTTP(S) URL in an `electronicMailAddress` slot. The converter preserves such a value as an OGC Contact `links[]` entry instead of emitting it as an invalid email address. This is a lossless correction of the source container, not invented metadata.
 
 ## Environment, territory, and programme affiliations
 
@@ -178,35 +253,39 @@ Facility-level environmental and administrative histories are arrays of time-bou
   "environment": [
     {
       "time": {"interval": ["2020-01-01", ".."]},
-      "climateZone": "temperate",
-      "surfaceCover": "grass",
-      "surfaceRoughness": "low",
-      "population": [10000, 50000],
-      "perimeter_km": [10, 50]
-    }
-  ],
-  "territory": [
-    {
-      "time": {"interval": ["2020-01-01", ".."]},
-      "territory": "CHE"
+      "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/equatorialSavannahDrySummer",
+      "surfaceCover": {
+        "value": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/mosaicForest",
+        "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
+      },
+      "surfaceRoughness": "http://codes.wmo.int/wmdr/SurfaceRoughness/rough",
+      "topographyBathymetry": {
+        "localTopography": "http://codes.wmo.int/wmdr/LocalTopography/slope",
+        "relativeElevation": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
+        "topographicContext": "http://codes.wmo.int/wmdr/TopographicContext/rises",
+        "altitudeOrDepth": "http://codes.wmo.int/wmdr/AltitudeOrDepth/veryHighAltitude"
+      }
     }
   ],
   "programAffiliations": [
     {
       "time": {"interval": ["2020-01-01", ".."]},
-      "program": "GAWregional",
+      "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAW",
       "programSpecificFacilityId": "GAW-TEST",
-      "reportingStatus": "operational"
+      "programSpecificFacilityTitle": "Example GAW station",
+      "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
     }
   ]
 }
 ```
 
-Programme affiliations at facility level are temporal objects because the station relationship with a programme may change.  Observation-series programme memberships may be emitted as plain code values where the source only records membership without a temporal association.
+Programme affiliations at facility level are temporal objects because the relationship with a programme can change. `programSpecificFacilityId` and `programSpecificFacilityTitle` are ordinary programme-specific strings, not controlled values.
+
+Observation-series programme memberships are represented by controlled programme concept URIs in `programAffiliations[]`.
 
 ## Instruments
 
-`properties.instruments[]` is a reusable instrument-type registry, not a list of individual physical instances.  It may contain manufacturer, model, observing-method metadata, and vertical range where these are known.
+`properties.instruments[]` is a reusable instrument-type registry, not a list of individual physical instances. It may contain manufacturer, model, observing-method metadata, and vertical range where known.
 
 ```json
 {
@@ -215,7 +294,9 @@ Programme affiliations at facility level are temporal objects because the statio
       "id": "instrument:thermo--49i",
       "manufacturer": "Thermo",
       "model": "49i",
-      "observingMethods": ["266"],
+      "observingMethods": [
+        "http://codes.wmo.int/wmdr/ObservingMethod/266"
+      ],
       "verticalRange": {
         "min": 0.0,
         "max": 30.0
@@ -225,26 +306,28 @@ Programme affiliations at facility level are temporal objects because the statio
 }
 ```
 
-Serial numbers are not part of the instrument catalogue because they identify individual items, not catalogue entries.  They are optional instance metadata on `observingConfigurations[]`.  An instrument can therefore be documented through the catalogue reference even when the serial number is unknown.  In that case, omit `serialNumber`; do not create a catalogue-specific instrument instance.
+Serial numbers are not part of the instrument catalogue because they identify individual physical items rather than catalogue entries. A serial number is optional instance metadata on an `observingConfiguration`.
 
 ## Observation series
 
-An observation series describes observations of one property or closely related property/feature/geometry combination at the facility.
+An observation series describes observations of one property or a closely related property/feature/geometry combination at the facility.
 
 ```json
 {
   "id": "observationSeries:0-20008-0-THE--12006",
   "title": "Air temperature",
-  "observedProperty": "12006",
+  "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
   "observedFeature": {
-    "domain": "atmosphere",
-    "domainFeature": "nearSurface",
+    "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere",
     "featureName": "air"
   },
-  "observedGeometry": "point",
-  "applicationAreas": ["weather"],
-  "representativeness": "local",
-  "programAffiliations": ["GBON"],
+  "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+  "applicationAreas": [
+    "http://codes.wmo.int/wmdr/ApplicationArea/nowcasting"
+  ],
+  "programAffiliations": [
+    "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+  ],
   "observingConfigurations": [],
   "observingProcedures": [],
   "reportingProcedures": [],
@@ -253,30 +336,32 @@ An observation series describes observations of one property or closely related 
 }
 ```
 
-`observedFeature.domain` is required when `observedFeature` is present.  `domainFeature` and `featureName` allow more specific description where the source contains it.
+The core requires `id`, `observedProperty`, `observedGeometry`, `observedFeature`, and `programAffiliations`.
 
-Code-list values are emitted as JSON strings, even when the source code is numeric-looking.  For example, an observed-property code such as `12006` is represented as `"12006"`, not as the JSON number `12006`.
+`observedFeature.domain` is mandatory and controlled. `domainFeature` is optional and, where used, is intended to be a controlled URI. `featureName` is optional free text.
 
-`applicationAreas[]` is always an array in WMDR2.  The XML-derived WMDR1 source may contain singular `applicationArea` values; the WMDR2 converter collects them into the plural list.
+There is no independent `ObservationSeries.time`; see the temporal derivation rule above.
+
+The XML-derived WMDR1 source may contain singular `applicationArea` values. The WMDR2 converter collects them into the plural `applicationAreas[]` list.
 
 ## Observing configurations
 
-`observingConfigurations[]` is the time-bound history of how and where an observation series is made.  It is the place for observing method, optional operating status, source of observation, instrument reference, optional serial number, exposure, local geometry, reference surface, and vertical distance.
+`observingConfigurations[]` is the time-bound history of how and where an observation series is made.
 
 ```json
 {
   "time": {"interval": ["2020-01-01", ".."]},
-  "observingMethod": "266",
-  "operatingStatus": "operational",
-  "sourceOfObservation": "automaticReading",
+  "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
+  "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
+  "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
   "instrument": "instrument:thermo--49i",
   "serialNumber": "SN-001",
-  "exposure": "good",
+  "exposure": "http://codes.wmo.int/wmdr/Exposure/good",
   "geometry": {
     "type": "Point",
     "coordinates": [7.0, 46.0, 2.0]
   },
-  "referenceSurface": "localGround",
+  "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
   "verticalDistanceFromReferenceSurface": {
     "value": 2.0,
     "uom": "m"
@@ -284,13 +369,25 @@ Code-list values are emitted as JSON strings, even when the source code is numer
 }
 ```
 
-An observing configuration requires `observingMethod` and a `time` interval.  `operatingStatus` has cardinality 0..1 and is emitted only when recorded.  `serialNumber` also has cardinality 0..1 and is emitted only when the instrument instance serial number is known; a missing serial number does not prevent documenting the instrument via `instrument`.  Use `{"nilReason": "unknown"}` for an explicitly unknown method.  Do not emit discovery keywords or a nested location wrapper here; the relevant location fields are represented directly on the configuration.
+An observing configuration requires:
 
-If the source carries a temporal operating-status history, the converter creates separate observing-configuration entries, each with its own `time.interval` and scalar `operatingStatus`.  It must not emit an array-valued `operatingStatus` inside one configuration.
+- `time`;
+- `observingMethod`;
+- `sourceOfObservation`.
+
+`observingMethod` and `sourceOfObservation` are mandatory controlled properties and may use an allowed `nilReason` when explicitly unknown.
+
+`operatingStatus` is optional and non-nillable. If the source has no status, or explicitly records a nil/unknown optional status, the converter omits the property. When present, it is a single controlled concept URI.
+
+`serialNumber` is optional and belongs to the observing configuration, not the instrument catalogue.
+
+If `verticalDistanceFromReferenceSurface` is present, `referenceSurface` is required. The converter does not guess a missing reference surface.
+
+If the source carries a temporal operating-status history, the converter creates separate observing-configuration entries with the applicable `time.interval` and scalar `operatingStatus`; it does not emit an array-valued status inside one configuration.
 
 ## Observing procedures
 
-`observingProcedures[]` contains time-bound procedure history for the observation series.  It references reusable schedules from `properties.schedules[]` through `observingSchedules[]`.
+`observingProcedures[]` contains time-bound procedure history and references reusable schedules through `observingSchedules[]`.
 
 ```json
 {
@@ -300,51 +397,38 @@ If the source carries a temporal operating-status history, the converter creates
 }
 ```
 
-The actual validity of the procedure is carried by `time.interval`.  The schedule object itself describes a reusable temporal pattern.
+The validity of the procedure is carried by `time.interval`; the schedule describes a reusable temporal pattern.
 
 ## Reporting procedures
 
-`reportingProcedures[]` contains the reporting procedure metadata for an observation series.  Reporting procedures are not time-bound objects in this version.  They reference reusable schedules through `reportingSchedules[]`.
+`reportingProcedures[]` contains reporting metadata for an observation series. Reporting procedures are not time-bound objects in this model.
 
 ```json
 {
-  "dataFormat": ["BUFR"],
-  "dataPolicy": "open",
   "internationalExchange": true,
-  "levelOfData": "level1",
-  "numberOfObservationsInReportingInterval": 6,
-  "referenceDatum": "meanSeaLevel",
-  "referenceTimeSource": ["utc"],
-  "spatialReportingInterval": "point",
-  "strategy": "automatic",
-  "timeliness": "PT30M",
-  "timeStampMeaning": "endOfPeriod",
-  "uom": "K",
+  "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
+  "temporalReportingInterval": "PT1H",
+  "temporalAggregate": "PT10M",
   "reportingSchedules": ["schedule_002"],
+  "numberOfObservationsInReportingInterval": 6,
+  "timeliness": "PT30M",
+  "uom": "http://codes.wmo.int/wmdr/unit/K",
   "contactAssignments": []
 }
 ```
 
-The reporting interval and aggregation interval belong in the associated schedule as `wmo.int:aggregationInterval`, not as temporal properties on the reporting procedure.
+`dataPolicy` is mandatory and controlled.
 
-## Official status
+`internationalExchange` is explicit. When it is `true`, the tightened schema requires:
 
-`officialStatus[]` is a time-bound observation-series history.
+- `temporalReportingInterval`;
+- `reportingSchedules`.
 
-```json
-{
-  "time": {"interval": ["2020-01-01", ".."]},
-  "officialStatus": "primary"
-}
-```
+`temporalAggregate` is optional, including for international exchange. An hourly reporting interval does not imply that the reported value is an hourly aggregate.
 
-When converting from a boolean official-status source value, the intended mapping is:
+`temporalReportingInterval` and `temporalAggregate` are ISO 8601 durations and remain properties of the `ReportingProcedure`.
 
-| Source value | WMDR2 value |
-| --- | --- |
-| `true` | `primary` |
-| `false` | `additional` |
-| absent | no `officialStatus` entry |
+They must **not** be moved to a reusable schedule or interpreted as `wmo.int:aggregationInterval`. A schedule aggregation interval is emitted only when an explicit aggregation interval is present in the source schedule semantics.
 
 ## Schedules
 
@@ -360,22 +444,43 @@ Reusable schedules are stored once in `properties.schedules[]` and referenced fr
   "recurrenceOverrides": {},
   "timeZone": "UTC",
   "wmo.int:samplingFrequency": "PT10M",
-  "wmo.int:aggregationInterval": "PT1H",
+  "wmo.int:aggregationInterval": "PT10M",
   "wmo.int:diurnalBaseTime": "06:00:00"
 }
 ```
 
-The schedule fields are intentionally JSCalendar-like, with WMO extension members for sampling, aggregation, and diurnal base time.
+The schedule fields are intentionally JSCalendar-like, with WMO extension members for sampling, explicit aggregation, and diurnal base time.
 
-`duration` is reserved for a within-day coverage window.  When a source gives a daily window, the converter anchors `start` to the dummy date `0001-01-01T<time>`.  Real-world validity remains on the procedure through `time.interval`.
+`duration` is reserved for a within-day coverage window. When a source gives a daily window, the converter anchors `start` to the dummy date `0001-01-01T<time>`. Real-world validity remains on the relevant time-bound WMDR object.
 
-A single schedule may be referenced by both observing and reporting procedures when the normalized pattern is truly the same.  Distinct patterns must have distinct `uid` values.  No schedule-type discriminator is needed because the referencing property gives the context.
+A single schedule may be referenced by both observing and reporting procedures when the normalized pattern is truly the same. Distinct patterns must have distinct `uid` values. No schedule-type discriminator is needed because the referencing property provides the context.
+
+## Official status
+
+`officialStatus[]` is a time-bound observation-series history.
+
+```json
+{
+  "time": {"interval": ["2020-01-01", ".."]},
+  "officialStatus": "primary"
+}
+```
+
+Where a source uses a boolean official-status value, the current mapping is:
+
+| Source value | WMDR2 value |
+| --- | --- |
+| `true` | `primary` |
+| `false` | `additional` |
+| absent | no `officialStatus` entry |
+
+This part of the model still uses the transitional `codeValue` definition until its controlled-value contract is reviewed.
 
 ## Catalogues and derived views
 
-The main facility record may be transformed into catalogue-oriented views.  In a catalogue view, reusable contacts and instruments can be externalized to separate catalogue files while the facility record keeps lightweight references.
+The main facility record may be transformed into catalogue-oriented views. In a catalogue view, reusable contacts and instruments can be externalized to separate catalogue files while the facility record keeps lightweight references.
 
-Typical catalogue outputs are:
+Typical outputs are:
 
 ```text
 results/wmdr2_json_examples/
@@ -383,7 +488,9 @@ results/wmdr2_json_examples/catalogues/contacts.json
 results/wmdr2_json_examples/catalogues/instruments.json
 ```
 
-Instrument catalogue entries remain type-level entries: manufacturer, model, observing methods, and similar metadata.  Instance-level information should not be introduced into the catalogue.
+Instrument catalogue entries remain type-level entries. Instance-level information such as serial number is not introduced into the catalogue.
+
+A catalogue projection may also derive simplified search fields, such as an observation-series temporal envelope, from the authoritative WMDR2 structures. Derived catalogue values should not be written back as duplicate authoritative metadata.
 
 ## Converter workflow
 
@@ -393,17 +500,31 @@ The main converter is:
 convert_wmdr10_json_to_wmdr2_json.py
 ```
 
-It converts intermediate WMDR10 JSON into WMDR2 facility records.
+It converts intermediate WMDR1/WMDR10 JSON into current WMDR2 facility records.
+
+### Recommended conversion chain
+
+For end-to-end regeneration:
+
+```text
+WMDR1 XML
+  -> convert_wmdr10_xml_to_wmdr10_json.py
+  -> WMDR1 JSON
+  -> convert_wmdr10_json_to_wmdr2_json.py
+  -> WMDR2 JSON
+```
+
+The WMDR1 stage is treated as source/intermediate metadata. Tightening in this repository is applied at the WMDR1-to-WMDR2 boundary; the converter preserves full controlled-concept URIs supplied by the WMDR1 representation.
 
 ### Configuration
 
-From the repository root, run:
+From the repository root:
 
 ```bash
 python convert_wmdr10_json_to_wmdr2_json.py
 ```
 
-With no arguments, the converter discovers `config.yaml` or `config.yml`, reads the `convert_wmdr10_json_to_wmdr2_json` section, and uses configured source and target paths.
+With no arguments, the converter discovers `config.yaml` or `config.yml`, reads the `convert_wmdr10_json_to_wmdr2_json` section, and uses the configured source and target paths.
 
 A minimal configuration is:
 
@@ -418,21 +539,10 @@ convert_wmdr10_json_to_wmdr2_json:
 The converter also accepts command-line paths:
 
 ```bash
-python convert_wmdr10_json_to_wmdr2_json.py \
-  --source resources/wmdr10_json_examples \
-  --target results/wmdr2_json_examples
+python convert_wmdr10_json_to_wmdr2_json.py --source resources/wmdr10_json_examples --target results/wmdr2_json_examples
 ```
 
 `--source` is an alias for `--input`, and `--target` is an alias for `--output`.
-
-### Output reporting
-
-The converter reports written files on stdout, for example:
-
-```text
-wrote results/wmdr2_json_examples/20241211_0-20008-0-THE.json
-wrote results/wmdr2_json_examples/catalogues/contacts.json
-```
 
 ## Schemas
 
@@ -442,15 +552,25 @@ The primary validation schema is:
 schemas/wmdr2-record-feature.schema.json
 ```
 
-This schema validates the full WMDR2 facility record as a GeoJSON Feature.  It uses JSON Schema draft 2020-12.
+It validates the full WMDR2 facility record as a GeoJSON Feature and uses JSON Schema draft 2020-12.
 
-The schema describes the public WMDR2 output only.  Source-side structures used internally by the WMDR1 conversion path are not public schema properties.
+The tightened schema distinguishes reviewed controlled properties from transitional/unreviewed code-like properties. The generic `codeValue` definition remains intentionally broad only for properties whose final controlled-value contract has not yet been reviewed; it should not be interpreted as the target representation for reviewed WMDR core properties.
 
-Other schemas in the repository may validate catalogue views or discovery profiles.  They are not substitutes for validating a full WMDR2 facility record.
+The schema describes current public WMDR2 output only. Earlier WMDR2 draft aliases and structures are not part of the supported converter contract merely for backwards compatibility.
 
 ## Test policy
 
-The canonical test set verifies converter helpers, record conversion, CLI behaviour, schema validation, temporal geometry alignment, and XML-to-WMDR2 end-to-end conversion.
+The canonical test set verifies:
+
+- converter helpers and record conversion;
+- URI preservation for controlled values;
+- CLI behaviour;
+- tightened schema constraints;
+- temporal geometry alignment;
+- WMDR1-to-WMDR2 mapping contracts;
+- XML-to-WMDR2 end-to-end conversion;
+- rejection of obsolete public-model keys;
+- PR-22 compatibility checks.
 
 Recommended checks:
 
@@ -459,42 +579,38 @@ python -m py_compile convert_wmdr10_json_to_wmdr2_json.py
 pytest -q
 ```
 
-The end-to-end tests deliberately distinguish between:
+At the time of this update the complete suite passes: **297 tests**.
 
-1. source XML files that are marked invalid at XML level;
-2. source-derived WMDR2 outputs that are expected to fail the strict WMDR2 JSON schema because required information is not recorded;
-3. source-derived WMDR2 outputs that must validate.
+### End-to-end source deficiencies
 
-A source record being marked invalid at XML level does not automatically mean its WMDR2 projection must fail schema validation.  Conversely, if a WMDR2 record lacks required metadata and the source does not provide it, the test should comment that example as non-validating instead of making the converter invent values.
+The XML examples are real/legacy source records, not a curated set of fully conformant tightened-WMDR2 fixtures.
+
+The end-to-end test therefore allows only narrowly reviewed **source-deficiency signatures** where the missing information cannot be supplied without invention. These currently cover cases such as:
+
+- missing `ObservingConfiguration.sourceOfObservation`;
+- missing `ReportingProcedure.dataPolicy`;
+- missing required time on a time-bound source-derived object;
+- vertical distance without a recorded reference surface;
+- phone values that cannot be safely normalized to E.164.
+
+The converter does not fill these gaps with guessed defaults merely to make a source record validate.
+
+The allow-list is semantic and narrow: any other validation error remains a hard failure. This means a known incomplete source record can still expose a new converter or schema regression.
 
 ### PR-22 schema compatibility check
 
-The optional PR-22 compatibility validator checks generated WMDR2 examples against the current `wmo-im/wmdr2` PR-22 schema.  It is intentionally a transition check, not the native WMDR2-devt validator.  The script applies temporary in-memory adaptations, such as `observationSeries` to `observingCapabilities`, and does not modify examples on disk.
-
-Run it through pytest by setting the path to the bundled PR-22 schema:
-
-```bash
-WMDR2_PR22_BUNDLED_SCHEMA=/path/to/wmdr2/schemas/wmdr2-bundled.json \
-pytest -q -m pr22_schema
-```
-
-Or run the script directly:
-
-```bash
-python scripts/validate_wmdr2_examples_pr22.py \
-  --paths results/wmdr2_json_examples \
-  --schema /path/to/wmdr2/schemas/wmdr2-bundled.json \
-  --allow-known-nonvalidating
-```
+The optional PR-22 compatibility validator checks generated WMDR2 examples against the current `wmo-im/wmdr2` PR-22 schema. It is a transition check, not the native `wmdr2-devt` validator. Temporary adaptations are applied in memory and do not modify the generated examples on disk.
 
 ## Current non-goals
 
-The v0.3.2 development model deliberately does not try to solve the following by inference:
+The current development model deliberately does not try to solve missing metadata by inference. In particular, it does not:
 
-- deriving country codes for local phone numbers;
-- constructing validity intervals where no time anchor is recorded;
-- turning individual serial-numbered items into catalogue entries;
-- guessing observing methods, application areas, exposure, or source of observation;
-- forcing observing and reporting procedures to share schedules when their temporal patterns differ.
+- derive country codes for local phone numbers;
+- construct validity intervals where no time anchor is recorded;
+- invent source of observation, data policy, operating status, observing method, programme affiliation, exposure, or reference surface;
+- create instrument catalogue entries for individual serial-numbered physical items;
+- infer aggregation from reporting frequency;
+- force observing and reporting procedures to share schedules when their temporal patterns differ;
+- preserve compatibility with obsolete WMDR2 draft shapes at the expense of the current schema contract.
 
-These constraints keep the converter faithful to the source metadata and keep schema validation meaningful.
+These constraints keep conversion faithful to the source and keep schema validation meaningful.

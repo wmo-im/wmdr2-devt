@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-record-feature.schema.json",
-  "title": "WMDR station metadata record definition",
-  "description": "WMDR station metadata record definition",
+  "title": "WMDR2 station metadata record definition — tightened working schema v4",
+  "description": "Working tightened WMDR2 schema. Controlled-vocabulary properties reviewed for the Core use absolute HTTP(S) concept URIs. Existing canonical WMDR1 http://codes.wmo.int/... identifiers are preserved by conversion.",
   "properties": {
     "id": {
       "type": "string",
@@ -99,7 +99,7 @@
       "additionalProperties": true
     },
     "codeValue": {
-      "description": "WMDR codelist value. Accepts compact token, numeric code, URI, nilReason object, or structured value.",
+      "description": "Transitional value definition retained for model properties whose controlled-vocabulary treatment has not yet been classified. New or reviewed controlled properties should use controlledValue or nillableControlledValue instead.",
       "type": [
         "string",
         "number",
@@ -224,9 +224,7 @@
           }
         },
         "resolution": {
-          "type": "string",
-          "description": "Temporal resolution as an ISO 8601 duration, for example P1D.",
-          "pattern": "^(-?)P(?=\\d|T\\d)(?:(\\d+)Y)?(?:(\\d+)M)?(?:(\\d+)([DW]))?(?:T(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+(?:\\.\\d+)?)S)?)?$"
+          "$ref": "#/$defs/iso8601Duration"
         }
       },
       "additionalProperties": true
@@ -440,7 +438,8 @@
       "type": "object",
       "required": [
         "type",
-        "title"
+        "title",
+        "facilityType"
       ],
       "properties": {
         "title": {
@@ -468,14 +467,14 @@
           "const": "facility"
         },
         "facilityType": {
-          "type": "string",
+          "$ref": "#/$defs/nillableControlledValue",
           "description": "Station/platform type",
-          "$comment": "https://codes.wmo.int/wmdr/FacilityType"
+          "$comment": "http://codes.wmo.int/wmdr/FacilityType"
         },
         "wmoRegion": {
-          "type": "string",
+          "$ref": "#/$defs/controlledValue",
           "description": "WMO Region",
-          "$comment": "https://codes.wmo.int/wmdr/WMORegion"
+          "$comment": "http://codes.wmo.int/wmdr/WMORegion"
         },
         "contacts": {
           "type": "array",
@@ -529,12 +528,8 @@
             "$ref": "#/$defs/programAffiliation"
           }
         },
-        "programAffiliation": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/programAffiliation"
-          }
-        },
+        "programAffiliation": false,
+        "deployments": false,
         "instruments": {
           "type": "array",
           "items": {
@@ -559,7 +554,8 @@
           "items": {
             "$ref": "#/$defs/contactAssignment"
           }
-        }
+        },
+        "operatingStatus": false
       },
       "additionalProperties": true
     },
@@ -575,20 +571,7 @@
           "$ref": "#/$defs/codeValue"
         },
         "surfaceCover": {
-          "type": "object",
-          "description": "Surface cover code value together with the classification scheme used for that value.",
-          "required": [
-            "value"
-          ],
-          "properties": {
-            "value": {
-              "$ref": "#/$defs/codeValue"
-            },
-            "scheme": {
-              "$ref": "#/$defs/codeValue"
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/$defs/codeValue"
         },
         "surfaceRoughness": {
           "$ref": "#/$defs/codeValue"
@@ -652,28 +635,31 @@
       ],
       "properties": {
         "programSpecificFacilityId": {
-          "$ref": "#/$defs/codeValue"
+          "type": "string",
+          "minLength": 1
         },
         "programSpecificFacilityTitle": {
-          "$ref": "#/$defs/codeValue"
+          "type": "string",
+          "minLength": 1
         },
         "program": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/nillableControlledValue"
         },
-        "programAffiliation": {
-          "$ref": "#/$defs/codeValue"
-        },
+        "programAffiliation": false,
         "reportingStatus": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/controlledValue"
         },
         "time": {
           "$ref": "#/$defs/timePeriod"
         },
         "date": false
       },
-      "additionalProperties": true
+      "additionalProperties": false,
+      "required": [
+        "program"
+      ]
     },
-    "instrument": {
+    "deployment": {
       "type": "object",
       "anyOf": [
         {
@@ -689,13 +675,52 @@
       ],
       "properties": {
         "id": {
-          "type": "string",
-          "pattern": "^instrument:"
+          "type": "string"
         },
         "uid": {
+          "type": "string"
+        },
+        "geometry": {
+          "$ref": "#/$defs/pointGeometry"
+        },
+        "instrument": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "serialNumber": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceOfObservation": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "referenceSurface": {
+          "$ref": "#/$defs/codeValue"
+        },
+        "verticalDistanceFromReferenceSurface": {
+          "$ref": "#/$defs/quantity"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "instrument": {
+      "type": "object",
+      "properties": {
+        "id": {
           "type": "string",
           "pattern": "^instrument:"
         },
+        "uid": false,
         "observingMethods": {
           "type": "array",
           "items": {
@@ -720,65 +745,41 @@
         },
         "serialNumber": false
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "required": [
+        "id"
+      ]
     },
     "observationSeries": {
       "type": "object",
-      "anyOf": [
-        {
-          "required": [
-            "uid"
-          ]
-        },
-        {
-          "required": [
-            "id"
-          ]
-        }
-      ],
       "properties": {
         "id": {
           "type": "string",
           "pattern": "^observationSeries:"
         },
-        "uid": {
-          "type": "string",
-          "pattern": "^observationSeries:"
-        },
+        "uid": false,
         "title": {
           "type": "string"
         },
         "observedProperty": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/nillableControlledValue"
         },
         "observedFeature": {
           "$ref": "#/$defs/observedFeature"
         },
         "observedGeometry": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/nillableControlledValue"
         },
-        "applicationAreas": {
-          "type": "array",
-          "description": "Application areas for which the observation series is intended or used.",
-          "items": {
-            "$ref": "#/$defs/codeValue"
-          }
+        "applicationArea": {
+          "$ref": "#/$defs/codeValue"
         },
         "representativeness": {
           "$ref": "#/$defs/codeValue"
         },
         "programAffiliations": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/codeValue"
-          }
+          "$ref": "#/$defs/nillableControlledValueArray"
         },
-        "programAffiliation": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/codeValue"
-          }
-        },
+        "programAffiliation": false,
         "contacts": {
           "type": "array",
           "items": {
@@ -803,12 +804,7 @@
             "$ref": "#/$defs/reportingProcedure"
           }
         },
-        "reporting": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/reportingProcedure"
-          }
-        },
+        "reporting": false,
         "officialStatus": {
           "type": "array",
           "items": {
@@ -832,9 +828,27 @@
           "items": {
             "$ref": "#/$defs/contactAssignment"
           }
-        }
+        },
+        "observedDomain": false,
+        "time": false,
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "observedProperty",
+        "observedGeometry",
+        "observedFeature",
+        "programAffiliations"
+      ],
+      "$comment": "ObservationSeries temporal extent is derived, not stored. Derive it from the union of ObservingConfiguration.time intervals, excluding intervals whose operatingStatus explicitly denotes that observations were not collected. Absence of operatingStatus is no such assertion and therefore does not exclude the interval. Detailed gaps/status history remain in the ObservingConfiguration objects; a catalogue may project a simple envelope."
     },
     "observedFeature": {
       "type": "object",
@@ -843,39 +857,55 @@
       ],
       "properties": {
         "domain": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/nillableControlledValue",
+          "$comment": "http://codes.wmo.int/wmdr/Domain"
         },
         "domainFeature": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/controlledValue",
+          "$comment": "Controlled DomainFeature vocabulary; optional. Omit when a canonical URI cannot be supplied."
         },
         "featureName": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "minLength": 1
         }
       },
-      "additionalProperties": true
+      "additionalProperties": false
     },
     "observingConfiguration": {
       "type": "object",
       "allOf": [
         {
           "$ref": "#/$defs/dateField"
+        },
+        {
+          "if": {
+            "required": [
+              "verticalDistanceFromReferenceSurface"
+            ]
+          },
+          "then": {
+            "required": [
+              "referenceSurface"
+            ]
+          }
         }
       ],
       "required": [
-        "observingMethod"
+        "observingMethod",
+        "time",
+        "sourceOfObservation"
       ],
       "properties": {
         "observingMethod": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/nillableControlledValue"
         },
         "operatingStatus": {
-          "$ref": "#/$defs/singleCodeValue"
+          "$ref": "#/$defs/controlledValue",
+          "description": "Optional operating status qualifying whether observations were being collected during this configuration interval. Omit when the source does not assert a status; do not manufacture an unknown value.",
+          "$comment": "For derived ObservationSeries temporal extent, an absent operatingStatus does not exclude this configuration interval."
         },
         "sourceOfObservation": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/nillableControlledValue"
         },
         "instrument": {
           "type": [
@@ -883,8 +913,9 @@
             "null"
           ]
         },
+        "deployment": false,
         "exposure": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/controlledValue"
         },
         "time": {
           "$ref": "#/$defs/timePeriod"
@@ -893,14 +924,23 @@
           "$ref": "#/$defs/pointGeometry"
         },
         "referenceSurface": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/controlledValue"
         },
         "verticalDistanceFromReferenceSurface": {
           "$ref": "#/$defs/quantity"
         },
         "date": false,
+        "observingLocation": false,
         "keywords": false,
-        "temporalGeometry": false
+        "temporalGeometry": false,
+        "serialNumber": {
+          "type": "string",
+          "minLength": 1
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
       },
       "additionalProperties": true
     },
@@ -912,14 +952,21 @@
         },
         "observingSchedules": {
           "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
           "items": {
-            "type": "string"
+            "type": "string",
+            "pattern": "^schedule_"
           }
         },
         "time": {
           "$ref": "#/$defs/timePeriod"
         },
-        "date": false
+        "date": false,
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
       },
       "additionalProperties": true,
       "allOf": [
@@ -938,13 +985,10 @@
           }
         },
         "dataPolicy": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/nillableControlledValue"
         },
         "internationalExchange": {
-          "type": [
-            "boolean",
-            "null"
-          ]
+          "type": "boolean"
         },
         "levelOfData": {
           "$ref": "#/$defs/codeValue"
@@ -973,7 +1017,8 @@
           }
         },
         "spatialReportingInterval": {
-          "$ref": "#/$defs/codeValue"
+          "type": "string",
+          "description": "Spatial reporting interval. Not a controlled-vocabulary value."
         },
         "strategy": {
           "$ref": "#/$defs/codeValue"
@@ -993,16 +1038,22 @@
         "reportingSchedules": {
           "type": "array",
           "minItems": 1,
+          "uniqueItems": true,
           "items": {
             "type": "string",
             "pattern": "^schedule_"
-          }
+          },
+          "description": "References to reusable reporting schedules. Required when internationalExchange is true."
         },
-        "reporting": {
-          "type": "string"
+        "reporting": false,
+        "temporalReportingInterval": {
+          "$ref": "#/$defs/iso8601Duration",
+          "description": "ISO 8601 temporal reporting interval. Required when internationalExchange is true."
         },
-        "temporalReportingInterval": false,
-        "temporalAggregate": false,
+        "temporalAggregate": {
+          "$ref": "#/$defs/iso8601Duration",
+          "description": "Optional ISO 8601 temporal aggregation period. Use only when the reported value actually represents an aggregation over a temporal period."
+        },
         "wmo.int:aggregationInterval": false,
         "time": false,
         "date": false,
@@ -1011,9 +1062,37 @@
           "items": {
             "$ref": "#/$defs/contactAssignment"
           }
-        }
+        },
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "required": [
+        "internationalExchange",
+        "dataPolicy"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "internationalExchange": {
+                "const": true
+              }
+            },
+            "required": [
+              "internationalExchange"
+            ]
+          },
+          "then": {
+            "required": [
+              "temporalReportingInterval",
+              "reportingSchedules"
+            ]
+          }
+        }
+      ]
     },
     "officialStatus": {
       "type": "object",
@@ -1098,16 +1177,43 @@
       },
       "additionalProperties": true
     },
-    "singleCodeValue": {
-      "description": "Single WMDR codelist value. Arrays are intentionally excluded for scalar fields such as observingConfiguration.operatingStatus.",
-      "type": [
-        "string",
-        "number",
-        "integer",
-        "object",
-        "boolean",
-        "null"
+    "controlledValue": {
+      "description": "Absolute HTTP(S) URI identifying a controlled-vocabulary concept.",
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://"
+    },
+    "nillableControlledValue": {
+      "description": "Controlled-vocabulary value for a mandatory model element, or an explicitly permitted nilReason.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/controlledValue"
+        },
+        {
+          "$ref": "#/$defs/nilReason"
+        }
       ]
+    },
+    "nillableControlledValueArray": {
+      "description": "One or more controlled-vocabulary concept URIs for a mandatory multi-valued model element, or an explicitly permitted nilReason.",
+      "oneOf": [
+        {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/controlledValue"
+          }
+        },
+        {
+          "$ref": "#/$defs/nilReason"
+        }
+      ]
+    },
+    "iso8601Duration": {
+      "description": "ISO 8601 duration, for example PT10M, PT1H or P1D.",
+      "type": "string",
+      "pattern": "^(-?)P(?=\\d|T\\d)(?:(\\d+)Y)?(?:(\\d+)M)?(?:(\\d+)([DW]))?(?:T(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+(?:\\.\\d+)?)S)?)?$"
     }
   }
 }

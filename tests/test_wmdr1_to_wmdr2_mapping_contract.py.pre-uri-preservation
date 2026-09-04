@@ -76,14 +76,14 @@ def test_mapping_contract_preserves_facility_environment_from_xml_derived_shape(
     assert record["properties"]["environment"] == [
         {
             "time": {"interval": ["2009-01-06", ".."]},
-            "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/equatorialSavannahDrySummer",
-            "surfaceCover": {"value": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/mosaicForest", "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"},
-            "surfaceRoughness": "http://codes.wmo.int/wmdr/SurfaceRoughness/rough",
+            "climateZone": "equatorialSavannahDrySummer",
+            "surfaceCover": {"value": "mosaicForest", "scheme": "globCover2009"},
+            "surfaceRoughness": "rough",
             "topographyBathymetry": {
-                "localTopography": "http://codes.wmo.int/wmdr/LocalTopography/slope",
-                "relativeElevation": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
-                "topographicContext": "http://codes.wmo.int/wmdr/TopographicContext/rises",
-                "altitudeOrDepth": "http://codes.wmo.int/wmdr/AltitudeOrDepth/veryHighAltitude",
+                "localTopography": "slope",
+                "relativeElevation": "middle",
+                "topographicContext": "rises",
+                "altitudeOrDepth": "veryHighAltitude",
             },
         }
     ]
@@ -116,10 +116,10 @@ def test_mapping_contract_preserves_observation_series_metadata_from_xml_derived
     })
 
     series = record["properties"]["observationSeries"][0]
-    assert series["observedProperty"] == OBSERVED_12006
-    assert series["observedGeometry"] == "http://codes.wmo.int/wmdr/Geometry/point"
-    assert series["programAffiliations"] == [PROGRAM_GBON]
-    assert series["applicationAreas"] == [APPLICATION_NOWCASTING, APPLICATION_ATMOS_COMP]
+    assert series["observedProperty"] == "12006"
+    assert series["observedGeometry"] == "point"
+    assert series["programAffiliations"] == ["GBON"]
+    assert series["applicationAreas"] == ["nowcasting", "atmosphericCompositionMonitoring"]
     assert "applicationArea" not in series
 
 
@@ -150,9 +150,9 @@ def test_mapping_contract_preserves_observing_configuration_from_deployment_equi
     props = record["properties"]
     config = props["observationSeries"][0]["observingConfigurations"][0]
     assert config["time"] == {"interval": ["2020-01-01", "2022-12-31"]}
-    assert config["observingMethod"] == OBSERVING_METHOD_266
-    assert config["sourceOfObservation"] == SOURCE_AUTOMATIC
-    assert config["referenceSurface"] == REFERENCE_LOCAL_GROUND
+    assert config["observingMethod"] == "266"
+    assert config["sourceOfObservation"] == "automaticReading"
+    assert config["referenceSurface"] == "localGround"
     assert config["verticalDistanceFromReferenceSurface"] == {"value": 2.0, "uom": "m"}
     assert config["serialNumber"] == "SN-001"
     assert config["instrument"] == "instrument:maker-model"
@@ -197,10 +197,7 @@ def test_mapping_contract_splits_temporal_operating_status_history() -> None:
     })
 
     configs = record["properties"]["observationSeries"][0]["observingConfigurations"]
-    assert [config["operatingStatus"] for config in configs] == [
-        "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-        "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
-    ]
+    assert [config["operatingStatus"] for config in configs] == ["operational", "inactive"]
     assert [config["time"] for config in configs] == [
         {"interval": ["2003-12-01", "2011-05-31"]},
         {"interval": ["2011-06-01", ".."]},

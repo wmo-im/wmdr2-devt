@@ -83,21 +83,21 @@ def test_last_segment(raw: Any, expected: str | None) -> None:
 @pytest.mark.parametrize(("raw", "expected"), [
     ("12006", "12006"),
     ("001", "001"),
-    ("http://codes.wmo.int/wmdr/unit/mm", "http://codes.wmo.int/wmdr/unit/mm"),
+    ("http://codes.wmo.int/wmdr/unit/mm", "mm"),
     ("(unknown)", "unknown"),
     ("abc", "abc"),
     (5, "5"),
-    ({"href": "http://codes.wmo.int/wmdr/LevelOfData/level1"}, "http://codes.wmo.int/wmdr/LevelOfData/level1"),
+    ({"href": "http://codes.wmo.int/wmdr/LevelOfData/level1"}, "level1"),
 ])
 def test_normalize_code_value(raw: Any, expected: Any) -> None:
     assert converter._normalize_code_value(raw) == expected
 
 
 @pytest.mark.parametrize(("raw", "expected"), [
-    ("http://codes.wmo.int/wmdr/unit/mm", "http://codes.wmo.int/wmdr/unit/mm"),
-    ("https://codes.wmo.int/wmdr/FacilityType/landFixed", "https://codes.wmo.int/wmdr/FacilityType/landFixed"),
+    ("http://codes.wmo.int/wmdr/unit/mm", "mm"),
+    ("https://codes.wmo.int/wmdr/FacilityType/landFixed", "landFixed"),
     ("http://example.org/not-wmdr/value", "http://example.org/not-wmdr/value"),
-    ({"href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"}, "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"),
+    ({"href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"}, "GBON"),
     (12006, "12006"),
 ])
 def test_compact_wmdr_code_value(raw: Any, expected: Any) -> None:
@@ -153,9 +153,9 @@ def test_parse_pos_lon_lat_z(raw: Any, expected: list[Any] | None) -> None:
 
 
 @pytest.mark.parametrize(("raw", "expected"), [
-    (OBSERVED_12006, "http://codes.wmo.int/wmdr/Domain/atmosphere"),
-    ("http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12", "http://codes.wmo.int/wmdr/Domain/terrestrial"),
-    ("http://codes.wmo.int/wmdr/ObservedVariableOcean/1", "http://codes.wmo.int/wmdr/Domain/ocean"),
+    (OBSERVED_12006, "atmosphere"),
+    ("http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12", "terrestrial"),
+    ("http://codes.wmo.int/wmdr/ObservedVariableOcean/1", "ocean"),
     ("not-a-code", None),
     (None, None),
 ])

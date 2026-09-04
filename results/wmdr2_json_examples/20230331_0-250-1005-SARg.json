@@ -17,10 +17,10 @@
     "title": "Sarennes Glacier",
     "created": "2023-03-31T00:00:00Z",
     "updated": "2023-03-31T00:00:00Z",
-    "facilityType": "landOnIce",
+    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landOnIce",
     "territory": [
       {
-        "territory": "FRA",
+        "territory": "http://codes.wmo.int/wmdr/TerritoryName/FRA",
         "time": {
           "interval": [
             "1949-01-01",
@@ -29,18 +29,20 @@
         }
       }
     ],
-    "wmoRegion": "europe",
+    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
     "observationSeries": [
       {
         "id": "observationSeries:12010",
         "title": "domain: terrestrial; geometry: unknown; variable: 12010",
-        "observedProperty": "12010",
-        "observedDomain": {
-          "domain": "terrestrial"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12010",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
         },
-        "observedGeometry": "unknown",
+        "observedGeometry": {
+          "nilReason": "unknown"
+        },
         "programAffiliations": [
-          "nonAffiliated"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
         ],
         "observingConfigurations": [
           {
@@ -58,7 +60,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -71,8 +73,9 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_c6cc25203e"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -80,11 +83,10 @@
     ],
     "schedules": [
       {
-        "wmo.int:aggregationInterval": "PT1H",
         "start": "0001-01-01T00:00:00",
         "duration": "PT23H59M",
         "@type": "Event",
-        "uid": "schedule_c6cc25203e"
+        "uid": "schedule_b38624328b"
       }
     ],
     "keywords": [
@@ -138,12 +140,14 @@
         "emails": [
           {
             "value": "oscar@wmo.int"
-          },
-          {
-            "value": "https://oscar.wmo.int/surface/#/feedback"
           }
         ],
         "links": [
+          {
+            "href": "https://oscar.wmo.int/surface/#/feedback",
+            "rel": "about",
+            "type": "text/html"
+          },
           {
             "href": "https://oscar.wmo.int/surface",
             "rel": "about",

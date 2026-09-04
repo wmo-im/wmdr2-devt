@@ -18,10 +18,10 @@
     "created": "2024-12-11T00:00:00Z",
     "updated": "2024-12-11T00:00:00Z",
     "description": "The Brewer spectrophotometers and all radaition instruments are located on the roof of the 4-storey building of the Physics Dept., of the Aristotle University of Thessaloniki. The Campus is located in the city center about 500 m east of the seashore. The highest elevation of about 1100 m is at a distance of about 15 km towards the east. Thessaloniki is the second largest city of Greece with about 1000000 inhabitants in the greater metropolitan area.",
-    "facilityType": "landFixed",
+    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
     "territory": [
       {
-        "territory": "GRC",
+        "territory": "http://codes.wmo.int/wmdr/TerritoryName/GRC",
         "time": {
           "interval": [
             "2011-02-16",
@@ -30,20 +30,20 @@
         }
       }
     ],
-    "wmoRegion": "europe",
+    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
     "environment": [
       {
-        "climateZone": "warmTemperateFullyHumidHotSummer",
+        "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidHotSummer",
         "time": {
           "interval": [
             "1982-03-13",
             ".."
           ]
         },
-        "surfaceRoughness": "chaotic",
+        "surfaceRoughness": "http://codes.wmo.int/wmdr/SurfaceRoughnessDavenport/chaotic",
         "surfaceCover": {
-          "value": "urbanBuiltup",
-          "scheme": "igbp"
+          "value": "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/urbanBuiltup",
+          "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/igbp"
         }
       }
     ],
@@ -51,13 +51,13 @@
       {
         "id": "observationSeries:263",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "263",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "totalColumn",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
         "programAffiliations": [
-          "GAWregional"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
         ],
         "observingConfigurations": [
           {
@@ -67,14 +67,14 @@
                 ".."
               ]
             },
-            "observingMethod": "78",
-            "sourceOfObservation": "automaticReading"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
           }
         ],
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_fd261ed9c9"
+              "schedule_b4b3a322bb"
             ],
             "time": {
               "interval": [
@@ -87,11 +87,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "noLimitation",
-            "levelOfData": "level1",
-            "uom": "DU",
+            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
+            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1",
+            "uom": "http://codes.wmo.int/wmdr/unit/DU",
+            "temporalReportingInterval": "P1M",
             "reportingSchedules": [
-              "schedule_fd261ed9c9"
+              "schedule_b4b3a322bb"
             ]
           }
         ]
@@ -99,37 +100,37 @@
       {
         "id": "observationSeries:314",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 314",
-        "observedProperty": "314",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/314",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "totalColumn",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
         "programAffiliations": [
-          "AERONET"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
         ]
       },
       {
         "id": "observationSeries:325",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 325",
-        "observedProperty": "325",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/325",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "totalColumn",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
         "programAffiliations": [
-          "AERONET"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
         ]
       },
       {
         "id": "observationSeries:359",
         "title": "domain: atmosphere; geometry: area; variable: 359",
-        "observedProperty": "359",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/359",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "area",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/area",
         "programAffiliations": [
-          "GAWregional"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
         ],
         "observingConfigurations": [
           {
@@ -139,23 +140,23 @@
                 ".."
               ]
             },
-            "observingMethod": "268"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/268"
           }
         ]
       },
       {
         "id": "observationSeries:572",
         "title": "domain: atmosphere; geometry: point; variable: 572",
-        "observedProperty": "572",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/572",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "applicationAreas": [
-          "atmosphericCompositionMonitoring"
+          "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
         ],
         "programAffiliations": [
-          "GAWregional"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
         ],
         "observingConfigurations": [
           {
@@ -165,10 +166,10 @@
                 ".."
               ]
             },
-            "observingMethod": "264",
-            "sourceOfObservation": "automaticReading",
-            "exposure": "class1",
-            "referenceSurface": "localGround",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/264",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "exposure": "http://codes.wmo.int/wmdr/Exposure/class1",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
             "verticalDistanceFromReferenceSurface": {
               "value": 20.0,
               "uom": "m"
@@ -187,23 +188,23 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "uom": "W.m-2"
+            "uom": "http://codes.wmo.int/wmdr/unit/W.m-2"
           }
         ]
       },
       {
         "id": "observationSeries:573",
         "title": "domain: atmosphere; geometry: area; variable: 573",
-        "observedProperty": "573",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "area",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/area",
         "applicationAreas": [
-          "atmosphericCompositionMonitoring"
+          "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
         ],
         "programAffiliations": [
-          "GAWregional"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
         ],
         "observingConfigurations": [
           {
@@ -213,11 +214,11 @@
                 ".."
               ]
             },
-            "observingMethod": "266",
-            "operatingStatus": "operational",
-            "sourceOfObservation": "automaticReading",
-            "exposure": "class1",
-            "referenceSurface": "localGround",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
+            "exposure": "http://codes.wmo.int/wmdr/Exposure/class1",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
             "verticalDistanceFromReferenceSurface": {
               "value": 20.0,
               "uom": "m"
@@ -236,7 +237,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_65e810ee0c"
+              "schedule_bb8f2c67a1"
             ],
             "time": {
               "interval": [
@@ -244,21 +245,22 @@
                 ".."
               ]
             },
-            "strategy": "continuous"
+            "strategy": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "noLimitation",
+            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
+            "uom": "http://codes.wmo.int/wmdr/unit/W.m-2",
             "numberOfObservationsInReportingInterval": "60",
             "timeliness": "P1Y",
-            "uom": "W.m-2",
             "referenceTimeSource": [
-              "timeServer"
+              "http://codes.wmo.int/wmdr/ReferenceTime/timeServer"
             ],
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_65e810ee0c"
+              "schedule_bb8f2c67a1"
             ]
           }
         ]
@@ -266,69 +268,67 @@
       {
         "id": "observationSeries:12150",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 12150",
-        "observedProperty": "12150",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12150",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "totalColumn",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
         "programAffiliations": [
-          "AERONET"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
         ]
       },
       {
         "id": "observationSeries:12151",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 12151",
-        "observedProperty": "12151",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12151",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "totalColumn",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
         "programAffiliations": [
-          "AERONET"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
         ]
       },
       {
         "id": "observationSeries:12153",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 12153",
-        "observedProperty": "12153",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12153",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "totalColumn",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
         "programAffiliations": [
-          "AERONET"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
         ]
       },
       {
         "id": "observationSeries:12159",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 12159",
-        "observedProperty": "12159",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12159",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "verticalProfile",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
         "programAffiliations": [
-          "GALION"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GALION"
         ]
       }
     ],
     "schedules": [
       {
-        "wmo.int:samplingFrequency": "PT2S",
-        "wmo.int:aggregationInterval": "PT1H",
         "wmo.int:diurnalBaseTime": "00:00:00",
         "start": "0001-01-01T00:00:00",
         "duration": "PT23H59M",
         "@type": "Event",
-        "uid": "schedule_65e810ee0c"
+        "uid": "schedule_b4b3a322bb"
       },
       {
-        "wmo.int:aggregationInterval": "P1M",
+        "wmo.int:samplingFrequency": "PT2S",
         "wmo.int:diurnalBaseTime": "00:00:00",
         "start": "0001-01-01T00:00:00",
         "duration": "PT23H59M",
         "@type": "Event",
-        "uid": "schedule_fd261ed9c9"
+        "uid": "schedule_bb8f2c67a1"
       }
     ],
     "keywords": [
@@ -390,10 +390,10 @@
     ],
     "methods": [
       [
-        "map"
+        "http://codes.wmo.int/wmdr/GeopositioningMethod/map"
       ],
       [
-        "gps"
+        "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
       ]
     ]
   }

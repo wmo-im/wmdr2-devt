@@ -18,10 +18,10 @@
     "created": "2025-12-18T00:00:00Z",
     "updated": "2025-12-18T00:00:00Z",
     "description": "The station was originally registered based on WMO Pub 9 Vol A information containing these observation remarks: AUT;CLIMAT(C);EVAP;GAMMA RAY;GUAN;OZONE;RAD;RADSAMP;RBCN;RBSN(T);SOILTEMP;SUNDUR (see code table A for explanations). These remarks imply the following additional observations that could not be registered automatically: Gamma ray measurements; Ozone observations; Radiation measurements; Radioactive sampling.",
-    "facilityType": "landFixed",
+    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
     "territory": [
       {
-        "territory": "HKG",
+        "territory": "http://codes.wmo.int/wmdr/TerritoryName/HKG",
         "time": {
           "interval": [
             "2016-04-28",
@@ -30,19 +30,19 @@
         }
       }
     ],
-    "wmoRegion": "asia",
+    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/asia",
     "observationSeries": [
       {
         "id": "observationSeries:213",
         "title": "domain: atmosphere; geometry: point; variable: 213",
-        "observedProperty": "213",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/213",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "RBON",
-          "RBCN"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
         ],
         "observingConfigurations": [
           {
@@ -55,7 +55,7 @@
             "observingMethod": {
               "nilReason": "unknown"
             },
-            "referenceSurface": "other",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other",
             "verticalDistanceFromReferenceSurface": {
               "value": 2.0,
               "uom": "m"
@@ -74,7 +74,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_9de2c5d2f4"
+              "schedule_1ddffe6c53"
             ],
             "time": {
               "interval": [
@@ -88,8 +88,9 @@
           {
             "internationalExchange": false,
             "uom": "unknown",
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_9de2c5d2f4"
+              "schedule_1ddffe6c53"
             ]
           }
         ]
@@ -97,17 +98,17 @@
       {
         "id": "observationSeries:216",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": "216",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "applicationAreas": [
-          "1"
+          "http://codes.wmo.int/wmdr/ApplicationArea/1"
         ],
         "programAffiliations": [
-          "GUAN",
-          "centennialObservingstations"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
         ],
         "observingConfigurations": [
           {
@@ -117,9 +118,9 @@
                 ".."
               ]
             },
-            "observingMethod": "111",
-            "sourceOfObservation": "automaticReading",
-            "referenceSurface": "localGround",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
             "verticalDistanceFromReferenceSurface": {
               "value": 2.0,
               "uom": "m"
@@ -138,7 +139,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_dab1622726"
+              "schedule_3fbc4830d3"
             ],
             "time": {
               "interval": [
@@ -152,8 +153,9 @@
           {
             "internationalExchange": false,
             "uom": "unknown",
+            "temporalReportingInterval": "PT12H",
             "reportingSchedules": [
-              "schedule_dab1622726"
+              "schedule_3fbc4830d3"
             ]
           }
         ]
@@ -161,19 +163,19 @@
       {
         "id": "observationSeries:224",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": "224",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "applicationAreas": [
-          "1"
+          "http://codes.wmo.int/wmdr/ApplicationArea/1"
         ],
         "programAffiliations": [
-          "RBCN",
-          "GUAN",
-          "centennialObservingstations",
-          "RBON"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
         ],
         "observingConfigurations": [
           {
@@ -183,9 +185,9 @@
                 ".."
               ]
             },
-            "observingMethod": "188",
-            "sourceOfObservation": "automaticReading",
-            "referenceSurface": "localGround",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
             "verticalDistanceFromReferenceSurface": {
               "value": 2.0,
               "uom": "m"
@@ -204,7 +206,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_dab1622726"
+              "schedule_3fbc4830d3"
             ],
             "time": {
               "interval": [
@@ -218,8 +220,9 @@
           {
             "internationalExchange": false,
             "uom": "unknown",
+            "temporalReportingInterval": "PT12H",
             "reportingSchedules": [
-              "schedule_dab1622726"
+              "schedule_3fbc4830d3"
             ]
           }
         ]
@@ -227,19 +230,19 @@
       {
         "id": "observationSeries:225",
         "title": "domain: atmosphere; geometry: point; variable: 225",
-        "observedProperty": "225",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "applicationAreas": [
-          "1"
+          "http://codes.wmo.int/wmdr/ApplicationArea/1"
         ],
         "programAffiliations": [
-          "GUAN",
-          "RBCN",
-          "centennialObservingstations",
-          "RBON"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
         ],
         "observingConfigurations": [
           {
@@ -249,9 +252,9 @@
                 ".."
               ]
             },
-            "observingMethod": "188",
-            "sourceOfObservation": "automaticReading",
-            "referenceSurface": "other",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other",
             "verticalDistanceFromReferenceSurface": {
               "value": 67.0,
               "uom": "m"
@@ -261,7 +264,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_bf25617a0a"
+              "schedule_a84b75da70"
             ],
             "time": {
               "interval": [
@@ -274,8 +277,9 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
+            "temporalReportingInterval": "PT12H",
             "reportingSchedules": [
-              "schedule_bf25617a0a"
+              "schedule_a84b75da70"
             ]
           }
         ]
@@ -283,21 +287,21 @@
       {
         "id": "observationSeries:227",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 227",
-        "observedProperty": "227",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/227",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "verticalProfile",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
         "programAffiliations": [
-          "GUAN",
-          "RBSNt",
-          "centennialObservingstations",
-          "RBON",
-          "GBON"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
         ],
         "observingConfigurations": [
           {
-            "observingMethod": "331"
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331"
           }
         ],
         "reportingProcedures": [
@@ -310,20 +314,20 @@
       {
         "id": "observationSeries:227",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 227",
-        "observedProperty": "227",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/227",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "verticalProfile",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
         "applicationAreas": [
-          "1"
+          "http://codes.wmo.int/wmdr/ApplicationArea/1"
         ],
         "programAffiliations": [
-          "GUAN",
-          "RBSNt",
-          "centennialObservingstations",
-          "RBON",
-          "GBON"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
         ],
         "observingConfigurations": [
           {
@@ -333,9 +337,9 @@
                 ".."
               ]
             },
-            "observingMethod": "331",
-            "sourceOfObservation": "automaticReading",
-            "referenceSurface": "other",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other",
             "serialNumber": "not applicable",
             "verticalDistanceFromReferenceSurface": {
               "value": 66.0,
@@ -347,7 +351,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_e277c4e870"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -360,8 +364,9 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "temporalReportingInterval": "PT12H",
             "reportingSchedules": [
-              "schedule_e277c4e870"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -369,16 +374,16 @@
       {
         "id": "observationSeries:12249",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": "12249",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "CLIMATc",
-          "RBCN",
-          "centennialObservingstations",
-          "RBON"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/CLIMATc",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
         ],
         "observingConfigurations": [
           {
@@ -391,7 +396,7 @@
             "observingMethod": {
               "nilReason": "unknown"
             },
-            "referenceSurface": "localGround",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
             "verticalDistanceFromReferenceSurface": {
               "value": 2.0,
               "uom": "m"
@@ -410,7 +415,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_9c3ed83a60"
+              "schedule_556c83453c"
             ],
             "time": {
               "interval": [
@@ -424,8 +429,9 @@
           {
             "internationalExchange": false,
             "uom": "unknown",
+            "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
-              "schedule_9c3ed83a60"
+              "schedule_556c83453c"
             ]
           }
         ]
@@ -433,18 +439,18 @@
       {
         "id": "observationSeries:256",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 256",
-        "observedProperty": "256",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/256",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "verticalProfile",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
         "applicationAreas": [
-          "climateMonitoring"
+          "http://codes.wmo.int/wmdr/ApplicationArea/climateMonitoring"
         ],
         "programAffiliations": [
-          "RBON",
-          "RBSNt",
-          "GBON"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
         ],
         "observingConfigurations": [
           {
@@ -454,13 +460,10 @@
                 ".."
               ]
             },
-            "observingMethod": "254",
-            "operatingStatus": "testing",
-            "sourceOfObservation": "manualReading",
-            "exposure": {
-              "nilReason": "unknown"
-            },
-            "referenceSurface": "other",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254",
+            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/testing",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other",
             "verticalDistanceFromReferenceSurface": {
               "value": 66.0,
               "uom": "m"
@@ -471,7 +474,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_38ee3ca69f"
+              "schedule_04ff6d00ad"
             ],
             "time": {
               "interval": [
@@ -485,8 +488,9 @@
           {
             "internationalExchange": false,
             "uom": "unknown",
+            "temporalReportingInterval": "P1D",
             "reportingSchedules": [
-              "schedule_38ee3ca69f"
+              "schedule_04ff6d00ad"
             ]
           }
         ]
@@ -494,15 +498,15 @@
       {
         "id": "observationSeries:270",
         "title": "domain: atmosphere; geometry: point; variable: 270",
-        "observedProperty": "270",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/270",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "programAffiliations": [
-          "RBON",
-          "CLIMATc",
-          "RBCN"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/CLIMATc",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
         ],
         "observingConfigurations": [
           {
@@ -521,20 +525,20 @@
       {
         "id": "observationSeries:310",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 310",
-        "observedProperty": "310",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/310",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "verticalProfile",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
         "applicationAreas": [
-          "1"
+          "http://codes.wmo.int/wmdr/ApplicationArea/1"
         ],
         "programAffiliations": [
-          "GUAN",
-          "RBSNt",
-          "centennialObservingstations",
-          "RBON",
-          "GBON"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
         ],
         "observingConfigurations": [
           {
@@ -544,8 +548,8 @@
                 ".."
               ]
             },
-            "observingMethod": "327",
-            "sourceOfObservation": "automaticReading",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
             "serialNumber": "not applicable",
             "instrument": "instrument:vaisala-oyj-rs41-sg"
           }
@@ -553,7 +557,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_e277c4e870"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -567,8 +571,9 @@
           {
             "internationalExchange": true,
             "uom": "unknown",
+            "temporalReportingInterval": "PT12H",
             "reportingSchedules": [
-              "schedule_e277c4e870"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -576,13 +581,13 @@
       {
         "id": "observationSeries:510",
         "title": "domain: terrestrial; geometry: area; variable: 510",
-        "observedProperty": "510",
-        "observedDomain": {
-          "domain": "terrestrial"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/510",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
         },
-        "observedGeometry": "area",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/area",
         "programAffiliations": [
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -601,13 +606,15 @@
       {
         "id": "observationSeries:596",
         "title": "domain: terrestrial; geometry: unknown; variable: 596",
-        "observedProperty": "596",
-        "observedDomain": {
-          "domain": "terrestrial"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/596",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
         },
-        "observedGeometry": "unknown",
+        "observedGeometry": {
+          "nilReason": "unknown"
+        },
         "programAffiliations": [
-          "GOSGeneral"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
         ],
         "observingConfigurations": [
           {
@@ -626,20 +633,20 @@
       {
         "id": "observationSeries:12000",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 12000",
-        "observedProperty": "12000",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12000",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "verticalProfile",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
         "applicationAreas": [
-          "1"
+          "http://codes.wmo.int/wmdr/ApplicationArea/1"
         ],
         "programAffiliations": [
-          "RBSNt",
-          "GUAN",
-          "centennialObservingstations",
-          "RBON",
-          "GBON"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
         ],
         "observingConfigurations": [
           {
@@ -649,9 +656,9 @@
                 ".."
               ]
             },
-            "observingMethod": "327",
-            "sourceOfObservation": "automaticReading",
-            "referenceSurface": "localGround",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
             "serialNumber": "NOT APPLICABLE",
             "verticalDistanceFromReferenceSurface": {
               "value": 0.0,
@@ -663,7 +670,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_e277c4e870"
+              "schedule_b38624328b"
             ],
             "time": {
               "interval": [
@@ -677,8 +684,9 @@
           {
             "internationalExchange": true,
             "uom": "unknown",
+            "temporalReportingInterval": "PT12H",
             "reportingSchedules": [
-              "schedule_e277c4e870"
+              "schedule_b38624328b"
             ]
           }
         ]
@@ -686,19 +694,19 @@
       {
         "id": "observationSeries:12005",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": "12005",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "applicationAreas": [
-          "1"
+          "http://codes.wmo.int/wmdr/ApplicationArea/1"
         ],
         "programAffiliations": [
-          "RBCN",
-          "GUAN",
-          "centennialObservingstations",
-          "RBON"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
         ],
         "observingConfigurations": [
           {
@@ -708,9 +716,9 @@
                 ".."
               ]
             },
-            "observingMethod": "95",
-            "sourceOfObservation": "automaticReading",
-            "referenceSurface": "localGround",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/95",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
             "verticalDistanceFromReferenceSurface": {
               "value": 3.0,
               "uom": "m"
@@ -729,7 +737,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_dab1622726"
+              "schedule_3fbc4830d3"
             ],
             "time": {
               "interval": [
@@ -743,8 +751,9 @@
           {
             "internationalExchange": false,
             "uom": "unknown",
+            "temporalReportingInterval": "PT12H",
             "reportingSchedules": [
-              "schedule_dab1622726"
+              "schedule_3fbc4830d3"
             ]
           }
         ]
@@ -752,19 +761,19 @@
       {
         "id": "observationSeries:12006",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "observedProperty": "12006",
-        "observedDomain": {
-          "domain": "atmosphere"
+        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
+        "observedFeature": {
+          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
         },
-        "observedGeometry": "point",
+        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
         "applicationAreas": [
-          "1"
+          "http://codes.wmo.int/wmdr/ApplicationArea/1"
         ],
         "programAffiliations": [
-          "RBON",
-          "RBCN",
-          "GUAN",
-          "centennialObservingstations"
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN",
+          "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
         ],
         "observingConfigurations": [
           {
@@ -774,9 +783,9 @@
                 ".."
               ]
             },
-            "observingMethod": "95",
-            "sourceOfObservation": "automaticReading",
-            "referenceSurface": "localGround",
+            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/95",
+            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
             "verticalDistanceFromReferenceSurface": {
               "value": 3.0,
               "uom": "m"
@@ -795,7 +804,7 @@
         "observingProcedures": [
           {
             "observingSchedules": [
-              "schedule_dab1622726"
+              "schedule_3fbc4830d3"
             ],
             "time": {
               "interval": [
@@ -809,8 +818,9 @@
           {
             "internationalExchange": false,
             "uom": "unknown",
+            "temporalReportingInterval": "PT12H",
             "reportingSchedules": [
-              "schedule_dab1622726"
+              "schedule_3fbc4830d3"
             ]
           }
         ]
@@ -818,49 +828,43 @@
     ],
     "schedules": [
       {
-        "wmo.int:aggregationInterval": "P1D",
         "start": "0001-01-01T10:00:00",
         "duration": "PT59M",
         "@type": "Event",
-        "uid": "schedule_38ee3ca69f"
+        "uid": "schedule_04ff6d00ad"
       },
       {
-        "wmo.int:aggregationInterval": "PT1H",
-        "wmo.int:diurnalBaseTime": "00:00:00",
-        "start": "0001-01-01T14:00:00",
-        "duration": "PT23H59M",
-        "@type": "Event",
-        "uid": "schedule_9c3ed83a60"
-      },
-      {
-        "wmo.int:aggregationInterval": "PT1H",
         "wmo.int:diurnalBaseTime": "00:00:00",
         "start": "0001-01-01T18:00:00",
         "duration": "PT23H59M",
         "@type": "Event",
-        "uid": "schedule_9de2c5d2f4"
+        "uid": "schedule_1ddffe6c53"
       },
       {
-        "wmo.int:aggregationInterval": "PT12H",
-        "start": "0001-01-01T16:00:00",
-        "duration": "PT23H59M",
-        "@type": "Event",
-        "uid": "schedule_bf25617a0a"
-      },
-      {
-        "wmo.int:aggregationInterval": "PT12H",
         "wmo.int:diurnalBaseTime": "00:00:00",
         "start": "0001-01-01T16:00:00",
         "duration": "PT23H59M",
         "@type": "Event",
-        "uid": "schedule_dab1622726"
+        "uid": "schedule_3fbc4830d3"
       },
       {
-        "wmo.int:aggregationInterval": "PT12H",
+        "wmo.int:diurnalBaseTime": "00:00:00",
+        "start": "0001-01-01T14:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_556c83453c"
+      },
+      {
+        "start": "0001-01-01T16:00:00",
+        "duration": "PT23H59M",
+        "@type": "Event",
+        "uid": "schedule_a84b75da70"
+      },
+      {
         "start": "0001-01-01T00:00:00",
         "duration": "PT23H59M",
         "@type": "Event",
-        "uid": "schedule_e277c4e870"
+        "uid": "schedule_b38624328b"
       }
     ],
     "instruments": [
@@ -978,12 +982,14 @@
         "emails": [
           {
             "value": "oscar@wmo.int"
-          },
-          {
-            "value": "https://oscar.wmo.int/surface/#/feedback"
           }
         ],
         "links": [
+          {
+            "href": "https://oscar.wmo.int/surface/#/feedback",
+            "rel": "about",
+            "type": "text/html"
+          },
           {
             "href": "https://oscar.wmo.int/surface",
             "rel": "about",
