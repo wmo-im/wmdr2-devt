@@ -1648,13 +1648,30 @@ def _has_explicit_time_period(value: Mapping[str, Any]) -> bool:
 
 
 def _normalize_program_affiliations(value: Any) -> List[Any]:
-    # Normalize historical Facility programme affiliations without inventing
-    # validity and without retaining the WMDR1 nested programAffiliation alias.
+    """Normalize Facility programme affiliations without inventing validity.
+
+    XML-derived WMDR1 JSON may wrap one programme URI in a one-item list.
+    WMDR2 requires a scalar programme value per affiliation occurrence.
+    """
     out: List[Dict[str, Any]] = []
+
+    def normalized_programs(raw: Any) -> List[Any]:
+        programs: List[Any] = []
+        pending = list(_as_list(raw))
+        while pending:
+            candidate = pending.pop(0)
+            if isinstance(candidate, list):
+                pending[0:0] = candidate
+                continue
+            normalized = _normalize_code_or_nil_reason(candidate)
+            if normalized not in (None, "", [], {}):
+                programs.append(normalized)
+        return _uniq_scalars(programs)
 
     for item in _as_list(value):
         if not isinstance(item, Mapping):
-            # A scalar programme affiliation has no recorded validity period.
+            for program in normalized_programs(item):
+                out.append({"program": program})
             continue
 
         program_raw = _first_non_empty(
@@ -1666,13 +1683,11 @@ def _normalize_program_affiliations(value: Any) -> List[Any]:
             item.get("href"),
             item.get("url"),
         )
-        program = _normalize_code_or_nil_reason(program_raw)
-        if program in (None, "", [], {}):
-            continue
-        if not _has_explicit_time_period(item):
+        programs = normalized_programs(program_raw)
+        if not programs:
             continue
 
-        common: Dict[str, Any] = {"program": program}
+        common: Dict[str, Any] = {}
         for key in ("programSpecificFacilityId", "programSpecificFacilityTitle"):
             value_text = _strip_text(item.get(key))
             if value_text:
@@ -1680,53 +1695,54 @@ def _normalize_program_affiliations(value: Any) -> List[Any]:
 
         base_start, base_end = _extract_interval(item)
         base_time = _time_interval(base_start, base_end)
-
         statuses = _as_list(item.get("reportingStatus"))
-        emitted_status_history = False
-        for status_item in statuses:
-            status_obj = _as_mapping(status_item)
-            if status_obj:
-                status_raw = _first_non_empty(
-                    status_obj.get("reportingStatus"),
-                    status_obj.get("status"),
-                    status_obj.get("href"),
-                    status_obj.get("url"),
-                    status_obj.get("value"),
-                    status_obj.get("#text"),
-                    status_obj.get("text"),
-                )
-                status_start, status_end = _extract_interval(status_obj)
-                status_time = _time_interval(status_start, status_end) or base_time
-            else:
-                status_raw = status_item
-                status_time = base_time
 
-            payload = dict(common)
-            if status_time:
-                payload["time"] = status_time
-            status = _optional_controlled_value(status_raw, "reportingStatus")
-            if status not in (None, "", [], {}):
-                payload["reportingStatus"] = status
+        for program in programs:
+            base_payload: Dict[str, Any] = {**common, "program": program}
+            emitted_status_history = False
 
-            if "time" in payload:
-                out.append(payload)
-                emitted_status_history = True
+            for status_item in statuses:
+                status_obj = _as_mapping(status_item)
+                if status_obj:
+                    status_raw = _first_non_empty(
+                        status_obj.get("reportingStatus"),
+                        status_obj.get("status"),
+                        status_obj.get("href"),
+                        status_obj.get("url"),
+                        status_obj.get("value"),
+                        status_obj.get("#text"),
+                        status_obj.get("text"),
+                    )
+                    status_start, status_end = _extract_interval(status_obj)
+                    status_time = _time_interval(status_start, status_end) or base_time
+                else:
+                    status_raw = status_item
+                    status_time = base_time
 
-        if emitted_status_history:
-            continue
+                status = _optional_controlled_value(status_raw, "reportingStatus")
+                payload = dict(base_payload)
+                if status not in (None, "", [], {}):
+                    payload["reportingStatus"] = status
+                if status_time:
+                    payload["time"] = status_time
 
-        payload = dict(common)
-        if base_time:
-            payload["time"] = base_time
+                if "reportingStatus" in payload or "time" in payload:
+                    out.append(payload)
+                    emitted_status_history = True
 
-        # Scalar/direct status, if present and not already consumed above.
-        raw_status = item.get("reportingStatus")
-        if raw_status not in (None, "", [], {}) and not isinstance(raw_status, list):
-            status = _optional_controlled_value(raw_status, "reportingStatus")
-            if status not in (None, "", [], {}):
-                payload["reportingStatus"] = status
+            if emitted_status_history:
+                continue
 
-        if "time" in payload:
+            payload = dict(base_payload)
+            if base_time:
+                payload["time"] = base_time
+
+            raw_status = item.get("reportingStatus")
+            if raw_status not in (None, "", [], {}) and not isinstance(raw_status, list):
+                status = _optional_controlled_value(raw_status, "reportingStatus")
+                if status not in (None, "", [], {}):
+                    payload["reportingStatus"] = status
+
             out.append(payload)
 
     return _uniq_dicts(out)
@@ -1735,14 +1751,14 @@ def _normalize_program_affiliations(value: Any) -> List[Any]:
 
 
 def _normalize_territories(value: Any) -> List[Dict[str, Any]]:
-    """Normalize WMDR10 territory values to the v0.3.1 temporal array shape.
+    """Normalize WMDR10 territory values to WMDR2 history occurrences.
 
-    The schema models ``properties.territory`` as an array of temporal objects.
-    WMDR10/XML-derived JSON often contains a single object with ``territoryName``
-    plus ``beginPosition``/``endPosition``.  Convert only records with an
-    explicit temporal anchor; do not invent time for scalar territory values.
+    Territory is the semantic payload. Its validity period is optional, as in
+    WMDR1, so an untimed scalar or mapping must be preserved rather than
+    discarded or assigned an invented date.
     """
     out: List[Dict[str, Any]] = []
+
     for item in _as_list(value):
         if isinstance(item, Mapping):
             raw_territory = _first_non_empty(
@@ -1756,21 +1772,22 @@ def _normalize_territories(value: Any) -> List[Dict[str, Any]]:
                 item.get("#text"),
                 item.get("text"),
             )
-            territory = _compact_wmdr_code_value(raw_territory)
+            territory = _optional_controlled_value(raw_territory)
             if territory in (None, "", [], {}):
                 continue
-            if not _has_explicit_time_period(item):
-                continue
+
             payload: Dict[str, Any] = {"territory": territory}
             start, end = _extract_interval(item)
             interval = _time_interval(start, end)
             if interval:
                 payload["time"] = interval
-            if "time" in payload:
-                out.append(payload)
-        else:
-            # A scalar territory value has no recorded validity period.
+            out.append(payload)
             continue
+
+        territory = _optional_controlled_value(item)
+        if territory not in (None, "", [], {}):
+            out.append({"territory": territory})
+
     return _uniq_dicts(out)
 
 
@@ -1793,12 +1810,10 @@ def _environment_merge_key(entry: Mapping[str, Any], ordinal: int) -> str:
 
 
 def _environment_from_facility(facility: Mapping[str, Any]) -> List[Dict[str, Any]]:
-    """Build WMDR2 facility environment history entries from WMDR10 fields.
+    """Build WMDR2 Facility environment occurrences from WMDR1 fields.
 
-    WMDR10/XML source records carry facility environment metadata as direct
-    facility members such as ``climateZone``, ``surfaceCover``,
-    ``surfaceRoughness`` and ``topographyBathymetry``.  WMDR2 emits these as
-    ``properties.environment[]`` entries.
+    Optional controlled values explicitly recorded as unknown/nil are omitted.
+    An occurrence is emitted only when actual semantic payload remains.
     """
     entries: List[Dict[str, Any]] = []
 
@@ -1820,28 +1835,34 @@ def _environment_from_facility(facility: Mapping[str, Any]) -> List[Dict[str, An
         ("surfaceRoughness", "surfaceRoughness"),
     ):
         for raw in _as_list(facility.get(source_key)):
-            append_entry(raw, target_key, _named_code_value(raw, source_key))
+            value = _optional_controlled_value(raw, source_key)
+            append_entry(raw, target_key, value)
 
     for raw in _as_list(facility.get("surfaceCover")):
-        value = _named_code_value(raw, "surfaceCover")
+        value = _optional_controlled_value(raw, "surfaceCover")
         if value in (None, "", [], {}):
             continue
-        surface_cover: Dict[str, Any] = {"value": value}
+        scheme = None
         if isinstance(raw, Mapping):
             scheme = _first_non_empty(
-                _named_code_value(raw, "surfaceCoverClassification"),
-                _named_code_value(raw, "scheme"),
+                _optional_controlled_value(raw, "surfaceCoverClassification"),
+                _optional_controlled_value(raw, "scheme"),
             )
-            if scheme not in (None, "", [], {}):
-                surface_cover["scheme"] = scheme
-        append_entry(raw, "surfaceCover", surface_cover)
+        if scheme in (None, "", [], {}):
+            continue
+        append_entry(raw, "surfaceCover", {"value": value, "scheme": scheme})
 
     for raw in _as_list(facility.get("topographyBathymetry")):
         if not isinstance(raw, Mapping):
             continue
         topo: Dict[str, Any] = {}
-        for key in ("localTopography", "relativeElevation", "topographicContext", "altitudeOrDepth"):
-            value = _named_code_value(raw, key)
+        for key in (
+            "localTopography",
+            "relativeElevation",
+            "topographicContext",
+            "altitudeOrDepth",
+        ):
+            value = _optional_controlled_value(raw, key)
             if value not in (None, "", [], {}):
                 topo[key] = value
         append_entry(raw, "topographyBathymetry", topo)
@@ -2234,20 +2255,21 @@ def _schedule_uid(schedule: Mapping[str, Any]) -> str:
 def _normalize_schedule_object(raw: Any, *, kind: str = "shared") -> Optional[Dict[str, Any]]:
     """Return a reusable JSCalendar-like schedule object.
 
-    WMDR2 v0.3.1 keeps one shared root-level schedule registry.  The same
-    schedule can be referenced from ``observingProcedures`` and
-    ``reportingProcedures`` when the observing and reporting rhythm is the same.
-    The reference context supplies the role; the schedule itself therefore has
-    no ``scheduleType`` discriminator.
+    A reusable schedule must carry an explicit ``start`` anchor plus meaningful
+    scheduling semantics. The converter accepts duration, recurrence rules, or
+    WMO sampling/reporting cadence extensions as that semantic content. A bare
+    identifier, ``start`` alone, diurnal base time alone, or recurrence
+    overrides without a recurrence rule are not schedules and are rejected.
+
+    WMDR2 keeps one shared root-level schedule registry. The reference context
+    supplies the observing/reporting role, so the schedule itself has no
+    ``scheduleType`` discriminator.
     """
     if raw in (None, "", [], {}):
         return None
-
     if isinstance(raw, Mapping):
         schedule: Dict[str, Any] = dict(raw)
     else:
-        # A bare scalar is interpreted in the calling context: sampling
-        # frequency for observing, aggregation interval for reporting.
         schedule = {"frequency": raw}
 
     legacy_id = _strip_text(schedule.pop("id", None))
@@ -2257,6 +2279,7 @@ def _normalize_schedule_object(raw: Any, *, kind: str = "shared") -> Optional[Di
 
     if "@type" not in schedule:
         schedule["@type"] = "Event"
+
     if "start" not in schedule and "startDate" in schedule:
         schedule["start"] = schedule.pop("startDate")
     if "start" not in schedule:
@@ -2279,7 +2302,11 @@ def _normalize_schedule_object(raw: Any, *, kind: str = "shared") -> Optional[Di
     if aggregation not in (None, "", [], {}):
         schedule["wmo.int:aggregationInterval"] = _normalize_time_resolution(aggregation)
 
-    duration = _first_non_empty(schedule.get("duration"), schedule.pop("coverageDuration", None), schedule.pop("diurnalDuration", None))
+    duration = _first_non_empty(
+        schedule.get("duration"),
+        schedule.pop("coverageDuration", None),
+        schedule.pop("diurnalDuration", None),
+    )
     if duration not in (None, "", [], {}):
         schedule["duration"] = _normalize_time_resolution(duration)
 
@@ -2296,6 +2323,15 @@ def _normalize_schedule_object(raw: Any, *, kind: str = "shared") -> Optional[Di
             schedule["wmo.int:aggregationInterval"] = _normalize_time_resolution(frequency)
         elif "wmo.int:samplingFrequency" not in schedule:
             schedule["wmo.int:samplingFrequency"] = _normalize_time_resolution(frequency)
+
+    schedule_semantics = (
+        "duration",
+        "recurrenceRules",
+        "wmo.int:samplingFrequency",
+        "wmo.int:aggregationInterval",
+    )
+    if not any(_non_empty(schedule.get(key)) for key in schedule_semantics):
+        return None
 
     if not uid:
         uid = _schedule_uid(schedule)
@@ -2320,13 +2356,11 @@ def _register_schedule(schedule: Optional[Mapping[str, Any]], registry: Dict[str
 
 
 def _schedule_from_source(src: Mapping[str, Any], *, kind: str) -> Optional[Dict[str, Any]]:
-    """Build a reusable shared schedule from observing/reporting source metadata.
+    """Build a reusable shared schedule from observing/reporting metadata.
 
-    The source context controls which explicit schedule object is preferred, but
-    when schedule information is inferred from WMDR10 data-generation/coverage
-    fields both observing and reporting procedures intentionally receive the
-    same normalized schedule object.  This allows the same root-level schedule
-    ``uid`` to be reused by ``observingSchedules`` and ``reportingSchedules``.
+    Explicit cadence/recurrence stays authoritative, while contextual diurnal
+    base time and diurnal coverage are merged as schedule modifiers. The
+    ReportingProcedure temporalReportingInterval remains on ReportingProcedure.
     """
     coverage = _as_mapping(src.get("coverage"))
     sampling = _as_mapping(src.get("sampling"))
@@ -2346,8 +2380,28 @@ def _schedule_from_source(src: Mapping[str, Any], *, kind: str) -> Optional[Dict
         *(reporting_coverage.get(key) for key in ("reportingSchedule", "schedule")),
         src.get("schedule"),
     )
+
+    diurnal = _first_non_empty(
+        reporting_src.get("diurnalBaseTime"),
+        src.get("diurnalBaseTime"),
+        coverage.get("diurnalBaseTime"),
+        reporting_coverage.get("diurnalBaseTime"),
+    )
+    coverage_fields = _diurnal_coverage_fields(
+        coverage, reporting_coverage, src, reporting_src
+    )
+
     if raw not in (None, "", [], {}):
-        return _normalize_schedule_object(raw, kind=kind)
+        payload: Dict[str, Any] = dict(raw) if isinstance(raw, Mapping) else {"frequency": raw}
+        if (
+            diurnal not in (None, "", [], {})
+            and "diurnalBaseTime" not in payload
+            and "wmo.int:diurnalBaseTime" not in payload
+        ):
+            payload["wmo.int:diurnalBaseTime"] = diurnal
+        for key, value in coverage_fields.items():
+            payload.setdefault(key, value)
+        return _normalize_schedule_object(payload, kind=kind)
 
     sampling_interval = _first_non_empty(
         src.get("temporalSamplingInterval"),
@@ -2360,12 +2414,6 @@ def _schedule_from_source(src: Mapping[str, Any], *, kind: str) -> Optional[Dict
         coverage.get("aggregationInterval"),
         reporting_coverage.get("aggregationInterval"),
     )
-    diurnal = _first_non_empty(
-        reporting_src.get("diurnalBaseTime"),
-        src.get("diurnalBaseTime"),
-        coverage.get("diurnalBaseTime"),
-        reporting_coverage.get("diurnalBaseTime"),
-    )
 
     payload: Dict[str, Any] = {}
     if sampling_interval not in (None, "", [], {}):
@@ -2375,19 +2423,21 @@ def _schedule_from_source(src: Mapping[str, Any], *, kind: str) -> Optional[Dict
     if diurnal not in (None, "", [], {}):
         payload["wmo.int:diurnalBaseTime"] = diurnal
 
-    coverage_fields = _diurnal_coverage_fields(coverage, reporting_coverage, src, reporting_src)
     payload.update(coverage_fields)
 
     if not payload:
-        # Keep an explicit event/window duration only when it is supplied as a
-        # duration, not as a reporting interval.  Reporting intervals are mapped
-        # to wmo.int:aggregationInterval above.
-        duration = _first_non_empty(src.get("duration"), coverage.get("duration"), reporting_src.get("duration"), reporting_coverage.get("duration"))
+        duration = _first_non_empty(
+            src.get("duration"),
+            coverage.get("duration"),
+            reporting_src.get("duration"),
+            reporting_coverage.get("duration"),
+        )
         if duration not in (None, "", [], {}):
             payload["duration"] = duration
 
     if not payload:
         return None
+
     return _normalize_schedule_object(payload, kind=kind)
 
 def _observing_procedure_from_source(src: Mapping[str, Any], schedule_registry: Dict[str, Dict[str, Any]]) -> Optional[Dict[str, Any]]:

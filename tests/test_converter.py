@@ -580,6 +580,9 @@ def test_reporting_procedure_matches_v031_uml_attributes_and_uses_reusable_sched
                             "uom": "http://codes.wmo.int/wmdr/unit/K",
                             "temporalReportingInterval": "PT1H",
                             "diurnalBaseTime": "6",
+                            "reportingSchedule": {
+                                "recurrenceRules": [{"frequency": "hourly"}]
+                            },
                         },
                     },
                 }
@@ -748,19 +751,23 @@ def test_facility_description_is_ogc_string_when_source_has_temporal_objects() -
     assert record["properties"]["description"] == "Earlier description\n\nLater description"
 
 
-def test_program_affiliation_without_explicit_time_is_not_emitted() -> None:
+def test_program_affiliation_without_explicit_time_is_preserved() -> None:
+    gbon = "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+    gos = "http://codes.wmo.int/wmdr/ProgramAffiliation/GOS"
     payload = {
         "facility": {
             "identifier": "0-20000-0-TEST",
             "name": "Test",
             "geospatialLocation": "46 7 500",
-            "programAffiliations": ["GBON", {"program": "GOS"}],
+            "programAffiliations": [gbon, {"program": gos}],
         }
     }
-
     record = converter.convert_payload(payload, source_name="0-20000-0-TEST")
 
-    assert "programAffiliations" not in record["properties"]
+    assert record["properties"]["programAffiliations"] == [
+        {"program": gbon},
+        {"program": gos},
+    ]
 
 
 def test_program_affiliation_with_explicit_time_is_emitted_as_temporal_object() -> None:
@@ -844,16 +851,17 @@ def test_facility_territory_is_temporal_array_when_source_has_time() -> None:
     assert territory == [{"territory": "CHE", "time": {"interval": ["1864-01-01", ".."]}}]
 
 
-def test_facility_territory_without_time_is_not_emitted() -> None:
+def test_facility_territory_without_time_is_preserved() -> None:
+    territory_uri = "http://codes.wmo.int/wmdr/TerritoryName/CHE"
     record = converter.convert_record({
         "facility": {
             "identifier": "0-20000-0-06650",
             "name": "Example",
-            "territory": "CHE",
+            "territory": territory_uri,
         }
     })
 
-    assert "territory" not in record["properties"]
+    assert record["properties"]["territory"] == [{"territory": territory_uri}]
 
 def test_facility_title_is_first_name_and_additional_titles_hold_aliases() -> None:
     record = {

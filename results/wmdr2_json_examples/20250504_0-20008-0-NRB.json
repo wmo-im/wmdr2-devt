@@ -31,6 +31,51 @@
       }
     ],
     "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/africa",
+    "programAffiliations": [
+      {
+        "programSpecificFacilityId": "NRB",
+        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
+        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+        "time": {
+          "interval": [
+            "1996-01-01",
+            ".."
+          ]
+        }
+      },
+      {
+        "programSpecificFacilityId": "Nairobi",
+        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ",
+        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+        "time": {
+          "interval": [
+            "1996-01-01",
+            ".."
+          ]
+        }
+      },
+      {
+        "programSpecificFacilityId": "Nairobi",
+        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET",
+        "time": {
+          "interval": [
+            "2010-06-11",
+            ".."
+          ]
+        }
+      },
+      {
+        "programSpecificFacilityId": "Nairobi",
+        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET",
+        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+        "time": {
+          "interval": [
+            "2004-10-22",
+            "2010-06-10"
+          ]
+        }
+      }
+    ],
     "environment": [
       {
         "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer",
@@ -45,7 +90,6 @@
           "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
         },
         "topographyBathymetry": {
-          "localTopography": "unknown",
           "relativeElevation": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
           "topographicContext": "http://codes.wmo.int/wmdr/TopographicContext/hills",
           "altitudeOrDepth": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
@@ -433,9 +477,6 @@
               ]
             },
             "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/244",
-            "operatingStatus": {
-              "nilReason": "unknown"
-            },
             "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
             "exposure": "http://codes.wmo.int/wmdr/Exposure/class1",
             "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
@@ -481,8 +522,8 @@
               ]
             },
             "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/240",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
             "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
+            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
             "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
             "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/roofTerrace",
             "serialNumber": "Fidas 6111",

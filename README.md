@@ -12,7 +12,7 @@ The current model follows these principles.
 
 1. A WMDR2 station record is a GeoJSON `Feature` whose root `id` is the primary WIGOS Station Identifier (WSI).
 2. Facility names and identifiers are normalized to one primary value plus explicit additional values.
-3. Time-varying properties use a `time` object with an interval. Older source-specific temporal field names are not part of the public model.
+3. Temporal history, where recorded, uses a `time` object with an interval. A history-capable semantic object does not automatically require time; class-specific cardinalities determine whether the temporal anchor is mandatory. Older source-specific temporal field names are not part of the public model.
 4. Source equipment and configuration history is represented directly in `observingConfigurations[]`; no nested deployment/location wrapper is emitted.
 5. Reusable contacts, instruments, and schedules are registries in the facility record and are referenced from the places where they are used.
 6. Controlled values use absolute concept URIs. Existing canonical WMO identifiers such as `http://codes.wmo.int/...` are preserved; the converter does not contract them to notations or rewrite `http://` identifiers to `https://`.
@@ -166,9 +166,9 @@ Temporal metadata is represented with OGC-style `time` objects:
 
 The interval is a two-element array. Each endpoint is either a date-like value (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`) or `..` for an open/unknown end. `time.resolution`, where present, is an ISO 8601 duration such as `P1D`, `PT1H`, or `PT10M`.
 
-The same structure is used for facility histories, territories, programme affiliations, observing configurations, observing procedures, and other time-bound metadata.
+The same structure is used wherever temporal history is recorded. `ObservingConfiguration`, `ObservingProcedure`, and `OfficialStatus` entries require time. Facility `environment`, `territory`, and `programAffiliations` occurrences may be untimed when the source records the semantic value but no validity period; the converter preserves that value rather than inventing or discarding information.
 
-When a source record does not provide a required time anchor for a time-varying object, the converter does not invent one.
+When a class requires a time anchor and the source does not provide one, the converter does not invent one.
 
 ### Observation-series temporal extent
 
@@ -246,7 +246,7 @@ Some historical OSCAR/Surface records contain an HTTP(S) URL in an `electronicMa
 
 ## Environment, territory, and programme affiliations
 
-Facility-level environmental and administrative histories are arrays of time-bound objects.
+Facility-level environmental and administrative metadata are arrays of semantic occurrences. Each occurrence must contain semantic payload. A `time` interval is included when recorded; it is not required merely because the concept is history-capable.
 
 ```json
 {
@@ -279,7 +279,7 @@ Facility-level environmental and administrative histories are arrays of time-bou
 }
 ```
 
-Programme affiliations at facility level are temporal objects because the relationship with a programme can change. `programSpecificFacilityId` and `programSpecificFacilityTitle` are ordinary programme-specific strings, not controlled values.
+Programme affiliations at facility level require the programme itself. A `time` interval is optional so that a valid WMDR1 affiliation without a recorded validity period is preserved. `programSpecificFacilityId` and `programSpecificFacilityTitle` are ordinary programme-specific strings, not controlled values.
 
 Observation-series programme memberships are represented by controlled programme concept URIs in `programAffiliations[]`.
 
@@ -440,8 +440,6 @@ Reusable schedules are stored once in `properties.schedules[]` and referenced fr
   "@type": "Event",
   "start": "0001-01-01T06:00:00",
   "duration": "PT12H",
-  "recurrenceRules": [],
-  "recurrenceOverrides": {},
   "timeZone": "UTC",
   "wmo.int:samplingFrequency": "PT10M",
   "wmo.int:aggregationInterval": "PT10M",
@@ -449,7 +447,7 @@ Reusable schedules are stored once in `properties.schedules[]` and referenced fr
 }
 ```
 
-The schedule fields are intentionally JSCalendar-like, with WMO extension members for sampling, explicit aggregation, and diurnal base time.
+The schedule fields are intentionally JSCalendar-like, with WMO extension members for sampling, explicit aggregation, and diurnal base time. A reusable schedule requires `uid` and `start`, plus at least one meaningful schedule semantic: `duration`, a non-empty `recurrenceRules` entry, `wmo.int:samplingFrequency`, or `wmo.int:aggregationInterval`. `recurrenceOverrides` and `wmo.int:diurnalBaseTime` are modifiers and do not make an identifier-only schedule meaningful.
 
 `duration` is reserved for a within-day coverage window. When a source gives a daily window, the converter anchors `start` to the dummy date `0001-01-01T<time>`. Real-world validity remains on the relevant time-bound WMDR object.
 
@@ -579,7 +577,7 @@ python -m py_compile convert_wmdr10_json_to_wmdr2_json.py
 pytest -q
 ```
 
-At the time of this update the complete suite passes: **297 tests**.
+The complete suite must pass before committing; focused semantic-wrapper cardinality tests are part of the canonical test set.
 
 ### End-to-end source deficiencies
 

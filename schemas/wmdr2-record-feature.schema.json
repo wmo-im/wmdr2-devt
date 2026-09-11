@@ -87,9 +87,6 @@
     },
     "dateField": {
       "type": "object",
-      "required": [
-        "time"
-      ],
       "properties": {
         "time": {
           "$ref": "#/$defs/timePeriod"
@@ -227,7 +224,24 @@
           "$ref": "#/$defs/iso8601Duration"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "anyOf": [
+        {
+          "required": [
+            "date"
+          ]
+        },
+        {
+          "required": [
+            "timestamp"
+          ]
+        },
+        {
+          "required": [
+            "interval"
+          ]
+        }
+      ]
     },
     "link": {
       "type": "object",
@@ -568,13 +582,13 @@
       ],
       "properties": {
         "climateZone": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/controlledValue"
         },
         "surfaceCover": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/surfaceCover"
         },
         "surfaceRoughness": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/controlledValue"
         },
         "population": {
           "type": "array",
@@ -585,7 +599,11 @@
               "number",
               "null"
             ]
-          }
+          },
+          "contains": {
+            "type": "number"
+          },
+          "minContains": 1
         },
         "perimeter_km": {
           "type": "array",
@@ -596,18 +614,53 @@
               "number",
               "null"
             ]
-          }
+          },
+          "contains": {
+            "type": "number"
+          },
+          "minContains": 1
         },
         "topographyBathymetry": {
-          "type": "object",
-          "additionalProperties": true
+          "$ref": "#/$defs/topographyBathymetry"
         },
         "time": {
           "$ref": "#/$defs/timePeriod"
         },
         "date": false
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "anyOf": [
+        {
+          "required": [
+            "climateZone"
+          ]
+        },
+        {
+          "required": [
+            "surfaceCover"
+          ]
+        },
+        {
+          "required": [
+            "surfaceRoughness"
+          ]
+        },
+        {
+          "required": [
+            "population"
+          ]
+        },
+        {
+          "required": [
+            "perimeter_km"
+          ]
+        },
+        {
+          "required": [
+            "topographyBathymetry"
+          ]
+        }
+      ]
     },
     "territory": {
       "type": "object",
@@ -618,13 +671,16 @@
       ],
       "properties": {
         "territory": {
-          "$ref": "#/$defs/codeValue"
+          "$ref": "#/$defs/controlledValue"
         },
         "time": {
           "$ref": "#/$defs/timePeriod"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "required": [
+        "territory"
+      ]
     },
     "programAffiliation": {
       "type": "object",
@@ -973,6 +1029,10 @@
         {
           "$ref": "#/$defs/dateField"
         }
+      ],
+      "required": [
+        "time",
+        "observingSchedules"
       ]
     },
     "reportingProcedure": {
@@ -1110,12 +1170,17 @@
         },
         "date": false
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "required": [
+        "officialStatus",
+        "time"
+      ]
     },
     "schedule": {
       "type": "object",
       "required": [
-        "uid"
+        "uid",
+        "start"
       ],
       "properties": {
         "uid": {
@@ -1126,36 +1191,86 @@
           "type": "string"
         },
         "start": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "duration": {
-          "type": "string"
+          "$ref": "#/$defs/iso8601Duration"
         },
         "recurrenceRules": {
           "type": "array",
           "items": {
             "type": "object",
-            "additionalProperties": true
-          }
+            "additionalProperties": true,
+            "required": [
+              "frequency"
+            ],
+            "properties": {
+              "@type": {
+                "const": "RecurrenceRule"
+              },
+              "frequency": {
+                "type": "string",
+                "enum": [
+                  "yearly",
+                  "monthly",
+                  "weekly",
+                  "daily",
+                  "hourly",
+                  "minutely",
+                  "secondly"
+                ]
+              },
+              "interval": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          },
+          "minItems": 1
         },
         "recurrenceOverrides": {
           "type": "object",
-          "additionalProperties": true
+          "additionalProperties": true,
+          "minProperties": 1
         },
         "timeZone": {
           "type": "string"
         },
         "wmo.int:samplingFrequency": {
-          "type": "string"
+          "$ref": "#/$defs/iso8601Duration"
         },
         "wmo.int:aggregationInterval": {
-          "type": "string"
+          "$ref": "#/$defs/iso8601Duration"
         },
         "wmo.int:diurnalBaseTime": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "anyOf": [
+        {
+          "required": [
+            "duration"
+          ]
+        },
+        {
+          "required": [
+            "recurrenceRules"
+          ]
+        },
+        {
+          "required": [
+            "wmo.int:samplingFrequency"
+          ]
+        },
+        {
+          "required": [
+            "wmo.int:aggregationInterval"
+          ]
+        }
+      ]
     },
     "timePeriod": {
       "type": "object",
@@ -1214,6 +1329,64 @@
       "description": "ISO 8601 duration, for example PT10M, PT1H or P1D.",
       "type": "string",
       "pattern": "^(-?)P(?=\\d|T\\d)(?:(\\d+)Y)?(?:(\\d+)M)?(?:(\\d+)([DW]))?(?:T(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+(?:\\.\\d+)?)S)?)?$"
+    },
+    "surfaceCover": {
+      "type": "object",
+      "description": "Surface-cover value together with the classification scheme used to interpret that value.",
+      "required": [
+        "value",
+        "scheme"
+      ],
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/controlledValue"
+        },
+        "scheme": {
+          "$ref": "#/$defs/controlledValue"
+        }
+      },
+      "additionalProperties": false
+    },
+    "topographyBathymetry": {
+      "type": "object",
+      "description": "Topography/bathymetry occurrence. If instantiated, at least one semantic component must be supplied.",
+      "properties": {
+        "localTopography": {
+          "$ref": "#/$defs/controlledValue"
+        },
+        "relativeElevation": {
+          "$ref": "#/$defs/controlledValue"
+        },
+        "topographicContext": {
+          "$ref": "#/$defs/controlledValue"
+        },
+        "altitudeOrDepth": {
+          "$ref": "#/$defs/controlledValue"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "localTopography"
+          ]
+        },
+        {
+          "required": [
+            "relativeElevation"
+          ]
+        },
+        {
+          "required": [
+            "topographicContext"
+          ]
+        },
+        {
+          "required": [
+            "altitudeOrDepth"
+          ]
+        }
+      ],
+      "additionalProperties": false
     }
   }
 }

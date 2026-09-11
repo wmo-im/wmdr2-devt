@@ -245,9 +245,17 @@ def test_diurnal_coverage_fields(coverage: dict[str, Any], expected: dict[str, s
 ])
 def test_normalize_schedule_object(raw: dict[str, Any], kind: str, expected_keys: dict[str, Any]) -> None:
     schedule = converter._normalize_schedule_object(raw, kind=kind)
+
+    # Diurnal base time qualifies a schedule but does not define one. It is a
+    # modifier of an otherwise meaningful schedule.
+    if raw == {"diurnalBaseTime": "6"}:
+        assert schedule is None
+        return
+
     assert schedule is not None
     assert schedule["@type"] == "Event"
     assert schedule["uid"].startswith("schedule_")
+    assert schedule["start"]
     for key, expected in expected_keys.items():
         assert schedule[key] == expected
 

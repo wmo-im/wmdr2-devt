@@ -169,6 +169,7 @@ def test_schema_requires_complete_international_exchange_reporting_metadata() ->
             "uid": "schedule_reporting",
             "@type": "Event",
             "start": "0001-01-01 00:00:00",
+            "recurrenceRules": [{"frequency": "hourly"}],
         }
     ]
     assert _errors(record) == []
@@ -180,6 +181,7 @@ def test_schema_accepts_aggregation_interval_on_reusable_schedule() -> None:
         {
             "uid": "schedule_abc",
             "@type": "Event",
+            "start": "0001-01-01",
             "wmo.int:aggregationInterval": "PT1H",
         }
     ]
@@ -236,6 +238,7 @@ def test_schema_does_not_require_temporal_aggregate_for_international_exchange()
             "uid": "schedule_reporting",
             "@type": "Event",
             "start": "0001-01-01 00:00:00",
+            "recurrenceRules": [{"frequency": "hourly"}],
         }
     ]
     procedure.pop("temporalAggregate", None)
