@@ -1,76 +1,129 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://wmo.int/wmdr2/schemas/wmdr2-common.schema.json",
-  "title": "WMDR2 v0.3.1 common definitions",
-  "type": "object",
+  "$id": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-common.schema.json",
+  "title": "WMDR2 development common definitions",
+  "$comment": "Common definitions for wmdr2-devt. Where an official WMDR2 definition exists, the development schemas reference the pinned official bundled schema at d30f13c3be6395466a778360c4a4ef59625be6af; these definitions cover devt extensions and explicit tightenings.",
   "$defs": {
-    "nilReason": {
-      "type": "object",
-      "required": [
-        "nilReason"
-      ],
-      "properties": {
-        "nilReason": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "additionalProperties": false
-    },
-    "codeOrNilReason": {
-      "oneOf": [
+    "controlledConcept": {
+      "allOf": [
         {
-          "type": [
-            "string",
-            "integer",
-            "number",
-            "boolean"
-          ]
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Observations/properties/observedProperty"
         },
         {
-          "$ref": "#/$defs/nilReason"
+          "type": "object",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            }
+          }
         }
       ]
     },
-    "quantity": {
+    "controlledConceptOrNull": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/controlledConcept"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "dates": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/territories/items/properties/dates"
+    },
+    "timeObject": {
       "type": "object",
-      "required": [
-        "value"
-      ],
       "properties": {
-        "value": {
-          "type": [
-            "number",
-            "integer",
-            "string"
+        "date": {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wcmp2/f05037aa8d8bf5911a44a511b7b99a0be009c9ab/schemas/wcmpRecordGeoJSON.yaml#/properties/time/oneOf/1/properties/date"
+        },
+        "timestamp": {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wcmp2/f05037aa8d8bf5911a44a511b7b99a0be009c9ab/schemas/wcmpRecordGeoJSON.yaml#/properties/time/oneOf/1/properties/timestamp"
+        },
+        "interval": {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wcmp2/f05037aa8d8bf5911a44a511b7b99a0be009c9ab/schemas/wcmpRecordGeoJSON.yaml#/properties/time/oneOf/1/properties/interval"
+        },
+        "resolution": {
+          "$ref": "#/$defs/iso8601Duration"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "date"
           ]
         },
-        "uom": {
-          "type": "string"
+        {
+          "required": [
+            "timestamp"
+          ]
+        },
+        {
+          "required": [
+            "interval"
+          ]
         }
+      ],
+      "additionalProperties": true,
+      "$comment": "WCMP date/timestamp/interval are reused directly. resolution is validated locally because the pinned upstream WCMP YAML contains an over-escaped ISO-8601 duration regexp."
+    },
+    "timePeriod": {
+      "type": "object",
+      "required": [
+        "interval"
+      ],
+      "properties": {
+        "interval": {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wcmp2/f05037aa8d8bf5911a44a511b7b99a0be009c9ab/schemas/wcmpRecordGeoJSON.yaml#/properties/time/oneOf/1/properties/interval"
+        },
+        "resolution": {
+          "$ref": "#/$defs/iso8601Duration"
+        }
+      },
+      "additionalProperties": true,
+      "$comment": "WMDR2 temporal period: official WCMP interval structure plus the corrected local ISO-8601 duration constraint for resolution."
+    },
+    "dateField": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "$ref": "#/$defs/timePeriod"
+        },
+        "date": false
       },
       "additionalProperties": true
     },
-    "pointGeometry": {
+    "link": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/links/items"
+    },
+    "contactAssignment": {
       "type": "object",
       "required": [
-        "type",
-        "coordinates"
+        "contact",
+        "roles"
       ],
       "properties": {
-        "type": {
-          "const": "Point"
+        "contact": {
+          "type": "string",
+          "pattern": "^contact:",
+          "description": "Reference to properties.contacts[].identifier."
         },
-        "coordinates": {
+        "roles": {
           "type": "array",
-          "minItems": 2,
-          "maxItems": 3,
+          "minItems": 1,
+          "uniqueItems": true,
           "items": {
-            "type": "number"
+            "type": "string"
           }
         }
       },
-      "additionalProperties": true
+      "additionalProperties": false
     },
     "temporalGeometry": {
       "type": "object",
@@ -99,8 +152,15 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "type": "string",
-            "minLength": 1
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "const": ".."
+              }
+            ]
           }
         },
         "methods": {
@@ -108,350 +168,99 @@
           "items": {
             "type": "array",
             "items": {
-              "type": "string",
-              "minLength": 1
+              "$ref": "#/$defs/controlledConcept"
             }
           }
         }
       },
       "additionalProperties": false
     },
-    "time": {
-      "type": "object",
-      "properties": {
-        "interval": {
-          "type": "array",
-          "minItems": 2,
-          "maxItems": 2,
-          "items": {
-            "type": "string"
-          }
-        },
-        "resolution": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true
-    },
-    "jscalendarRecurrenceRule": {
-      "type": "object",
-      "required": [
-        "@type",
-        "frequency"
-      ],
-      "properties": {
-        "@type": {
-          "const": "RecurrenceRule"
-        },
-        "frequency": {
-          "type": "string"
-        },
-        "interval": {
-          "type": "integer",
-          "minimum": 1
-        }
-      },
-      "additionalProperties": true
-    },
-    "schedule": {
-      "type": "object",
-      "required": [
-        "@type",
-        "start",
-        "uid"
-      ],
-      "properties": {
-        "@type": {
-          "type": "string"
-        },
-        "start": {
-          "type": "string"
-        },
-        "uid": {
-          "type": "string",
-          "minLength": 1
-        },
-        "timeZone": {
-          "type": "string"
-        },
-        "duration": {
-          "type": "string"
-        },
-        "recurrenceRules": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/jscalendarRecurrenceRule"
-          }
-        },
-        "wmo.int:aggregationInterval": {
-          "type": "string"
-        },
-        "wmo.int:samplingFrequency": {
-          "type": "string"
-        },
-        "wmo.int:diurnalBaseTime": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true
-    },
-    "observingLocation": {
-      "type": "object",
-      "properties": {
-        "geometry": {
-          "$ref": "#/$defs/pointGeometry"
-        },
-        "referenceSurface": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
-        "relativeLocation": {
-          "type": "string"
-        },
-        "verticalDistanceFromReferenceSurface": {
-          "$ref": "#/$defs/quantity"
-        }
-      },
-      "additionalProperties": true
-    },
-    "observingConfiguration": {
-      "type": "object",
-      "required": [
-        "validFrom",
-        "observingMethod",
-        "operatingStatus",
-        "sourceOfObservation"
-      ],
-      "properties": {
-        "validFrom": {
-          "$ref": "#/$defs/knownValidFrom"
-        },
-        "observingLocation": {
-          "$ref": "#/$defs/observingLocation"
-        },
-        "deployment": false,
-        "observingMethod": {
-          "$ref": "#/$defs/codeOrNilReason"
-        },
-        "operatingStatus": {
-          "$ref": "#/$defs/codeOrNilReason"
-        },
-        "sourceOfObservation": {
-          "$ref": "#/$defs/codeOrNilReason"
-        },
-        "exposure": {
-          "type": [
-            "string",
-            "integer",
-            "number"
-          ]
-        }
-      },
-      "additionalProperties": true
-    },
-    "observingProcedure": {
-      "type": "object",
-      "required": [
-        "validFrom",
-        "strategy",
-        "observingSchedules"
-      ],
-      "properties": {
-        "validFrom": {
-          "$ref": "#/$defs/knownValidFrom"
-        },
-        "strategy": {
-          "$ref": "#/$defs/codeOrNilReason"
-        },
-        "observingSchedules": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      },
-      "additionalProperties": true
-    },
-    "reportingProcedure": {
-      "type": "object",
-      "properties": {
-        "validFrom": false,
-        "internationalExchange": {
-          "type": "boolean"
-        },
-        "uom": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
-        "temporalReportingInterval": {
-          "type": "string"
-        },
-        "spatialReportingInterval": {
-          "type": [
-            "string",
-            "integer",
-            "number"
-          ]
-        },
-        "timeliness": {
-          "type": "string"
-        },
-        "dataPolicy": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
-        "levelOfData": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
-        "numberOfObservationsInReportingInterval": {
-          "type": [
-            "integer",
-            "number",
-            "string"
-          ]
-        },
-        "referenceDatum": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
-        "referenceTimeSource": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
-        "strategy": {
-          "$ref": "#/$defs/codeOrNilReason"
-        },
-        "timeStampMeaning": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
-        "reportingSchedules": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "type": "string",
-                "minLength": 1
-              },
-              {
-                "$ref": "#/$defs/schedule"
-              }
-            ]
-          }
-        },
-        "links": {
-          "type": "array"
-        }
-      },
-      "additionalProperties": true
-    },
     "observedFeature": {
       "type": "object",
+      "required": [
+        "domain"
+      ],
       "properties": {
         "domain": {
-          "type": [
-            "string",
-            "integer"
-          ]
+          "$ref": "#/$defs/controlledConceptOrNull"
         },
         "domainFeature": {
-          "type": "string"
+          "$ref": "#/$defs/controlledConcept"
         },
         "featureName": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         }
       },
-      "additionalProperties": true
+      "additionalProperties": false
+    },
+    "surfaceCover": {
+      "type": "object",
+      "required": [
+        "value",
+        "scheme"
+      ],
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/controlledConcept"
+        },
+        "scheme": {
+          "$ref": "#/$defs/controlledConcept"
+        }
+      },
+      "additionalProperties": false
     },
     "topographyBathymetry": {
       "type": "object",
       "properties": {
         "localTopography": {
-          "type": [
-            "string",
-            "integer",
-            "number",
-            "boolean"
-          ]
+          "$ref": "#/$defs/controlledConcept"
         },
         "relativeElevation": {
-          "type": [
-            "string",
-            "integer",
-            "number",
-            "boolean"
-          ]
+          "$ref": "#/$defs/controlledConcept"
         },
         "topographicContext": {
-          "type": [
-            "string",
-            "integer",
-            "number",
-            "boolean"
-          ]
+          "$ref": "#/$defs/controlledConcept"
         },
         "altitudeOrDepth": {
-          "type": [
-            "string",
-            "integer",
-            "number",
-            "boolean"
-          ]
+          "$ref": "#/$defs/controlledConcept"
         }
       },
+      "anyOf": [
+        {
+          "required": [
+            "localTopography"
+          ]
+        },
+        {
+          "required": [
+            "relativeElevation"
+          ]
+        },
+        {
+          "required": [
+            "topographicContext"
+          ]
+        },
+        {
+          "required": [
+            "altitudeOrDepth"
+          ]
+        }
+      ],
       "additionalProperties": false
     },
-    "environmentItem": {
+    "environment": {
       "type": "object",
       "properties": {
-        "validFrom": {
-          "type": "string",
-          "minLength": 1
-        },
-        "date": {
-          "type": "string",
-          "minLength": 1
-        },
         "climateZone": {
-          "type": [
-            "string",
-            "integer"
-          ]
+          "$ref": "#/$defs/controlledConcept"
         },
         "surfaceCover": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
-        "surfaceClassification": {
-          "type": [
-            "string",
-            "integer"
-          ]
+          "$ref": "#/$defs/surfaceCover"
         },
         "surfaceRoughness": {
-          "type": [
-            "string",
-            "integer"
-          ]
+          "$ref": "#/$defs/controlledConcept"
         },
         "population": {
           "type": "array",
@@ -460,10 +269,13 @@
           "items": {
             "type": [
               "number",
-              "integer",
               "null"
             ]
-          }
+          },
+          "contains": {
+            "type": "number"
+          },
+          "minContains": 1
         },
         "perimeter_km": {
           "type": "array",
@@ -472,397 +284,313 @@
           "items": {
             "type": [
               "number",
-              "integer",
               "null"
             ]
-          }
+          },
+          "contains": {
+            "type": "number"
+          },
+          "minContains": 1
         },
         "topographyBathymetry": {
           "$ref": "#/$defs/topographyBathymetry"
-        }
+        },
+        "time": {
+          "$ref": "#/$defs/timePeriod"
+        },
+        "date": false
       },
-      "additionalProperties": false,
-      "not": {
-        "anyOf": [
-          {
-            "required": [
-              "temporalPopulationDensities"
-            ]
-          },
-          {
-            "required": [
-              "temporalLocalTopography"
-            ]
-          },
-          {
-            "required": [
-              "temporalRelativeElevation"
-            ]
-          },
-          {
-            "required": [
-              "temporalTopographicContext"
-            ]
-          },
-          {
-            "required": [
-              "temporalAltitudeOrDepth"
-            ]
-          },
-          {
-            "required": [
-              "temporalTopographyBathymetry"
-            ]
+      "anyOf": [
+        {
+          "required": [
+            "climateZone"
+          ]
+        },
+        {
+          "required": [
+            "surfaceCover"
+          ]
+        },
+        {
+          "required": [
+            "surfaceRoughness"
+          ]
+        },
+        {
+          "required": [
+            "population"
+          ]
+        },
+        {
+          "required": [
+            "perimeter_km"
+          ]
+        },
+        {
+          "required": [
+            "topographyBathymetry"
+          ]
+        }
+      ],
+      "additionalProperties": true
+    },
+    "observingProcedure": {
+      "type": "object",
+      "required": [
+        "time",
+        "observingSchedules"
+      ],
+      "properties": {
+        "strategy": {
+          "$ref": "#/$defs/controlledConcept"
+        },
+        "observingSchedules": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^schedule_"
           }
-        ]
-      }
-    },
-    "environment": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/environmentItem"
-      }
-    },
-    "programAffiliation": {
-      "type": "object",
-      "properties": {
-        "validFrom": {
-          "type": "string"
         },
-        "program": {
-          "oneOf": [
-            {
-              "type": [
-                "string",
-                "integer"
-              ]
-            },
-            {
-              "type": "array",
-              "items": {
-                "type": [
-                  "string",
-                  "integer"
-                ]
-              }
-            }
-          ]
+        "time": {
+          "$ref": "#/$defs/timePeriod"
         },
-        "programSpecificFacilityId": {
-          "type": "string"
-        },
-        "programSpecificFacilityTitle": {
-          "type": "string"
-        },
-        "reportingStatus": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        }
-      },
-      "additionalProperties": true
-    },
-    "territory": {
-      "type": "object",
-      "properties": {
-        "validFrom": {
-          "type": "string"
-        },
-        "date": {
-          "type": "string"
-        },
-        "territory": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true
-    },
-    "deployment": {
-      "type": "object",
-      "properties": {
-        "geometry": {
-          "$ref": "#/$defs/pointGeometry"
-        },
-        "referenceSurface": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
-        "relativeLocation": {
-          "type": "string"
-        },
-        "verticalDistanceFromReferenceSurface": {
-          "$ref": "#/$defs/quantity"
-        }
-      },
-      "additionalProperties": true
-    },
-    "reporting": {
-      "type": "object",
-      "properties": {
+        "date": false,
+        "beginPosition": false,
+        "endPosition": false,
         "validFrom": false,
+        "validTo": false
+      },
+      "additionalProperties": true
+    },
+    "reportingProcedure": {
+      "type": "object",
+      "required": [
+        "internationalExchange",
+        "dataPolicy"
+      ],
+      "properties": {
+        "dataFormat": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/controlledConcept"
+          }
+        },
+        "dataPolicy": {
+          "$ref": "#/$defs/controlledConceptOrNull"
+        },
         "internationalExchange": {
           "type": "boolean"
         },
-        "uom": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
-        "temporalReportingInterval": {
-          "type": "string"
-        },
-        "spatialReportingInterval": {
-          "type": [
-            "string",
-            "integer",
-            "number"
-          ]
-        },
-        "timeliness": {
-          "type": "string"
-        },
-        "dataPolicy": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        },
         "levelOfData": {
-          "type": [
-            "string",
-            "integer"
-          ]
+          "$ref": "#/$defs/controlledConcept"
         },
         "numberOfObservationsInReportingInterval": {
           "type": [
-            "integer",
             "number",
-            "string"
+            "integer",
+            "string",
+            "null"
           ]
         },
         "referenceDatum": {
-          "type": [
-            "string",
-            "integer"
-          ]
+          "$ref": "#/$defs/controlledConcept"
         },
         "referenceTimeSource": {
-          "type": [
-            "string",
-            "integer"
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/controlledConcept"
+          }
+        },
+        "spatialReportingInterval": {
+          "type": "string"
         },
         "strategy": {
-          "$ref": "#/$defs/codeOrNilReason"
+          "$ref": "#/$defs/controlledConcept"
         },
-        "timeStampMeaning": {
+        "timeliness": {
           "type": [
             "string",
-            "integer"
+            "null"
           ]
+        },
+        "timeStampMeaning": {
+          "$ref": "#/$defs/controlledConcept"
+        },
+        "uom": {
+          "$ref": "#/$defs/controlledConcept"
         },
         "reportingSchedules": {
           "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
           "items": {
-            "oneOf": [
-              {
-                "type": "string",
-                "minLength": 1
-              },
-              {
-                "$ref": "#/$defs/schedule"
-              }
-            ]
+            "type": "string",
+            "pattern": "^schedule_"
           }
         },
+        "temporalReportingInterval": {
+          "$ref": "#/$defs/iso8601Duration"
+        },
+        "temporalAggregate": {
+          "$ref": "#/$defs/iso8601Duration"
+        },
         "links": {
-          "type": "array"
-        }
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "contactAssignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contactAssignment"
+          }
+        },
+        "time": false,
+        "date": false,
+        "beginPosition": false,
+        "endPosition": false,
+        "validFrom": false,
+        "validTo": false
       },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "internationalExchange": {
+                "const": true
+              }
+            },
+            "required": [
+              "internationalExchange"
+            ]
+          },
+          "then": {
+            "required": [
+              "temporalReportingInterval"
+            ]
+          }
+        }
+      ],
       "additionalProperties": true
     },
     "officialStatus": {
       "type": "object",
-      "properties": {
-        "date": {
-          "type": "string"
-        },
-        "officialStatus": {
-          "type": [
-            "string",
-            "integer"
-          ]
-        }
-      },
-      "additionalProperties": true
-    },
-    "observationSeries": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "time": {
-          "$ref": "#/$defs/time"
-        },
-        "observedProperty": {
-          "type": [
-            "string",
-            "integer",
-            "number"
-          ]
-        },
-        "observedGeometry": {
-          "type": [
-            "string",
-            "integer",
-            "number"
-          ]
-        },
-        "observedFeature": {
-          "$ref": "#/$defs/observedFeature"
-        },
-        "observingConfigurations": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/observingConfiguration"
-          }
-        },
-        "observingProcedures": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/observingProcedure"
-          }
-        },
-        "officialStatus": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/officialStatus"
-          }
-        },
-        "keywords": {
-          "type": "array"
-        },
-        "links": {
-          "type": "array"
-        },
-        "deployments": false,
-        "observedVariable": false,
-        "observedDomain": false,
-        "uid": {
-          "type": "string"
-        },
-        "programAffiliations": {
-          "type": "array"
-        },
-        "reportingProcedures": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/reportingProcedure"
-          }
-        }
-      },
-      "additionalProperties": true
-    },
-    "observation": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "time": {
-          "$ref": "#/$defs/time"
-        },
-        "observedProperty": {
-          "type": [
-            "string",
-            "integer",
-            "number"
-          ]
-        },
-        "observedGeometry": {
-          "type": [
-            "string",
-            "integer",
-            "number"
-          ]
-        },
-        "observedFeature": {
-          "$ref": "#/$defs/observedFeature"
-        },
-        "observingConfigurations": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/observingConfiguration"
-          }
-        },
-        "observingProcedures": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/observingProcedure"
-          }
-        },
-        "officialStatus": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/officialStatus"
-          }
-        },
-        "keywords": {
-          "type": "array"
-        },
-        "links": {
-          "type": "array"
-        },
-        "deployments": false,
-        "observedVariable": false,
-        "observedDomain": false,
-        "uid": {
-          "type": "string"
-        },
-        "programAffiliations": {
-          "type": "array"
-        },
-        "reportingProcedures": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/reportingProcedure"
-          }
-        }
-      },
-      "additionalProperties": true
-    },
-    "instrument": {
-      "type": "object",
-      "properties": {
-        "uid": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
       "required": [
-        "uid"
-      ]
-    },
-    "contact": {
-      "type": "object",
+        "officialStatus",
+        "time"
+      ],
       "properties": {
-        "uid": {
-          "type": "string"
-        }
+        "officialStatus": {
+          "$ref": "#/$defs/controlledConcept"
+        },
+        "time": {
+          "$ref": "#/$defs/timePeriod"
+        },
+        "date": false
       },
       "additionalProperties": true
     },
-    "knownValidFrom": {
+    "schedule": {
+      "type": "object",
+      "required": [
+        "uid",
+        "start"
+      ],
+      "properties": {
+        "uid": {
+          "type": "string",
+          "pattern": "^schedule_"
+        },
+        "@type": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duration": {
+          "$ref": "#/$defs/iso8601Duration"
+        },
+        "recurrenceRules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "frequency"
+            ],
+            "properties": {
+              "@type": {
+                "const": "RecurrenceRule"
+              },
+              "frequency": {
+                "enum": [
+                  "yearly",
+                  "monthly",
+                  "weekly",
+                  "daily",
+                  "hourly",
+                  "minutely",
+                  "secondly"
+                ]
+              },
+              "interval": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "recurrenceOverrides": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": true
+        },
+        "timeZone": {
+          "type": "string"
+        },
+        "wmo.int:samplingFrequency": {
+          "$ref": "#/$defs/iso8601Duration"
+        },
+        "wmo.int:aggregationInterval": {
+          "$ref": "#/$defs/iso8601Duration"
+        },
+        "wmo.int:diurnalBaseTime": {
+          "type": "string",
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d$"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "duration"
+          ]
+        },
+        {
+          "required": [
+            "recurrenceRules"
+          ]
+        },
+        {
+          "required": [
+            "wmo.int:samplingFrequency"
+          ]
+        },
+        {
+          "required": [
+            "wmo.int:aggregationInterval"
+          ]
+        }
+      ],
+      "additionalProperties": true
+    },
+    "iso8601Duration": {
       "type": "string",
-      "minLength": 1,
-      "not": {
-        "const": ".."
-      }
+      "pattern": "^(-?)P(?=\\d|T\\d)(?:(\\d+)Y)?(?:(\\d+)M)?(?:(\\d+)([DW]))?(?:T(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+(?:\\.\\d+)?)S)?)?$"
     }
   }
 }

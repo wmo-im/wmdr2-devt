@@ -11,7 +11,12 @@ DOMAIN = "http://codes.wmo.int/wmdr/Domain/atmosphere"
 PROGRAM = "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
 FACILITY_TYPE = "http://codes.wmo.int/wmdr/FacilityType/landFixed"
 WMO_REGION = "http://codes.wmo.int/wmdr/WMORegion/6"
+WMO_REGION_CANONICAL = "https://codes.wmo.int/wmdr/WMORegion/6"
 DATA_POLICY = "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+
+
+def concept(uri: str) -> dict[str, str]:
+    return {"id": uri}
 
 
 def test_normalize_code_value_preserves_absolute_wmdr_uri() -> None:
@@ -31,22 +36,20 @@ def test_code_list_array_helper_preserves_program_uri() -> None:
     ) == [PROGRAM]
 
 
-def test_observed_domain_is_emitted_as_domain_concept_uri() -> None:
+def test_observed_domain_is_emitted_as_domain_concept() -> None:
     assert converter._observed_domain_from_observed_variable(OBSERVED) == DOMAIN
     assert converter._observed_domain_object({"observedProperty": OBSERVED}) == {
-        "domain": DOMAIN
+        "domain": concept(DOMAIN)
     }
 
 
-def test_observation_series_preserves_controlled_uris_and_has_no_independent_time() -> None:
-    series = converter._observation_series_from_source(
+def test_observation_preserves_controlled_uris_and_has_no_independent_time() -> None:
+    observation = converter._observation_series_from_source(
         {
             "id": "observationSeries:test",
             "observedProperty": OBSERVED,
             "type": GEOMETRY,
-            "programAffiliation": [
-                {"programAffiliation": PROGRAM}
-            ],
+            "programAffiliation": [{"programAffiliation": PROGRAM}],
             "beginPosition": "2020-01-01",
         },
         0,
@@ -56,12 +59,14 @@ def test_observation_series_preserves_controlled_uris_and_has_no_independent_tim
         {},
     )
 
-    assert series["observedProperty"] == OBSERVED
-    assert series["observedGeometry"] == GEOMETRY
-    assert series["observedFeature"] == {"domain": DOMAIN}
-    assert series["programAffiliations"] == [PROGRAM]
-    assert "observedDomain" not in series
-    assert "time" not in series
+    assert observation["observedProperty"] == concept(OBSERVED)
+    assert observation["observedGeometry"] == concept(GEOMETRY)
+    assert observation["observedFeature"] == {"domain": concept(DOMAIN)}
+    assert observation["programAffiliations"] == [
+        {"programAffiliation": concept(PROGRAM)}
+    ]
+    assert "observedDomain" not in observation
+    assert "time" not in observation
 
 
 def test_readable_observation_title_stays_compact_despite_uri_metadata() -> None:
@@ -88,7 +93,7 @@ def test_reporting_procedure_retains_iso_duration_attributes() -> None:
     )
     assert proc is not None
     assert proc["internationalExchange"] is False
-    assert proc["dataPolicy"] == DATA_POLICY
+    assert proc["dataPolicy"] == concept(DATA_POLICY)
     assert proc["temporalReportingInterval"] == "PT1H"
     assert proc["temporalAggregate"] == "PT10M"
 
@@ -96,13 +101,13 @@ def test_reporting_procedure_retains_iso_duration_attributes() -> None:
 def test_schedule_structure_does_not_move_reporting_periods_to_schedule() -> None:
     record = {
         "properties": {
-            "observationSeries": [
+            "observations": [
                 {
-                    "id": "observationSeries:test",
+                    "id": "test",
                     "reportingProcedures": [
                         {
                             "internationalExchange": False,
-                            "dataPolicy": DATA_POLICY,
+                            "dataPolicy": concept(DATA_POLICY),
                             "temporalReportingInterval": "PT1H",
                             "temporalAggregate": "PT10M",
                         }
@@ -112,20 +117,20 @@ def test_schedule_structure_does_not_move_reporting_periods_to_schedule() -> Non
         }
     }
     converter._normalize_procedure_schedule_structure(record)
-    proc = record["properties"]["observationSeries"][0]["reportingProcedures"][0]
+    proc = record["properties"]["observations"][0]["reportingProcedures"][0]
     assert proc["temporalReportingInterval"] == "PT1H"
     assert proc["temporalAggregate"] == "PT10M"
     assert "wmo.int:aggregationInterval" not in proc
 
 
-def test_finalizer_preserves_controlled_uri() -> None:
+def test_finalizer_preserves_concept_ids() -> None:
     value = {
         "properties": {
-            "facilityType": FACILITY_TYPE,
-            "observationSeries": [
+            "facilityType": concept(FACILITY_TYPE),
+            "observations": [
                 {
-                    "observedProperty": OBSERVED,
-                    "observedFeature": {"domain": DOMAIN},
+                    "observedProperty": concept(OBSERVED),
+                    "observedFeature": {"domain": concept(DOMAIN)},
                 }
             ],
         }
@@ -133,7 +138,7 @@ def test_finalizer_preserves_controlled_uri() -> None:
     assert converter._finalize_wmdr2_value(value) == value
 
 
-def test_facility_controlled_values_remain_absolute_uris() -> None:
+def test_facility_controlled_values_are_concepts_with_absolute_ids() -> None:
     record = converter.build_facility_feature(
         {
             "facility": {
@@ -148,8 +153,8 @@ def test_facility_controlled_values_remain_absolute_uris() -> None:
         source_name="test",
     )
     props = record["properties"]
-    assert props["facilityType"] == FACILITY_TYPE
-    assert props["wmoRegion"] == WMO_REGION
+    assert props["facilityType"] == concept(FACILITY_TYPE)
+    assert props["wmoRegion"] == concept(WMO_REGION_CANONICAL)
 
 
 def test_source_wmdr1_object_is_not_mutated() -> None:
@@ -174,7 +179,8 @@ def test_source_wmdr1_object_is_not_mutated() -> None:
     assert source == before
 
 
-def test_historical_facility_program_affiliation_preserves_uri_and_specific_strings() -> None:
+def test_historical_facility_program_affiliation_preserves_source_information() -> None:
+    status = "http://codes.wmo.int/wmdr/ReportingStatus/operational"
     affiliations = converter._normalize_program_affiliations(
         [
             {
@@ -182,16 +188,19 @@ def test_historical_facility_program_affiliation_preserves_uri_and_specific_stri
                 "beginPosition": "2020-01-01",
                 "programSpecificFacilityId": "GBON-123",
                 "programSpecificFacilityTitle": "Programme-specific station title",
-                "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
+                "reportingStatus": status,
             }
         ]
     )
-    assert len(affiliations) == 1
-    affiliation = affiliations[0]
-    assert affiliation["program"] == PROGRAM
-    assert "programAffiliation" not in affiliation
-    assert affiliation["programSpecificFacilityId"] == "GBON-123"
-    assert affiliation["programSpecificFacilityTitle"] == "Programme-specific station title"
+    assert affiliations == [
+        {
+            "programAffiliation": concept(PROGRAM),
+            "reportingStatus": concept(status),
+            "programSpecificFacilityId": "GBON-123",
+            "programSpecificFacilityTitle": "Programme-specific station title",
+            "dates": ["2020-01-01", ".."],
+        }
+    ]
 
 
 def test_converter_does_not_fabricate_missing_operating_status() -> None:
@@ -217,7 +226,7 @@ def test_converter_does_not_fabricate_missing_operating_status() -> None:
             ],
         }
     )
-    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    cfg = record["properties"]["observations"][0]["configurations"][0]
     assert "operatingStatus" not in cfg
 
 
@@ -268,11 +277,10 @@ def test_converter_omits_explicit_unknown_optional_operating_status() -> None:
         {},
         {},
     )
-
     assert "operatingStatus" not in cfg
 
 
-def test_converter_preserves_explicit_optional_operating_status_uri() -> None:
+def test_converter_preserves_explicit_optional_operating_status_uri_as_concept() -> None:
     status_uri = (
         "http://codes.wmo.int/wmdr/"
         "InstrumentOperatingStatus/operational"
@@ -283,14 +291,10 @@ def test_converter_preserves_explicit_optional_operating_status_uri() -> None:
             "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
             "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
             "instrumentOperatingStatus": {
-                "instrumentOperatingStatus": {
-                    "href": status_uri
-                }
+                "instrumentOperatingStatus": {"href": status_uri}
             },
         },
         {},
         {},
     )
-
-    assert cfg["operatingStatus"] == status_uri
-
+    assert cfg["operatingStatus"] == concept(status_uri)

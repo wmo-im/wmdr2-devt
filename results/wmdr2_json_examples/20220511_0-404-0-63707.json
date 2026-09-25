@@ -17,34 +17,28 @@
     "title": "BOMET",
     "created": "2022-05-11T00:00:00Z",
     "updated": "2022-05-11T00:00:00Z",
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-    "territory": [
+    "facilityType": {
+      "id": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
+    },
+    "wmoRegion": {
+      "id": "https://codes.wmo.int/wmdr/WMORegion/africa"
+    },
+    "territories": [
       {
-        "territory": "http://codes.wmo.int/wmdr/TerritoryName/KEN",
-        "time": {
-          "interval": [
-            "2020-09-21",
-            ".."
-          ]
-        }
-      }
-    ],
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/africa",
-    "programAffiliations": [
-      {
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational",
-        "time": {
-          "interval": [
-            "2022-05-11",
-            ".."
-          ]
-        }
+        "territory": {
+          "id": "http://codes.wmo.int/wmdr/TerritoryName/KEN"
+        },
+        "dates": [
+          "2020-09-21",
+          ".."
+        ]
       }
     ],
     "environment": [
       {
-        "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer",
+        "climateZone": {
+          "id": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer"
+        },
         "time": {
           "interval": [
             "2020-09-21",
@@ -52,37 +46,87 @@
           ]
         },
         "surfaceCover": {
-          "value": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/rainfedCroplands",
-          "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
+          "value": {
+            "id": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/rainfedCroplands"
+          },
+          "scheme": {
+            "id": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
+          }
         },
         "topographyBathymetry": {
-          "relativeElevation": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
-          "topographicContext": "http://codes.wmo.int/wmdr/TopographicContext/valleys",
-          "altitudeOrDepth": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
+          "relativeElevation": {
+            "id": "http://codes.wmo.int/wmdr/RelativeElevation/middle"
+          },
+          "topographicContext": {
+            "id": "http://codes.wmo.int/wmdr/TopographicContext/valleys"
+          },
+          "altitudeOrDepth": {
+            "id": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
+          }
         }
       }
     ],
-    "observationSeries": [
+    "contactAssignments": [
       {
-        "id": "observationSeries:12249",
+        "contact": "contact:kenyan-meteorological-department-ebd1dd83c0",
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "contact": "contact:gitaukaigua@gmail.com",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "contact": "contact:oscar@wmo.int",
+        "roles": [
+          "owner"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "12249-point",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+            },
+            "dates": [
+              "2022-05-11",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_f98fadaa-67f5-4269-9460-ecb3117da5af",
             "time": {
               "interval": [
                 "2020-12-15",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            }
           }
         ],
         "observingProcedures": [
@@ -101,6 +145,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
+            "dataPolicy": null,
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -109,32 +154,59 @@
         ]
       },
       {
-        "id": "observationSeries:210",
+        "id": "210-point",
         "title": "domain: atmosphere; geometry: point; variable: 210",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+            },
+            "dates": [
+              "2022-05-11",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-f3a1-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2020-09-22",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
             },
-            "instrument": "instrument:unknown-unknown"
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "verticalDistance": {
+              "distances": [
+                2.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+              }
+            }
           }
         ],
         "observingProcedures": [
@@ -153,8 +225,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/inapplicable",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/inapplicable"
+            },
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_b4b3a322bb"
@@ -163,48 +239,88 @@
         ]
       },
       {
-        "id": "observationSeries:210",
+        "id": "210-point",
         "title": "domain: atmosphere; geometry: point; variable: 210",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+            },
+            "dates": [
+              "2022-05-11",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-f429-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2020-09-22",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            }
           }
         ]
       },
       {
-        "id": "observationSeries:216",
+        "id": "216-point",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+            },
+            "dates": [
+              "2022-05-11",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_2a3bfeda-275b-4ec7-a4f0-37fdb7ea3201",
             "time": {
               "interval": [
                 "2020-12-15",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            }
           }
         ],
         "observingProcedures": [
@@ -223,6 +339,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
+            "dataPolicy": null,
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -231,25 +348,45 @@
         ]
       },
       {
-        "id": "observationSeries:224",
+        "id": "224-point",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+            },
+            "dates": [
+              "2022-05-11",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_497d5aff-c0d6-4002-ab1c-6c661c36a566",
             "time": {
               "interval": [
                 "2020-12-15",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            }
           }
         ],
         "observingProcedures": [
@@ -268,6 +405,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
+            "dataPolicy": null,
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -276,71 +414,131 @@
         ]
       },
       {
-        "id": "observationSeries:225",
+        "id": "225-point",
         "title": "domain: atmosphere; geometry: point; variable: 225",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+            },
+            "dates": [
+              "2022-05-11",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-f42d-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2020-09-22",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            }
           }
         ]
       },
       {
-        "id": "observationSeries:230",
+        "id": "230-point",
         "title": "domain: atmosphere; geometry: point; variable: 230",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/230",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/230"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+            },
+            "dates": [
+              "2022-05-11",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-f42e-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2020-09-22",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            }
           }
         ]
       },
       {
-        "id": "observationSeries:12005",
+        "id": "12005-point",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+            },
+            "dates": [
+              "2022-05-11",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_e8092fc4-ec5d-4bee-957e-99a648fd56ad",
             "time": {
               "interval": [
                 "2020-12-15",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            }
           }
         ],
         "observingProcedures": [
@@ -359,6 +557,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
+            "dataPolicy": null,
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -367,25 +566,45 @@
         ]
       },
       {
-        "id": "observationSeries:12006",
+        "id": "12006-point",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/preOperational"
+            },
+            "dates": [
+              "2022-05-11",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "cca8c9b3-9ca8-23ea-e053-148ef98d1a71",
             "time": {
               "interval": [
                 "2020-12-15",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            }
           }
         ],
         "observingProcedures": [
@@ -404,6 +623,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
+            "dataPolicy": null,
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -427,30 +647,11 @@
         "uid": "schedule_b4b3a322bb"
       }
     ],
-    "instruments": [
-      {
-        "id": "instrument:unknown-unknown",
-        "manufacturer": "unknown",
-        "model": "unknown"
-      }
-    ],
-    "keywords": [
-      "0-404-0-63707",
-      "BOMET"
-    ],
-    "contactAssignments": [
-      {
-        "contact": "contact:gitaukaigua@gmail.com",
-        "roles": [
-          "pointOfContact"
-        ]
-      }
-    ],
     "contacts": [
       {
-        "identifier": "contact:gitaukaigua@gmail.com",
         "name": "KAIGUA,JAMES",
         "organization": "Kenya Meteorological Department",
+        "contactInstructions": "africa",
         "emails": [
           {
             "value": "gitaukaigua@gmail.com"
@@ -467,10 +668,14 @@
             "postalCode": "+254",
             "country": "KEN"
           }
-        ]
+        ],
+        "identifier": "contact:gitaukaigua@gmail.com"
       },
       {
-        "identifier": "contact:oscar@wmo.int",
+        "organization": "Kenyan Meteorological Department",
+        "identifier": "contact:kenyan-meteorological-department-ebd1dd83c0"
+      },
+      {
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -488,8 +693,13 @@
             "rel": "about",
             "type": "text/html"
           }
-        ]
+        ],
+        "identifier": "contact:oscar@wmo.int"
       }
+    ],
+    "keywords": [
+      "0-404-0-63707",
+      "BOMET"
     ]
   },
   "time": {
@@ -513,7 +723,9 @@
     ],
     "methods": [
       [
-        "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        {
+          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        }
       ]
     ]
   }

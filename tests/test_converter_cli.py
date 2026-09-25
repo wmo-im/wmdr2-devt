@@ -94,7 +94,7 @@ def test_main_writes_catalogues_when_enabled(tmp_path: Path) -> None:
     assert "contacts" not in catalogue_record["properties"]
     assert "instruments" not in catalogue_record["properties"]
     assert contacts[0]["identifier"] == "contact:ops@example.org"
-    assert instruments[0]["id"].startswith("instrument:")
+    assert instruments[0]["id"] == "maker-model"
 
 
 def test_main_accepts_source_target_aliases(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:

@@ -18,6 +18,10 @@ PROGRAM_GBON = "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
 PROGRAM_GOS = "http://codes.wmo.int/wmdr/ProgramAffiliation/GOS"
 
 
+def concept(uri: str) -> dict[str, str]:
+    return {"id": uri}
+
+
 def _walk_dicts(value: Any):
     if isinstance(value, Mapping):
         yield value
@@ -155,8 +159,6 @@ def test_observation_series_preserves_xml_converter_observation_series_metadata(
         "observationSeries": [
             {
                 "observedProperty": OBSERVED_12006,
-                # The XML -> WMDR1 converter emits this WMDR1 field as
-                # ``type``; WMDR2 publishes it as ``observedGeometry``.
                 "type": GEOMETRY_POINT,
                 "programAffiliation": [
                     {"programAffiliation": PROGRAM_GBON, "beginPosition": "2020-01-01"},
@@ -167,8 +169,6 @@ def test_observation_series_preserves_xml_converter_observation_series_metadata(
                     {
                         "beginPosition": "2020-01-01",
                         "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethod/266",
-                        # XML WMDR1 has applicationArea on Deployment, but
-                        # WMDR2 publishes it on ObservationSeries.
                         "applicationArea": {"href": APPLICATION_NOWCASTING},
                     },
                     {
@@ -182,39 +182,56 @@ def test_observation_series_preserves_xml_converter_observation_series_metadata(
     }
 
     record = converter.convert_payload(payload, source_name="20200102_0-20000-0-TEST")
-    observation = record["properties"]["observationSeries"][0]
+    observation = record["properties"]["observations"][0]
 
-    assert observation["observedGeometry"] == GEOMETRY_POINT
-    assert observation["applicationAreas"] == [APPLICATION_NOWCASTING, APPLICATION_AVIATION]
+    assert observation["observedGeometry"] == {"id": GEOMETRY_POINT}
+    assert observation["applicationAreas"] == [
+        {"id": APPLICATION_NOWCASTING},
+        {"id": APPLICATION_AVIATION},
+    ]
     assert "applicationArea" not in observation
-    assert observation["programAffiliations"] == [PROGRAM_GBON, PROGRAM_GOS]
+    assert observation["programAffiliations"] == [
+        {"programAffiliation": {"id": PROGRAM_GBON}},
+        {"programAffiliation": {"id": PROGRAM_GOS}},
+    ]
     assert "programAffiliation" not in observation
 
 
-def test_convert_payload_emits_current_v031_shape() -> None:
+
+def test_convert_payload_emits_current_v033_shape() -> None:
     record = converter.convert_payload(_payload(), source_name="20200102_0-20008-0-THE")
     props = record["properties"]
-    observation = props["observationSeries"][0]
-    cfg = observation["observingConfigurations"][0]
+    observation = props["observations"][0]
+    cfg = observation["configurations"][0]
     reporting = observation["reportingProcedures"][0]
 
     assert record["id"] == "0-20008-0-THE"
     assert record["conformsTo"] == ["http://wigos.wmo.int/spec/wmdr/2/conf/core"]
     assert record["time"] == {"interval": ["2020-01-01", ".."], "resolution": "P1D"}
-    assert observation["id"] == "observationSeries:12006"
-    assert observation["observedProperty"] == OBSERVED_12006
-    assert observation["observedGeometry"] == GEOMETRY_POINT
-    assert observation["observedFeature"] == {"domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"}
+    assert observation["id"] == "12006-point"
+    assert observation["observedProperty"] == {"id": OBSERVED_12006}
+    assert observation["observedGeometry"] == {"id": GEOMETRY_POINT}
+    assert observation["observedFeature"] == {
+        "domain": {"id": "http://codes.wmo.int/wmdr/Domain/atmosphere"}
+    }
 
     assert "temporalGeometry" not in cfg
     assert "keywords" not in cfg
+    assert cfg["id"]
     assert cfg["time"] == {"interval": ["2020-01-01", ".."]}
-    assert cfg["observingMethod"] == "http://codes.wmo.int/wmdr/ObservingMethod/266"
-    assert cfg["sourceOfObservation"] == "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
-    assert cfg["referenceSurface"] == "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-    assert cfg["verticalDistanceFromReferenceSurface"] == {"value": 2.0, "uom": "m"}
-    assert cfg["serialNumber"] == "SN1"
-    assert cfg["instrument"].startswith("instrument:")
+    assert cfg["observingMethod"] == {"id": "http://codes.wmo.int/wmdr/ObservingMethod/266"}
+    assert cfg["sourceOfObservation"] == {
+        "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+    }
+    assert cfg["verticalDistance"] == {
+        "distances": [2.0],
+        "unit": {"id": "http://codes.wmo.int/wmdr/unit/m"},
+        "referenceSurface": {
+            "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+        },
+    }
+    assert cfg["instrumentSerialNumber"] == "SN1"
+    assert cfg["instrument"] == "maker-model"
 
     observing = observation["observingProcedures"][0]
     schedules = {schedule["uid"]: schedule for schedule in props["schedules"]}
@@ -222,7 +239,8 @@ def test_convert_payload_emits_current_v031_shape() -> None:
     assert "time" not in reporting
     assert reporting["temporalReportingInterval"] == "PT1H"
     assert reporting["internationalExchange"] is True
-    assert reporting["uom"] == "http://codes.wmo.int/wmdr/unit/mm"
+    assert reporting["dataPolicy"] is None
+    assert reporting["uom"] == {"id": "http://codes.wmo.int/wmdr/unit/mm"}
     assert reporting["reportingSchedules"][0] in schedules
     reporting_schedule = schedules[reporting["reportingSchedules"][0]]
     assert "wmo.int:aggregationInterval" not in reporting_schedule
@@ -230,7 +248,9 @@ def test_convert_payload_emits_current_v031_shape() -> None:
     assert "duration" not in reporting_schedule
 
     assert observing["time"] == {"interval": ["2020-01-01", ".."]}
-    assert observing["strategy"] == "continuous"
+    assert observing["strategy"] == {
+        "id": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+    }
     assert observing["observingSchedules"][0] in schedules
     assert observing["observingSchedules"] == reporting["reportingSchedules"]
     assert schedules[observing["observingSchedules"][0]]["wmo.int:samplingFrequency"] == "PT10M"
@@ -250,6 +270,7 @@ def test_convert_payload_emits_current_v031_shape() -> None:
     ]
     forbidden = {"beginPosition", "endPosition", "validFrom", "validTo"}
     assert all(forbidden.isdisjoint(item) for item in _walk_dicts(record))
+
 
 
 
@@ -306,23 +327,48 @@ def test_xml_derived_deployment_equipment() -> None:
     }
 
     record = converter.convert_payload(payload)
-    observation = record["properties"]["observationSeries"][0]
-    cfg = observation["observingConfigurations"][0]
+    observation = record["properties"]["observations"][0]
+    cfg = observation["configurations"][0]
 
-    assert observation["observedProperty"] == "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/572"
-    assert observation["observedGeometry"] == GEOMETRY_POINT
-    assert observation["applicationAreas"] == ["http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"]
-    assert observation["programAffiliations"] == ["http://codes.wmo.int/wmdr/ProgramAffiliation/GAW"]
-    assert cfg["observingMethod"] == "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/264"
-    assert cfg["operatingStatus"] == "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
-    assert cfg["sourceOfObservation"] == "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
-    assert cfg["referenceSurface"] == "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
-    assert cfg["verticalDistanceFromReferenceSurface"] == {"value": 20.0, "uom": "m"}
-    assert cfg["geometry"] == {"type": "Point", "coordinates": [22.956, 40.634, 60]}
-    assert cfg["instrument"] == "instrument:kipp-zonen-chp-1"
-    assert record["properties"]["instruments"] == [
-        {"id": "instrument:kipp-zonen-chp-1", "manufacturer": "Kipp&Zonen", "model": "CHP 1"}
+    assert observation["observedProperty"] == {
+        "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/572"
+    }
+    assert observation["observedGeometry"] == {"id": GEOMETRY_POINT}
+    assert observation["applicationAreas"] == [
+        {"id": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"}
     ]
+    assert observation["programAffiliations"] == [
+        {"programAffiliation": {"id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAW"}}
+    ]
+    assert cfg["observingMethod"] == {
+        "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/264"
+    }
+    assert cfg["operatingStatus"] == {
+        "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+    }
+    assert cfg["sourceOfObservation"] == {
+        "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+    }
+    assert cfg["verticalDistance"] == {
+        "distances": [20.0],
+        "unit": {"id": "http://codes.wmo.int/wmdr/unit/m"},
+        "referenceSurface": {
+            "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+        },
+    }
+    assert cfg["geometry"] == {"type": "Point", "coordinates": [22.956, 40.634, 60.0]}
+    assert cfg["instrument"] == "kipp-zonen-chp-1"
+    assert record["properties"]["instruments"] == [
+        {
+            "id": "kipp-zonen-chp-1",
+            "manufacturer": "Kipp&Zonen",
+            "model": "CHP 1",
+            "observingMethods": [
+                {"id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/264"}
+            ],
+        }
+    ]
+
 
 
 def test_temporal_operating_status_history_splits_observing_configurations() -> None:
@@ -360,14 +406,18 @@ def test_temporal_operating_status_history_splits_observing_configurations() -> 
     }
 
     record = converter.convert_payload(payload, source_name="20200102_0-20000-0-TEST")
-    configs = record["properties"]["observationSeries"][0]["observingConfigurations"]
+    configs = record["properties"]["observations"][0]["configurations"]
 
-    assert [cfg["operatingStatus"] for cfg in configs] == ["operational", "inactive"]
+    assert [cfg["operatingStatus"] for cfg in configs] == [
+        {"id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"},
+        {"id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"},
+    ]
     assert [cfg["time"]["interval"] for cfg in configs] == [
         ["2020-01-01", "2020-12-31"],
         ["2021-01-01", ".."],
     ]
     assert all(not isinstance(cfg["operatingStatus"], list) for cfg in configs)
+
 
 
 def test_contact_registry_does_not_freeze_contextual_roles() -> None:
@@ -380,7 +430,9 @@ def test_contact_registry_does_not_freeze_contextual_roles() -> None:
     contact = record["properties"]["contacts"][0]
     assert "roles" not in contact
     assert record["properties"]["contactAssignments"][0]["roles"] == ["owner"]
-    assert record["properties"]["observationSeries"][0]["contactAssignments"][0]["roles"] == ["operator"]
+    assert record["properties"]["observations"][0]["contactAssignments"][0]["roles"] == ["operator"]
+
+
 
 
 def test_convert_file_writes_json_and_reports_path(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -551,12 +603,11 @@ def test_quantity_accepts_wmdr10_text_value_and_uom() -> None:
     assert converter._quantity({"@uom": "m", "#text": "2.0"}) == {"value": 2.0, "uom": "m"}
 
 
-def test_normalize_code_or_nil_reason_keeps_explicit_unknown_as_nil_reason() -> None:
-    assert converter._normalize_code_or_nil_reason("unknown") == {"nilReason": "unknown"}
-    assert converter._normalize_code_or_nil_reason({"nilReason": "withheld"}) == {"nilReason": "withheld"}
+def test_normalize_code_or_nil_reason_maps_explicit_unknown_to_json_null() -> None:
+    assert converter._normalize_code_or_nil_reason("unknown") is None
 
 
-def test_reporting_procedure_matches_v031_uml_attributes_and_uses_reusable_schedule() -> None:
+def test_reporting_procedure_matches_v033_uml_attributes_and_uses_reusable_schedule() -> None:
     record = converter.convert_payload(
         {
             "facility": {"identifier": "0-TEST", "name": "Test"},
@@ -589,7 +640,7 @@ def test_reporting_procedure_matches_v031_uml_attributes_and_uses_reusable_sched
             ],
         }
     )
-    procedure = record["properties"]["observationSeries"][0]["reportingProcedures"][0]
+    procedure = record["properties"]["observations"][0]["reportingProcedures"][0]
     assert set(procedure) >= {
         "strategy",
         "internationalExchange",
@@ -607,15 +658,26 @@ def test_reporting_procedure_matches_v031_uml_attributes_and_uses_reusable_sched
     }
     assert "time" not in procedure
     assert procedure["temporalReportingInterval"] == "PT1H"
-    assert procedure["dataPolicy"] == "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
-    assert procedure["levelOfData"] == "http://codes.wmo.int/wmdr/LevelOfData/level1"
-    assert procedure["referenceTimeSource"] == ["UTC", "http://codes.wmo.int/wmdr/ReferenceTimeSource/gps"]
+    assert procedure["dataPolicy"] == {
+        "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+    }
+    assert procedure["levelOfData"] == {
+        "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+    }
+    assert procedure["referenceTimeSource"] == [
+        {"id": "UTC"},
+        {"id": "http://codes.wmo.int/wmdr/ReferenceTimeSource/gps"},
+    ]
+    assert procedure["dataFormat"] == [
+        {"id": "http://codes.wmo.int/wmdr/DataFormat/bufr"},
+        {"id": "http://codes.wmo.int/wmdr/DataFormat/json"},
+    ]
     schedule_uid = procedure["reportingSchedules"][0]
     schedule = {item["uid"]: item for item in record["properties"]["schedules"]}[schedule_uid]
     assert "wmo.int:aggregationInterval" not in schedule
-    assert "wmo.int:aggregationInterval" not in schedule
     assert schedule["wmo.int:diurnalBaseTime"] == "06:00:00"
     assert "duration" not in schedule
+
 
 
 
@@ -650,9 +712,9 @@ def test_diurnal_coverage_sets_dummy_start_duration_and_shared_schedule() -> Non
         }
     )
     props = record["properties"]
-    series = props["observationSeries"][0]
-    observing = series["observingProcedures"][0]
-    reporting = series["reportingProcedures"][0]
+    observation = props["observations"][0]
+    observing = observation["observingProcedures"][0]
+    reporting = observation["reportingProcedures"][0]
     assert observing["observingSchedules"] == reporting["reportingSchedules"]
     schedule = {item["uid"]: item for item in props["schedules"]}[observing["observingSchedules"][0]]
     assert schedule["start"] == "0001-01-01T06:00:00"
@@ -661,6 +723,7 @@ def test_diurnal_coverage_sets_dummy_start_duration_and_shared_schedule() -> Non
     assert reporting["temporalReportingInterval"] == "PT1H"
     assert "wmo.int:aggregationInterval" not in schedule
     assert schedule["wmo.int:diurnalBaseTime"] == "06:00:00"
+
 
 
 def test_observing_and_reporting_procedures_can_use_different_schedules() -> None:
@@ -689,9 +752,9 @@ def test_observing_and_reporting_procedures_can_use_different_schedules() -> Non
     }
 
     record = converter.convert_payload(payload, source_name="0-20000-0-TEST")
-    series = record["properties"]["observationSeries"][0]
-    observing_ref = series["observingProcedures"][0]["observingSchedules"][0]
-    reporting_ref = series["reportingProcedures"][0]["reportingSchedules"][0]
+    observation = record["properties"]["observations"][0]
+    observing_ref = observation["observingProcedures"][0]["observingSchedules"][0]
+    reporting_ref = observation["reportingProcedures"][0]["reportingSchedules"][0]
 
     assert observing_ref != reporting_ref
     schedules = {item["uid"]: item for item in record["properties"]["schedules"]}
@@ -699,6 +762,7 @@ def test_observing_and_reporting_procedures_can_use_different_schedules() -> Non
     assert "wmo.int:aggregationInterval" not in schedules[observing_ref]
     assert schedules[reporting_ref]["wmo.int:aggregationInterval"] == "PT1H"
     assert schedules[reporting_ref]["wmo.int:diurnalBaseTime"] == "06:00:00"
+
 
 
 def test_observing_and_reporting_procedures_reuse_same_schedule_when_source_schedule_is_shared() -> None:
@@ -726,11 +790,12 @@ def test_observing_and_reporting_procedures_reuse_same_schedule_when_source_sche
     }
 
     record = converter.convert_payload(payload, source_name="0-20000-0-TEST")
-    series = record["properties"]["observationSeries"][0]
-    observing_ref = series["observingProcedures"][0]["observingSchedules"][0]
-    reporting_ref = series["reportingProcedures"][0]["reportingSchedules"][0]
+    observation = record["properties"]["observations"][0]
+    observing_ref = observation["observingProcedures"][0]["observingSchedules"][0]
+    reporting_ref = observation["reportingProcedures"][0]["reportingSchedules"][0]
 
     assert observing_ref == reporting_ref
+
 
 
 def test_facility_description_is_ogc_string_when_source_has_temporal_objects() -> None:
@@ -754,42 +819,26 @@ def test_facility_description_is_ogc_string_when_source_has_temporal_objects() -
 def test_program_affiliation_without_explicit_time_is_preserved() -> None:
     gbon = "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
     gos = "http://codes.wmo.int/wmdr/ProgramAffiliation/GOS"
-    payload = {
-        "facility": {
-            "identifier": "0-20000-0-TEST",
-            "name": "Test",
-            "geospatialLocation": "46 7 500",
-            "programAffiliations": [gbon, {"program": gos}],
-        }
-    }
-    record = converter.convert_payload(payload, source_name="0-20000-0-TEST")
-
-    assert record["properties"]["programAffiliations"] == [
-        {"program": gbon},
-        {"program": gos},
+    affiliations = converter._normalize_program_affiliations([gbon, {"program": gos}])
+    assert affiliations == [
+        {"programAffiliation": {"id": gbon}},
+        {"programAffiliation": {"id": gos}},
     ]
+
 
 
 def test_program_affiliation_with_explicit_time_is_emitted_as_temporal_object() -> None:
-    payload = {
-        "facility": {
-            "identifier": "0-20000-0-TEST",
-            "name": "Test",
-            "geospatialLocation": "46 7 500",
-            "programAffiliations": [
-                {
-                    "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
-                    "beginPosition": "2020-01-01",
-                }
-            ],
+    program = "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+    affiliations = converter._normalize_program_affiliations(
+        [{"program": program, "beginPosition": "2020-01-01"}]
+    )
+    assert affiliations == [
+        {
+            "programAffiliation": {"id": program},
+            "dates": ["2020-01-01", ".."],
         }
-    }
-
-    record = converter.convert_payload(payload, source_name="0-20000-0-TEST")
-
-    assert record["properties"]["programAffiliations"] == [
-        {"program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON", "time": {"interval": ["2020-01-01", ".."]}}
     ]
+
 
 
 
@@ -822,16 +871,22 @@ def test_facility_environment_is_emitted_as_time_bound_entries() -> None:
     assert record["properties"]["environment"] == [
         {
             "time": {"interval": ["2009-01-06", ".."]},
-            "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/equatorialSavannahDrySummer",
-            "surfaceCover": {"value": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/mosaicForest", "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"},
+            "climateZone": {
+                "id": "http://codes.wmo.int/wmdr/ClimateZone/equatorialSavannahDrySummer"
+            },
+            "surfaceCover": {
+                "value": {"id": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/mosaicForest"},
+                "scheme": {"id": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"},
+            },
             "topographyBathymetry": {
-                "localTopography": "http://codes.wmo.int/wmdr/LocalTopography/slope",
-                "relativeElevation": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
-                "topographicContext": "http://codes.wmo.int/wmdr/TopographicContext/rises",
-                "altitudeOrDepth": "http://codes.wmo.int/wmdr/AltitudeOrDepth/veryHighAltitude",
+                "localTopography": {"id": "http://codes.wmo.int/wmdr/LocalTopography/slope"},
+                "relativeElevation": {"id": "http://codes.wmo.int/wmdr/RelativeElevation/middle"},
+                "topographicContext": {"id": "http://codes.wmo.int/wmdr/TopographicContext/rises"},
+                "altitudeOrDepth": {"id": "http://codes.wmo.int/wmdr/AltitudeOrDepth/veryHighAltitude"},
             },
         }
     ]
+
 
 
 def test_facility_territory_is_temporal_array_when_source_has_time() -> None:
@@ -840,15 +895,20 @@ def test_facility_territory_is_temporal_array_when_source_has_time() -> None:
             "identifier": "0-20000-0-06650",
             "name": "Example",
             "territory": {
-                "territoryName": "CHE",
+                "territoryName": "http://codes.wmo.int/wmdr/TerritoryName/CHE",
                 "beginPosition": "1864-01-01",
                 "endPosition": "..",
             },
         }
     })
 
-    territory = record["properties"]["territory"]
-    assert territory == [{"territory": "CHE", "time": {"interval": ["1864-01-01", ".."]}}]
+    assert record["properties"]["territories"] == [
+        {
+            "territory": {"id": "http://codes.wmo.int/wmdr/TerritoryName/CHE"},
+            "dates": ["1864-01-01", ".."],
+        }
+    ]
+
 
 
 def test_facility_territory_without_time_is_preserved() -> None:
@@ -861,7 +921,10 @@ def test_facility_territory_without_time_is_preserved() -> None:
         }
     })
 
-    assert record["properties"]["territory"] == [{"territory": territory_uri}]
+    assert record["properties"]["territories"] == [
+        {"territory": {"id": territory_uri}}
+    ]
+
 
 def test_facility_title_is_first_name_and_additional_titles_hold_aliases() -> None:
     record = {
@@ -908,16 +971,19 @@ def test_facility_id_is_first_wsi_from_identifier_list() -> None:
 
 def test_operating_status_is_not_fabricated_when_absent() -> None:
     record = converter.convert_payload(_payload(), source_name="20200102_0-20008-0-THE")
-    cfg = record["properties"]["observationSeries"][0]["observingConfigurations"][0]
+    cfg = record["properties"]["observations"][0]["configurations"][0]
     assert "operatingStatus" not in cfg
+
 
 
 def test_serial_number_stays_on_observing_configuration_not_instrument_catalogue() -> None:
     record = converter.convert_payload(_payload(), source_name="20200102_0-20008-0-THE")
     props = record["properties"]
-    cfg = props["observationSeries"][0]["observingConfigurations"][0]
-    assert cfg["serialNumber"] == "SN1"
+    cfg = props["observations"][0]["configurations"][0]
+    assert cfg["instrumentSerialNumber"] == "SN1"
     assert all("serialNumber" not in instrument for instrument in props["instruments"])
+    assert all("instrumentSerialNumber" not in instrument for instrument in props["instruments"])
+
 
 
 def test_contact_url_misfiled_as_email_is_preserved_as_link() -> None:

@@ -17,69 +17,39 @@
     "title": "Arosa",
     "created": "2026-03-18T00:00:00Z",
     "updated": "2026-03-18T00:00:00Z",
-    "description": "Last ozone observing instruments (1 Brewer and 1 Dobson) transferred to Davos (0-20008-0-DAV). The ozone observations continues from there.\n\nThe ozone observations from Arosa have been transferred to Davos (0-20008-0-DAV). Arosa which is approximately 12 km south-west of Davos and about 200 m higher. The parallel observation period (with instruments of Arosa being temporarily deployed in Davos) started on 22 Nov 2011. 4 of the 6 instruments (2 Brewers 2 Dobsons) were definitively transferred to Davos on 28 Feb 2018. The two remaining instruments (1 Brewer and 1 Dobson) continued observations in Arosa until 18 Feb 2021 when they were also transferred to Davos and the ozone observations at Arosa definitively stopped. Since then, the ozone time series is continued from Davos.",
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-    "territory": [
+    "externalIds": [
       {
-        "territory": "http://codes.wmo.int/wmdr/TerritoryName/CHE",
-        "time": {
-          "interval": [
-            "2011-11-25",
-            ".."
-          ]
-        }
+        "value": "ARO",
+        "scheme": "GAWregional"
+      },
+      {
+        "value": "AROSA",
+        "scheme": "NDACC"
       }
     ],
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
-    "programAffiliations": [
+    "description": "Last ozone observing instruments (1 Brewer and 1 Dobson) transferred to Davos (0-20008-0-DAV). The ozone observations continues from there.\n\nThe ozone observations from Arosa have been transferred to Davos (0-20008-0-DAV). Arosa which is approximately 12 km south-west of Davos and about 200 m higher. The parallel observation period (with instruments of Arosa being temporarily deployed in Davos) started on 22 Nov 2011. 4 of the 6 instruments (2 Brewers 2 Dobsons) were definitively transferred to Davos on 28 Feb 2018. The two remaining instruments (1 Brewer and 1 Dobson) continued observations in Arosa until 18 Feb 2021 when they were also transferred to Davos and the ozone observations at Arosa definitively stopped. Since then, the ozone time series is continued from Davos.",
+    "facilityType": {
+      "id": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
+    },
+    "wmoRegion": {
+      "id": "https://codes.wmo.int/wmdr/WMORegion/europe"
+    },
+    "territories": [
       {
-        "programSpecificFacilityId": "ARO",
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/closed",
-        "time": {
-          "interval": [
-            "2021-02-18",
-            ".."
-          ]
-        }
-      },
-      {
-        "programSpecificFacilityId": "ARO",
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "1926-01-01",
-            "2021-02-17"
-          ]
-        }
-      },
-      {
-        "programSpecificFacilityId": "AROSA",
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/closed",
-        "time": {
-          "interval": [
-            "2021-02-18",
-            ".."
-          ]
-        }
-      },
-      {
-        "programSpecificFacilityId": "AROSA",
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "1926-01-01",
-            "2021-02-17"
-          ]
-        }
+        "territory": {
+          "id": "http://codes.wmo.int/wmdr/TerritoryName/CHE"
+        },
+        "dates": [
+          "2011-11-25",
+          ".."
+        ]
       }
     ],
     "environment": [
       {
-        "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/polarTundra",
+        "climateZone": {
+          "id": "http://codes.wmo.int/wmdr/ClimateZone/polarTundra"
+        },
         "time": {
           "interval": [
             "2019-01-01",
@@ -87,18 +57,32 @@
           ]
         },
         "surfaceCover": {
-          "value": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/mosaicCroplands",
-          "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
+          "value": {
+            "id": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/mosaicCroplands"
+          },
+          "scheme": {
+            "id": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
+          }
         },
         "topographyBathymetry": {
-          "localTopography": "http://codes.wmo.int/wmdr/LocalTopography/slope",
-          "relativeElevation": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
-          "topographicContext": "http://codes.wmo.int/wmdr/TopographicContext/rises",
-          "altitudeOrDepth": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
+          "localTopography": {
+            "id": "http://codes.wmo.int/wmdr/LocalTopography/slope"
+          },
+          "relativeElevation": {
+            "id": "http://codes.wmo.int/wmdr/RelativeElevation/middle"
+          },
+          "topographicContext": {
+            "id": "http://codes.wmo.int/wmdr/TopographicContext/rises"
+          },
+          "altitudeOrDepth": {
+            "id": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
+          }
         }
       },
       {
-        "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/snowFullyHumidCoolSummer",
+        "climateZone": {
+          "id": "http://codes.wmo.int/wmdr/ClimateZone/snowFullyHumidCoolSummer"
+        },
         "time": {
           "interval": [
             "2011-11-25",
@@ -107,29 +91,106 @@
         }
       }
     ],
-    "observationSeries": [
+    "contactAssignments": [
       {
-        "id": "observationSeries:263",
+        "contact": "contact:pierre.jeannet@meteoswiss.ch",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "contact": "contact:rolf.ruefenacht@meteoswiss.ch",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "contact": "contact:oscar@wmo.int",
+        "roles": [
+          "owner"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_170e8c6c-dc94-4c8e-83be-7c9900e87e0e",
             "time": {
               "interval": [
                 "2014-01-01",
                 "2021-02-18"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            }
           }
         ],
         "observingProcedures": [
@@ -148,7 +209,10 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "uom": "http://codes.wmo.int/wmdr/unit/DU",
+            "dataPolicy": null,
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/DU"
+            },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -157,27 +221,84 @@
         ]
       },
       {
-        "id": "observationSeries:263",
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_03a5a1b9-8c03-4791-9e88-b22c9bebd721",
             "time": {
               "interval": [
                 "2014-01-01",
                 "2021-02-18"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            }
           }
         ],
         "observingProcedures": [
@@ -196,6 +317,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "dataPolicy": null,
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -204,29 +326,82 @@
         ]
       },
       {
-        "id": "observationSeries:263",
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b6e-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2007-04-02",
                 "2013-11-07"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            },
+            "sourceOfObservation": null
           }
         ],
         "observingProcedures": [
@@ -245,9 +420,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+            },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_b4b3a322bb"
@@ -256,65 +434,174 @@
         ]
       },
       {
-        "id": "observationSeries:263",
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b6b-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2007-04-01",
                 "2013-12-31"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+            },
+            "sourceOfObservation": null
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+            },
             "temporalReportingInterval": "P1M"
           }
         ]
       },
       {
-        "id": "observationSeries:263",
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b6f-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "1996-12-02",
                 "1997-12-31"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            },
+            "sourceOfObservation": null
           }
         ],
         "observingProcedures": [
@@ -333,9 +620,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+            },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_b4b3a322bb"
@@ -344,65 +634,174 @@
         ]
       },
       {
-        "id": "observationSeries:263",
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b6c-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "1995-01-04",
                 "1998-07-31"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+            },
+            "sourceOfObservation": null
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+            },
             "temporalReportingInterval": "P1M"
           }
         ]
       },
       {
-        "id": "observationSeries:263",
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b70-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "1990-01-01",
                 "2013-11-07"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            },
+            "sourceOfObservation": null
           }
         ],
         "observingProcedures": [
@@ -416,15 +815,20 @@
                 "2013-11-07"
               ]
             },
-            "strategy": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+            "strategy": {
+              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+            }
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level2",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level2"
+            },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_b4b3a322bb"
@@ -433,65 +837,174 @@
         ]
       },
       {
-        "id": "observationSeries:263",
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b6d-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "1988-12-16",
                 "2013-12-31"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+            },
+            "sourceOfObservation": null
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+            },
             "temporalReportingInterval": "P1M"
           }
         ]
       },
       {
-        "id": "observationSeries:263",
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b71-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "1986-09-01",
                 "2013-12-01"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            },
+            "sourceOfObservation": null
           }
         ],
         "observingProcedures": [
@@ -510,9 +1023,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+            },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_b4b3a322bb"
@@ -521,29 +1037,82 @@
         ]
       },
       {
-        "id": "observationSeries:263",
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b72-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "1949-09-01",
                 "1986-08-31"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            },
+            "sourceOfObservation": null
           }
         ],
         "observingProcedures": [
@@ -562,9 +1131,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+            },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_b4b3a322bb"
@@ -573,29 +1145,82 @@
         ]
       },
       {
-        "id": "observationSeries:263",
+        "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b73-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "1926-07-23",
                 "1949-08-31"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            },
+            "sourceOfObservation": null
           }
         ],
         "observingProcedures": [
@@ -614,9 +1239,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level1",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+            },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_b4b3a322bb"
@@ -625,28 +1253,58 @@
         ]
       },
       {
-        "id": "observationSeries:264",
+        "id": "264-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b74-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "1988-01-03",
                 "2007-12-29"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            },
+            "sourceOfObservation": null
           }
         ],
         "observingProcedures": [
@@ -665,9 +1323,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level2",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level2"
+            },
             "temporalReportingInterval": "P1M",
             "reportingSchedules": [
               "schedule_b4b3a322bb"
@@ -676,25 +1337,57 @@
         ]
       },
       {
-        "id": "observationSeries:264",
+        "id": "264-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_513fee31-c92f-409a-b086-b207ab966170",
             "time": {
               "interval": [
                 "1988-01-01",
                 "2018-09-28"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            }
           }
         ],
         "observingProcedures": [
@@ -713,6 +1406,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "dataPolicy": null,
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -721,28 +1415,58 @@
         ]
       },
       {
-        "id": "observationSeries:264",
+        "id": "264-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+            },
+            "dates": [
+              "2021-02-18",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1926-01-01",
+              "2021-02-17"
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-5b75-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "1956-01-03",
                 "1987-12-31"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106",
-            "sourceOfObservation": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            },
+            "sourceOfObservation": null
           }
         ],
         "observingProcedures": [
@@ -761,9 +1485,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level2",
-            "uom": "unknown",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level2"
+            },
             "temporalReportingInterval": "P1M",
             "reportingSchedules": [
               "schedule_b4b3a322bb"
@@ -787,27 +1514,8 @@
         "uid": "schedule_b4b3a322bb"
       }
     ],
-    "keywords": [
-      "0-20008-0-ARO",
-      "Arosa"
-    ],
-    "contactAssignments": [
-      {
-        "contact": "contact:pierre.jeannet@meteoswiss.ch",
-        "roles": [
-          "pointOfContact"
-        ]
-      },
-      {
-        "contact": "contact:rolf.ruefenacht@meteoswiss.ch",
-        "roles": [
-          "pointOfContact"
-        ]
-      }
-    ],
     "contacts": [
       {
-        "identifier": "contact:oscar@wmo.int",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -825,12 +1533,13 @@
             "rel": "about",
             "type": "text/html"
           }
-        ]
+        ],
+        "identifier": "contact:oscar@wmo.int"
       },
       {
-        "identifier": "contact:pierre.jeannet@meteoswiss.ch",
         "name": "Jeannet,Pierre,Mr.",
         "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "contactInstructions": "europe",
         "emails": [
           {
             "value": "pierre.jeannet@meteoswiss.ch"
@@ -853,12 +1562,13 @@
             "postalCode": "CH-1530",
             "country": "CHE"
           }
-        ]
+        ],
+        "identifier": "contact:pierre.jeannet@meteoswiss.ch"
       },
       {
-        "identifier": "contact:rolf.ruefenacht@meteoswiss.ch",
         "name": "Ruefenacht,Rolf,Dr.",
         "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "contactInstructions": "europe",
         "emails": [
           {
             "value": "rolf.ruefenacht@meteoswiss.ch"
@@ -869,8 +1579,13 @@
             "city": "Payerne",
             "country": "CHE"
           }
-        ]
+        ],
+        "identifier": "contact:rolf.ruefenacht@meteoswiss.ch"
       }
+    ],
+    "keywords": [
+      "0-20008-0-ARO",
+      "Arosa"
     ]
   },
   "time": {

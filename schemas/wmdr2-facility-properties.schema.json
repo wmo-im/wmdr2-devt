@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-facility-properties.schema.json",
+  "title": "WMDR2 development Facility properties",
+  "type": "object",
+  "required": [
+    "type",
+    "title",
+    "facilityType"
+  ],
+  "properties": {
+    "type": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/type"
+    },
+    "title": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/title"
+    },
+    "description": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/description"
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/contacts/items"
+      }
+    },
+    "externalIds": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/externalIds"
+    },
+    "created": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/created"
+    },
+    "updated": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/updated"
+    },
+    "additionalIds": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/additionalIds"
+    },
+    "additionalTitles": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/additionalTitles"
+    },
+    "facilityType": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/facilityType"
+        },
+        {
+          "$ref": "wmdr2-common.schema.json#/$defs/controlledConceptOrNull"
+        }
+      ]
+    },
+    "wmoRegion": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/wmoRegion"
+        },
+        {
+          "$ref": "wmdr2-common.schema.json#/$defs/controlledConcept"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^https://codes\\.wmo\\.int/wmdr/WMORegion/"
+            }
+          }
+        }
+      ]
+    },
+    "territories": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/territories"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "territory"
+            ],
+            "properties": {
+              "territory": {
+                "$ref": "wmdr2-common.schema.json#/$defs/controlledConceptOrNull"
+              },
+              "dates": {
+                "$ref": "wmdr2-common.schema.json#/$defs/dates"
+              },
+              "time": false,
+              "date": false
+            },
+            "additionalProperties": false
+          }
+        }
+      ]
+    },
+    "observations": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "$ref": "wmdr2-observation.schema.json"
+      }
+    },
+    "instruments": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-instrument.schema.json"
+      }
+    },
+    "schedules": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/schedule"
+      }
+    },
+    "environment": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/environment"
+      }
+    },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "facilitySets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contactAssignments": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/contactAssignment"
+      }
+    },
+    "links": false,
+    "territory": false,
+    "programAffiliations": false,
+    "programAffiliation": false,
+    "observationSeries": false,
+    "deployments": false,
+    "operatingStatus": false
+  },
+  "additionalProperties": true
+}

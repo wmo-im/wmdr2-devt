@@ -67,21 +67,3 @@ convert_wmdr10_json_to_wmdr2_json:
 
   pattern: "*.json"
   recursive: true
-
-  catalogues:
-    enabled: true
-
-    # Write the catalogue-based facility records separately.
-    records_path: results/wmdr2_json_examples_catalogue_version
-
-    # Shared catalogues.
-    contacts_path: results/wmdr2_json_examples_catalogue_version/catalogues/contacts.json
-    instruments_path: results/wmdr2_json_examples_catalogue_version/catalogues/instruments.json
-
-convert_wmdr2_json_to_wmdr2_gc_dar:
-  source: results/wmdr2_json_examples
-  target: results/wmdr2_json_examples_gc_dar
-  pattern: "*.json"
-  recursive: true
-  full_record_href_template: "https://example.org/wmdr2/full/{plain_id}.json"
-  dar_record_href_template: "https://example.org/wmdr2/gc-dar/{plain_id}.json"

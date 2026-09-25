@@ -17,36 +17,35 @@
     "title": "Muz Taw glacier",
     "created": "2020-10-07T00:00:00Z",
     "updated": "2020-10-07T00:00:00Z",
-    "description": "Muz Taw glacier station located at the northern side of the Altay Mountains with an area of 4.27 km2. The elevation from glacier terminus to the highest point ranges from 3090 to 3800 m, and the glacier length is 3.7 km. The snow line of this glacier is 3310 m, and the ice volume is 0.28 km3 with an average ice thickness of 66 m. Now the Muz Taw glacier has shrunk extremely due to dramatic melting in the past few decades. The observation of Muz Taw glacier station began in 2014 which involved the observation of glacier mass balance, terminal change, movement speed, and the meteorological phenomena of glacial zone. Muz Taw glacier station is the GCW primary CryoNet Station.",
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landOnIce",
-    "territory": [
+    "externalIds": [
       {
-        "territory": "http://codes.wmo.int/wmdr/TerritoryName/CHN",
-        "time": {
-          "interval": [
-            "2015-09-01",
-            ".."
-          ]
-        }
+        "value": "181",
+        "scheme": "GCWCryoNet"
       }
     ],
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/asia",
-    "programAffiliations": [
+    "description": "Muz Taw glacier station located at the northern side of the Altay Mountains with an area of 4.27 km2. The elevation from glacier terminus to the highest point ranges from 3090 to 3800 m, and the glacier length is 3.7 km. The snow line of this glacier is 3310 m, and the ice volume is 0.28 km3 with an average ice thickness of 66 m. Now the Muz Taw glacier has shrunk extremely due to dramatic melting in the past few decades. The observation of Muz Taw glacier station began in 2014 which involved the observation of glacier mass balance, terminal change, movement speed, and the meteorological phenomena of glacial zone. Muz Taw glacier station is the GCW primary CryoNet Station.",
+    "facilityType": {
+      "id": "http://codes.wmo.int/wmdr/FacilityType/landOnIce"
+    },
+    "wmoRegion": {
+      "id": "https://codes.wmo.int/wmdr/WMORegion/asia"
+    },
+    "territories": [
       {
-        "programSpecificFacilityId": "181",
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "2020-09-24",
-            ".."
-          ]
-        }
+        "territory": {
+          "id": "http://codes.wmo.int/wmdr/TerritoryName/CHN"
+        },
+        "dates": [
+          "2015-09-01",
+          ".."
+        ]
       }
     ],
     "environment": [
       {
-        "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/steppeColdArid",
+        "climateZone": {
+          "id": "http://codes.wmo.int/wmdr/ClimateZone/steppeColdArid"
+        },
         "time": {
           "interval": [
             "2015-09-01",
@@ -55,27 +54,67 @@
         }
       }
     ],
-    "observationSeries": [
+    "contactAssignments": [
       {
-        "id": "observationSeries:224",
+        "contact": "contact:northwest-institute-of-eco-environment-and-resources-nieer-cas-f9018da80c",
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "contact": "contact:yuexiaoying@lzb.ac.cn",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "contact": "contact:oscar@wmo.int",
+        "roles": [
+          "owner"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "224-point",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2020-09-24",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_7c5d7088-da2b-4864-998f-73afdba26a0f",
             "time": {
               "interval": [
                 "2015-09-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            }
           }
         ],
         "observingProcedures": [
@@ -94,6 +133,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "dataPolicy": null,
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_e484853ead"
@@ -102,25 +142,45 @@
         ]
       },
       {
-        "id": "observationSeries:12249",
+        "id": "12249-point",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2020-09-24",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_34430073-dd46-4e1c-be3b-bec291ed8ff6",
             "time": {
               "interval": [
                 "2015-09-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            }
           }
         ],
         "observingProcedures": [
@@ -139,6 +199,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "dataPolicy": null,
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_e484853ead"
@@ -147,25 +208,45 @@
         ]
       },
       {
-        "id": "observationSeries:10103",
+        "id": "10103-totalcolumn",
         "title": "domain: terrestrial; geometry: totalColumn; variable: 10103",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/10103",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/10103"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2020-09-24",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_e9d2e39e-678d-4235-88c2-4c4d34e276e1",
             "time": {
               "interval": [
                 "2015-09-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            }
           }
         ],
         "observingProcedures": [
@@ -184,6 +265,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "dataPolicy": null,
             "temporalReportingInterval": "P12M",
             "reportingSchedules": [
               "schedule_e484853ead"
@@ -192,25 +274,45 @@
         ]
       },
       {
-        "id": "observationSeries:12005",
+        "id": "12005-point",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2020-09-24",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_ec92bd42-8dbe-432c-87b6-a47ad681c4f2",
             "time": {
               "interval": [
                 "2015-09-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            }
           }
         ],
         "observingProcedures": [
@@ -229,6 +331,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "dataPolicy": null,
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_e484853ead"
@@ -237,25 +340,45 @@
         ]
       },
       {
-        "id": "observationSeries:12006",
+        "id": "12006-point",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2020-09-24",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "cca8c9b3-6c0b-23ea-e053-148ef98d1a71",
             "time": {
               "interval": [
                 "2015-09-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            }
           }
         ],
         "observingProcedures": [
@@ -274,6 +397,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "dataPolicy": null,
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
               "schedule_e484853ead"
@@ -282,25 +406,45 @@
         ]
       },
       {
-        "id": "observationSeries:12010",
+        "id": "12010-totalcolumn",
         "title": "domain: terrestrial; geometry: totalColumn; variable: 12010",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12010",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12010"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/totalColumn",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2020-09-24",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_7ba77526-f550-4f53-aa92-7e90ef299d89",
             "time": {
               "interval": [
                 "2015-09-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/183"
+            }
           }
         ],
         "observingProcedures": [
@@ -319,6 +463,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
+            "dataPolicy": null,
             "temporalReportingInterval": "P12M",
             "reportingSchedules": [
               "schedule_e484853ead"
@@ -335,21 +480,12 @@
         "uid": "schedule_e484853ead"
       }
     ],
-    "keywords": [
-      "0-156-10000-51056",
-      "Muz Taw glacier"
-    ],
-    "contactAssignments": [
-      {
-        "contact": "contact:yuexiaoying@lzb.ac.cn",
-        "roles": [
-          "pointOfContact"
-        ]
-      }
-    ],
     "contacts": [
       {
-        "identifier": "contact:oscar@wmo.int",
+        "organization": "Northwest Institute of Eco-Environment and Resources (NIEER), CAS",
+        "identifier": "contact:northwest-institute-of-eco-environment-and-resources-nieer-cas-f9018da80c"
+      },
+      {
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -367,12 +503,13 @@
             "rel": "about",
             "type": "text/html"
           }
-        ]
+        ],
+        "identifier": "contact:oscar@wmo.int"
       },
       {
-        "identifier": "contact:yuexiaoying@lzb.ac.cn",
         "name": "Yue,Xiaoying",
         "organization": "Northwest Institute of Eco-Environment and Resources (NIEER), CAS",
+        "contactInstructions": "asia",
         "emails": [
           {
             "value": "yuexiaoying@lzb.ac.cn"
@@ -383,8 +520,13 @@
             "city": "Lanzhou",
             "country": "CHN"
           }
-        ]
+        ],
+        "identifier": "contact:yuexiaoying@lzb.ac.cn"
       }
+    ],
+    "keywords": [
+      "0-156-10000-51056",
+      "Muz Taw glacier"
     ]
   },
   "time": {

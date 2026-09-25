@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-instrument.schema.json",
+  "title": "WMDR2 development Instrument",
+  "description": "Extends the official WMDR2 Instrument with optional catalogue discoverability metadata. Physical serial numbers remain on Configuration.",
+  "allOf": [
+    {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Instrument"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "observingMethods": {
+          "type": "array",
+          "items": {
+            "$ref": "wmdr2-common.schema.json#/$defs/controlledConcept"
+          }
+        },
+        "verticalRange": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "serialNumber": false,
+        "instrumentSerialNumber": false,
+        "uid": false
+      },
+      "additionalProperties": true
+    }
+  ]
+}

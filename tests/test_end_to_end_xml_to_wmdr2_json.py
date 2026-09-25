@@ -8,14 +8,14 @@ from pathlib import Path
 from typing import Any, NamedTuple, Pattern
 
 import pytest
-from jsonschema import Draft202012Validator, FormatChecker
+
+from schema_registry import validator_for_schema
 
 
 ROOT = Path(__file__).resolve().parents[1]
 XML_CONVERTER = ROOT / "convert_wmdr10_xml_to_wmdr10_json.py"
 JSON_CONVERTER = ROOT / "convert_wmdr10_json_to_wmdr2_json.py"
 XML_SOURCE_DIR = ROOT / "resources" / "wmdr10_xml_examples"
-SCHEMA_FILE = ROOT / "schemas" / "wmdr2-record-feature.schema.json"
 
 
 class ExpectedSourceDeficiency(NamedTuple):
@@ -24,38 +24,34 @@ class ExpectedSourceDeficiency(NamedTuple):
     reason: str
 
 
-# The XML examples are real/legacy source records, not a curated suite of
-# fully conformant tightened-WMDR2 fixtures. The converter must preserve source
-# information and must not fabricate mandatory metadata merely to make these
-# examples validate.
-#
-# Keep this allow-list semantic and narrow: exact object type + exact schema
-# complaint. Any other validation error remains a hard failure.
+# Real WMDR1 records may lack metadata that is mandatory in the current WMDR2
+# model. The converter must not invent that information merely to make records
+# validate. Keep this allow-list narrow and semantic.
 EXPECTED_SOURCE_DEFICIENCIES = (
     ExpectedSourceDeficiency(
-        re.compile(r"^properties/observationSeries/\d+/observingConfigurations/\d+$"),
-        re.compile(r"^'sourceOfObservation' is a required property$"),
-        "WMDR1 source has no sourceOfObservation for this observing configuration",
+        re.compile(r"^properties/observations/\d+/configurations/\d+$"),
+        re.compile(r"^'time' is a required property$"),
+        "WMDR1 source has no validity time for this configuration",
     ),
     ExpectedSourceDeficiency(
-        re.compile(r"^properties/observationSeries/\d+/reportingProcedures/\d+$"),
-        re.compile(r"^'dataPolicy' is a required property$"),
-        "WMDR1 source has no usable controlled dataPolicy for this reporting procedure",
-    ),
-    ExpectedSourceDeficiency(
-        re.compile(r"^properties/observationSeries/\d+/observingProcedures/\d+$"),
+        re.compile(r"^properties/observations/\d+/observingProcedures/\d+$"),
         re.compile(r"^'time' is a required property$"),
         "WMDR1 source has no validity time for this observing procedure",
     ),
     ExpectedSourceDeficiency(
-        re.compile(r"^properties/observationSeries/\d+/observingConfigurations/\d+$"),
-        re.compile(r"^'time' is a required property$"),
-        "WMDR1 source has no validity time for this observing configuration",
+        re.compile(r"^properties/observations/\d+/reportingProcedures/\d+$"),
+        re.compile(r"^'dataPolicy' is a required property$"),
+        "WMDR1 source has no usable dataPolicy for this reporting procedure",
     ),
     ExpectedSourceDeficiency(
-        re.compile(r"^properties/observationSeries/\d+/observingConfigurations/\d+$"),
-        re.compile(r"^'referenceSurface' is a required property$"),
-        "WMDR1 source records a vertical distance without its reference surface",
+        re.compile(r"^properties/observations/\d+$"),
+        re.compile(r"^'observedGeometry' is a required property$"),
+        "WMDR1 source has no observed geometry",
+    ),
+    ExpectedSourceDeficiency(
+        re.compile(r"^properties/observations/\d+$"),
+        re.compile(r"^'programAffiliations' is a required property$"),
+        "WMDR1 source has no programme affiliation for this observation",
     ),
     ExpectedSourceDeficiency(
         re.compile(r"^properties/contacts/\d+/phones/\d+/value$"),
@@ -127,7 +123,9 @@ def _error_path(error: Any) -> str:
 def _expected_source_deficiency(error: Any) -> ExpectedSourceDeficiency | None:
     path = _error_path(error)
     for expected in EXPECTED_SOURCE_DEFICIENCIES:
-        if expected.path_pattern.fullmatch(path) and expected.message_pattern.fullmatch(error.message):
+        if expected.path_pattern.fullmatch(path) and expected.message_pattern.fullmatch(
+            error.message
+        ):
             return expected
     return None
 
@@ -135,16 +133,7 @@ def _expected_source_deficiency(error: Any) -> ExpectedSourceDeficiency | None:
 def test_end_to_end_wmdr2_records_have_only_reviewed_source_deficiencies(
     e2e_outputs: dict[str, Path],
 ) -> None:
-    """Reject converter/schema regressions without requiring legacy source
-    records to contain metadata that was never recorded.
-
-    A converted record may remain schema-invalid only for one of the narrowly
-    reviewed source-deficiency signatures above. No default/nil value is
-    invented by the converter to make such a record pass.
-    """
-
-    schema = json.loads(SCHEMA_FILE.read_text(encoding="utf-8"))
-    validator = Draft202012Validator(schema, format_checker=FormatChecker())
+    validator = validator_for_schema("wmdr2-record-feature.schema.json")
     outputs = sorted(e2e_outputs["wmdr2"].glob("*.json"))
     assert outputs
 
@@ -165,6 +154,8 @@ def test_end_to_end_wmdr2_records_have_only_reviewed_source_deficiencies(
                     f"{output.name}: {_error_path(error)}: {error.message}"
                 )
             else:
-                expected_counts[expected.reason] = expected_counts.get(expected.reason, 0) + 1
+                expected_counts[expected.reason] = (
+                    expected_counts.get(expected.reason, 0) + 1
+                )
 
     assert not unexpected, "\n".join(unexpected[:100])

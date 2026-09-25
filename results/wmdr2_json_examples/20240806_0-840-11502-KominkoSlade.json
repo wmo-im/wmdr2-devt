@@ -17,44 +17,28 @@
     "title": "Kominko-Slade (WAIS)",
     "created": "2024-08-06T00:00:00Z",
     "updated": "2024-08-06T00:00:00Z",
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landOnIce",
-    "territory": [
+    "facilityType": {
+      "id": "http://codes.wmo.int/wmdr/FacilityType/landOnIce"
+    },
+    "wmoRegion": {
+      "id": "https://codes.wmo.int/wmdr/WMORegion/antarctica"
+    },
+    "territories": [
       {
-        "territory": "http://codes.wmo.int/wmdr/TerritoryName/USA",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        }
-      }
-    ],
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/antarctica",
-    "programAffiliations": [
-      {
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "2006-01-13",
-            ".."
-          ]
-        }
-      },
-      {
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "2022-06-07",
-            ".."
-          ]
-        }
+        "territory": {
+          "id": "http://codes.wmo.int/wmdr/TerritoryName/USA"
+        },
+        "dates": [
+          "2006-01-13",
+          ".."
+        ]
       }
     ],
     "environment": [
       {
-        "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/polarFrost",
+        "climateZone": {
+          "id": "http://codes.wmo.int/wmdr/ClimateZone/polarFrost"
+        },
         "time": {
           "interval": [
             "2006-01-13",
@@ -63,34 +47,95 @@
         }
       }
     ],
-    "observationSeries": [
+    "contactAssignments": [
       {
-        "id": "observationSeries:216",
+        "contact": "contact:antarctic-meteorological-research-and-data-center-space-science-and-engineering-center-uw-madison-d19a9ab768",
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "contact": "contact:mattl@ssec.wisc.edu",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "contact": "contact:oscar@wmo.int",
+        "roles": [
+          "owner"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "216-point",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2006-01-13",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-06-07",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_940b409e-a547-4534-9590-4f2393a77f6f",
             "time": {
               "interval": [
                 "2006-01-13",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class1",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class1"
+            },
+            "verticalDistance": {
+              "distances": [
+                2.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -100,7 +145,7 @@
                 1801
               ]
             },
-            "instrument": "instrument:paroscientific-series-2000-absolute-and-gauge-pressure-transducers-215a-102"
+            "instrument": "paroscientific-series-2000-absolute-and-gauge-pressure-transducers-215a-102"
           }
         ],
         "observingProcedures": [
@@ -119,7 +164,10 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/hPa",
+            "dataPolicy": null,
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/hPa"
+            },
             "temporalReportingInterval": "PT3H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -128,32 +176,73 @@
         ]
       },
       {
-        "id": "observationSeries:224",
+        "id": "224-point",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2006-01-13",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-06-07",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_c672cab9-b751-4475-a68f-50ae6cd6cf97",
             "time": {
               "interval": [
                 "2006-01-13",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/humanObservation"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                2.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -163,7 +252,7 @@
                 1801
               ]
             },
-            "instrument": "instrument:weed-instrument-platinum-resistance-thermometer-prt"
+            "instrument": "weed-instrument-platinum-resistance-thermometer-prt"
           }
         ],
         "observingProcedures": [
@@ -182,7 +271,10 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
+            "dataPolicy": null,
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/degC"
+            },
             "temporalReportingInterval": "PT3H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -191,32 +283,73 @@
         ]
       },
       {
-        "id": "observationSeries:12249",
+        "id": "12249-point",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2006-01-13",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-06-07",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_5d75c851-055a-457f-a6c2-888ac2f19eba",
             "time": {
               "interval": [
                 "2006-01-13",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 2.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                2.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -226,7 +359,7 @@
                 1801
               ]
             },
-            "instrument": "instrument:vaisala-oyj-vaisala-hmp45a"
+            "instrument": "vaisala-oyj-vaisala-hmp45a"
           }
         ],
         "observingProcedures": [
@@ -245,7 +378,10 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/percent",
+            "dataPolicy": null,
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/percent"
+            },
             "temporalReportingInterval": "PT3H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -254,32 +390,73 @@
         ]
       },
       {
-        "id": "observationSeries:12005",
+        "id": "12005-point",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2006-01-13",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-06-07",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_fec708c6-197d-4bad-8d15-9f68e04622f0",
             "time": {
               "interval": [
                 "2006-01-13",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/65",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 3.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/65"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                3.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -289,7 +466,7 @@
                 1801
               ]
             },
-            "instrument": "instrument:rm-young-wind-monitor-hd-alpine-05108-45"
+            "instrument": "rm-young-wind-monitor-hd-alpine-05108-45"
           }
         ],
         "observingProcedures": [
@@ -308,7 +485,10 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/deg",
+            "dataPolicy": null,
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/deg"
+            },
             "temporalReportingInterval": "PT3H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -317,32 +497,73 @@
         ]
       },
       {
-        "id": "observationSeries:12006",
+        "id": "12006-point",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2006-01-13",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-06-07",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_c3ebfd54-c36b-46ef-8bb0-359bc102e2fd",
             "time": {
               "interval": [
                 "2006-01-13",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/65",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 3.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/65"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                3.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -352,7 +573,7 @@
                 1801
               ]
             },
-            "instrument": "instrument:rm-young-wind-monitor-hd-alpine-05108-45"
+            "instrument": "rm-young-wind-monitor-hd-alpine-05108-45"
           }
         ],
         "observingProcedures": [
@@ -371,11 +592,56 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "uom": "http://codes.wmo.int/wmdr/unit/m.s-1",
+            "dataPolicy": null,
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/m.s-1"
+            },
             "temporalReportingInterval": "PT3H",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
+          }
+        ]
+      }
+    ],
+    "instruments": [
+      {
+        "id": "paroscientific-series-2000-absolute-and-gauge-pressure-transducers-215a-102",
+        "manufacturer": "PAROSCIENTIFIC",
+        "model": "Series 2000 Absolute and Gauge Pressure Transducers - 215A-102",
+        "observingMethods": [
+          {
+            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
+          }
+        ]
+      },
+      {
+        "id": "rm-young-wind-monitor-hd-alpine-05108-45",
+        "manufacturer": "RM Young",
+        "model": "Wind Monitor HD-Alpine 05108-45",
+        "observingMethods": [
+          {
+            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/65"
+          }
+        ]
+      },
+      {
+        "id": "vaisala-oyj-vaisala-hmp45a",
+        "manufacturer": "Vaisala Oyj",
+        "model": "VAISALA_HMP45A",
+        "observingMethods": [
+          {
+            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250"
+          }
+        ]
+      },
+      {
+        "id": "weed-instrument-platinum-resistance-thermometer-prt",
+        "manufacturer": "Weed Instrument",
+        "model": "Platinum resistance thermometer (PRT)",
+        "observingMethods": [
+          {
+            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
           }
         ]
       }
@@ -388,57 +654,15 @@
         "uid": "schedule_b38624328b"
       }
     ],
-    "instruments": [
-      {
-        "id": "instrument:paroscientific-series-2000-absolute-and-gauge-pressure-transducers-215a-102",
-        "manufacturer": "PAROSCIENTIFIC",
-        "model": "Series 2000 Absolute and Gauge Pressure Transducers - 215A-102"
-      },
-      {
-        "id": "instrument:rm-young-wind-monitor-hd-alpine-05108-45",
-        "manufacturer": "RM Young",
-        "model": "Wind Monitor HD-Alpine 05108-45"
-      },
-      {
-        "id": "instrument:vaisala-oyj-vaisala-hmp45a",
-        "manufacturer": "Vaisala Oyj",
-        "model": "VAISALA_HMP45A"
-      },
-      {
-        "id": "instrument:weed-instrument-platinum-resistance-thermometer-prt",
-        "manufacturer": "Weed Instrument",
-        "model": "Platinum resistance thermometer (PRT)"
-      }
-    ],
-    "keywords": [
-      "0-840-11502-KominkoSlade",
-      "Kominko-Slade (WAIS)"
-    ],
-    "links": [
-      {
-        "href": "https://amrc.ssec.wisc.edu/aws/index.php?region=West%20Antarctica&station=Kominko-Slade%20(WAIS)&year=2022",
-        "rel": "about",
-        "type": "text/html"
-      },
-      {
-        "href": "https://amrdcdata.ssec.wisc.edu/",
-        "rel": "about",
-        "type": "text/html"
-      }
-    ],
-    "contactAssignments": [
-      {
-        "contact": "contact:mattl@ssec.wisc.edu",
-        "roles": [
-          "pointOfContact"
-        ]
-      }
-    ],
     "contacts": [
       {
-        "identifier": "contact:mattl@ssec.wisc.edu",
+        "organization": "Antarctic Meteorological Research and Data Center, Space Science and Engineering Center, UW-Madison",
+        "identifier": "contact:antarctic-meteorological-research-and-data-center-space-science-and-engineering-center-uw-madison-d19a9ab768"
+      },
+      {
         "name": "Lazzara,Matthew A.,Dr.",
         "organization": "University of Wisconsin-Madison",
+        "contactInstructions": "antarctica",
         "emails": [
           {
             "value": "mattl@ssec.wisc.edu"
@@ -464,10 +688,10 @@
             "postalCode": "53706",
             "country": "USA"
           }
-        ]
+        ],
+        "identifier": "contact:mattl@ssec.wisc.edu"
       },
       {
-        "identifier": "contact:oscar@wmo.int",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -485,8 +709,13 @@
             "rel": "about",
             "type": "text/html"
           }
-        ]
+        ],
+        "identifier": "contact:oscar@wmo.int"
       }
+    ],
+    "keywords": [
+      "0-840-11502-KominkoSlade",
+      "Kominko-Slade (WAIS)"
     ]
   },
   "time": {
@@ -528,17 +757,37 @@
     ],
     "methods": [
       [
-        "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        {
+          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        }
       ],
       [
-        "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        {
+          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        }
       ],
       [
-        "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        {
+          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        }
       ],
       [
-        "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        {
+          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        }
       ]
     ]
-  }
+  },
+  "links": [
+    {
+      "href": "https://amrc.ssec.wisc.edu/aws/index.php?region=West%20Antarctica&station=Kominko-Slade%20(WAIS)&year=2022",
+      "rel": "about",
+      "type": "text/html"
+    },
+    {
+      "href": "https://amrdcdata.ssec.wisc.edu/",
+      "rel": "about",
+      "type": "text/html"
+    }
+  ]
 }

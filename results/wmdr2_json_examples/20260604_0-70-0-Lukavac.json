@@ -17,34 +17,28 @@
     "title": "LUKAVAC",
     "created": "2026-06-04T00:00:00Z",
     "updated": "2026-06-04T00:00:00Z",
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/underwaterFixed",
-    "territory": [
+    "facilityType": {
+      "id": "http://codes.wmo.int/wmdr/FacilityType/underwaterFixed"
+    },
+    "wmoRegion": {
+      "id": "https://codes.wmo.int/wmdr/WMORegion/europe"
+    },
+    "territories": [
       {
-        "territory": "http://codes.wmo.int/wmdr/TerritoryName/BIH",
-        "time": {
-          "interval": [
-            "2019-08-05",
-            ".."
-          ]
-        }
-      }
-    ],
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
-    "programAffiliations": [
-      {
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/WHYCOS",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "2019-08-05",
-            ".."
-          ]
-        }
+        "territory": {
+          "id": "http://codes.wmo.int/wmdr/TerritoryName/BIH"
+        },
+        "dates": [
+          "2019-08-05",
+          ".."
+        ]
       }
     ],
     "environment": [
       {
-        "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/snowFullyHumidWarmSummer",
+        "climateZone": {
+          "id": "http://codes.wmo.int/wmdr/ClimateZone/snowFullyHumidWarmSummer"
+        },
         "time": {
           "interval": [
             "2019-08-05",
@@ -53,55 +47,80 @@
         }
       }
     ],
-    "observationSeries": [
+    "contactAssignments": [
       {
-        "id": "observationSeries:166",
+        "contact": "contact:federal-hydrometeorological-institute-aa6c6cc68d",
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "contact": "contact:merima.trako@fhmzbih.gov.ba",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "contact": "contact:oscar@wmo.int",
+        "roles": [
+          "owner"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "166-point",
         "title": "domain: terrestrial; geometry: point; variable: 166",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/166",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/166"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/WHYCOS"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/WHYCOS"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2019-08-05",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_8ca504be-eb29-43a4-9ef0-a3e7a81f1ab3",
             "time": {
               "interval": [
                 "2019-08-05",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/356"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/356"
+            }
           }
-        ]
-      }
-    ],
-    "keywords": [
-      "0-70-0-Lukavac",
-      "LUKAVAC"
-    ],
-    "links": [
-      {
-        "href": "https://www.fhmzbih.gov.ba/latinica/index.php",
-        "rel": "about",
-        "type": "text/html"
-      }
-    ],
-    "contactAssignments": [
-      {
-        "contact": "contact:merima.trako@fhmzbih.gov.ba",
-        "roles": [
-          "pointOfContact"
         ]
       }
     ],
     "contacts": [
       {
-        "identifier": "contact:merima.trako@fhmzbih.gov.ba",
+        "organization": "Federal Hydrometeorological Institute",
+        "identifier": "contact:federal-hydrometeorological-institute-aa6c6cc68d"
+      },
+      {
         "name": "Trako,Merima,Ms",
         "organization": "Federal Hydrometeorological Institute",
+        "contactInstructions": "europe",
         "emails": [
           {
             "value": "merima.trako@fhmzbih.gov.ba"
@@ -116,10 +135,10 @@
             "postalCode": "71000",
             "country": "BIH"
           }
-        ]
+        ],
+        "identifier": "contact:merima.trako@fhmzbih.gov.ba"
       },
       {
-        "identifier": "contact:oscar@wmo.int",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -137,8 +156,13 @@
             "rel": "about",
             "type": "text/html"
           }
-        ]
+        ],
+        "identifier": "contact:oscar@wmo.int"
       }
+    ],
+    "keywords": [
+      "0-70-0-Lukavac",
+      "LUKAVAC"
     ]
   },
   "time": {
@@ -162,8 +186,17 @@
     ],
     "methods": [
       [
-        "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        {
+          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        }
       ]
     ]
-  }
+  },
+  "links": [
+    {
+      "href": "https://www.fhmzbih.gov.ba/latinica/index.php",
+      "rel": "about",
+      "type": "text/html"
+    }
+  ]
 }

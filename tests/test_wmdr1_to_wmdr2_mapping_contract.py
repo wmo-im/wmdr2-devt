@@ -9,6 +9,7 @@ OBSERVED_12006 = "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
 OBSERVING_METHOD_266 = "http://codes.wmo.int/wmdr/ObservingMethod/266"
 SOURCE_AUTOMATIC = "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
 REFERENCE_LOCAL_GROUND = "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+UNIT_M = "http://codes.wmo.int/wmdr/unit/m"
 APPLICATION_NOWCASTING = "http://codes.wmo.int/wmdr/ApplicationArea/nowcasting"
 APPLICATION_ATMOS_COMP = "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
 PROGRAM_GBON = "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
@@ -23,7 +24,16 @@ OBSOLETE_OUTPUT_KEYS = {
     "validTo",
     "beginPosition",
     "endPosition",
+    "observationSeries",
+    "observingConfigurations",
+    "serialNumber",
+    "referenceSurface",
+    "verticalDistanceFromReferenceSurface",
 }
+
+
+def concept(uri: str) -> dict[str, str]:
+    return {"id": uri}
 
 
 def _walk_mappings(value: Any):
@@ -76,20 +86,39 @@ def test_mapping_contract_preserves_facility_environment_from_xml_derived_shape(
     assert record["properties"]["environment"] == [
         {
             "time": {"interval": ["2009-01-06", ".."]},
-            "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/equatorialSavannahDrySummer",
-            "surfaceCover": {"value": "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/mosaicForest", "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"},
-            "surfaceRoughness": "http://codes.wmo.int/wmdr/SurfaceRoughness/rough",
+            "climateZone": concept(
+                "http://codes.wmo.int/wmdr/ClimateZone/equatorialSavannahDrySummer"
+            ),
+            "surfaceCover": {
+                "value": concept(
+                    "http://codes.wmo.int/wmdr/SurfaceCoverGlob2009/mosaicForest"
+                ),
+                "scheme": concept(
+                    "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
+                ),
+            },
+            "surfaceRoughness": concept(
+                "http://codes.wmo.int/wmdr/SurfaceRoughness/rough"
+            ),
             "topographyBathymetry": {
-                "localTopography": "http://codes.wmo.int/wmdr/LocalTopography/slope",
-                "relativeElevation": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
-                "topographicContext": "http://codes.wmo.int/wmdr/TopographicContext/rises",
-                "altitudeOrDepth": "http://codes.wmo.int/wmdr/AltitudeOrDepth/veryHighAltitude",
+                "localTopography": concept(
+                    "http://codes.wmo.int/wmdr/LocalTopography/slope"
+                ),
+                "relativeElevation": concept(
+                    "http://codes.wmo.int/wmdr/RelativeElevation/middle"
+                ),
+                "topographicContext": concept(
+                    "http://codes.wmo.int/wmdr/TopographicContext/rises"
+                ),
+                "altitudeOrDepth": concept(
+                    "http://codes.wmo.int/wmdr/AltitudeOrDepth/veryHighAltitude"
+                ),
             },
         }
     ]
 
 
-def test_mapping_contract_preserves_observation_series_metadata_from_xml_derived_shape() -> None:
+def test_mapping_contract_preserves_observation_metadata_from_xml_derived_shape() -> None:
     record = converter.convert_record({
         "facility": _base_facility(),
         "observationSeries": [
@@ -115,15 +144,22 @@ def test_mapping_contract_preserves_observation_series_metadata_from_xml_derived
         ],
     })
 
-    series = record["properties"]["observationSeries"][0]
-    assert series["observedProperty"] == OBSERVED_12006
-    assert series["observedGeometry"] == "http://codes.wmo.int/wmdr/Geometry/point"
-    assert series["programAffiliations"] == [PROGRAM_GBON]
-    assert series["applicationAreas"] == [APPLICATION_NOWCASTING, APPLICATION_ATMOS_COMP]
-    assert "applicationArea" not in series
+    observation = record["properties"]["observations"][0]
+    assert observation["observedProperty"] == concept(OBSERVED_12006)
+    assert observation["observedGeometry"] == concept(
+        "http://codes.wmo.int/wmdr/Geometry/point"
+    )
+    assert observation["programAffiliations"] == [
+        {"programAffiliation": concept(PROGRAM_GBON)}
+    ]
+    assert observation["applicationAreas"] == [
+        concept(APPLICATION_NOWCASTING),
+        concept(APPLICATION_ATMOS_COMP),
+    ]
+    assert "applicationArea" not in observation
 
 
-def test_mapping_contract_preserves_observing_configuration_from_deployment_equipment() -> None:
+def test_mapping_contract_preserves_configuration_from_deployment_equipment() -> None:
     record = converter.convert_record({
         "facility": _base_facility(),
         "observationSeries": [
@@ -148,26 +184,35 @@ def test_mapping_contract_preserves_observing_configuration_from_deployment_equi
     })
 
     props = record["properties"]
-    config = props["observationSeries"][0]["observingConfigurations"][0]
+    config = props["observations"][0]["configurations"][0]
+    assert config["id"]
     assert config["time"] == {"interval": ["2020-01-01", "2022-12-31"]}
-    assert config["observingMethod"] == OBSERVING_METHOD_266
-    assert config["sourceOfObservation"] == SOURCE_AUTOMATIC
-    assert config["referenceSurface"] == REFERENCE_LOCAL_GROUND
-    assert config["verticalDistanceFromReferenceSurface"] == {"value": 2.0, "uom": "m"}
-    assert config["serialNumber"] == "SN-001"
-    assert config["instrument"] == "instrument:maker-model"
+    assert config["observingMethod"] == concept(OBSERVING_METHOD_266)
+    assert config["sourceOfObservation"] == concept(SOURCE_AUTOMATIC)
+    assert config["verticalDistance"] == {
+        "distances": [2.0],
+        "unit": concept(UNIT_M),
+        "referenceSurface": concept(REFERENCE_LOCAL_GROUND),
+    }
+    assert config["instrumentSerialNumber"] == "SN-001"
+    assert config["instrument"] == "maker-model"
 
     assert props["instruments"] == [
         {
-            "id": "instrument:maker-model",
+            "id": "maker-model",
             "manufacturer": "Maker",
             "model": "Model",
+            "observingMethods": [concept(OBSERVING_METHOD_266)],
         }
     ]
     assert "serialNumber" not in props["instruments"][0]
 
 
 def test_mapping_contract_splits_temporal_operating_status_history() -> None:
+    operational = (
+        "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+    )
+    inactive = "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"
     record = converter.convert_record({
         "facility": _base_facility(),
         "observationSeries": [
@@ -181,12 +226,12 @@ def test_mapping_contract_splits_temporal_operating_status_history() -> None:
                         "sourceOfObservation": SOURCE_AUTOMATIC,
                         "instrumentOperatingStatus": [
                             {
-                                "instrumentOperatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
+                                "instrumentOperatingStatus": operational,
                                 "beginPosition": "2003-12-01",
                                 "endPosition": "2011-05-31",
                             },
                             {
-                                "instrumentOperatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+                                "instrumentOperatingStatus": inactive,
                                 "beginPosition": "2011-06-01",
                             },
                         ],
@@ -196,10 +241,10 @@ def test_mapping_contract_splits_temporal_operating_status_history() -> None:
         ],
     })
 
-    configs = record["properties"]["observationSeries"][0]["observingConfigurations"]
+    configs = record["properties"]["observations"][0]["configurations"]
     assert [config["operatingStatus"] for config in configs] == [
-        "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-        "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
+        concept(operational),
+        concept(inactive),
     ]
     assert [config["time"] for config in configs] == [
         {"interval": ["2003-12-01", "2011-05-31"]},

@@ -20,52 +20,84 @@
     "additionalTitles": [
       "Sagana in Tana Basin"
     ],
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/lakeRiverFixed",
-    "territory": [
+    "facilityType": {
+      "id": "http://codes.wmo.int/wmdr/FacilityType/lakeRiverFixed"
+    },
+    "wmoRegion": {
+      "id": "https://codes.wmo.int/wmdr/WMORegion/africa"
+    },
+    "territories": [
       {
-        "territory": "http://codes.wmo.int/wmdr/TerritoryName/KEN",
-        "time": {
-          "interval": [
-            "1947-09-01",
-            ".."
-          ]
-        }
-      }
-    ],
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/africa",
-    "programAffiliations": [
-      {
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/WHYCOS",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "1947-09-01",
-            ".."
-          ]
-        }
-      }
-    ],
-    "observationSeries": [
-      {
-        "id": "observationSeries:12252",
-        "title": "domain: ocean; geometry: verticalProfile; variable: 12252",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableOcean/12252",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/ocean"
+        "territory": {
+          "id": "http://codes.wmo.int/wmdr/TerritoryName/KEN"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
+        "dates": [
+          "1947-09-01",
+          ".."
+        ]
+      }
+    ],
+    "contactAssignments": [
+      {
+        "contact": "contact:water-resources-authoriry-640a29dcf1",
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "contact": "contact:jtmuiruri@gmail.com",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "contact": "contact:oscar@wmo.int",
+        "roles": [
+          "owner"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "12252-verticalprofile",
+        "title": "domain: ocean; geometry: verticalProfile; variable: 12252",
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableOcean/12252"
+        },
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/ocean"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/WHYCOS"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/WHYCOS"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "1947-09-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_ca9248ad-0bba-454c-9697-8c9b98b224eb",
             "time": {
               "interval": [
                 "1947-09-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/356"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/356"
+            }
           }
         ],
         "observingProcedures": [
@@ -84,10 +116,10 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": {
-              "nilReason": "unknown"
+            "dataPolicy": null,
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/m"
             },
-            "uom": "http://codes.wmo.int/wmdr/unit/m",
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -104,24 +136,11 @@
         "uid": "schedule_b38624328b"
       }
     ],
-    "keywords": [
-      "0-404-800-4AA01",
-      "Sagana",
-      "Sagana in Tana Basin"
-    ],
-    "contactAssignments": [
-      {
-        "contact": "contact:jtmuiruri@gmail.com",
-        "roles": [
-          "pointOfContact"
-        ]
-      }
-    ],
     "contacts": [
       {
-        "identifier": "contact:jtmuiruri@gmail.com",
         "name": "MUIRURI,JOHN,Mr",
         "organization": "KENYA METEOROLOGICAL DEPARTMENT",
+        "contactInstructions": "africa",
         "emails": [
           {
             "value": "jtmuiruri@gmail.com"
@@ -141,10 +160,10 @@
             "postalCode": "00100",
             "country": "KEN"
           }
-        ]
+        ],
+        "identifier": "contact:jtmuiruri@gmail.com"
       },
       {
-        "identifier": "contact:oscar@wmo.int",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -162,8 +181,18 @@
             "rel": "about",
             "type": "text/html"
           }
-        ]
+        ],
+        "identifier": "contact:oscar@wmo.int"
+      },
+      {
+        "organization": "Water Resources Authoriry",
+        "identifier": "contact:water-resources-authoriry-640a29dcf1"
       }
+    ],
+    "keywords": [
+      "0-404-800-4AA01",
+      "Sagana",
+      "Sagana in Tana Basin"
     ]
   },
   "time": {
@@ -187,7 +216,9 @@
     ],
     "methods": [
       [
-        "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        {
+          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        }
       ]
     ]
   }

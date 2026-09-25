@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-observation.schema.json",
+  "title": "WMDR2 development Observation",
+  "description": "Extends the official WMDR2 Observation semantics with observedFeature, procedures and other rich-model metadata; observedGeometry is mandatory.",
+  "type": "object",
+  "required": [
+    "id",
+    "observedProperty",
+    "observedGeometry",
+    "observedFeature",
+    "programAffiliations",
+    "configurations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observedGeometry": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Observations/properties/observedGeometry"
+        },
+        {
+          "$ref": "wmdr2-common.schema.json#/$defs/controlledConcept"
+        }
+      ]
+    },
+    "observedProperty": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Observations/properties/observedProperty"
+        },
+        {
+          "$ref": "wmdr2-common.schema.json#/$defs/controlledConcept"
+        }
+      ]
+    },
+    "programAffiliations": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Observations/properties/programAffiliations"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "programAffiliation"
+            ],
+            "properties": {
+              "programAffiliation": {
+                "$ref": "wmdr2-common.schema.json#/$defs/controlledConcept"
+              },
+              "reportingStatus": {
+                "$ref": "wmdr2-common.schema.json#/$defs/controlledConceptOrNull"
+              },
+              "dates": {
+                "$ref": "wmdr2-common.schema.json#/$defs/dates"
+              },
+              "program": false,
+              "programSpecificFacilityId": false,
+              "programSpecificFacilityTitle": false,
+              "time": false,
+              "date": false
+            },
+            "additionalProperties": false
+          }
+        }
+      ]
+    },
+    "configurations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "wmdr2-configuration.schema.json"
+      }
+    },
+    "observedFeature": {
+      "$ref": "wmdr2-common.schema.json#/$defs/observedFeature"
+    },
+    "applicationAreas": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/controlledConcept"
+      }
+    },
+    "representativeness": {
+      "$ref": "wmdr2-common.schema.json#/$defs/controlledConcept"
+    },
+    "observingProcedures": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/observingProcedure"
+      }
+    },
+    "reportingProcedures": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/reportingProcedure"
+      }
+    },
+    "officialStatus": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/officialStatus"
+      }
+    },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/link"
+      }
+    },
+    "contactAssignments": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/contactAssignment"
+      }
+    },
+    "observationSeries": false,
+    "observingConfigurations": false,
+    "programAffiliation": false,
+    "applicationArea": false,
+    "observedDomain": false,
+    "time": false,
+    "uid": false,
+    "beginPosition": false,
+    "endPosition": false,
+    "validFrom": false,
+    "validTo": false
+  },
+  "additionalProperties": true,
+  "$comment": "Observation temporal extent is derived from Configuration.time. observedGeometry is deliberately mandatory in wmdr2-devt."
+}

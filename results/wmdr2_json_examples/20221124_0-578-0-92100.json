@@ -17,156 +17,270 @@
     "title": "TROLL AIRFIELD",
     "created": "2022-11-24T00:00:00Z",
     "updated": "2022-11-24T00:00:00Z",
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landOnIce",
-    "territory": [
+    "facilityType": {
+      "id": "http://codes.wmo.int/wmdr/FacilityType/landOnIce"
+    },
+    "wmoRegion": {
+      "id": "https://codes.wmo.int/wmdr/WMORegion/antarctica"
+    },
+    "territories": [
       {
-        "territory": "http://codes.wmo.int/wmdr/TerritoryName/NOR",
-        "time": {
-          "interval": [
-            "2007-01-01",
-            ".."
-          ]
-        }
+        "territory": {
+          "id": "http://codes.wmo.int/wmdr/TerritoryName/NOR"
+        },
+        "dates": [
+          "2007-01-01",
+          ".."
+        ]
       }
     ],
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/antarctica",
-    "programAffiliations": [
+    "contactAssignments": [
       {
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "2022-11-22",
-            ".."
-          ]
-        }
+        "contact": "contact:norwegian-polar-institute-261e475341",
+        "roles": [
+          "owner"
+        ]
       },
       {
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "2022-11-22",
-            ".."
-          ]
-        }
+        "contact": "contact:christina.pedersen@npolar.no",
+        "roles": [
+          "principalInvestigator"
+        ]
+      },
+      {
+        "contact": "contact:oscar@wmo.int",
+        "roles": [
+          "owner"
+        ]
       }
     ],
-    "observationSeries": [
+    "observations": [
       {
-        "id": "observationSeries:216",
+        "id": "216-point",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-11-22",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-11-22",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_98af3b44-3633-4017-b16a-8dfb89707c55",
             "time": {
               "interval": [
                 "2007-01-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
+            }
           }
         ]
       },
       {
-        "id": "observationSeries:224",
+        "id": "224-point",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-11-22",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-11-22",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_1c5901b1-da2a-46dd-9d48-6afb6a876cb4",
             "time": {
               "interval": [
                 "2007-01-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
+            }
           }
         ]
       },
       {
-        "id": "observationSeries:12249",
+        "id": "12249-point",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-11-22",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-11-22",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_86c6bc2c-7e41-4c5e-b8db-7f6147d34c68",
             "time": {
               "interval": [
                 "2022-11-22",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254"
+            }
           }
         ]
       },
       {
-        "id": "observationSeries:12005",
+        "id": "12005-point",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-11-22",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2022-11-22",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_1219f00c-7af8-432b-be2a-9a442a76e14a",
             "time": {
               "interval": [
                 "2007-01-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
+            }
           }
-        ]
-      }
-    ],
-    "keywords": [
-      "0-578-0-92100",
-      "TROLL AIRFIELD"
-    ],
-    "contactAssignments": [
-      {
-        "contact": "contact:christina.pedersen@npolar.no",
-        "roles": [
-          "principalInvestigator"
         ]
       }
     ],
     "contacts": [
       {
-        "identifier": "contact:christina.pedersen@npolar.no",
         "name": "Pedersen,Christina Alsvik,Dr.",
         "organization": "Norwegian Polar Institute",
+        "contactInstructions": "europe",
         "emails": [
           {
             "value": "christina.pedersen@npolar.no"
@@ -180,10 +294,14 @@
             "city": "Tromsø",
             "country": "NOR"
           }
-        ]
+        ],
+        "identifier": "contact:christina.pedersen@npolar.no"
       },
       {
-        "identifier": "contact:oscar@wmo.int",
+        "organization": "Norwegian Polar Institute",
+        "identifier": "contact:norwegian-polar-institute-261e475341"
+      },
+      {
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -201,8 +319,13 @@
             "rel": "about",
             "type": "text/html"
           }
-        ]
+        ],
+        "identifier": "contact:oscar@wmo.int"
       }
+    ],
+    "keywords": [
+      "0-578-0-92100",
+      "TROLL AIRFIELD"
     ]
   },
   "time": {
@@ -226,7 +349,9 @@
     ],
     "methods": [
       [
-        "http://codes.wmo.int/wmdr/GeopositioningMethod/map"
+        {
+          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/map"
+        }
       ]
     ]
   }

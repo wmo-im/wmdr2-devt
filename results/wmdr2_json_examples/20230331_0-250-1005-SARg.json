@@ -17,49 +17,72 @@
     "title": "Sarennes Glacier",
     "created": "2023-03-31T00:00:00Z",
     "updated": "2023-03-31T00:00:00Z",
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landOnIce",
-    "territory": [
+    "facilityType": {
+      "id": "http://codes.wmo.int/wmdr/FacilityType/landOnIce"
+    },
+    "wmoRegion": {
+      "id": "https://codes.wmo.int/wmdr/WMORegion/europe"
+    },
+    "territories": [
       {
-        "territory": "http://codes.wmo.int/wmdr/TerritoryName/FRA",
-        "time": {
-          "interval": [
-            "1949-01-01",
-            ".."
-          ]
-        }
-      }
-    ],
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
-    "programAffiliations": [
-      {
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
-      }
-    ],
-    "observationSeries": [
-      {
-        "id": "observationSeries:12010",
-        "title": "domain: terrestrial; geometry: unknown; variable: 12010",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12010",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+        "territory": {
+          "id": "http://codes.wmo.int/wmdr/TerritoryName/FRA"
         },
-        "observedGeometry": {
-          "nilReason": "unknown"
+        "dates": [
+          "1949-01-01",
+          ".."
+        ]
+      }
+    ],
+    "contactAssignments": [
+      {
+        "contact": "contact:universit-grenoble-alpes-c157b9ef5d",
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "contact": "contact:delphine.six@univ-grenoble-alpes.fr",
+        "roles": [
+          "principalInvestigator"
+        ]
+      },
+      {
+        "contact": "contact:oscar@wmo.int",
+        "roles": [
+          "owner"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "12010-unknown",
+        "title": "domain: terrestrial; geometry: unknown; variable: 12010",
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12010"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+          }
         },
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            }
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_14ca4229-9da7-4f5c-8e35-5a30369f353c",
             "time": {
               "interval": [
                 "1949-01-01",
                 ".."
               ]
             },
-            "observingMethod": {
-              "nilReason": "unknown"
-            }
+            "observingMethod": null
           }
         ],
         "observingProcedures": [
@@ -78,6 +101,7 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
+            "dataPolicy": null,
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -94,30 +118,11 @@
         "uid": "schedule_b38624328b"
       }
     ],
-    "keywords": [
-      "0-250-1005-SARg",
-      "Sarennes Glacier"
-    ],
-    "links": [
-      {
-        "href": "https://glacioclim.osug.fr/Glacier-de-Sarennes-203",
-        "rel": "about",
-        "type": "text/html"
-      }
-    ],
-    "contactAssignments": [
-      {
-        "contact": "contact:delphine.six@univ-grenoble-alpes.fr",
-        "roles": [
-          "principalInvestigator"
-        ]
-      }
-    ],
     "contacts": [
       {
-        "identifier": "contact:delphine.six@univ-grenoble-alpes.fr",
         "name": "SIX,Delphine,Mme",
         "organization": "Université Grenoble-Alpes",
+        "contactInstructions": "europe",
         "emails": [
           {
             "value": "delphine.six@univ-grenoble-alpes.fr"
@@ -137,10 +142,10 @@
             "postalCode": "38058",
             "country": "FRA"
           }
-        ]
+        ],
+        "identifier": "contact:delphine.six@univ-grenoble-alpes.fr"
       },
       {
-        "identifier": "contact:oscar@wmo.int",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -158,8 +163,17 @@
             "rel": "about",
             "type": "text/html"
           }
-        ]
+        ],
+        "identifier": "contact:oscar@wmo.int"
+      },
+      {
+        "organization": "Université Grenoble-Alpes",
+        "identifier": "contact:universit-grenoble-alpes-c157b9ef5d"
       }
+    ],
+    "keywords": [
+      "0-250-1005-SARg",
+      "Sarennes Glacier"
     ]
   },
   "time": {
@@ -168,5 +182,12 @@
       ".."
     ],
     "resolution": "P1D"
-  }
+  },
+  "links": [
+    {
+      "href": "https://glacioclim.osug.fr/Glacier-de-Sarennes-203",
+      "rel": "about",
+      "type": "text/html"
+    }
+  ]
 }

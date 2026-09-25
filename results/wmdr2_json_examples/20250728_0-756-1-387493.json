@@ -20,99 +20,175 @@
     "additionalTitles": [
       "Flüelapass"
     ],
-    "description": "The Flüela station is part of the Swiss Permafrost Monitoring Network (PERMOS; www.permos.ch). The station is important to monitor and analyse the evolution of ground temperature, permafrost thickness, and the degradation of ground ice in talus deposits, which are important forms of debris storage in mountain environments and can cause mass movements, subsidence or instability of mountain infrastructure. It is the first permafrost research site of the Swiss Alps (Haeberli 1975). Two boreholes were drilled in 2002, instrumented with thermistor chains, one being still in use with ground temperatures measured down to 25 m. The station also delivers data to the Swiss Inter cantonal Measurement and Information System (IMIS) network used by the Swiss Avalanche Warning Service WSL/SLF (https://whiterisk.ch/fr/conditions/measurements/station/IMIS/FLU2). _ Additional cryosphere measurements: - Snow (gentle grassy slope): Snow surface temperature Snow temperatures at 25, 50, and 100 cm above ground (from 2003 to 2020) - Permafrost (talus slope): Daily photographs of site and regular high resolution aerial photographs; Electrical Resistance Tomography (ERT) and seismic measurements were done in 1975 and from 2009 to 2012. _",
-    "facilityType": "http://codes.wmo.int/wmdr/FacilityType/landFixed",
-    "territory": [
+    "externalIds": [
       {
-        "territory": "http://codes.wmo.int/wmdr/TerritoryName/CHE",
-        "time": {
-          "interval": [
-            "2002-10-01",
-            ".."
-          ]
-        }
-      }
-    ],
-    "wmoRegion": "http://codes.wmo.int/wmdr/WMORegion/europe",
-    "programAffiliations": [
-      {
-        "programSpecificFacilityId": "39",
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "2002-10-01",
-            ".."
-          ]
-        }
+        "value": "39",
+        "scheme": "GCWCryoNet"
       },
       {
-        "programSpecificFacilityId": "FLU2",
-        "program": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-        "reportingStatus": "http://codes.wmo.int/wmdr/ReportingStatus/operational",
-        "time": {
-          "interval": [
-            "2003-10-10",
-            ".."
-          ]
-        }
+        "value": "FLU2",
+        "scheme": "nonAffiliated"
+      }
+    ],
+    "description": "The Flüela station is part of the Swiss Permafrost Monitoring Network (PERMOS; www.permos.ch). The station is important to monitor and analyse the evolution of ground temperature, permafrost thickness, and the degradation of ground ice in talus deposits, which are important forms of debris storage in mountain environments and can cause mass movements, subsidence or instability of mountain infrastructure. It is the first permafrost research site of the Swiss Alps (Haeberli 1975). Two boreholes were drilled in 2002, instrumented with thermistor chains, one being still in use with ground temperatures measured down to 25 m. The station also delivers data to the Swiss Inter cantonal Measurement and Information System (IMIS) network used by the Swiss Avalanche Warning Service WSL/SLF (https://whiterisk.ch/fr/conditions/measurements/station/IMIS/FLU2). _ Additional cryosphere measurements: - Snow (gentle grassy slope): Snow surface temperature Snow temperatures at 25, 50, and 100 cm above ground (from 2003 to 2020) - Permafrost (talus slope): Daily photographs of site and regular high resolution aerial photographs; Electrical Resistance Tomography (ERT) and seismic measurements were done in 1975 and from 2009 to 2012. _",
+    "facilityType": {
+      "id": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
+    },
+    "wmoRegion": {
+      "id": "https://codes.wmo.int/wmdr/WMORegion/europe"
+    },
+    "territories": [
+      {
+        "territory": {
+          "id": "http://codes.wmo.int/wmdr/TerritoryName/CHE"
+        },
+        "dates": [
+          "2002-10-01",
+          ".."
+        ]
       }
     ],
     "environment": [
       {
-        "climateZone": "http://codes.wmo.int/wmdr/ClimateZone/polarTundra",
+        "climateZone": {
+          "id": "http://codes.wmo.int/wmdr/ClimateZone/polarTundra"
+        },
         "time": {
           "interval": [
             "2002-10-01",
             ".."
           ]
         },
-        "surfaceRoughness": "http://codes.wmo.int/wmdr/SurfaceRoughnessDavenport/inapplicable",
+        "surfaceRoughness": {
+          "id": "http://codes.wmo.int/wmdr/SurfaceRoughnessDavenport/inapplicable"
+        },
         "surfaceCover": {
-          "value": "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/grasslands",
-          "scheme": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/igbp"
+          "value": {
+            "id": "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/grasslands"
+          },
+          "scheme": {
+            "id": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/igbp"
+          }
         },
         "topographyBathymetry": {
-          "localTopography": "http://codes.wmo.int/wmdr/LocalTopography/slope",
-          "relativeElevation": "http://codes.wmo.int/wmdr/RelativeElevation/middle",
-          "topographicContext": "http://codes.wmo.int/wmdr/TopographicContext/rises",
-          "altitudeOrDepth": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
+          "localTopography": {
+            "id": "http://codes.wmo.int/wmdr/LocalTopography/slope"
+          },
+          "relativeElevation": {
+            "id": "http://codes.wmo.int/wmdr/RelativeElevation/middle"
+          },
+          "topographicContext": {
+            "id": "http://codes.wmo.int/wmdr/TopographicContext/rises"
+          },
+          "altitudeOrDepth": {
+            "id": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
+          }
         }
       }
     ],
-    "observationSeries": [
+    "contactAssignments": [
       {
-        "id": "observationSeries:210",
+        "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+        "roles": [
+          "owner"
+        ]
+      },
+      {
+        "contact": "contact:marty@slf.ch",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "contact": "contact:phillips@slf.ch",
+        "roles": [
+          "principalInvestigator"
+        ]
+      },
+      {
+        "contact": "contact:oscar@wmo.int",
+        "roles": [
+          "owner"
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "210-point",
         "title": "domain: atmosphere; geometry: point; variable: 210",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/210"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/3"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/3"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2003-10-10",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-92bf-7937-e053-148ef98d6de4-1",
             "time": {
               "interval": [
                 "2003-10-10",
                 "2018-10-19"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Unheated",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -122,24 +198,38 @@
                 2400.5
               ]
             },
-            "instrument": "instrument:campbell-scientific-arg100"
+            "instrument": "campbell-scientific-arg100"
           },
           {
+            "id": "id_b074e828-92bf-7937-e053-148ef98d6de4-2",
             "time": {
               "interval": [
                 "2018-10-20",
                 "2019-01-17"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Unheated",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -149,24 +239,38 @@
                 2400.5
               ]
             },
-            "instrument": "instrument:campbell-scientific-arg100"
+            "instrument": "campbell-scientific-arg100"
           },
           {
+            "id": "id_b074e828-92bf-7937-e053-148ef98d6de4-3",
             "time": {
               "interval": [
                 "2019-01-17",
                 "2019-08-07"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Unheated",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -176,24 +280,38 @@
                 2400.5
               ]
             },
-            "instrument": "instrument:campbell-scientific-arg100"
+            "instrument": "campbell-scientific-arg100"
           },
           {
+            "id": "id_b074e828-92bf-7937-e053-148ef98d6de4-4",
             "time": {
               "interval": [
                 "2019-08-08",
                 "2019-09-17"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Unheated",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -203,24 +321,38 @@
                 2400.5
               ]
             },
-            "instrument": "instrument:campbell-scientific-arg100"
+            "instrument": "campbell-scientific-arg100"
           },
           {
+            "id": "id_b074e828-92bf-7937-e053-148ef98d6de4-5",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Unheated",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -230,7 +362,7 @@
                 2400.5
               ]
             },
-            "instrument": "instrument:campbell-scientific-arg100"
+            "instrument": "campbell-scientific-arg100"
           }
         ],
         "observingProcedures": [
@@ -271,8 +403,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/kg.m-2",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/kg.m-2"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -280,47 +416,94 @@
           },
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/kg.m-2",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/kg.m-2"
+            },
             "temporalReportingInterval": "PT30M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:216",
+        "id": "216-point",
         "title": "domain: atmosphere; geometry: point; variable: 216",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/2",
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/2"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-ea7d-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Located in data logger casing",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -330,7 +513,7 @@
                 2400
               ]
             },
-            "instrument": "instrument:vaisala-oyj-vaisala-ptb110"
+            "instrument": "vaisala-oyj-vaisala-ptb110"
           }
         ],
         "observingProcedures": [
@@ -349,48 +532,106 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/hPa",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/hPa"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:224",
+        "id": "224-point",
         "title": "domain: atmosphere; geometry: point; variable: 224",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/3",
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/3"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2003-10-10",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-92be-7937-e053-148ef98d6de4-1",
             "time": {
               "interval": [
                 "2003-10-10",
                 "2019-08-07"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Naturally ventilated multi-plate radiation shield",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -402,21 +643,35 @@
             }
           },
           {
+            "id": "id_b074e828-92be-7937-e053-148ef98d6de4-2",
             "time": {
               "interval": [
                 "2019-08-08",
                 "2019-09-17"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Naturally ventilated multi-plate radiation shield",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -428,21 +683,35 @@
             }
           },
           {
+            "id": "id_b074e828-92be-7937-e053-148ef98d6de4-3",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Naturally ventilated multi-plate radiation shield",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -481,8 +750,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/degC"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -490,48 +763,106 @@
           },
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/degC"
+            },
             "temporalReportingInterval": "PT30M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:12249",
+        "id": "12249-point",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/3",
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/3"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2003-10-10",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-c6e3-7937-e053-148ef98d6de4-1",
             "time": {
               "interval": [
                 "2003-10-10",
                 "2019-08-07"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Naturally ventilated multi-plate radiation shield",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -543,21 +874,35 @@
             }
           },
           {
+            "id": "id_b074e829-c6e3-7937-e053-148ef98d6de4-2",
             "time": {
               "interval": [
                 "2019-08-08",
                 "2019-09-17"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Naturally ventilated multi-plate radiation shield",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -569,21 +914,35 @@
             }
           },
           {
+            "id": "id_b074e829-c6e3-7937-e053-148ef98d6de4-3",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Naturally ventilated multi-plate radiation shield",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/250"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -611,47 +970,106 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/percent",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/percent"
+            },
             "temporalReportingInterval": "PT30M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:389",
+        "id": "389-point",
         "title": "domain: terrestrial; geometry: point; variable: 389",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/389",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/389"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere",
-          "http://codes.wmo.int/wmdr/ApplicationArea/terrestrialEcology"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/terrestrialEcology"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2003-10-10",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-c713-7937-e053-148ef98d6de4-1",
             "time": {
               "interval": [
                 "2003-10-10",
                 "2019-08-07"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 0.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                0.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -661,23 +1079,38 @@
                 2394
               ]
             },
-            "instrument": "instrument:campbell-scientific-107-temperature-probe"
+            "instrument": "campbell-scientific-107-temperature-probe"
           },
           {
+            "id": "id_b074e829-c713-7937-e053-148ef98d6de4-2",
             "time": {
               "interval": [
                 "2019-08-08",
                 "2019-09-17"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 0.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                0.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -687,23 +1120,38 @@
                 2394
               ]
             },
-            "instrument": "instrument:campbell-scientific-107-temperature-probe"
+            "instrument": "campbell-scientific-107-temperature-probe"
           },
           {
+            "id": "id_b074e829-c713-7937-e053-148ef98d6de4-3",
             "time": {
               "interval": [
                 "2019-09-18",
                 "2020-06-24"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 0.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                0.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -713,7 +1161,7 @@
                 2394
               ]
             },
-            "instrument": "instrument:campbell-scientific-107-temperature-probe"
+            "instrument": "campbell-scientific-107-temperature-probe"
           }
         ],
         "observingProcedures": [
@@ -743,8 +1191,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/degC"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -752,46 +1204,91 @@
           },
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/degC"
+            },
             "temporalReportingInterval": "PT30M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:566",
+        "id": "566-point",
         "title": "domain: atmosphere; geometry: point; variable: 566",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/566",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/566"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/16"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/16"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-ea7f-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Ventilated",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -801,7 +1298,7 @@
                 2400.5
               ]
             },
-            "instrument": "instrument:kipp-zonen-cnr-4"
+            "instrument": "kipp-zonen-cnr-4"
           }
         ],
         "observingProcedures": [
@@ -820,47 +1317,94 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/W.m-2",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/W.m-2"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:567",
+        "id": "567-point",
         "title": "domain: atmosphere; geometry: point; variable: 567",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/567",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/567"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere",
-          "http://codes.wmo.int/wmdr/ApplicationArea/16"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/16"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-ea80-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Ventilated",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -870,7 +1414,7 @@
                 2400.5
               ]
             },
-            "instrument": "instrument:kipp-zonen-cnr-4"
+            "instrument": "kipp-zonen-cnr-4"
           }
         ],
         "observingProcedures": [
@@ -889,46 +1433,91 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/W.m-2",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/W.m-2"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:573",
+        "id": "573-point",
         "title": "domain: atmosphere; geometry: point; variable: 573",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/16"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/16"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-ea7e-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2018-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Ventilated",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -938,7 +1527,7 @@
                 2400.5
               ]
             },
-            "instrument": "instrument:kipp-zonen-cnr-4"
+            "instrument": "kipp-zonen-cnr-4"
           }
         ],
         "observingProcedures": [
@@ -957,48 +1546,106 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/W.m-2",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/W.m-2"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:575",
+        "id": "575-point",
         "title": "domain: atmosphere; geometry: point; variable: 575",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/575",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/575"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere",
-          "http://codes.wmo.int/wmdr/ApplicationArea/16"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/16"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2003-10-10",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-ea7b-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "configuration": "Ventilated",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1008,7 +1655,7 @@
                 2400.5
               ]
             },
-            "instrument": "instrument:kipp-zonen-cnr-4"
+            "instrument": "kipp-zonen-cnr-4"
           }
         ],
         "observingProcedures": [
@@ -1027,47 +1674,106 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/W.m-2",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/W.m-2"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:575",
+        "id": "575-point",
         "title": "domain: atmosphere; geometry: point; variable: 575",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/575",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/575"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/3",
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/3"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2003-10-10",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-c714-7937-e053-148ef98d6de4-1",
             "time": {
               "interval": [
                 "2003-10-10",
                 "2019-08-07"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1079,20 +1785,35 @@
             }
           },
           {
+            "id": "id_b074e829-c714-7937-e053-148ef98d6de4-2",
             "time": {
               "interval": [
                 "2019-08-08",
                 "2019-09-17"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1104,20 +1825,35 @@
             }
           },
           {
+            "id": "id_b074e829-c714-7937-e053-148ef98d6de4-3",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1156,8 +1892,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/W.m-2",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/W.m-2"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -1165,47 +1905,106 @@
           },
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/W.m-2",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/W.m-2"
+            },
             "temporalReportingInterval": "PT30M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:629",
+        "id": "629-point",
         "title": "domain: terrestrial; geometry: point; variable: 629",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/629",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/629"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/3",
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/3"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2003-10-10",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-ea7c-7937-e053-148ef98d6de4-1",
             "time": {
               "interval": [
                 "2018-11-02",
                 "2019-08-07"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1217,20 +2016,35 @@
             }
           },
           {
+            "id": "id_b074e829-ea7c-7937-e053-148ef98d6de4-2",
             "time": {
               "interval": [
                 "2019-08-08",
                 "2019-09-17"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1242,20 +2056,35 @@
             }
           },
           {
+            "id": "id_b074e829-ea7c-7937-e053-148ef98d6de4-3",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1294,8 +2123,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/cm",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/cm"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -1303,47 +2136,106 @@
           },
           {
             "internationalExchange": true,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/cm",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/cm"
+            },
             "temporalReportingInterval": "PT30M",
             "reportingSchedules": [
               "schedule_334eef1684"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:629",
+        "id": "629-point",
         "title": "domain: terrestrial; geometry: point; variable: 629",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/629",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/629"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/3",
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/3"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2003-10-10",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-c715-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2003-10-10",
                 "2018-11-02"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 6.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodTerrestrial/260"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                6.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1371,8 +2263,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": true,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/cm",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/cm"
+            },
             "numberOfObservationsInReportingInterval": "1",
             "timeliness": "PT30M",
             "temporalReportingInterval": "PT30M",
@@ -1380,40 +2276,95 @@
               "schedule_b09e1b0df0"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:12005",
+        "id": "12005-point",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/3",
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/3"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2003-10-10",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-92c0-7937-e053-148ef98d6de4-1",
             "time": {
               "interval": [
                 "2003-10-10",
                 "2019-08-07"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 7.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                7.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1423,23 +2374,38 @@
                 2401.5
               ]
             },
-            "instrument": "instrument:rm-young-wind-monitor-05103"
+            "instrument": "rm-young-wind-monitor-05103"
           },
           {
+            "id": "id_b074e828-92c0-7937-e053-148ef98d6de4-2",
             "time": {
               "interval": [
                 "2019-08-08",
                 "2019-09-17"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 7.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                7.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1449,23 +2415,38 @@
                 2401.5
               ]
             },
-            "instrument": "instrument:rm-young-wind-monitor-05103"
+            "instrument": "rm-young-wind-monitor-05103"
           },
           {
+            "id": "id_b074e828-92c0-7937-e053-148ef98d6de4-3",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 7.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                7.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1475,7 +2456,7 @@
                 2401.5
               ]
             },
-            "instrument": "instrument:rm-young-wind-monitor-05103"
+            "instrument": "rm-young-wind-monitor-05103"
           }
         ],
         "observingProcedures": [
@@ -1505,8 +2486,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/deg",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/deg"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -1514,47 +2499,106 @@
           },
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/deg",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/deg"
+            },
             "temporalReportingInterval": "PT30M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:12006",
+        "id": "12006-point",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/3",
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/3"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated",
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2003-10-10",
+              ".."
+            ]
+          },
+          {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e828-92c1-7937-e053-148ef98d6de4-1",
             "time": {
               "interval": [
                 "2003-10-10",
                 "2019-08-07"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 7.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                7.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1564,23 +2608,38 @@
                 2401.5
               ]
             },
-            "instrument": "instrument:rm-young-wind-monitor-05103"
+            "instrument": "rm-young-wind-monitor-05103"
           },
           {
+            "id": "id_b074e828-92c1-7937-e053-148ef98d6de4-2",
             "time": {
               "interval": [
                 "2019-08-08",
                 "2019-09-17"
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 7.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/inactive"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                7.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1590,23 +2649,38 @@
                 2401.5
               ]
             },
-            "instrument": "instrument:rm-young-wind-monitor-05103"
+            "instrument": "rm-young-wind-monitor-05103"
           },
           {
+            "id": "id_b074e828-92c1-7937-e053-148ef98d6de4-3",
             "time": {
               "interval": [
                 "2019-09-18",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class3",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 7.5,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+            },
+            "verticalDistance": {
+              "distances": [
+                7.5
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1616,7 +2690,7 @@
                 2401.5
               ]
             },
-            "instrument": "instrument:rm-young-wind-monitor-05103"
+            "instrument": "rm-young-wind-monitor-05103"
           }
         ],
         "observingProcedures": [
@@ -1646,8 +2720,12 @@
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/m.s-1",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/m.s-1"
+            },
             "temporalReportingInterval": "PT10M",
             "reportingSchedules": [
               "schedule_b38624328b"
@@ -1655,45 +2733,91 @@
           },
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "uom": "http://codes.wmo.int/wmdr/unit/m.s-1",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/m.s-1"
+            },
             "temporalReportingInterval": "PT30M",
             "reportingSchedules": [
               "schedule_b38624328b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:12014",
+        "id": "12014-verticalprofile",
         "title": "domain: terrestrial; geometry: verticalProfile; variable: 12014",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12014",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12014"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/verticalProfile",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "id_b074e829-edbe-7937-e053-148ef98d6de4",
             "time": {
               "interval": [
                 "2002-10-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": -10.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                -10.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1716,7 +2840,9 @@
                 ".."
               ]
             },
-            "strategy": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
+            "strategy": {
+              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
+            }
           },
           {
             "observingSchedules": [
@@ -1739,20 +2865,30 @@
                 "2011-08-04"
               ]
             },
-            "strategy": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
+            "strategy": {
+              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
+            }
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level2",
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level2"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/degC"
+            },
+            "dataFormat": [
+              {
+                "id": "http://codes.wmo.int/wmdr/DataFormat/csv"
+              }
+            ],
             "numberOfObservationsInReportingInterval": "4380",
             "timeliness": "P3M",
-            "dataFormat": [
-              "http://codes.wmo.int/wmdr/DataFormat/csv"
-            ],
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_212d6bb0cc"
@@ -1760,15 +2896,25 @@
           },
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level2",
-            "timeStampMeaning": "http://codes.wmo.int/wmdr/TimeStampMeaning/end",
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level2"
+            },
+            "timeStampMeaning": {
+              "id": "http://codes.wmo.int/wmdr/TimeStampMeaning/end"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/degC"
+            },
+            "dataFormat": [
+              {
+                "id": "http://codes.wmo.int/wmdr/DataFormat/csv"
+              }
+            ],
             "numberOfObservationsInReportingInterval": "1460",
             "timeliness": "P3M",
-            "dataFormat": [
-              "http://codes.wmo.int/wmdr/DataFormat/csv"
-            ],
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_62717e0607"
@@ -1776,52 +2922,110 @@
           },
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level2",
-            "timeStampMeaning": "http://codes.wmo.int/wmdr/TimeStampMeaning/end",
-            "uom": "http://codes.wmo.int/wmdr/unit/degC",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level2"
+            },
+            "timeStampMeaning": {
+              "id": "http://codes.wmo.int/wmdr/TimeStampMeaning/end"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/degC"
+            },
+            "dataFormat": [
+              {
+                "id": "http://codes.wmo.int/wmdr/DataFormat/csv"
+              }
+            ],
             "numberOfObservationsInReportingInterval": "365",
             "timeliness": "P3M",
-            "dataFormat": [
-              "http://codes.wmo.int/wmdr/DataFormat/csv"
-            ],
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_6395df623b"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:phillips@slf.ch",
+            "roles": [
+              "principalInvestigator"
+            ]
+          },
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:12015",
+        "id": "12015-point",
         "title": "domain: terrestrial; geometry: point; variable: 12015",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12015",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12015"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "1282e819-a245-6658-e063-c35ff98d5acc",
             "time": {
               "interval": [
                 "2002-10-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": -3.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                -3.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1844,58 +3048,118 @@
                 ".."
               ]
             },
-            "strategy": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
+            "strategy": {
+              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
+            }
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level2",
-            "timeStampMeaning": "http://codes.wmo.int/wmdr/TimeStampMeaning/end",
-            "uom": "http://codes.wmo.int/wmdr/unit/m",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level2"
+            },
+            "timeStampMeaning": {
+              "id": "http://codes.wmo.int/wmdr/TimeStampMeaning/end"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/m"
+            },
+            "dataFormat": [
+              {
+                "id": "http://codes.wmo.int/wmdr/DataFormat/csv"
+              }
+            ],
             "numberOfObservationsInReportingInterval": "1",
             "timeliness": "P3M",
-            "dataFormat": [
-              "http://codes.wmo.int/wmdr/DataFormat/csv"
-            ],
             "temporalReportingInterval": "P12M",
             "reportingSchedules": [
               "schedule_8deee7d7f0"
             ]
           }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:phillips@slf.ch",
+            "roles": [
+              "principalInvestigator"
+            ]
+          },
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
         ]
       },
       {
-        "id": "observationSeries:12283",
+        "id": "12283-point",
         "title": "domain: terrestrial; geometry: point; variable: 12283",
-        "observedProperty": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12283",
-        "observedFeature": {
-          "domain": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+        "observedProperty": {
+          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12283"
         },
-        "observedGeometry": "http://codes.wmo.int/wmdr/Geometry/point",
+        "observedGeometry": {
+          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+        },
+        "observedFeature": {
+          "domain": {
+            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+          }
+        },
         "applicationAreas": [
-          "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          {
+            "id": "http://codes.wmo.int/wmdr/ApplicationArea/cryosphere"
+          }
         ],
         "programAffiliations": [
-          "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
-        ],
-        "observingConfigurations": [
           {
+            "programAffiliation": {
+              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GCWCryoNet"
+            },
+            "reportingStatus": {
+              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+            },
+            "dates": [
+              "2002-10-01",
+              ".."
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "id": "1282e819-a241-6658-e063-c35ff98d5acc",
             "time": {
               "interval": [
                 "2009-08-01",
                 ".."
               ]
             },
-            "observingMethod": "http://codes.wmo.int/wmdr/inapplicable",
-            "sourceOfObservation": "http://codes.wmo.int/wmdr/SourceOfObservation/inapplicable",
-            "operatingStatus": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational",
-            "exposure": "http://codes.wmo.int/wmdr/Exposure/class2",
-            "referenceSurface": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround",
-            "verticalDistanceFromReferenceSurface": {
-              "value": 0.0,
-              "uom": "m"
+            "observingMethod": {
+              "id": "http://codes.wmo.int/wmdr/inapplicable"
+            },
+            "sourceOfObservation": {
+              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/inapplicable"
+            },
+            "operatingStatus": {
+              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+            },
+            "exposure": {
+              "id": "http://codes.wmo.int/wmdr/Exposure/class2"
+            },
+            "verticalDistance": {
+              "distances": [
+                0.0
+              ],
+              "unit": {
+                "id": "http://codes.wmo.int/wmdr/unit/m"
+              },
+              "referenceSurface": {
+                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+              }
             },
             "geometry": {
               "type": "Point",
@@ -1918,24 +3182,103 @@
                 ".."
               ]
             },
-            "strategy": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
+            "strategy": {
+              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/discrete"
+            }
           }
         ],
         "reportingProcedures": [
           {
             "internationalExchange": false,
-            "dataPolicy": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable",
-            "levelOfData": "http://codes.wmo.int/wmdr/LevelOfData/level3",
-            "uom": "http://codes.wmo.int/wmdr/unit/m.a-1",
+            "dataPolicy": {
+              "id": "http://codes.wmo.int/wmdr/DataPolicy/inapplicable"
+            },
+            "levelOfData": {
+              "id": "http://codes.wmo.int/wmdr/LevelOfData/level3"
+            },
+            "uom": {
+              "id": "http://codes.wmo.int/wmdr/unit/m.a-1"
+            },
+            "dataFormat": [
+              {
+                "id": "http://codes.wmo.int/wmdr/DataFormat/inapplicable"
+              }
+            ],
             "numberOfObservationsInReportingInterval": "1",
             "timeliness": "P3M",
-            "dataFormat": [
-              "http://codes.wmo.int/wmdr/DataFormat/inapplicable"
-            ],
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
               "schedule_e3362d94f7"
             ]
+          }
+        ],
+        "contactAssignments": [
+          {
+            "contact": "contact:phillips@slf.ch",
+            "roles": [
+              "principalInvestigator"
+            ]
+          },
+          {
+            "contact": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c",
+            "roles": [
+              "owner"
+            ]
+          }
+        ]
+      }
+    ],
+    "instruments": [
+      {
+        "id": "campbell-scientific-107-temperature-probe",
+        "manufacturer": "Campbell Scientific",
+        "model": "107 Temperature probe",
+        "observingMethods": [
+          {
+            "id": "http://codes.wmo.int/wmdr/inapplicable"
+          }
+        ]
+      },
+      {
+        "id": "campbell-scientific-arg100",
+        "manufacturer": "Campbell Scientific",
+        "model": "ARG100",
+        "observingMethods": [
+          {
+            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/204"
+          }
+        ]
+      },
+      {
+        "id": "kipp-zonen-cnr-4",
+        "manufacturer": "Kipp&Zonen",
+        "model": "CNR 4",
+        "observingMethods": [
+          {
+            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265"
+          },
+          {
+            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/266"
+          }
+        ]
+      },
+      {
+        "id": "rm-young-wind-monitor-05103",
+        "manufacturer": "RM Young",
+        "model": "Wind Monitor 05103",
+        "observingMethods": [
+          {
+            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/63"
+          }
+        ]
+      },
+      {
+        "id": "vaisala-oyj-vaisala-ptb110",
+        "manufacturer": "Vaisala Oyj",
+        "model": "VAISALA PTB110",
+        "observingMethods": [
+          {
+            "id": "http://codes.wmo.int/wmdr/inapplicable"
           }
         ]
       }
@@ -2002,69 +3345,11 @@
         "uid": "schedule_e3362d94f7"
       }
     ],
-    "instruments": [
-      {
-        "id": "instrument:campbell-scientific-107-temperature-probe",
-        "manufacturer": "Campbell Scientific",
-        "model": "107 Temperature probe"
-      },
-      {
-        "id": "instrument:campbell-scientific-arg100",
-        "manufacturer": "Campbell Scientific",
-        "model": "ARG100"
-      },
-      {
-        "id": "instrument:kipp-zonen-cnr-4",
-        "manufacturer": "Kipp&Zonen",
-        "model": "CNR 4"
-      },
-      {
-        "id": "instrument:rm-young-wind-monitor-05103",
-        "manufacturer": "RM Young",
-        "model": "Wind Monitor 05103"
-      },
-      {
-        "id": "instrument:vaisala-oyj-vaisala-ptb110",
-        "manufacturer": "Vaisala Oyj",
-        "model": "VAISALA PTB110"
-      }
-    ],
-    "keywords": [
-      "0-756-1-387493",
-      "Flüela permafrost",
-      "Flüelapass"
-    ],
-    "links": [
-      {
-        "href": "https://www.permos.ch/data-portal/permafrost-temperature-and-active-layer",
-        "rel": "about",
-        "type": "text/html"
-      },
-      {
-        "href": "http://globalcryospherewatch.org/cryonet/sitepage.php?surveyid=39",
-        "rel": "about",
-        "type": "text/html"
-      }
-    ],
-    "contactAssignments": [
-      {
-        "contact": "contact:marty@slf.ch",
-        "roles": [
-          "pointOfContact"
-        ]
-      },
-      {
-        "contact": "contact:phillips@slf.ch",
-        "roles": [
-          "principalInvestigator"
-        ]
-      }
-    ],
     "contacts": [
       {
-        "identifier": "contact:marty@slf.ch",
         "name": "Marty,Christoph,Dr",
         "organization": "WSL Institute for Snow and Avalanche Research SLF",
+        "contactInstructions": "europe",
         "emails": [
           {
             "value": "marty@slf.ch"
@@ -2075,10 +3360,10 @@
             "city": "Davos Dorf",
             "country": "CHE"
           }
-        ]
+        ],
+        "identifier": "contact:marty@slf.ch"
       },
       {
-        "identifier": "contact:oscar@wmo.int",
         "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
         "emails": [
           {
@@ -2096,12 +3381,13 @@
             "rel": "about",
             "type": "text/html"
           }
-        ]
+        ],
+        "identifier": "contact:oscar@wmo.int"
       },
       {
-        "identifier": "contact:phillips@slf.ch",
         "name": "Phillips,Marcia,Dr",
         "organization": "WSL Institute for Snow and Avalanche Research SLF",
+        "contactInstructions": "europe",
         "emails": [
           {
             "value": "phillips@slf.ch"
@@ -2112,8 +3398,18 @@
             "city": "Davos Dorf",
             "country": "CHE"
           }
-        ]
+        ],
+        "identifier": "contact:phillips@slf.ch"
+      },
+      {
+        "organization": "WSL Institute for Snow and Avalanche Research SLF",
+        "identifier": "contact:wsl-institute-for-snow-and-avalanche-research-slf-27a2304f3c"
       }
+    ],
+    "keywords": [
+      "0-756-1-387493",
+      "Flüela permafrost",
+      "Flüelapass"
     ]
   },
   "time": {
@@ -2137,8 +3433,22 @@
     ],
     "methods": [
       [
-        "http://codes.wmo.int/wmdr/GeopositioningMethod/map"
+        {
+          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/map"
+        }
       ]
     ]
-  }
+  },
+  "links": [
+    {
+      "href": "https://www.permos.ch/data-portal/permafrost-temperature-and-active-layer",
+      "rel": "about",
+      "type": "text/html"
+    },
+    {
+      "href": "http://globalcryospherewatch.org/cryonet/sitepage.php?surveyid=39",
+      "rel": "about",
+      "type": "text/html"
+    }
+  ]
 }

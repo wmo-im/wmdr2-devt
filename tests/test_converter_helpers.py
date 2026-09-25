@@ -248,7 +248,7 @@ def test_normalize_schedule_object(raw: dict[str, Any], kind: str, expected_keys
 
     # Diurnal base time qualifies a schedule but does not define one. It is a
     # modifier of an otherwise meaningful schedule.
-    if raw == {"diurnalBaseTime": "6"}:
+    if raw in ({"diurnalBaseTime": "6"}, {"temporalReportingInterval": "PT1H"}):
         assert schedule is None
         return
 

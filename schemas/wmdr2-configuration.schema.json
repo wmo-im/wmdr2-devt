@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wmo-im.github.io/wmdr2-devt/schemas/wmdr2-configuration.schema.json",
+  "title": "WMDR2 development Configuration",
+  "description": "Configuration aligned with official WMDR2 except that instrument is a record-local reference to properties.instruments[].id rather than an embedded Instrument object.",
+  "type": "object",
+  "required": [
+    "id",
+    "time"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Configurations/properties/id"
+    },
+    "geometry": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Configurations/properties/geometry"
+    },
+    "time": {
+      "$ref": "wmdr2-common.schema.json#/$defs/timePeriod",
+      "$comment": "Official WMDR2 Configuration.time resolves to WCMP time. Validated here against pinned wmo-im/wcmp2@f05037aa8d8bf5911a44a511b7b99a0be009c9ab."
+    },
+    "observingMethod": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Configurations/properties/observingMethod"
+        },
+        {
+          "$ref": "wmdr2-common.schema.json#/$defs/controlledConceptOrNull"
+        }
+      ]
+    },
+    "operatingStatus": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Configurations/properties/operatingStatus"
+        },
+        {
+          "$ref": "wmdr2-common.schema.json#/$defs/controlledConceptOrNull"
+        }
+      ]
+    },
+    "sourceOfObservation": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Configurations/properties/sourceOfObservation"
+        },
+        {
+          "$ref": "wmdr2-common.schema.json#/$defs/controlledConceptOrNull"
+        }
+      ]
+    },
+    "instrument": {
+      "type": [
+        "string",
+        "integer",
+        "null"
+      ],
+      "$comment": "Intentional devt divergence: official WMDR2 at commit d30f13c3be6395466a778360c4a4ef59625be6af embeds Instrument here. wmdr2-devt uses a record-local Instrument.id reference pending upstream alignment."
+    },
+    "instrumentSerialNumber": {
+      "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Configurations/properties/instrumentSerialNumber"
+    },
+    "verticalDistance": {
+      "allOf": [
+        {
+          "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/definitions/Configurations/properties/verticalDistance"
+        },
+        {
+          "type": "object",
+          "required": [
+            "distances",
+            "unit",
+            "referenceSurface"
+          ],
+          "properties": {
+            "unit": {
+              "$ref": "wmdr2-common.schema.json#/$defs/controlledConceptOrNull"
+            },
+            "referenceSurface": {
+              "$ref": "wmdr2-common.schema.json#/$defs/controlledConceptOrNull"
+            }
+          }
+        }
+      ]
+    },
+    "exposure": {
+      "$ref": "wmdr2-common.schema.json#/$defs/controlledConcept"
+    },
+    "relativeLocation": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "contactAssignments": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/contactAssignment"
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "wmdr2-common.schema.json#/$defs/link"
+      }
+    },
+    "deployment": false,
+    "observingLocation": false,
+    "serialNumber": false,
+    "referenceSurface": false,
+    "verticalDistanceFromReferenceSurface": false,
+    "beginPosition": false,
+    "endPosition": false,
+    "validFrom": false,
+    "validTo": false
+  },
+  "additionalProperties": true
+}
