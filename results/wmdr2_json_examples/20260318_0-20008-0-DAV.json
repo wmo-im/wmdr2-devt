@@ -20,24 +20,27 @@
     "externalIds": [
       {
         "value": "Davos",
-        "scheme": "AERONET"
+        "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
       },
       {
         "value": "DAV",
-        "scheme": "GAWregional"
+        "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
       }
     ],
     "description": "The Physikalisch-Meteorologisches Observatorium is located the northeaster end of the Davos valley in the Swiss alps. The city of Davos is extending to the southwest of the site. [this description has been copied from AERONET Site Information Database of NASA]\n\nThe ozone observations which started in Arosa (0-20008-0-ARO) in 1926 have been transferred to Davos. Arosa is located approximately 12 km south-west of Davos and about 200 m higher. The parallel observation period (with instruments of Arosa being temporarily deployed in Davos) started on 22 Nov 2011. 4 of the 6 instruments (2 Brewers 2 Dobsons) were definitively transferred to Davos on 28 Feb 2018. The two remaining instruments (1 Brewer and 1 Dobson) continued observations in Arosa until 18 Feb 2021 when they were also transferred to Davos and the ozone observations at Arosa definitively stopped. Since then, the ozone time series is continued from Davos.",
     "facilityType": {
-      "id": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
+      "id": "landFixed",
+      "url": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
     },
     "wmoRegion": {
-      "id": "https://codes.wmo.int/wmdr/WMORegion/europe"
+      "id": "europe",
+      "url": "http://codes.wmo.int/wmdr/WMORegion/europe"
     },
     "territories": [
       {
         "territory": {
-          "id": "http://codes.wmo.int/wmdr/TerritoryName/CHE"
+          "id": "CHE",
+          "url": "http://codes.wmo.int/wmdr/TerritoryName/CHE"
         },
         "dates": [
           "2013-08-05",
@@ -48,7 +51,8 @@
     "environment": [
       {
         "climateZone": {
-          "id": "http://codes.wmo.int/wmdr/ClimateZone/snowFullyHumidCoolSummer"
+          "id": "snowFullyHumidCoolSummer",
+          "url": "http://codes.wmo.int/wmdr/ClimateZone/snowFullyHumidCoolSummer"
         },
         "time": {
           "interval": [
@@ -58,39 +62,165 @@
         }
       }
     ],
-    "contactAssignments": [
+    "contacts": [
       {
-        "contact": "contact:christoph.wehrli@pmodwrc.ch",
+        "name": "Wehrli,Christoph,Dr.",
+        "organization": "Physikalisch-Meteorologisches Observatorium Davos, World Radiation Center",
+        "contactInstructions": "europe",
+        "emails": [
+          {
+            "value": "christoph.wehrli@pmodwrc.ch"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+41814175137"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "PMOD/WRC-WORCC Dorfstrasse 33"
+            ],
+            "city": "Davos",
+            "postalCode": "CH-7260",
+            "country": "CHE"
+          }
+        ],
+        "identifier": "contact:christoph.wehrli@pmodwrc.ch",
         "roles": [
           "pointOfContact"
         ]
       },
       {
-        "contact": "contact:pierre.jeannet@meteoswiss.ch",
+        "name": "Jeannet,Pierre,Mr.",
+        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "contactInstructions": "europe",
+        "emails": [
+          {
+            "value": "pierre.jeannet@meteoswiss.ch"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+41266626246"
+          },
+          {
+            "value": "+41266626211"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Station Aérologique MeteoSchweiz Les Invuardes Case postale 316"
+            ],
+            "city": "Payerne",
+            "postalCode": "CH-1530",
+            "country": "CHE"
+          }
+        ],
+        "identifier": "contact:pierre.jeannet@meteoswiss.ch",
         "roles": [
           "pointOfContact"
         ]
       },
       {
-        "contact": "contact:laurent.vuilleumier@meteoswiss.ch",
+        "name": "Vuilleumier,Laurent,Dr.",
+        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "contactInstructions": "europe",
+        "emails": [
+          {
+            "value": "laurent.vuilleumier@meteoswiss.ch"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+41584609541"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "MeteoSwiss"
+            ],
+            "city": "Payerne",
+            "country": "CHE"
+          }
+        ],
+        "identifier": "contact:laurent.vuilleumier@meteoswiss.ch",
         "roles": [
           "pointOfContact"
         ]
       },
       {
-        "contact": "contact:julian.groebner@pmodwrc.ch",
+        "name": "Gröbner,Julian,Dr.",
+        "organization": "Physikalisch-Meteorologisches Observatorium Davos, World Radiation Center",
+        "contactInstructions": "europe",
+        "emails": [
+          {
+            "value": "julian.groebner@pmodwrc.ch"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+41814175157"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Physikalisch-Meteorologisches Observatorium Davos, World Radiation Center Dorfstrasse 33"
+            ],
+            "city": "Davos dorf",
+            "postalCode": "7260",
+            "country": "CHE"
+          }
+        ],
+        "identifier": "contact:julian.groebner@pmodwrc.ch",
         "roles": [
           "pointOfContact"
         ]
       },
       {
-        "contact": "contact:rolf.ruefenacht@meteoswiss.ch",
+        "name": "Ruefenacht,Rolf,Dr.",
+        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "contactInstructions": "europe",
+        "emails": [
+          {
+            "value": "rolf.ruefenacht@meteoswiss.ch"
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Payerne",
+            "country": "CHE"
+          }
+        ],
+        "identifier": "contact:rolf.ruefenacht@meteoswiss.ch",
         "roles": [
           "pointOfContact"
         ]
       },
       {
-        "contact": "contact:oscar@wmo.int",
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface/#/feedback",
+            "rel": "about",
+            "type": "text/html"
+          },
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ],
+        "identifier": "contact:oscar@wmo.int",
         "roles": [
           "owner"
         ]
@@ -101,23 +231,28 @@
         "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
+          "id": "263",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+          "id": "totalColumn",
+          "url": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2021-02-23",
@@ -126,10 +261,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+              "id": "NDACC",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2021-02-23",
@@ -147,10 +284,12 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+              "id": "106",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             }
           }
         ],
@@ -182,23 +321,28 @@
         "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
+          "id": "263",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+          "id": "totalColumn",
+          "url": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2021-02-23",
@@ -207,10 +351,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+              "id": "NDACC",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2021-02-23",
@@ -228,7 +374,8 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+              "id": "78",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
             }
           }
         ],
@@ -260,23 +407,28 @@
         "id": "264-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
+          "id": "264",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+          "id": "verticalProfile",
+          "url": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2021-02-23",
@@ -285,10 +437,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
+              "id": "NDACC",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/NDACC"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2021-02-23",
@@ -306,7 +460,8 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/210"
+              "id": "210",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/210"
             }
           }
         ],
@@ -338,23 +493,28 @@
         "id": "325-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 325",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/325"
+          "id": "325",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/325"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+          "id": "totalColumn",
+          "url": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -372,14 +532,16 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/197"
+              "id": "197",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/197"
             },
             "verticalDistance": {
               "distances": [
                 1.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": null
             },
@@ -416,9 +578,32 @@
             ]
           }
         ],
-        "contactAssignments": [
+        "contacts": [
           {
-            "contact": "contact:christoph.wehrli@pmodwrc.ch",
+            "name": "Wehrli,Christoph,Dr.",
+            "organization": "Physikalisch-Meteorologisches Observatorium Davos, World Radiation Center",
+            "contactInstructions": "europe",
+            "emails": [
+              {
+                "value": "christoph.wehrli@pmodwrc.ch"
+              }
+            ],
+            "phones": [
+              {
+                "value": "+41814175137"
+              }
+            ],
+            "addresses": [
+              {
+                "deliveryPoint": [
+                  "PMOD/WRC-WORCC Dorfstrasse 33"
+                ],
+                "city": "Davos",
+                "postalCode": "CH-7260",
+                "country": "CHE"
+              }
+            ],
+            "identifier": "contact:christoph.wehrli@pmodwrc.ch",
             "roles": [
               "principalInvestigator"
             ]
@@ -429,23 +614,28 @@
         "id": "356-point",
         "title": "domain: atmosphere; geometry: point; variable: 356",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/356"
+          "id": "356",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/356"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -463,7 +653,8 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/263"
+              "id": "263",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/263"
             },
             "sourceOfObservation": null
           }
@@ -472,10 +663,12 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "levelOfData": {
-              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+              "id": "level1",
+              "url": "http://codes.wmo.int/wmdr/LevelOfData/level1"
             },
             "temporalReportingInterval": "P1D"
           }
@@ -485,23 +678,28 @@
         "id": "356-point",
         "title": "domain: atmosphere; geometry: point; variable: 356",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/356"
+          "id": "356",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/356"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -539,10 +737,12 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "levelOfData": {
-              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+              "id": "level1",
+              "url": "http://codes.wmo.int/wmdr/LevelOfData/level1"
             },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
@@ -555,23 +755,28 @@
         "id": "356-point",
         "title": "domain: atmosphere; geometry: point; variable: 356",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/356"
+          "id": "356",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/356"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -589,7 +794,8 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/263"
+              "id": "263",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/263"
             },
             "sourceOfObservation": null
           }
@@ -598,10 +804,12 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "levelOfData": {
-              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+              "id": "level1",
+              "url": "http://codes.wmo.int/wmdr/LevelOfData/level1"
             },
             "temporalReportingInterval": "P1D"
           }
@@ -611,23 +819,28 @@
         "id": "358-point",
         "title": "domain: atmosphere; geometry: point; variable: 358",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/358"
+          "id": "358",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/358"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -638,6 +851,12 @@
         "configurations": [
           {
             "id": "id_b074e828-5b7a-7937-e053-148ef98d6de4",
+            "time": {
+              "interval": [
+                "..",
+                ".."
+              ]
+            },
             "observingMethod": null
           }
         ],
@@ -652,23 +871,28 @@
         "id": "359-point",
         "title": "domain: atmosphere; geometry: point; variable: 359",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/359"
+          "id": "359",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/359"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -679,6 +903,12 @@
         "configurations": [
           {
             "id": "id_b074e828-5b7b-7937-e053-148ef98d6de4",
+            "time": {
+              "interval": [
+                "..",
+                ".."
+              ]
+            },
             "observingMethod": null
           }
         ],
@@ -693,23 +923,28 @@
         "id": "359-point",
         "title": "domain: atmosphere; geometry: point; variable: 359",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/359"
+          "id": "359",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/359"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -727,7 +962,8 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
+              "id": "78",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/78"
             },
             "sourceOfObservation": null
           }
@@ -736,10 +972,12 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "levelOfData": {
-              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+              "id": "level1",
+              "url": "http://codes.wmo.int/wmdr/LevelOfData/level1"
             },
             "temporalReportingInterval": "P1D"
           }
@@ -749,23 +987,28 @@
         "id": "565-point",
         "title": "domain: atmosphere; geometry: point; variable: 565",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/565"
+          "id": "565",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/565"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -776,8 +1019,15 @@
         "configurations": [
           {
             "id": "id_b074e828-5b7d-7937-e053-148ef98d6de4",
+            "time": {
+              "interval": [
+                "..",
+                ".."
+              ]
+            },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265"
+              "id": "265",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/265"
             }
           }
         ],
@@ -792,23 +1042,28 @@
         "id": "566-point",
         "title": "domain: atmosphere; geometry: point; variable: 566",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/566"
+          "id": "566",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/566"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -841,7 +1096,8 @@
               ]
             },
             "strategy": {
-              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+              "id": "continuous",
+              "url": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
             }
           }
         ],
@@ -849,7 +1105,8 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
@@ -862,23 +1119,28 @@
         "id": "571-point",
         "title": "domain: atmosphere; geometry: point; variable: 571",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/571"
+          "id": "571",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/571"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -911,7 +1173,8 @@
               ]
             },
             "strategy": {
-              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+              "id": "continuous",
+              "url": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
             }
           }
         ],
@@ -919,7 +1182,8 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
@@ -932,23 +1196,28 @@
         "id": "572-point",
         "title": "domain: atmosphere; geometry: point; variable: 572",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/572"
+          "id": "572",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/572"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -981,7 +1250,8 @@
               ]
             },
             "strategy": {
-              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+              "id": "continuous",
+              "url": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
             }
           }
         ],
@@ -989,7 +1259,8 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
@@ -1002,23 +1273,28 @@
         "id": "573-point",
         "title": "domain: atmosphere; geometry: point; variable: 573",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573"
+          "id": "573",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1969-01-01",
@@ -1051,7 +1327,8 @@
               ]
             },
             "strategy": {
-              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+              "id": "continuous",
+              "url": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
             }
           }
         ],
@@ -1059,7 +1336,8 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
@@ -1082,152 +1360,6 @@
         "duration": "PT23H59M",
         "@type": "Event",
         "uid": "schedule_b4b3a322bb"
-      }
-    ],
-    "contacts": [
-      {
-        "name": "Wehrli,Christoph,Dr.",
-        "organization": "Physikalisch-Meteorologisches Observatorium Davos, World Radiation Center",
-        "contactInstructions": "europe",
-        "emails": [
-          {
-            "value": "christoph.wehrli@pmodwrc.ch"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+41814175137"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "PMOD/WRC-WORCC Dorfstrasse 33"
-            ],
-            "city": "Davos",
-            "postalCode": "CH-7260",
-            "country": "CHE"
-          }
-        ],
-        "identifier": "contact:christoph.wehrli@pmodwrc.ch"
-      },
-      {
-        "name": "Gröbner,Julian,Dr.",
-        "organization": "Physikalisch-Meteorologisches Observatorium Davos, World Radiation Center",
-        "contactInstructions": "europe",
-        "emails": [
-          {
-            "value": "julian.groebner@pmodwrc.ch"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+41814175157"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "Physikalisch-Meteorologisches Observatorium Davos, World Radiation Center Dorfstrasse 33"
-            ],
-            "city": "Davos dorf",
-            "postalCode": "7260",
-            "country": "CHE"
-          }
-        ],
-        "identifier": "contact:julian.groebner@pmodwrc.ch"
-      },
-      {
-        "name": "Vuilleumier,Laurent,Dr.",
-        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
-        "contactInstructions": "europe",
-        "emails": [
-          {
-            "value": "laurent.vuilleumier@meteoswiss.ch"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+41584609541"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "MeteoSwiss"
-            ],
-            "city": "Payerne",
-            "country": "CHE"
-          }
-        ],
-        "identifier": "contact:laurent.vuilleumier@meteoswiss.ch"
-      },
-      {
-        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
-        "emails": [
-          {
-            "value": "oscar@wmo.int"
-          }
-        ],
-        "links": [
-          {
-            "href": "https://oscar.wmo.int/surface/#/feedback",
-            "rel": "about",
-            "type": "text/html"
-          },
-          {
-            "href": "https://oscar.wmo.int/surface",
-            "rel": "about",
-            "type": "text/html"
-          }
-        ],
-        "identifier": "contact:oscar@wmo.int"
-      },
-      {
-        "name": "Jeannet,Pierre,Mr.",
-        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
-        "contactInstructions": "europe",
-        "emails": [
-          {
-            "value": "pierre.jeannet@meteoswiss.ch"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+41266626246"
-          },
-          {
-            "value": "+41266626211"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "Station Aérologique MeteoSchweiz Les Invuardes Case postale 316"
-            ],
-            "city": "Payerne",
-            "postalCode": "CH-1530",
-            "country": "CHE"
-          }
-        ],
-        "identifier": "contact:pierre.jeannet@meteoswiss.ch"
-      },
-      {
-        "name": "Ruefenacht,Rolf,Dr.",
-        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
-        "contactInstructions": "europe",
-        "emails": [
-          {
-            "value": "rolf.ruefenacht@meteoswiss.ch"
-          }
-        ],
-        "addresses": [
-          {
-            "city": "Payerne",
-            "country": "CHE"
-          }
-        ],
-        "identifier": "contact:rolf.ruefenacht@meteoswiss.ch"
       }
     ],
     "keywords": [

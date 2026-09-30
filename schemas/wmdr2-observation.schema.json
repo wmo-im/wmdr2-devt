@@ -128,12 +128,6 @@
         "$ref": "wmdr2-common.schema.json#/$defs/link"
       }
     },
-    "contactAssignments": {
-      "type": "array",
-      "items": {
-        "$ref": "wmdr2-common.schema.json#/$defs/contactAssignment"
-      }
-    },
     "observationSeries": false,
     "observingConfigurations": false,
     "programAffiliation": false,
@@ -144,7 +138,14 @@
     "beginPosition": false,
     "endPosition": false,
     "validFrom": false,
-    "validTo": false
+    "validTo": false,
+    "contacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/contacts/items"
+      }
+    }
   },
   "additionalProperties": true,
   "$comment": "Observation temporal extent is derived from Configuration.time. observedGeometry is deliberately mandatory in wmdr2-devt."

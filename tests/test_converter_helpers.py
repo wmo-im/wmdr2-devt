@@ -94,10 +94,10 @@ def test_normalize_code_value(raw: Any, expected: Any) -> None:
 
 
 @pytest.mark.parametrize(("raw", "expected"), [
-    ("http://codes.wmo.int/wmdr/unit/mm", "http://codes.wmo.int/wmdr/unit/mm"),
-    ("https://codes.wmo.int/wmdr/FacilityType/landFixed", "https://codes.wmo.int/wmdr/FacilityType/landFixed"),
+    ("http://codes.wmo.int/wmdr/unit/mm", "mm"),
+    ("https://codes.wmo.int/wmdr/FacilityType/landFixed", "landFixed"),
     ("http://example.org/not-wmdr/value", "http://example.org/not-wmdr/value"),
-    ({"href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"}, "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"),
+    ({"href": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"}, "GBON"),
     (12006, "12006"),
 ])
 def test_compact_wmdr_code_value(raw: Any, expected: Any) -> None:
@@ -295,11 +295,30 @@ def test_normalize_facility_wsi(raw: str, expected: str) -> None:
 
 
 @pytest.mark.parametrize(("raw", "expected"), [
-    ({"value": "2.5", "@uom": "m"}, {"value": 2.5, "uom": "m"}),
-    ({"#text": "0", "uom": "m"}, {"value": 0.0, "uom": "m"}),
-    ("3.5", {"value": 3.5}),
-    (0, {"value": 0.0}),
-    ("not numeric", {"value": "not numeric"}),
+    (
+        {"value": "2.5", "@uom": "m"},
+        {
+            "value": [2.5],
+            "uom": {"id": "m", "url": "http://codes.wmo.int/wmdr/unit/m"},
+        },
+    ),
+    (
+        {"#text": "0", "uom": "m"},
+        {
+            "value": [0.0],
+            "uom": {"id": "m", "url": "http://codes.wmo.int/wmdr/unit/m"},
+        },
+    ),
+    (
+        {"value": [10, 20], "uom": "http://codes.wmo.int/wmdr/unit/km"},
+        {
+            "value": [10.0, 20.0],
+            "uom": {"id": "km", "url": "http://codes.wmo.int/wmdr/unit/km"},
+        },
+    ),
+    ("3.5", {"value": [3.5]}),
+    (0, {"value": [0.0]}),
+    ("not numeric", None),
 ])
 def test_quantity(raw: Any, expected: dict[str, Any] | None) -> None:
     assert converter._quantity(raw) == expected

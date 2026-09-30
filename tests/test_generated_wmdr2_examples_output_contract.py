@@ -7,6 +7,8 @@ from typing import Any
 
 import pytest
 
+from schema_registry import validator_for_schema
+
 
 ROOT = Path(__file__).resolve().parents[1]
 EXAMPLES = ROOT / "results" / "wmdr2_json_examples"
@@ -83,3 +85,50 @@ def test_generated_controlled_observation_values_are_concepts() -> None:
                         f"{path.relative_to(ROOT)}: observations[{index}].{key}"
                     )
     assert not failures, "Non-Concept controlled values:\n" + "\n".join(failures)
+
+
+@pytest.mark.skipif(not EXAMPLES.exists(), reason="generated WMDR2 example directory not present")
+def test_generated_wmo_concepts_use_compact_id_with_url() -> None:
+    failures: list[str] = []
+    for path in sorted(EXAMPLES.glob("*.json")):
+        record = json.loads(path.read_text(encoding="utf-8"))
+        for mapping in _walk_mappings(record):
+            identifier = mapping.get("id")
+            url = mapping.get("url")
+            if not (
+                isinstance(identifier, str)
+                and isinstance(url, str)
+                and url.startswith(("http://codes.wmo.int/wmdr/", "https://codes.wmo.int/wmdr/"))
+            ):
+                continue
+            if identifier.startswith(("http://", "https://")):
+                failures.append(f"{path.relative_to(ROOT)}: WMO URI remains in id: {identifier}")
+                continue
+            notation = url.rstrip("/#").rsplit("/", 1)[-1]
+            if identifier != notation:
+                failures.append(
+                    f"{path.relative_to(ROOT)}: id {identifier!r} does not match URL notation {notation!r}"
+                )
+    assert not failures, "Invalid generated WMO Concepts:\n" + "\n".join(failures)
+
+@pytest.mark.skipif(not EXAMPLES.exists(), reason="generated WMDR2 example directory not present")
+def test_generated_wmdr2_examples_validate_against_schema() -> None:
+    validator = validator_for_schema("wmdr2-record-feature.schema.json")
+    failures: list[str] = []
+
+    for path in sorted(EXAMPLES.glob("*.json")):
+        record = json.loads(path.read_text(encoding="utf-8"))
+        errors = sorted(
+            validator.iter_errors(record),
+            key=lambda error: (list(error.path), error.message),
+        )
+        for error in errors:
+            location = "/".join(str(part) for part in error.path) or "<root>"
+            failures.append(
+                f"{path.relative_to(ROOT)}: {location}: {error.message}"
+            )
+
+    assert not failures, "Generated WMDR2 examples do not validate:\n" + "\n".join(
+        failures[:100]
+    )
+

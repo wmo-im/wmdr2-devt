@@ -16,6 +16,9 @@ DATA_POLICY = "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
 
 
 def concept(uri: str) -> dict[str, str]:
+    """Return the v0.4.0 Concept representation expected for a URI."""
+    if "://codes.wmo.int/wmdr/" in uri:
+        return {"id": uri.rstrip("/").rsplit("/", 1)[-1], "url": uri}
     return {"id": uri}
 
 
@@ -24,16 +27,16 @@ def test_normalize_code_value_preserves_absolute_wmdr_uri() -> None:
     assert converter._normalize_code_value({"href": OBSERVED}) == OBSERVED
 
 
-def test_legacy_compact_helper_no_longer_contracts_wmdr_uri() -> None:
-    assert converter._compact_wmdr_code_value(FACILITY_TYPE) == FACILITY_TYPE
-    assert converter._compact_wmdr_code_value({"href": PROGRAM}) == PROGRAM
+def test_compact_helper_contracts_wmdr_uri_to_notation() -> None:
+    assert converter._compact_wmdr_code_value(FACILITY_TYPE) == "landFixed"
+    assert converter._compact_wmdr_code_value({"href": PROGRAM}) == "GBON"
 
 
 def test_code_list_array_helper_preserves_program_uri() -> None:
     assert converter._compact_wmdr_code_values(
         {"programAffiliation": PROGRAM},
         "programAffiliation",
-    ) == [PROGRAM]
+    ) == ["GBON"]
 
 
 def test_observed_domain_is_emitted_as_domain_concept() -> None:
@@ -154,7 +157,7 @@ def test_facility_controlled_values_are_concepts_with_absolute_ids() -> None:
     )
     props = record["properties"]
     assert props["facilityType"] == concept(FACILITY_TYPE)
-    assert props["wmoRegion"] == concept(WMO_REGION_CANONICAL)
+    assert props["wmoRegion"] == concept(WMO_REGION)
 
 
 def test_source_wmdr1_object_is_not_mutated() -> None:

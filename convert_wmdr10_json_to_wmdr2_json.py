@@ -11,8 +11,9 @@ terminology where applicable:
 
 * Facility ``properties.observations`` contain Observation objects.
 * Observation ``configurations`` contain Configuration objects.
-* Controlled vocabulary values use OGC API Records Concept objects and retain
-  the complete source URI as ``Concept.id``.
+* Controlled vocabulary values use OGC API Records Concept objects. For WMO
+  codelist URIs, ``Concept.id`` contains the compact notation and
+  ``Concept.url`` retains the complete source URI.
 * Observation programme affiliations use ``programAffiliation``, optional
   ``reportingStatus`` and optional ``dates``.
 * Configuration uses ``instrumentSerialNumber`` and the structured
@@ -44,7 +45,7 @@ try:
 except Exception:  # pragma: no cover - optional dependency
     yaml = None
 
-VERSION = "0.3.3-dev"
+VERSION = "0.4.0"
 ANNOUNCE_WRITES = True
 DEFAULT_PATTERN = "*.json"
 OUTPUT_SUFFIX = ".json"
@@ -447,18 +448,35 @@ def _unwrap_controlled(value: Any, *nested_keys: str) -> Any:
     return current
 
 
+_WMDR_CODE_URI_RE = re.compile(
+    r"^https?://codes\.wmo\.int/wmdr/[^/?#]+/([^/?#]+?)/?$",
+    re.IGNORECASE,
+)
+
+
+def _wmdr_code_parts(value: Any) -> Tuple[Any, Optional[str]]:
+    """Return compact WMO notation and, when supplied, its original URI."""
+    normalized = _normalize_code_value(value)
+    if not isinstance(normalized, str):
+        return normalized, None
+    match = _WMDR_CODE_URI_RE.fullmatch(normalized)
+    if match:
+        return match.group(1), normalized
+    return normalized, None
+
+
 def _concept(
     value: Any,
     *nested_keys: str,
     allow_null: bool = False,
     base_uri: Optional[str] = None,
 ) -> Any:
-    """Return an OGC Concept object, retaining a complete URI when supplied.
+    """Return an OGC Concept with compact id and optional full URL.
 
-    ``base_uri`` is used only when the source contains a compact notation and
-    the codelist is unambiguous from the target property (for example WMO
-    ``unit`` or ``TerritoryName``).  Existing absolute identifiers are never
-    rewritten.
+    A supplied WMO codelist URI is retained unchanged in ``url`` and its
+    notation becomes ``id``. For a compact notation, ``base_uri`` is used
+    only where the target property makes the vocabulary unambiguous.
+    Arbitrary non-WMO absolute URIs are retained as ``id``.
     """
     if _explicit_nil(value):
         return _EXPLICIT_NULL if allow_null else None
@@ -470,38 +488,60 @@ def _concept(
         return _EXPLICIT_NULL if allow_null else None
     if isinstance(normalized, int):
         normalized = str(normalized)
-    if isinstance(normalized, str):
-        identifier = normalized
-        if base_uri and not identifier.startswith(("http://", "https://")):
-            identifier = f"{base_uri.rstrip('/#')}/{identifier.lstrip('/#')}"
-        return {"id": identifier}
-    return None
-
-
-def _wmo_region_concept(value: Any) -> Any:
-    """Return a WMO Region Concept using the canonical HTTPS identifier.
-
-    WMDR1 source records commonly contain the historical HTTP form. WMDR2-devt
-    constrains WMO Region identifiers to the canonical HTTPS codelist URI.
-    Explicit unknown/nil values are omitted rather than serialized as null.
-    """
-    concept = _concept(
-        value,
-        base_uri="https://codes.wmo.int/wmdr/WMORegion",
-    )
-    if not isinstance(concept, Mapping):
+    if not isinstance(normalized, str):
         return None
 
-    identifier = concept.get("id")
-    if isinstance(identifier, str):
-        old_prefix = "http://codes.wmo.int/wmdr/WMORegion/"
-        if identifier.startswith(old_prefix):
-            concept = dict(concept)
-            concept["id"] = (
-                "https://codes.wmo.int/wmdr/WMORegion/"
-                + identifier[len(old_prefix):]
-            )
+    if normalized.startswith((
+        "http://codes.wmo.int/wmdr/",
+        "https://codes.wmo.int/wmdr/",
+    )):
+        return {
+            "id": normalized.rstrip("/").rsplit("/", 1)[-1],
+            "url": normalized,
+        }
+
+    if normalized.startswith(("http://", "https://")):
+        return {"id": normalized}
+
+    concept: Dict[str, Any] = {"id": normalized}
+    if base_uri:
+        concept["url"] = f"{base_uri.rstrip('/#')}/{normalized.lstrip('/#')}"
     return concept
+
+def _wmo_region_concept(value: Any) -> Any:
+    """Return WMO Region without rewriting a supplied source URI."""
+    return _concept(
+        value,
+        base_uri="http://codes.wmo.int/wmdr/WMORegion",
+    )
+
+def _required_wmo_concept(
+    value: Any,
+    *nested_keys: str,
+    base_uri: Optional[str] = None,
+) -> Any:
+    """Preserve an explicit WMO ``.../unknown`` URI for a required property.
+
+    Plain textual ``unknown`` and nil values retain the normal omission
+    semantics.  A full WMO codelist URI ending in ``/unknown`` is different:
+    it is an explicit controlled-value assertion supplied by the source.
+    """
+    raw = _unwrap_controlled(value, *nested_keys)
+    if isinstance(raw, Mapping):
+        raw = _first_non_empty(
+            raw.get("href"),
+            raw.get("url"),
+            raw.get("id"),
+            raw.get("value"),
+            raw.get("#text"),
+            raw.get("text"),
+        )
+    if isinstance(raw, str):
+        raw_text = raw.strip().strip("<>")
+        match = _WMDR_CODE_URI_RE.fullmatch(raw_text)
+        if match and match.group(1).lower() == "unknown":
+            return {"id": match.group(1), "url": raw_text}
+    return _concept(value, *nested_keys, base_uri=base_uri)
 
 
 def _concepts(
@@ -519,8 +559,8 @@ def _concepts(
 
 # Compatibility helpers retained for callers/tests that imported them.
 def _compact_wmdr_code_value(value: Any) -> Any:
-    return _normalize_code_value(value)
-
+    identifier, _ = _wmdr_code_parts(value)
+    return identifier
 
 def _compact_wmdr_code_values(value: Any, *nested_keys: str) -> List[Any]:
     return [item["id"] for item in _concepts(value, *nested_keys)]
@@ -562,22 +602,45 @@ def _parse_bool(value: Any) -> Optional[bool]:
 
 
 def _quantity(value: Any, uom: Any = None) -> Optional[Dict[str, Any]]:
-    """Compatibility helper for source WMDR1 quantity objects."""
+    """Normalize a WMDR1 Measure to the v0.4.0 quantitative representation.
+
+    Numeric values are serialized as an array. A unit of measure, when
+    present, is serialized as an OGC Concept using the WMO unit vocabulary.
+    """
     raw_value = value
     raw_uom = uom
     if isinstance(value, Mapping):
-        raw_value = _first_non_empty(value.get("value"), value.get("#text"), value.get("text"))
-        raw_uom = _first_non_empty(value.get("uom"), value.get("unit"), value.get("@uom"), raw_uom)
+        raw_value = _first_non_empty(
+            value.get("value"),
+            value.get("values"),
+            value.get("#text"),
+            value.get("text"),
+        )
+        raw_uom = _first_non_empty(
+            value.get("uom"),
+            value.get("unit"),
+            value.get("@uom"),
+            raw_uom,
+        )
+
     if raw_value in (None, "", [], {}):
         return None
-    if isinstance(raw_value, str):
+
+    values: List[float] = []
+    for item in _as_list(raw_value):
+        if isinstance(item, bool):
+            continue
         try:
-            raw_value = float(raw_value.strip())
-        except ValueError:
-            raw_value = raw_value.strip()
-    result: Dict[str, Any] = {"value": raw_value}
-    if raw_uom not in (None, "", [], {}):
-        result["uom"] = raw_uom
+            values.append(float(item))
+        except (TypeError, ValueError):
+            continue
+    if not values:
+        return None
+
+    result: Dict[str, Any] = {"value": values}
+    unit = _concept(raw_uom, base_uri="http://codes.wmo.int/wmdr/unit")
+    if unit is not None:
+        result["uom"] = unit
     return result
 
 
@@ -849,17 +912,40 @@ def _normalize_ogc_contact(raw: Any) -> Optional[Dict[str, Any]]:
         phone_sources.extend(_as_list(payload.get(key)))
     for key in ("voice", "facsimile", "phone", "phones"):
         phone_sources.extend(_as_list(phone_info.get(key)))
+    unstructured_phones: List[str] = []
     for item in phone_sources:
         item_obj = _as_mapping(item)
-        text = _strip_text(_first_non_empty(item_obj.get("value"), item_obj.get("phone"), item_obj.get("number"), item_obj.get("#text"), item))
-        if text:
-            phone: Dict[str, Any] = {"value": _normalize_phone_value(text)}
+        text = _strip_text(
+            _first_non_empty(
+                item_obj.get("value"),
+                item_obj.get("phone"),
+                item_obj.get("number"),
+                item_obj.get("#text"),
+                item,
+            )
+        )
+        if not text:
+            continue
+
+        normalized_phone = _normalize_phone_value(text)
+        if re.fullmatch(r"^\+[1-9][0-9]{3,14}$", normalized_phone):
+            phone: Dict[str, Any] = {"value": normalized_phone}
             roles = _normalize_roles(item_obj.get("roles") or item_obj.get("role"))
             if roles:
                 phone["roles"] = roles
             phones.append(phone)
+        else:
+            unstructured_phones.append(text)
+
     if phones:
         contact["phones"] = _uniq_dicts(phones)
+
+    if unstructured_phones:
+        note = "Source phone number(s), not safely normalized to E.164: " + ", ".join(
+            cast(List[str], _uniq_scalars(unstructured_phones))
+        )
+        existing = _strip_text(contact.get("contactInstructions"))
+        contact["contactInstructions"] = f"{existing}; {note}" if existing else note
 
     address: Dict[str, Any] = {}
     delivery = _first_non_empty(address_info.get("deliveryPoint"), address_info.get("deliveryPoints"), address_info.get("street"))
@@ -919,44 +1005,69 @@ def _merge_contact(existing: Mapping[str, Any], new: Mapping[str, Any]) -> Dict[
     return result
 
 
-def _register_contact(registry: Dict[str, Dict[str, Any]], raw: Any) -> Optional[str]:
+def _register_contact(
+    registry: Dict[str, Dict[str, Any]],
+    raw: Any,
+) -> Optional[Dict[str, Any]]:
+    """Resolve Contact identity while keeping occurrence roles contextual."""
     contact = _normalize_ogc_contact(raw)
     if not contact:
         return None
+
     identifier = _contact_identifier(contact)
     contact["identifier"] = identifier
-    contact.pop("roles", None)
-    registry[identifier] = _merge_contact(registry.get(identifier, {}), contact)
-    return identifier
+    roles = _normalize_roles(contact.get("roles"))
+
+    identity = dict(contact)
+    identity.pop("roles", None)
+    merged_identity = _merge_contact(registry.get(identifier, {}), identity)
+    registry[identifier] = merged_identity
+
+    occurrence = dict(merged_identity)
+    if roles:
+        occurrence["roles"] = roles
+    return occurrence
 
 
-def _contact_assignments(
+def _map_contact_roles(roles: Sequence[str], *, context: Optional[str]) -> List[str]:
+    """Map WMDR1 contextual role semantics to WMDR2/OGC Contact role names."""
+    if context != "facility":
+        return sorted(set(roles))
+
+    mapping = {
+        "owner": "supervisor",
+        "principalInvestigator": "custodian",
+        "pointOfContact": "pointOfContact",
+    }
+    return sorted({mapping.get(role, role) for role in roles})
+
+
+def _contact_occurrences(
     value: Any,
     registry: Dict[str, Dict[str, Any]],
     fallback_role: Any = None,
+    *,
+    context: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
+    """Return contextual OGC Contact occurrences with roles on Contact itself."""
     out: List[Dict[str, Any]] = []
     for item in _as_list(value):
-        payload = _as_mapping(item)
-        ref = _strip_text(payload.get("contact")) if payload else None
-
-        normalized_contact = _normalize_ogc_contact(item)
-        normalized_roles = (
-            _normalize_roles(normalized_contact.get("roles"))
-            if isinstance(normalized_contact, Mapping)
-            else []
-        )
-        if not normalized_roles:
-            normalized_roles = _normalize_roles(payload.get("roles") or payload.get("role"))
-        if not normalized_roles and fallback_role is not None:
-            normalized_roles = _normalize_roles(fallback_role)
-
-        if not ref:
-            ref = _register_contact(registry, item)
-        if ref and normalized_roles:
-            out.append({"contact": ref, "roles": normalized_roles})
+        contact = _register_contact(registry, item)
+        if not contact:
+            continue
+        roles = _normalize_roles(contact.get("roles"))
+        if not roles:
+            payload = _as_mapping(item)
+            roles = _normalize_roles(payload.get("roles") or payload.get("role"))
+        if not roles and fallback_role is not None:
+            roles = _normalize_roles(fallback_role)
+        roles = _map_contact_roles(roles, context=context)
+        if roles:
+            contact["roles"] = roles
+        else:
+            contact.pop("roles", None)
+        out.append(contact)
     return _uniq_dicts(out)
-
 
 def _collect_discovery_values(entity_type: str, source: Mapping[str, Any], bucket: str) -> List[Any]:
     values: List[Any] = []
@@ -1202,8 +1313,13 @@ def _external_ids_and_titles(facility: Mapping[str, Any]) -> Tuple[List[Dict[str
     external_ids: List[Dict[str, str]] = []
     titles: List[str] = []
     for occurrence in _facility_program_affiliations(raw):
-        program_id = _as_mapping(occurrence.get("programAffiliation")).get("id")
-        scheme = _last_segment(program_id) if program_id is not None else None
+        program = _as_mapping(occurrence.get("programAffiliation"))
+        program_id = _strip_text(program.get("id"))
+        program_url = _strip_text(program.get("url"))
+        scheme = program_url
+        if scheme is None and program_id and program_id.startswith(("http://", "https://")):
+            scheme = program_id
+
         value = _strip_text(occurrence.get("programSpecificFacilityId"))
         if value:
             external: Dict[str, str] = {"value": value}
@@ -1474,16 +1590,30 @@ def _observing_procedure_from_source(src: Mapping[str, Any], schedule_registry: 
         return None
     result: Dict[str, Any] = {"observingSchedules": [uid]}
     start, end = _extract_interval(src)
-    time = _time_interval(start, end)
-    if time:
-        result["time"] = time
-    strategy = _first_non_empty(src.get("strategy"), _as_mapping(src.get("sampling")).get("samplingStrategy"), src.get("samplingStrategy"))
+    result["time"] = _time_interval(start, end) or {"interval": ["..", ".."]}
+
+    sampling = _as_mapping(src.get("sampling"))
+    strategy = _first_non_empty(
+        src.get("strategy"),
+        sampling.get("samplingStrategy"),
+        src.get("samplingStrategy"),
+    )
     concept = _concept(
         strategy,
         base_uri="http://codes.wmo.int/wmdr/SamplingStrategy",
     )
     if concept:
         result["strategy"] = concept
+
+    spatial = _first_non_empty(
+        src.get("spatialObservingResolution"),
+        src.get("spatialSamplingResolution"),
+        sampling.get("spatialObservingResolution"),
+        sampling.get("spatialSamplingResolution"),
+    )
+    quantity = _quantity(spatial)
+    if quantity:
+        result["spatialObservingResolution"] = quantity
     return result
 
 
@@ -1497,7 +1627,7 @@ def _reporting_procedure_from_source(
     merged: Dict[str, Any] = {**reporting, **procedure}
     for key in (
         "internationalExchange", "dataFormat", "dataPolicy", "levelOfData", "numberOfObservationsInReportingInterval",
-        "referenceDatum", "referenceTimeSource", "spatialReportingInterval", "strategy", "timeliness",
+        "referenceDatum", "referenceTimeSource", "spatialReportingResolution", "spatialReportingInterval", "strategy", "timeliness",
         "timeStampMeaning", "uom", "temporalReportingInterval", "temporalAggregate", "reportingSchedule",
         "contact", "contacts", "responsibleParty", "links",
     ):
@@ -1541,9 +1671,17 @@ def _reporting_procedure_from_source(
         if concepts:
             result[key] = concepts
 
-    for key in ("numberOfObservationsInReportingInterval", "spatialReportingInterval", "timeliness"):
+    for key in ("numberOfObservationsInReportingInterval", "timeliness"):
         if _non_empty(merged.get(key)):
             result[key] = merged[key]
+
+    spatial = _first_non_empty(
+        merged.get("spatialReportingResolution"),
+        merged.get("spatialReportingInterval"),
+    )
+    quantity = _quantity(spatial)
+    if quantity:
+        result["spatialReportingResolution"] = quantity
     for key in ("temporalReportingInterval", "temporalAggregate"):
         if _non_empty(merged.get(key)):
             result[key] = _normalize_time_resolution(merged[key])
@@ -1556,9 +1694,9 @@ def _reporting_procedure_from_source(
 
     assignments: List[Dict[str, Any]] = []
     for key in ("contact", "contacts", "responsibleParty"):
-        assignments.extend(_contact_assignments(merged.get(key), contact_registry, "responsibleParty" if key == "responsibleParty" else None))
+        assignments.extend(_contact_occurrences(merged.get(key), contact_registry, "responsibleParty" if key == "responsibleParty" else None))
     if assignments:
-        result["contactAssignments"] = _uniq_dicts(assignments)
+        result["contacts"] = _uniq_dicts(assignments)
     raw_links = _as_list(merged.get("links"))
     links = [link for item in raw_links if (link := _normalize_link(item))]
     if links:
@@ -1632,9 +1770,7 @@ def _configuration_from_source(
 
     result: Dict[str, Any] = {"id": configuration_id}
     start, end = _extract_interval(src)
-    time = _time_interval(start, end)
-    if time:
-        result["time"] = time
+    result["time"] = _time_interval(start, end) or {"interval": ["..", ".."]}
 
     configuration_codes = (
         ("observingMethod", ("observingMethod",), True, None),
@@ -1675,9 +1811,9 @@ def _configuration_from_source(
     assignments: List[Dict[str, Any]] = []
     for key in ("contact", "contacts", "responsibleParty", "operator", "maintainer"):
         fallback = key if key not in {"contact", "contacts"} else None
-        assignments.extend(_contact_assignments(merged.get(key), contact_registry, fallback))
+        assignments.extend(_contact_occurrences(merged.get(key), contact_registry, fallback))
     if assignments:
-        result["contactAssignments"] = _uniq_dicts(assignments)
+        result["contacts"] = _uniq_dicts(assignments)
 
     links = _extract_links(merged, "configuration")
     if links:
@@ -1720,7 +1856,7 @@ def _observed_feature(obs: Mapping[str, Any]) -> Optional[Dict[str, Any]]:
     if "domain" not in result:
         derived = _observed_domain_from_observed_variable(_first_non_empty(obs.get("observedProperty"), obs.get("observedVariable")))
         if derived:
-            result["domain"] = {"id": derived}
+            result["domain"] = _concept(derived)
     return result or None
 
 
@@ -1764,7 +1900,7 @@ def _observation_from_source(
         result["description"] = description
 
     property_concept = _concept(observed_property)
-    geometry_concept = _concept(
+    geometry_concept = _required_wmo_concept(
         observed_geometry,
         base_uri="http://codes.wmo.int/wmdr/Geometry",
     )
@@ -1856,11 +1992,11 @@ def _observation_from_source(
 
     assignments: List[Dict[str, Any]] = []
     for key in ("contact", "contacts", "responsibleParty", "operator"):
-        assignments.extend(_contact_assignments(obs.get(key), contact_registry, key if key not in {"contact", "contacts"} else None))
+        assignments.extend(_contact_occurrences(obs.get(key), contact_registry, key if key not in {"contact", "contacts"} else None, context="observation"))
     metadata = _as_mapping(obs.get("metadata"))
-    assignments.extend(_contact_assignments(metadata.get("contact"), contact_registry))
+    assignments.extend(_contact_occurrences(metadata.get("contact"), contact_registry, context="observation"))
     if assignments:
-        result["contactAssignments"] = _uniq_dicts(assignments)
+        result["contacts"] = _uniq_dicts(assignments)
 
     links = _extract_links(obs, "observation")
     if links:
@@ -1964,10 +2100,33 @@ def _record_timestamps(header: Mapping[str, Any], *, source_name: Optional[str] 
 def _collect_root_contacts(facility: Mapping[str, Any], header: Mapping[str, Any], registry: Dict[str, Dict[str, Any]]) -> List[Dict[str, Any]]:
     assignments: List[Dict[str, Any]] = []
     for key in ("contact", "contacts", "responsibleParty"):
-        assignments.extend(_contact_assignments(facility.get(key), registry))
-    assignments.extend(_contact_assignments(header.get("recordOwner"), registry, "owner"))
-    assignments.extend(_contact_assignments(facility.get("owner"), registry, "owner"))
-    assignments.extend(_contact_assignments(facility.get("operator"), registry, "operator"))
+        assignments.extend(
+            _contact_occurrences(
+                facility.get(key),
+                registry,
+                "pointOfContact",
+                context="facility",
+            )
+        )
+    # recordOwner is ownership of the metadata record, not necessarily
+    # supervision of the Facility.
+    assignments.extend(_contact_occurrences(header.get("recordOwner"), registry, "owner"))
+    assignments.extend(
+        _contact_occurrences(
+            facility.get("owner"),
+            registry,
+            "owner",
+            context="facility",
+        )
+    )
+    assignments.extend(
+        _contact_occurrences(
+            facility.get("operator"),
+            registry,
+            "operator",
+            context="facility",
+        )
+    )
     return _uniq_dicts(assignments)
 
 
@@ -2043,7 +2202,7 @@ def build_facility_feature(
 
     root_assignments = _collect_root_contacts(facility_obj, header_obj, contact_registry)
     if root_assignments:
-        properties["contactAssignments"] = root_assignments
+        properties["contacts"] = root_assignments
 
     programme_index = _programme_index(facility_obj)
     converted_observations: List[Dict[str, Any]] = []
@@ -2072,8 +2231,6 @@ def build_facility_feature(
         properties["instruments"] = sorted(instrument_registry.values(), key=lambda item: str(item.get("id")))
     if schedule_registry:
         properties["schedules"] = sorted(schedule_registry.values(), key=lambda item: str(item.get("uid")))
-    if contact_registry:
-        properties["contacts"] = sorted(contact_registry.values(), key=lambda item: str(item.get("identifier")))
 
     keywords = _keywords_from_values(_collect_discovery_values("facility", facility_obj, "keywords"))
     if keywords:
@@ -2109,7 +2266,13 @@ def _conceptize_existing(value: Any) -> Any:
     if value is None:
         return None
     if isinstance(value, Mapping) and "id" in value:
-        return dict(value)
+        result = dict(value)
+        identifier, retained_url = _wmdr_code_parts(result.get("id"))
+        if identifier not in (None, "", [], {}):
+            result["id"] = identifier
+        if retained_url and "url" not in result:
+            result["url"] = retained_url
+        return result
     return _concept(value, allow_null=True)
 
 
@@ -2480,7 +2643,8 @@ def _remove_inline_catalogue_items(record_paths: Iterable[Path]) -> None:
         except Exception:
             continue
         props = _as_dict(_as_mapping(record).get("properties"))
-        props.pop("contacts", None)
+        # Contacts are semantic OGC Contact occurrences and remain inline.
+        # Only the reusable Instrument catalogue may be externalized.
         props.pop("instruments", None)
         record["properties"] = props
         _write_json(path, record)

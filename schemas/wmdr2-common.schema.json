@@ -17,8 +17,7 @@
           "properties": {
             "id": {
               "type": "string",
-              "format": "uri",
-              "pattern": "^https?://"
+              "minLength": 1
             }
           }
         }
@@ -102,29 +101,6 @@
     "link": {
       "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/links/items"
     },
-    "contactAssignment": {
-      "type": "object",
-      "required": [
-        "contact",
-        "roles"
-      ],
-      "properties": {
-        "contact": {
-          "type": "string",
-          "pattern": "^contact:",
-          "description": "Reference to properties.contacts[].identifier."
-        },
-        "roles": {
-          "type": "array",
-          "minItems": 1,
-          "uniqueItems": true,
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "additionalProperties": false
-    },
     "temporalGeometry": {
       "type": "object",
       "required": [
@@ -168,7 +144,23 @@
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/$defs/controlledConcept"
+              "allOf": [
+                {
+                  "$ref": "#/$defs/controlledConcept"
+                },
+                {
+                  "required": [
+                    "url"
+                  ],
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "pattern": "^https?://codes\\.wmo\\.int/wmdr/GeopositioningMethod/"
+                    }
+                  }
+                }
+              ]
             }
           }
         }
@@ -360,7 +352,11 @@
         "beginPosition": false,
         "endPosition": false,
         "validFrom": false,
-        "validTo": false
+        "validTo": false,
+        "spatialObservingResolution": {
+          "$ref": "#/$defs/spatialResolution"
+        },
+        "spatialSamplingResolution": false
       },
       "additionalProperties": true
     },
@@ -403,9 +399,6 @@
             "$ref": "#/$defs/controlledConcept"
           }
         },
-        "spatialReportingInterval": {
-          "type": "string"
-        },
         "strategy": {
           "$ref": "#/$defs/controlledConcept"
         },
@@ -442,18 +435,23 @@
             "$ref": "#/$defs/link"
           }
         },
-        "contactAssignments": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/contactAssignment"
-          }
-        },
         "time": false,
         "date": false,
         "beginPosition": false,
         "endPosition": false,
         "validFrom": false,
-        "validTo": false
+        "validTo": false,
+        "contacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/contacts/items"
+          }
+        },
+        "spatialReportingResolution": {
+          "$ref": "#/$defs/spatialResolution"
+        },
+        "spatialReportingInterval": false
       },
       "allOf": [
         {
@@ -591,6 +589,26 @@
     "iso8601Duration": {
       "type": "string",
       "pattern": "^(-?)P(?=\\d|T\\d)(?:(\\d+)Y)?(?:(\\d+)M)?(?:(\\d+)([DW]))?(?:T(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\d+(?:\\.\\d+)?)S)?)?$"
+    },
+    "spatialResolution": {
+      "type": "object",
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "value": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {
+            "type": "number"
+          }
+        },
+        "uom": {
+          "$ref": "#/$defs/controlledConcept"
+        }
+      },
+      "additionalProperties": false
     }
   }
 }

@@ -91,7 +91,7 @@ def test_main_writes_catalogues_when_enabled(tmp_path: Path) -> None:
 
     assert embedded["properties"]["contacts"]
     assert embedded["properties"]["instruments"]
-    assert "contacts" not in catalogue_record["properties"]
+    assert catalogue_record["properties"]["contacts"]
     assert "instruments" not in catalogue_record["properties"]
     assert contacts[0]["identifier"] == "contact:ops@example.org"
     assert instruments[0]["id"] == "maker-model"

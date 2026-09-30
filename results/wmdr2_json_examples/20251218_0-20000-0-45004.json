@@ -19,15 +19,18 @@
     "updated": "2025-12-18T00:00:00Z",
     "description": "The station was originally registered based on WMO Pub 9 Vol A information containing these observation remarks: AUT;CLIMAT(C);EVAP;GAMMA RAY;GUAN;OZONE;RAD;RADSAMP;RBCN;RBSN(T);SOILTEMP;SUNDUR (see code table A for explanations). These remarks imply the following additional observations that could not be registered automatically: Gamma ray measurements; Ozone observations; Radiation measurements; Radioactive sampling.",
     "facilityType": {
-      "id": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
+      "id": "landFixed",
+      "url": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
     },
     "wmoRegion": {
-      "id": "https://codes.wmo.int/wmdr/WMORegion/asia"
+      "id": "asia",
+      "url": "http://codes.wmo.int/wmdr/WMORegion/asia"
     },
     "territories": [
       {
         "territory": {
-          "id": "http://codes.wmo.int/wmdr/TerritoryName/HKG"
+          "id": "HKG",
+          "url": "http://codes.wmo.int/wmdr/TerritoryName/HKG"
         },
         "dates": [
           "2016-04-28",
@@ -35,33 +38,118 @@
         ]
       }
     ],
-    "contactAssignments": [
+    "contacts": [
       {
-        "contact": "contact:hong-kong-observatory-37665a3b9f",
+        "organization": "Hong Kong Observatory",
+        "identifier": "contact:hong-kong-observatory-37665a3b9f",
         "roles": [
-          "owner"
+          "supervisor"
         ]
       },
       {
-        "contact": "contact:olee@hko.gov.hk",
+        "name": "LEE,Olivia S M,Ms",
+        "organization": "Hong Kong Observatory",
+        "contactInstructions": "asia",
+        "emails": [
+          {
+            "value": "olee@hko.gov.hk"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+85229268414"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Hong Kong Observatory 134A Nathan Road, Kowloon"
+            ],
+            "city": "Hong Kong",
+            "country": "HKG"
+          }
+        ],
+        "identifier": "contact:olee@hko.gov.hk",
         "roles": [
           "pointOfContact"
         ]
       },
       {
-        "contact": "contact:ckpan@hko.gov.hk",
+        "name": "PAN,Chi-kin,Dr",
+        "organization": "Hong Kong Observatory",
+        "contactInstructions": "asia",
+        "emails": [
+          {
+            "value": "ckpan@hko.gov.hk"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+85229268357"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Hong Kong Observatory 134A Nathan Road"
+            ],
+            "city": "Kowloon",
+            "country": "HKG"
+          }
+        ],
+        "identifier": "contact:ckpan@hko.gov.hk",
         "roles": [
           "pointOfContact"
         ]
       },
       {
-        "contact": "contact:fylee@hko.gov.hk",
+        "name": "LEE,Eunice Fung-ying,Ms",
+        "organization": "Hong Kong Observatory",
+        "contactInstructions": "asia",
+        "emails": [
+          {
+            "value": "fylee@hko.gov.hk"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+85229268414"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Hong Kong Observatory, 134A, Nathan Road, Kowloon, Hong Kong, China"
+            ],
+            "city": "Kowloon",
+            "country": "HKG"
+          }
+        ],
+        "identifier": "contact:fylee@hko.gov.hk",
         "roles": [
           "pointOfContact"
         ]
       },
       {
-        "contact": "contact:oscar@wmo.int",
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface/#/feedback",
+            "rel": "about",
+            "type": "text/html"
+          },
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ],
+        "identifier": "contact:oscar@wmo.int",
         "roles": [
           "owner"
         ]
@@ -72,23 +160,28 @@
         "id": "213-point",
         "title": "domain: atmosphere; geometry: point; variable: 213",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/213"
+          "id": "213",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/213"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -97,10 +190,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -109,10 +204,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -135,10 +232,12 @@
                 2.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other"
+                "id": "other",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other"
               }
             },
             "geometry": {
@@ -179,28 +278,34 @@
         "id": "216-point",
         "title": "domain: atmosphere; geometry: point; variable: 216",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216"
+          "id": "216",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/216"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/1"
+            "id": "1",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/1"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
+              "id": "GUAN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -209,7 +314,8 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
+              "id": "centennialObservingstations",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
             }
           }
         ],
@@ -223,20 +329,24 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
+              "id": "111",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/111"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "verticalDistance": {
               "distances": [
                 2.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+                "id": "localGround",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             },
             "geometry": {
@@ -277,28 +387,34 @@
         "id": "224-point",
         "title": "domain: atmosphere; geometry: point; variable: 224",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
+          "id": "224",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/224"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/1"
+            "id": "1",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/1"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -307,10 +423,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -319,10 +437,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
+              "id": "GUAN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -331,15 +451,18 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
+              "id": "centennialObservingstations",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
             }
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -357,20 +480,24 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
+              "id": "188",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "verticalDistance": {
               "distances": [
                 2.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+                "id": "localGround",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             },
             "geometry": {
@@ -411,28 +538,34 @@
         "id": "225-point",
         "title": "domain: atmosphere; geometry: point; variable: 225",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225"
+          "id": "225",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/225"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/1"
+            "id": "1",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/1"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
+              "id": "GUAN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -441,10 +574,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -453,10 +588,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -465,15 +602,18 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
+              "id": "centennialObservingstations",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
             }
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -491,20 +631,24 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
+              "id": "188",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/188"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "verticalDistance": {
               "distances": [
                 67.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other"
+                "id": "other",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other"
               }
             }
           }
@@ -537,23 +681,28 @@
         "id": "227-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 227",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/227"
+          "id": "227",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/227"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+          "id": "verticalProfile",
+          "url": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
+              "id": "GUAN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -562,10 +711,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
+              "id": "RBSNt",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -574,10 +725,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
+              "id": "RBSNt",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -586,15 +739,18 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
+              "id": "centennialObservingstations",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
             }
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -603,10 +759,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              "id": "GBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-09-08",
@@ -617,8 +775,15 @@
         "configurations": [
           {
             "id": "id_01f56dfe-5bdb-4147-9604-0eb685e7e9de",
+            "time": {
+              "interval": [
+                "..",
+                ".."
+              ]
+            },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331"
+              "id": "331",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331"
             }
           }
         ],
@@ -633,28 +798,34 @@
         "id": "227-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 227",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/227"
+          "id": "227",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/227"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+          "id": "verticalProfile",
+          "url": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/1"
+            "id": "1",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/1"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
+              "id": "GUAN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -663,10 +834,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
+              "id": "RBSNt",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -675,10 +848,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
+              "id": "RBSNt",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -687,15 +862,18 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
+              "id": "centennialObservingstations",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
             }
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -704,10 +882,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              "id": "GBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-09-08",
@@ -725,10 +905,12 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331"
+              "id": "331",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "instrumentSerialNumber": "not applicable",
             "verticalDistance": {
@@ -736,10 +918,12 @@
                 66.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other"
+                "id": "other",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other"
               }
             },
             "instrument": "vaisala-oyj-rs41-sg"
@@ -773,23 +957,28 @@
         "id": "12249-point",
         "title": "domain: atmosphere; geometry: point; variable: 12249",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249"
+          "id": "12249",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12249"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/CLIMATc"
+              "id": "CLIMATc",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/CLIMATc"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -798,10 +987,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/CLIMATc"
+              "id": "CLIMATc",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/CLIMATc"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -810,10 +1001,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -822,10 +1015,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -834,15 +1029,18 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
+              "id": "centennialObservingstations",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
             }
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -865,10 +1063,12 @@
                 2.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+                "id": "localGround",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             },
             "geometry": {
@@ -909,28 +1109,34 @@
         "id": "256-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 256",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/256"
+          "id": "256",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/256"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+          "id": "verticalProfile",
+          "url": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/climateMonitoring"
+            "id": "climateMonitoring",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/climateMonitoring"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -939,10 +1145,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
+              "id": "RBSNt",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -951,10 +1159,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
+              "id": "RBSNt",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -963,10 +1173,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              "id": "GBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-09-08",
@@ -984,23 +1196,28 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254"
+              "id": "254",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/254"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
+              "id": "manualReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
             },
             "operatingStatus": {
-              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/testing"
+              "id": "testing",
+              "url": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/testing"
             },
             "verticalDistance": {
               "distances": [
                 66.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other"
+                "id": "other",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/other"
               }
             }
           }
@@ -1028,9 +1245,10 @@
             ]
           }
         ],
-        "contactAssignments": [
+        "contacts": [
           {
-            "contact": "contact:hong-kong-observatory-37665a3b9f",
+            "organization": "Hong Kong Observatory",
+            "identifier": "contact:hong-kong-observatory-37665a3b9f",
             "roles": [
               "owner"
             ]
@@ -1041,23 +1259,28 @@
         "id": "270-point",
         "title": "domain: atmosphere; geometry: point; variable: 270",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/270"
+          "id": "270",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/270"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -1066,10 +1289,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/CLIMATc"
+              "id": "CLIMATc",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/CLIMATc"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -1078,10 +1303,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/CLIMATc"
+              "id": "CLIMATc",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/CLIMATc"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1090,10 +1317,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -1102,10 +1331,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1116,6 +1347,12 @@
         "configurations": [
           {
             "id": "id_54b9a950-2b00-43c9-9d19-0d6506dde229",
+            "time": {
+              "interval": [
+                "..",
+                ".."
+              ]
+            },
             "observingMethod": null
           }
         ],
@@ -1130,28 +1367,34 @@
         "id": "310-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 310",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/310"
+          "id": "310",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/310"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+          "id": "verticalProfile",
+          "url": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/1"
+            "id": "1",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/1"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
+              "id": "GUAN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1160,10 +1403,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
+              "id": "RBSNt",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -1172,10 +1417,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
+              "id": "RBSNt",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1184,15 +1431,18 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
+              "id": "centennialObservingstations",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
             }
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -1201,10 +1451,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              "id": "GBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-09-08",
@@ -1222,10 +1474,12 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327"
+              "id": "327",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "instrumentSerialNumber": "not applicable",
             "instrument": "vaisala-oyj-rs41-sg"
@@ -1259,23 +1513,28 @@
         "id": "510-area",
         "title": "domain: terrestrial; geometry: area; variable: 510",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/510"
+          "id": "510",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/510"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/area"
+          "id": "area",
+          "url": "http://codes.wmo.int/wmdr/Geometry/area"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+            "id": "terrestrial",
+            "url": "http://codes.wmo.int/wmdr/Domain/terrestrial"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "id": "GOSGeneral",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1286,6 +1545,12 @@
         "configurations": [
           {
             "id": "id_9a56a45a-9a10-4aa5-be1f-53c3d137ed5f",
+            "time": {
+              "interval": [
+                "..",
+                ".."
+              ]
+            },
             "observingMethod": null
           }
         ],
@@ -1300,20 +1565,28 @@
         "id": "596-unknown",
         "title": "domain: terrestrial; geometry: unknown; variable: 596",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/596"
+          "id": "596",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/596"
+        },
+        "observedGeometry": {
+          "id": "unknown",
+          "url": "http://codes.wmo.int/wmdr/Geometry/unknown"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+            "id": "terrestrial",
+            "url": "http://codes.wmo.int/wmdr/Domain/terrestrial"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
+              "id": "GOSGeneral",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GOSGeneral"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1324,6 +1597,12 @@
         "configurations": [
           {
             "id": "id_5f6f77ba-1cb8-4738-b86b-4d5cf6d6aa75",
+            "time": {
+              "interval": [
+                "..",
+                ".."
+              ]
+            },
             "observingMethod": null
           }
         ],
@@ -1338,28 +1617,34 @@
         "id": "12000-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 12000",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12000"
+          "id": "12000",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12000"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+          "id": "verticalProfile",
+          "url": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/1"
+            "id": "1",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/1"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
+              "id": "RBSNt",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -1368,10 +1653,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
+              "id": "RBSNt",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBSNt"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1380,10 +1667,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
+              "id": "GUAN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1392,15 +1681,18 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
+              "id": "centennialObservingstations",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
             }
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -1409,10 +1701,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+              "id": "GBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-09-08",
@@ -1430,10 +1724,12 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327"
+              "id": "327",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "instrumentSerialNumber": "NOT APPLICABLE",
             "verticalDistance": {
@@ -1441,10 +1737,12 @@
                 0.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+                "id": "localGround",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             },
             "instrument": "vaisala-oyj-rs41-sg"
@@ -1478,28 +1776,34 @@
         "id": "12005-point",
         "title": "domain: atmosphere; geometry: point; variable: 12005",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
+          "id": "12005",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12005"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/1"
+            "id": "1",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/1"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -1508,10 +1812,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1520,10 +1826,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
+              "id": "GUAN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1532,15 +1840,18 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
+              "id": "centennialObservingstations",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
             }
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -1558,20 +1869,24 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/95"
+              "id": "95",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/95"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "verticalDistance": {
               "distances": [
                 3.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+                "id": "localGround",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             },
             "geometry": {
@@ -1612,28 +1927,34 @@
         "id": "12006-point",
         "title": "domain: atmosphere; geometry: point; variable: 12006",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
+          "id": "12006",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/1"
+            "id": "1",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/1"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
+              "id": "RBON",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBON"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2022-06-07",
@@ -1642,10 +1963,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
+              "id": "closed",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/closed"
             },
             "dates": [
               "2022-06-07",
@@ -1654,10 +1977,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
+              "id": "RBCN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/RBCN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1666,10 +1991,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
+              "id": "GUAN",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GUAN"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2016-04-28",
@@ -1678,7 +2005,8 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
+              "id": "centennialObservingstations",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/centennialObservingstations"
             }
           }
         ],
@@ -1692,20 +2020,24 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/95"
+              "id": "95",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/95"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "verticalDistance": {
               "distances": [
                 3.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+                "id": "localGround",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             },
             "geometry": {
@@ -1750,10 +2082,12 @@
         "model": "RS41-SG",
         "observingMethods": [
           {
-            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331"
+            "id": "331",
+            "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/331"
           },
           {
-            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327"
+            "id": "327",
+            "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/327"
           }
         ]
       }
@@ -1797,108 +2131,6 @@
         "duration": "PT23H59M",
         "@type": "Event",
         "uid": "schedule_b38624328b"
-      }
-    ],
-    "contacts": [
-      {
-        "name": "PAN,Chi-kin,Dr",
-        "organization": "Hong Kong Observatory",
-        "contactInstructions": "asia",
-        "emails": [
-          {
-            "value": "ckpan@hko.gov.hk"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+85229268357"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "Hong Kong Observatory 134A Nathan Road"
-            ],
-            "city": "Kowloon",
-            "country": "HKG"
-          }
-        ],
-        "identifier": "contact:ckpan@hko.gov.hk"
-      },
-      {
-        "name": "LEE,Eunice Fung-ying,Ms",
-        "organization": "Hong Kong Observatory",
-        "contactInstructions": "asia",
-        "emails": [
-          {
-            "value": "fylee@hko.gov.hk"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+85229268414"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "Hong Kong Observatory, 134A, Nathan Road, Kowloon, Hong Kong, China"
-            ],
-            "city": "Kowloon",
-            "country": "HKG"
-          }
-        ],
-        "identifier": "contact:fylee@hko.gov.hk"
-      },
-      {
-        "organization": "Hong Kong Observatory",
-        "identifier": "contact:hong-kong-observatory-37665a3b9f"
-      },
-      {
-        "name": "LEE,Olivia S M,Ms",
-        "organization": "Hong Kong Observatory",
-        "contactInstructions": "asia",
-        "emails": [
-          {
-            "value": "olee@hko.gov.hk"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+85229268414"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "Hong Kong Observatory 134A Nathan Road, Kowloon"
-            ],
-            "city": "Hong Kong",
-            "country": "HKG"
-          }
-        ],
-        "identifier": "contact:olee@hko.gov.hk"
-      },
-      {
-        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
-        "emails": [
-          {
-            "value": "oscar@wmo.int"
-          }
-        ],
-        "links": [
-          {
-            "href": "https://oscar.wmo.int/surface/#/feedback",
-            "rel": "about",
-            "type": "text/html"
-          },
-          {
-            "href": "https://oscar.wmo.int/surface",
-            "rel": "about",
-            "type": "text/html"
-          }
-        ],
-        "identifier": "contact:oscar@wmo.int"
       }
     ],
     "keywords": [

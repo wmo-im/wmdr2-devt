@@ -20,6 +20,7 @@
     },
     "contacts": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "$ref": "https://raw.githubusercontent.com/wmo-im/wmdr2/d30f13c3be6395466a778360c4a4ef59625be6af/schemas/wmdr2-bundled.json#/properties/properties/properties/contacts/items"
       }
@@ -56,15 +57,6 @@
         },
         {
           "$ref": "wmdr2-common.schema.json#/$defs/controlledConcept"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "pattern": "^https://codes\\.wmo\\.int/wmdr/WMORegion/"
-            }
-          }
         }
       ]
     },
@@ -97,7 +89,7 @@
     },
     "observations": {
       "type": "array",
-      "minItems": 0,
+      "minItems": 1,
       "items": {
         "$ref": "wmdr2-observation.schema.json"
       }
@@ -130,12 +122,6 @@
       "type": "array",
       "items": {
         "type": "string"
-      }
-    },
-    "contactAssignments": {
-      "type": "array",
-      "items": {
-        "$ref": "wmdr2-common.schema.json#/$defs/contactAssignment"
       }
     },
     "links": false,

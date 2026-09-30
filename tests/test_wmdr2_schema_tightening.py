@@ -21,6 +21,9 @@ WMO_REGION = "https://codes.wmo.int/wmdr/WMORegion/6"
 
 
 def concept(uri: str) -> dict[str, str]:
+    """Return the v0.4.0 Concept representation expected for a URI."""
+    if "://codes.wmo.int/wmdr/" in uri:
+        return {"id": uri.rstrip("/").rsplit("/", 1)[-1], "url": uri}
     return {"id": uri}
 
 
@@ -34,15 +37,17 @@ def _errors_def(name: str, value: Any):
     )
 
 
-def test_controlled_concept_requires_absolute_http_uri() -> None:
+def test_controlled_concept_accepts_compact_id_and_optional_uri() -> None:
     assert _errors_def("controlledConcept", concept(DOMAIN)) == []
     assert _errors_def(
         "controlledConcept",
         concept(DOMAIN.replace("http://", "https://")),
     ) == []
+    assert _errors_def("controlledConcept", {"id": "atmosphere"}) == []
+    assert _errors_def("controlledConcept", {"id": "atmosphere", "url": DOMAIN}) == []
     assert _errors_def("controlledConcept", DOMAIN)
-    assert _errors_def("controlledConcept", {"id": "atmosphere"})
     assert _errors_def("controlledConcept", {"id": 12006})
+    assert _errors_def("controlledConcept", {"id": ""})
     assert _errors_def("controlledConcept", {"nilReason": "unknown"})
 
 
@@ -268,13 +273,46 @@ def test_reporting_temporal_values_use_iso8601_duration() -> None:
     assert _errors_def("reportingProcedure", value)
 
 
-def test_spatial_reporting_interval_is_not_a_codelist_value() -> None:
+def test_spatial_reporting_resolution_uses_quantity_with_controlled_unit() -> None:
     value = {
         "internationalExchange": False,
         "dataPolicy": concept(DATA_POLICY),
-        "spatialReportingInterval": "point",
+        "spatialReportingResolution": {
+            "value": [10.0],
+            "uom": concept("http://codes.wmo.int/wmdr/unit/km"),
+        },
     }
     assert _errors_def("reportingProcedure", value) == []
+
+    bad_uom = {
+        **value,
+        "spatialReportingResolution": {
+            "value": [10.0],
+            "uom": "km",
+        },
+    }
+    assert _errors_def("reportingProcedure", bad_uom)
+
+
+def test_legacy_spatial_reporting_interval_is_rejected_in_wmdr2_output() -> None:
+    value = {
+        "internationalExchange": False,
+        "dataPolicy": concept(DATA_POLICY),
+        "spatialReportingInterval": {"value": [10.0]},
+    }
+    assert _errors_def("reportingProcedure", value)
+
+
+def test_spatial_observing_resolution_uses_same_quantity_shape() -> None:
+    value = {
+        "time": {"interval": ["2020-01-01", ".."]},
+        "observingSchedules": ["schedule_daily"],
+        "spatialObservingResolution": {
+            "value": [10.0, 20.0],
+            "uom": concept(UNIT_M),
+        },
+    }
+    assert _errors_def("observingProcedure", value) == []
 
 
 def test_instrument_extends_official_model_without_serial_number() -> None:

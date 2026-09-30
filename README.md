@@ -1,18 +1,18 @@
-# WMDR2 development model v0.3.3
+# WMDR2 development model v0.4.0
 
 This repository contains the current development version of the simplified WMDR2 JSON representation, converter utilities, JSON Schemas, generated examples, and tests.
 
 The model represents WIGOS station metadata in an OGC Records / GeoJSON-oriented structure. The conversion path is designed to preserve information available in WMDR 1.0 source records, use stable controlled-concept identifiers, reuse the official `wmo-im/wmdr2` schemas wherever possible, and avoid inventing metadata that is not present in the source.
 
-The current conceptual model is WMDR2 **v0.3.3**. The JSON schema follows the v0.3.3 model while deliberately isolating a small number of development-model extensions or divergences from the current official WMDR2 schema.
+The current conceptual model is WMDR2 **v0.4.0**. The JSON schema follows the v0.4.0 model while deliberately isolating a small number of development-model additions or divergences from the current official WMDR2 schema.
 
 ## Design principles
 
 1. A WMDR2 station record is a GeoJSON `Feature` whose root `id` is the primary WIGOS Station Identifier (WSI).
 2. The conceptual UML model and JSON serialization are related but are not identical. A singular UML role with multiplicity may serialize as a plural JSON array, for example `Instrument.observingMethod [0..*]` -> `observingMethods[]`.
-3. Controlled values are represented as OGC API Records Concept objects with the complete URI in `id`.
+3. Controlled values are represented as OGC API Records Concept objects. For WMO codelist values, `id` may contain the compact notation; when the source supplies the full codelist URI, the converter retains it in `url`.
 4. The converter preserves recorded metadata and must not fabricate missing validity dates, programme affiliations, observing methods, source of observation, data policy, operating status, instrument serial numbers, reference surfaces, or other missing information.
-5. Reusable Contacts, Instruments, and Schedules are serialized once in record-local registries and referenced from the semantic objects where they are used. Registry placement is a serialization mechanism, not an additional Facility ownership relationship in the conceptual model.
+5. Contacts use the OGC API Records Contact structure directly, including contextual `roles[]`. A stable Contact `identifier` allows repeated occurrences to express the same logical contact in different contexts without introducing a separate ContactAssignment layer. Instruments and Schedules remain reusable record-local objects referenced from the semantic objects where they are used.
 6. Configuration history is represented directly in `configurations[]`; there is no nested deployment/location wrapper in the WMDR2 output.
 7. Observation temporal extent is derived from Configuration history rather than duplicated as an independent Observation `time`.
 8. Observing and reporting cadence are properties of their respective procedures. A reusable Schedule describes a calendar pattern and does not itself carry observing-, reporting-, or aggregation-specific WMDR semantics.
@@ -27,7 +27,7 @@ The current pinned official revision is:
 
 ```text
 wmo-im/wmdr2
-987f5896c45e30c9c5f2c7bcf22cd9142a7adbf2
+d30f13c3be6395466a778360c4a4ef59625be6af
 ```
 
 The primary local schema modules are:
@@ -41,16 +41,16 @@ schemas/wmdr2-instrument.schema.json
 schemas/wmdr2-common.schema.json
 ```
 
-Compatible official properties and class definitions are referenced directly from the pinned official bundle. Local schemas contain only development-model extensions, explicit tightenings, or intentional divergences.
+Compatible official properties and class definitions are referenced directly from the pinned official bundle. Local schemas contain only development-model additions, explicit tightenings, or intentional divergences.
 
-The main current divergence is:
+The main current structural divergence is:
 
 - official WMDR2 embeds an Instrument object in `Configuration.instrument`;
 - `wmdr2-devt` uses a record-local Instrument registry and serializes `Configuration.instrument` as a reference to `properties.instruments[].id`.
 
-Other development-model additions include the richer ObservedFeature, observing/reporting procedure structures, record-local reusable schedules and contacts, environment metadata, and temporal geometry.
+Other development-model additions include the richer ObservedFeature, observing/reporting procedure structures, reusable schedules, environment metadata, and temporal geometry. These are treated here as candidate WMDR2 core concepts rather than as a separate extension profile.
 
-The development schema does **not** inherit the complete official record wholesale with `allOf`, because doing so would also import official cardinalities and the currently incompatible embedded-Instrument constraint. Compatible official definitions are reused selectively while the development-model contract remains explicit.
+The development schema does **not** inherit the complete official record wholesale with `allOf`. The principal reason is the currently incompatible embedded-Instrument representation, together with the need to keep deliberate development-model tightenings and additions explicit. Compatible official definitions and cardinalities are reused wherever they match the development model.
 
 For deterministic local validation, synchronize the exact pinned official bundle:
 
@@ -67,51 +67,61 @@ python schemas/sync_official_wmdr2_schema.py \
 
 The synchronization script verifies the exact Git blob before writing `schemas/official/wmdr2-bundled.json`.
 
-The earlier temporary WCMP-specific workaround is no longer needed. The pinned official WMDR2 bundle contains the corrected `time.resolution` pattern.
 
 ## Controlled values and code-list URIs
 
-Reviewed controlled properties are represented as Concept objects:
+Controlled values are represented as OGC API Records Concept objects. For WMO
+code-list values, v0.4.0 uses the compact code-list notation in `id` and retains
+or constructs the corresponding WMO code-list URI in `url` when the vocabulary
+is known unambiguously.
 
 ```json
 {
-  "facilityType": {
-    "id": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
-  },
   "observedProperty": {
-    "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
+    "id": "12006",
+    "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
   },
   "observedGeometry": {
-    "id": "http://codes.wmo.int/wmdr/Geometry/point"
-  },
-  "observingMethod": {
-    "id": "http://codes.wmo.int/wmdr/ObservingMethod/266"
+    "id": "point",
+    "url": "http://codes.wmo.int/wmdr/Geometry/point"
   }
 }
 ```
 
-The converter retains complete absolute HTTP(S) identifiers. It does not contract controlled values to local notations.
+The generic Concept schema does not require `url`: an identifier-only Concept
+remains structurally valid. For WMDR properties whose vocabulary is known,
+however, the converter emits the richer `id` + `url` form. This includes units
+and geopositioning methods.
 
-One deliberate canonicalization is `wmoRegion`: historical `http://codes.wmo.int/wmdr/WMORegion/...` source values are normalized to the canonical HTTPS identifier required by the development schema:
+When WMDR1 supplies a full WMO code-list URI, that URI is preserved exactly in
+`url`; the converter does not silently rewrite `http` to `https`. For example:
 
 ```json
 {
   "wmoRegion": {
-    "id": "https://codes.wmo.int/wmdr/WMORegion/6"
+    "id": "europe",
+    "url": "http://codes.wmo.int/wmdr/WMORegion/europe"
   }
 }
 ```
 
-Where an official property is `Concept-or-null`, explicit unknown/nil source information may be represented as JSON `null`. The old development representation:
+For an arbitrary non-WMO Concept URI where no compact vocabulary notation can
+be established safely, the converter preserves the URI rather than inventing
+a compact identifier.
 
-```json
-{"nilReason": "unknown"}
-```
+Where an official property is `Concept-or-null`, explicit unknown/nil source
+information may be represented as JSON `null`. The old development
+representation `{"nilReason": "unknown"}` is not part of the current WMDR2
+output contract.
 
-is not part of the current WMDR2 output contract.
+Optional controlled properties are omitted when the source contains no usable
+assertion unless the schema explicitly permits `null`.
 
-Optional controlled properties are omitted when the source contains no usable assertion unless the schema explicitly permits `null`.
-
+An explicit WMO codelist URI ending in `/unknown` is different from an absent
+or nil source value when the target property is required. For example,
+`http://codes.wmo.int/wmdr/Geometry/unknown` is preserved as the controlled
+Concept `{"id": "unknown", "url": "http://codes.wmo.int/wmdr/Geometry/unknown"}`
+rather than being silently omitted.
 ## Record shape
 
 A WMDR2 Facility record has this overall shape:
@@ -138,7 +148,8 @@ A WMDR2 Facility record has this overall shape:
     "methods": [
       [
         {
-          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+          "id": "gps",
+          "url": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
         }
       ]
     ]
@@ -147,7 +158,8 @@ A WMDR2 Facility record has this overall shape:
     "type": "facility",
     "title": "Thessaloniki",
     "facilityType": {
-      "id": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
+      "id": "landFixed",
+      "url": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
     },
     "observations": []
   },
@@ -164,7 +176,7 @@ A WMDR2 Facility record has this overall shape:
 | `type` | GeoJSON Feature type; always `Feature`. |
 | `geometry` | Latest/current GeoJSON geometry. Coordinates are longitude, latitude, optional elevation. The property itself is required by the development record schema but may be `null` when the source has no usable position. |
 | `time` | Facility temporal extent, i.e. establishment/closure of the Facility. |
-| `temporalGeometry` | Optional location-history extension using aligned `coordinates`, `dates`, and optional positioning `methods`. |
+| `temporalGeometry` | Optional location-history addition using aligned `coordinates`, `dates`, and optional positioning `methods`. |
 | `properties` | Facility metadata plus embedded record-local registries and Observation objects. |
 | `links` | Optional OGC-style links about the record. |
 
@@ -178,7 +190,7 @@ The development schema currently requires:
 - `title`;
 - `facilityType`.
 
-Additional Facility metadata may include `description`, `created`, `updated`, `contacts`, `contactAssignments`, `externalIds`, `additionalIds`, `additionalTitles`, `wmoRegion`, `territories`, `environment`, `instruments`, `schedules`, `observations`, `keywords`, and `facilitySets`.
+Additional Facility metadata may include `description`, `created`, `updated`, `contacts`, `externalIds`, `additionalIds`, `additionalTitles`, `wmoRegion`, `territories`, `environment`, `instruments`, `schedules`, `observations`, `keywords`, and `facilitySets`.
 
 The schema deliberately remains source-friendly at the outer Facility level so that conversion of incomplete legacy records does not require invented metadata. Inner Observation and Configuration structures are tightened independently.
 
@@ -201,12 +213,16 @@ Programme-specific Facility identifiers from WMDR1 are currently preserved throu
 {
   "externalIds": [
     {
-      "scheme": "GAW",
+      "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAW",
       "value": "PAY"
     }
   ]
 }
 ```
+
+For programme-specific identifiers, `scheme` uses the programme Concept URI when
+available. This makes the authority/namespace machine-resolvable while `value`
+remains the programme-specific station identifier itself.
 
 Likewise, a WMDR1 `programSpecificFacilityTitle` is preserved in `additionalTitles[]`.
 
@@ -233,7 +249,7 @@ The conceptual model distinguishes temporal extents from arrays of individual da
 - Territory and ProgramAffiliation temporal validity is serialized by the official WMDR2 structures as `dates`;
 - `TemporalGeometry.date [1..*]` in UML serializes as aligned JSON `dates[]`.
 
-The converter never fabricates a missing temporal anchor.
+The converter never invents dates. When a required time-bound WMDR2 object is present but the WMDR1 source provides no usable validity endpoints, the unknown extent is represented explicitly as `{"interval": ["..", ".."]}`.
 
 ### Observation temporal extent
 
@@ -267,7 +283,8 @@ The root `geometry` is the current or representative Facility position. `tempora
     [],
     [
       {
-        "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+        "id": "gps",
+        "url": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
       }
     ]
   ]
@@ -278,9 +295,10 @@ The root `geometry` is the current or representative Facility position. `tempora
 
 ## Contacts
 
-Contacts are reusable objects stored in `properties.contacts[]` using the OGC Records Contact model.
+Contacts use the OGC API Records Contact structure directly. There is no separate
+`ContactAssignment` type in the v0.4.0 model.
 
-In the conceptual UML, WMDR entities associate directly with Contact. The role of a Contact is contextual rather than intrinsic to the reusable Contact itself. JSON therefore serializes the relationship through `contactAssignments[]`:
+A Contact occurrence may carry `roles[]` directly:
 
 ```json
 {
@@ -290,25 +308,39 @@ In the conceptual UML, WMDR entities associate directly with Contact. The role o
       "organization": "Example Meteorological Service",
       "emails": [
         {"value": "ops@example.org"}
-      ]
-    }
-  ],
-  "contactAssignments": [
-    {
-      "contact": "contact:met-service-example",
-      "roles": ["owner"]
+      ],
+      "roles": ["supervisor", "pointOfContact"]
     }
   ]
 }
 ```
 
-The same Contact may therefore be reused with different roles in different contexts.
+Contact roles are contextual. The same logical contact may therefore occur in
+different WMDR entities with the same stable `identifier` but different
+`roles[]`. The converter keeps role information on each occurrence rather than
+merging roles into a global contact identity.
 
-Contact values referenced through `contactAssignments` require a usable `identifier`.
+When a later WMDR1 occurrence contains only partial contact information, the
+converter may resolve identity fields from an already known Contact with the
+same identifier. It does not invent missing organization, address, or other
+contact metadata.
 
-Phone values follow the OGC Contact schema. The converter may normalize clearly international forms such as `00...` to `+...`, but it does not invent a country code for a local-only number.
+WMDR1 role values are preserved during migration. The current WCMP
+`wis/contact-role` vocabulary is narrower than the roles needed to represent
+WMDR contact semantics. Candidate generic additions identified during this
+work include `supervisor`, `custodian`, `pointOfContact`, and
+`principalInvestigator`. Until such terms are agreed upstream, the development
+model does not invent provisional WMO code-list URIs for them.
 
-Historical source values that contain an HTTP(S) URL in an email slot are preserved as Contact `links[]` rather than emitted as invalid email addresses.
+Phone values follow the OGC Contact schema. The converter may normalize clearly
+international forms such as `00...` to `+...`, but it does not invent a country
+code for a local-only number. A source phone number that cannot be normalized
+safely to the required E.164 form is therefore not emitted as an invalid
+`phones[].value`; the original string is retained in `contactInstructions`
+with an explicit source-preservation note.
+
+Historical source values that contain an HTTP(S) URL in an email slot are
+preserved as Contact `links[]` rather than emitted as invalid email addresses.
 
 ## Territory and programme affiliations
 
@@ -319,7 +351,8 @@ Facility Territory occurrences follow the official WMDR2 structure:
   "territories": [
     {
       "territory": {
-        "id": "http://codes.wmo.int/wmdr/TerritoryName/CHE"
+        "id": "CHE",
+        "url": "http://codes.wmo.int/wmdr/TerritoryName/CHE"
       },
       "dates": ["2020-01-01", ".."]
     }
@@ -338,10 +371,12 @@ Observation programme affiliations are structured objects:
   "programAffiliations": [
     {
       "programAffiliation": {
-        "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAW"
+        "id": "GAW",
+        "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAW"
       },
       "reportingStatus": {
-        "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+        "id": "operational",
+        "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
       },
       "dates": ["2020-01-01", ".."]
     }
@@ -366,7 +401,8 @@ Programme-specific Facility identifiers/titles from WMDR1 are preserved through 
       "model": "HMP155",
       "observingMethods": [
         {
-          "id": "http://codes.wmo.int/wmdr/ObservingMethod/266"
+          "id": "266",
+          "url": "http://codes.wmo.int/wmdr/ObservingMethod/266"
         }
       ]
     }
@@ -374,7 +410,7 @@ Programme-specific Facility identifiers/titles from WMDR1 are preserved through 
 }
 ```
 
-Instrument identifiers are **context-local**. A redundant type prefix such as `instrument:` is not required.
+Instrument identifiers are **context-local**.
 
 The UML property remains singular with multiplicity:
 
@@ -399,26 +435,31 @@ An Observation describes observations of one property/feature/geometry combinati
   "id": "12006-point",
   "title": "Air temperature",
   "observedProperty": {
-    "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
+    "id": "12006",
+    "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/12006"
   },
   "observedGeometry": {
-    "id": "http://codes.wmo.int/wmdr/Geometry/point"
+    "id": "point",
+    "url": "http://codes.wmo.int/wmdr/Geometry/point"
   },
   "observedFeature": {
     "domain": {
-      "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+      "id": "atmosphere",
+      "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
     },
     "featureName": "air"
   },
   "applicationAreas": [
     {
-      "id": "http://codes.wmo.int/wmdr/ApplicationArea/nowcasting"
+      "id": "nowcasting",
+      "url": "http://codes.wmo.int/wmdr/ApplicationArea/nowcasting"
     }
   ],
   "programAffiliations": [
     {
       "programAffiliation": {
-        "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
+        "id": "GBON",
+        "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GBON"
       }
     }
   ],
@@ -426,7 +467,7 @@ An Observation describes observations of one property/feature/geometry combinati
     {
       "id": "cfg-1",
       "time": {
-        "interval": ["2020-01-01", ".."]
+      "interval": ["2020-01-01", ".."]
       }
     }
   ]
@@ -456,26 +497,31 @@ The conceptual UML may use singular role names with multiplicity, for example `a
 {
   "id": "cfg-1",
   "time": {
-    "interval": ["2020-01-01", ".."]
+  "interval": ["2020-01-01", ".."]
   },
   "observingMethod": {
-    "id": "http://codes.wmo.int/wmdr/ObservingMethod/266"
+  "id": "266",
+          "url": "http://codes.wmo.int/wmdr/ObservingMethod/266"
   },
   "operatingStatus": {
-    "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+    "id": "operational",
+    "url": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
   },
   "sourceOfObservation": {
-    "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+    "id": "automaticReading",
+    "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
   },
   "instrument": "vaisala-hmp155",
   "instrumentSerialNumber": "SN-001",
   "verticalDistance": {
     "distances": [2.0],
     "unit": {
-      "id": "http://codes.wmo.int/wmdr/unit/m"
+      "id": "m",
+      "url": "http://codes.wmo.int/wmdr/unit/m"
     },
     "referenceSurface": {
-      "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+      "id": "localGround",
+      "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
     }
   }
 }
@@ -512,12 +558,16 @@ At least one of these must be specified. Both may be present.
     "interval": ["2020-01-01", ".."]
   },
   "strategy": {
-    "id": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+    "id": "continuous",
+    "url": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
   },
   "temporalObservingInterval": "PT10M",
   "spatialObservingResolution": {
     "value": [10.0],
-    "uom": "m"
+    "uom": {
+      "id": "m",
+      "url": "http://codes.wmo.int/wmdr/unit/m"
+    }
   },
   "observingSchedules": ["schedule_daylight"]
 }
@@ -530,11 +580,14 @@ At least one of these must be specified. Both may be present.
 ```json
 {
   "value": [10.0, 20.0],
-  "uom": "m"
+  "uom": {
+    "id": "m",
+    "url": "http://codes.wmo.int/wmdr/unit/m"
+  }
 }
 ```
 
-One value denotes a distance; two values may describe grid/pixel dimensions.
+One value denotes a distance; two values may describe grid/pixel dimensions. `uom`, when present, is a controlled WMO unit Concept and follows the same compact `id` + codelist `url` convention as other controlled values.
 
 Older WMDR1 source names such as `temporalSamplingInterval` are mapped to the current `temporalObservingInterval` output property.
 
@@ -553,18 +606,23 @@ At least one must be specified; both may be present.
 {
   "internationalExchange": true,
   "dataPolicy": {
-    "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+    "id": "noLimitation",
+    "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
   },
   "temporalReportingInterval": "PT1H",
   "spatialReportingResolution": {
     "value": [10.0],
-    "uom": "km"
+    "uom": {
+      "id": "km",
+      "url": "http://codes.wmo.int/wmdr/unit/km"
+    }
   },
   "diurnalBaseTime": "06:00:00",
   "numberOfObservationsInReportingInterval": 6,
   "timeliness": "PT30M",
   "uom": {
-    "id": "http://codes.wmo.int/wmdr/unit/K"
+    "id": "K",
+    "url": "http://codes.wmo.int/wmdr/unit/K"
   }
 }
 ```
@@ -575,7 +633,7 @@ At least one must be specified; both may be present.
 
 `diurnalBaseTime`, when present, is a normalized `HH:MM:SS` clock value and remains on ReportingProcedure rather than on Schedule.
 
-`spatialReportingResolution` has the same quantitative structure as `spatialObservingResolution`.
+`spatialReportingResolution` has the same quantitative structure as `spatialObservingResolution`, including a controlled Concept for `uom`. The WMDR1 source property `spatialReportingInterval` is mapped to this WMDR2 property rather than retained as a public output name.
 
 A reporting interval describes **how often values are reported or exchanged**. It does not imply an aggregation interval.
 
@@ -629,8 +687,8 @@ temporalReportingInterval = PT3H
 represent three different concepts:
 
 - observations are acquired every 10 minutes;
-- hourly results may be derived from those observations;
-- those results may be reported every 3 hours.
+- hourly results are derived from those observations;
+- those results are reported every 3 hours.
 
 The current core WMDR2 output does not yet define the processing/provenance representation for `aggregationInterval`. The intended direction is an OGC/W3C PROV-O-based provenance model in which aggregation parameters belong to the processing Activity that generated a result.
 
@@ -638,15 +696,15 @@ The converter therefore does not reinterpret `temporalReportingInterval` as aggr
 
 ## Official status
 
-OfficialStatus is still a transitional part of the development model and should not be treated as a settled controlled-value contract in this README.
+`OfficialStatus` is present in the v0.4.0 development model but is not part of the current official WMDR2 1.99.dev1 schema.
 
-Its detailed representation should be reviewed separately from the current schema/official-alignment work. The converter must not fabricate an official status when none is present in the source.
+Its semantics and representation remain an explicit modelling-review item for a subsequent development iteration. The converter must not fabricate an official status when none is present in the source.
 
 ## Catalogues and derived views
 
-The main Facility record contains record-local reusable Contacts and Instruments.
+The main Facility record contains contextual Contact occurrences and the record-local reusable Instrument catalogue.
 
-The converter can optionally produce catalogue-oriented outputs in which reusable objects are externalized while records keep lightweight references. Instrument catalogue entries remain logical/type-level entries; serial-numbered physical instances are not promoted to Instrument catalogue objects.
+The converter can optionally produce catalogue-oriented outputs. Contacts remain inline because their `roles[]` carry semantic context; removing them would lose information. Instrument catalogue entries remain logical/type-level entries and may be externalized while records keep lightweight references. Serial-numbered physical instances are not promoted to Instrument catalogue objects.
 
 Derived catalogue/search values, such as an Observation temporal envelope, are projections. They must not be written back as duplicate authoritative metadata.
 
@@ -724,8 +782,8 @@ The canonical test suite covers:
 
 - converter helpers and record conversion;
 - official-schema reuse;
-- current v0.3.3 naming and structure;
-- controlled Concept objects and URI preservation;
+- current v0.4.0 naming and structure;
+- controlled Concept objects, compact identifiers, and URI preservation in `url`;
 - CLI behaviour;
 - tightened schema constraints;
 - observing/reporting timing invariants;
@@ -744,20 +802,27 @@ pytest
 
 The complete suite must pass before committing.
 
-### End-to-end source deficiencies
+### End-to-end validation
 
-The XML examples are real/legacy source records, not curated fully conformant WMDR2 fixtures.
+The XML examples are real/legacy source records, but both the freshly converted
+end-to-end output and the committed files under `results/wmdr2_json_examples/`
+must validate against `wmdr2-record-feature.schema.json` with **zero schema
+errors**.
 
-The end-to-end tests therefore allow only narrowly reviewed source-deficiency signatures where the missing information cannot be supplied without invention. The current allow-list covers:
+The migration remains source-faithful while meeting that contract:
 
-- Configuration without a source validity `time`;
-- ObservingProcedure without a source validity `time`;
-- ReportingProcedure without a usable `dataPolicy`;
-- Observation without a recorded `observedGeometry`;
-- Observation without a recorded programme affiliation;
-- Contact phone numbers that cannot be safely normalized to the required format.
+- required temporal extents with no usable source endpoints are represented as
+  the explicit unknown interval `["..", ".."]`; no dates are invented;
+- an explicitly supplied controlled value such as `Geometry/unknown` is
+  preserved as a Concept rather than treated as missing;
+- a phone number that cannot be safely normalized to the official Contact
+  pattern is preserved as source text in `contactInstructions` rather than
+  emitted as an invalid structured phone value.
 
-Any other validation error remains a hard failure.
+The generated-example schema-validation test is deliberately separate from the
+other output-contract tests so that rerunning the converter followed by
+`pytest` validates the actual files that are candidates for publication and
+use by downstream PoCs.
 
 ## Current non-goals
 
@@ -774,4 +839,4 @@ The development model and converter deliberately do not:
 - force observing and reporting procedures to share a Schedule when their calendar patterns differ;
 - retain obsolete WMDR2 development aliases in current output solely for backwards compatibility.
 
-These constraints keep migration faithful to the source, make validation meaningful, and keep the development model aligned as closely as possible with the official WMDR2 schema while preserving the extensions needed to test the richer WIGOS metadata model.
+These constraints keep migration faithful to the source, make validation meaningful, and keep the development model aligned as closely as possible with the official WMDR2 schema while preserving the additions needed to test the richer candidate WMDR2 core model.

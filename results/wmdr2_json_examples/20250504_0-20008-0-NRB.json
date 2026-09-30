@@ -20,28 +20,31 @@
     "externalIds": [
       {
         "value": "NRB",
-        "scheme": "GAWregional"
+        "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
       },
       {
         "value": "Nairobi",
-        "scheme": "SHADOZ"
+        "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
       },
       {
         "value": "Nairobi",
-        "scheme": "AERONET"
+        "scheme": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
       }
     ],
     "description": "The station is located at 01° 18'S 36° 45' E at an altitude of 1795m and is within the compound of the Kenya Meteorological Department headquarters at Dagoretti Corner, Nairobi.",
     "facilityType": {
-      "id": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
+      "id": "landFixed",
+      "url": "http://codes.wmo.int/wmdr/FacilityType/landFixed"
     },
     "wmoRegion": {
-      "id": "https://codes.wmo.int/wmdr/WMORegion/africa"
+      "id": "africa",
+      "url": "http://codes.wmo.int/wmdr/WMORegion/africa"
     },
     "territories": [
       {
         "territory": {
-          "id": "http://codes.wmo.int/wmdr/TerritoryName/KEN"
+          "id": "KEN",
+          "url": "http://codes.wmo.int/wmdr/TerritoryName/KEN"
         },
         "dates": [
           "2008-12-05",
@@ -52,7 +55,8 @@
     "environment": [
       {
         "climateZone": {
-          "id": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer"
+          "id": "warmTemperateFullyHumidWarmSummer",
+          "url": "http://codes.wmo.int/wmdr/ClimateZone/warmTemperateFullyHumidWarmSummer"
         },
         "time": {
           "interval": [
@@ -62,82 +66,260 @@
         },
         "surfaceCover": {
           "value": {
-            "id": "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/urbanBuiltup"
+            "id": "urbanBuiltup",
+            "url": "http://codes.wmo.int/wmdr/SurfaceCoverIGBP/urbanBuiltup"
           },
           "scheme": {
-            "id": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
+            "id": "globCover2009",
+            "url": "http://codes.wmo.int/wmdr/SurfaceCoverClassification/globCover2009"
           }
         },
         "topographyBathymetry": {
           "relativeElevation": {
-            "id": "http://codes.wmo.int/wmdr/RelativeElevation/middle"
+            "id": "middle",
+            "url": "http://codes.wmo.int/wmdr/RelativeElevation/middle"
           },
           "topographicContext": {
-            "id": "http://codes.wmo.int/wmdr/TopographicContext/hills"
+            "id": "hills",
+            "url": "http://codes.wmo.int/wmdr/TopographicContext/hills"
           },
           "altitudeOrDepth": {
-            "id": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
+            "id": "highAltitude",
+            "url": "http://codes.wmo.int/wmdr/AltitudeOrDepth/highAltitude"
           }
         }
       }
     ],
-    "contactAssignments": [
+    "contacts": [
       {
-        "contact": "contact:kenyan-meteorological-department-ebd1dd83c0",
+        "organization": "Kenyan Meteorological Department",
+        "identifier": "contact:kenyan-meteorological-department-ebd1dd83c0",
         "roles": [
-          "owner"
+          "supervisor"
         ]
       },
       {
-        "contact": "contact:syprosenyadida1@gmail.com",
-        "roles": [
-          "pointOfContact"
-        ]
-      },
-      {
-        "contact": "contact:joerg.klausen@meteoswiss.ch",
-        "roles": [
-          "pointOfContact"
-        ]
-      },
-      {
-        "contact": "contact:nguyo2000@yahoo.com",
-        "roles": [
-          "principalInvestigator"
-        ]
-      },
-      {
-        "contact": "contact:gonzague.romanens@meteoswiss.ch",
-        "roles": [
-          "pointOfContact"
-        ]
-      },
-      {
-        "contact": "contact:jokimi@yahoo.com",
-        "roles": [
-          "pointOfContact"
-        ]
-      },
-      {
-        "contact": "contact:kmurageh@yahoo.co.uk",
+        "name": "Nyandida,Syprose,Mrs",
+        "organization": "Kenyan Meteorological Department",
+        "contactInstructions": "africa",
+        "emails": [
+          {
+            "value": "syprosenyadida1@gmail.com"
+          },
+          {
+            "value": "sawuor@meteo.go.ke"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+254722406492"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "P.O BOX 30259"
+            ],
+            "city": "Nairobi",
+            "postalCode": "00100",
+            "country": "KEN"
+          }
+        ],
+        "identifier": "contact:syprosenyadida1@gmail.com",
         "roles": [
           "pointOfContact"
         ]
       },
       {
-        "contact": "contact:ckennethkibaara@yahoo.com",
+        "name": "Klausen,Jörg,Dr.",
+        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "contactInstructions": "europe",
+        "emails": [
+          {
+            "value": "joerg.klausen@meteoswiss.ch"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+41584609223"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Federal Department of Home Affairs FDHA Federal Office of Meteorology and Climatology MeteoSwiss Measurements and Data Operation Center 1 (OPC 1) P.O. Box 257"
+            ],
+            "city": "Zürich-Flughafen",
+            "postalCode": "CH-8058",
+            "country": "CHE"
+          }
+        ],
+        "identifier": "contact:joerg.klausen@meteoswiss.ch",
         "roles": [
           "pointOfContact"
         ]
       },
       {
-        "contact": "contact:waweru_k@yahoo.com",
+        "name": "Nguyo,John Kaniaru,Mr.",
+        "organization": "Kenyan Meteorological Department",
+        "contactInstructions": "africa",
+        "emails": [
+          {
+            "value": "nguyo2000@yahoo.com"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Kenya Meteorological Department"
+            ],
+            "country": "KEN"
+          }
+        ],
+        "identifier": "contact:nguyo2000@yahoo.com",
         "roles": [
-          "principalInvestigator"
+          "custodian"
         ]
       },
       {
-        "contact": "contact:oscar@wmo.int",
+        "name": "Romanens,Gonzague,Mr",
+        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+        "contactInstructions": "europe",
+        "emails": [
+          {
+            "value": "gonzague.romanens@meteoswiss.ch"
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Payerne",
+            "country": "CHE"
+          }
+        ],
+        "identifier": "contact:gonzague.romanens@meteoswiss.ch",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "name": "Mitei,Johana",
+        "organization": "Kenyan Meteorological Department",
+        "contactInstructions": "africa",
+        "emails": [
+          {
+            "value": "jokimi@yahoo.com"
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Nairobi",
+            "country": "KEN"
+          }
+        ],
+        "identifier": "contact:jokimi@yahoo.com",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "name": "Murageh,Josiah Kariuki",
+        "organization": "Kenyan Meteorological Department",
+        "contactInstructions": "africa",
+        "emails": [
+          {
+            "value": "kmurageh@yahoo.co.uk"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+254734294782"
+          },
+          {
+            "value": "+254203867880"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Kenya Meteorological Department Dagoretti Corner P.O. Box 30259"
+            ],
+            "city": "Nairobi",
+            "postalCode": "00100",
+            "country": "KEN"
+          }
+        ],
+        "identifier": "contact:kmurageh@yahoo.co.uk",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "name": "chabari,Kenneth,Mr",
+        "organization": "Kenyan Meteorological Department",
+        "contactInstructions": "africa",
+        "emails": [
+          {
+            "value": "ckennethkibaara@yahoo.com"
+          }
+        ],
+        "addresses": [
+          {
+            "city": "nairobi",
+            "country": "KEN"
+          }
+        ],
+        "identifier": "contact:ckennethkibaara@yahoo.com",
+        "roles": [
+          "pointOfContact"
+        ]
+      },
+      {
+        "name": "Waweru,Amos,Mr",
+        "organization": "Kenyan Meteorological Department",
+        "contactInstructions": "africa; Source phone number(s), not safely normalized to E.164: 254723521586",
+        "emails": [
+          {
+            "value": "waweru_k@yahoo.com"
+          },
+          {
+            "value": "amoskamau1969@gmail.com"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "Kenya Meteorological Department 30259 Nairobi Kenya"
+            ],
+            "city": "Nairobi",
+            "postalCode": "00100",
+            "country": "KEN"
+          }
+        ],
+        "identifier": "contact:waweru_k@yahoo.com",
+        "roles": [
+          "custodian"
+        ]
+      },
+      {
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface/#/feedback",
+            "rel": "about",
+            "type": "text/html"
+          },
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ],
+        "identifier": "contact:oscar@wmo.int",
         "roles": [
           "owner"
         ]
@@ -148,23 +330,28 @@
         "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
+          "id": "263",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+          "id": "totalColumn",
+          "url": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -173,10 +360,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
+              "id": "SHADOZ",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -195,10 +384,12 @@
             },
             "observingMethod": null,
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "exposure": {
-              "id": "http://codes.wmo.int/wmdr/Exposure/class1"
+              "id": "class1",
+              "url": "http://codes.wmo.int/wmdr/Exposure/class1"
             },
             "instrumentSerialNumber": "71",
             "verticalDistance": {
@@ -206,10 +397,12 @@
                 4.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
+                "id": "localGround",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround"
               }
             },
             "instrument": "kipp-zonen-brewer-mkiii"
@@ -220,28 +413,34 @@
         "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
+          "id": "263",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+          "id": "totalColumn",
+          "url": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
+            "id": "atmosphericCompositionMonitoring",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -250,10 +449,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
+              "id": "SHADOZ",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -271,13 +472,16 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+              "id": "106",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
+              "id": "manualReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
             },
             "exposure": {
-              "id": "http://codes.wmo.int/wmdr/Exposure/class1"
+              "id": "class1",
+              "url": "http://codes.wmo.int/wmdr/Exposure/class1"
             },
             "instrumentSerialNumber": "18",
             "instrument": "r-j-beck-london-dobson"
@@ -300,10 +504,12 @@
           {
             "internationalExchange": true,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "levelOfData": {
-              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+              "id": "level1",
+              "url": "http://codes.wmo.int/wmdr/LevelOfData/level1"
             },
             "temporalReportingInterval": "P11M25DT10H",
             "reportingSchedules": [
@@ -311,9 +517,10 @@
             ]
           }
         ],
-        "contactAssignments": [
+        "contacts": [
           {
-            "contact": "contact:kenyan-meteorological-department-ebd1dd83c0",
+            "organization": "Kenyan Meteorological Department",
+            "identifier": "contact:kenyan-meteorological-department-ebd1dd83c0",
             "roles": [
               "owner"
             ]
@@ -324,23 +531,28 @@
         "id": "263-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 263",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
+          "id": "263",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/263"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+          "id": "totalColumn",
+          "url": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -349,10 +561,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
+              "id": "SHADOZ",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -370,7 +584,8 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+              "id": "106",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
             },
             "sourceOfObservation": null
           }
@@ -392,20 +607,25 @@
           {
             "internationalExchange": true,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential"
+              "id": "WMOEssential",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential"
             },
             "levelOfData": {
-              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+              "id": "level1",
+              "url": "http://codes.wmo.int/wmdr/LevelOfData/level1"
             },
             "timeStampMeaning": {
-              "id": "http://codes.wmo.int/wmdr/TimeStampMeaning/middle"
+              "id": "middle",
+              "url": "http://codes.wmo.int/wmdr/TimeStampMeaning/middle"
             },
             "uom": {
-              "id": "http://codes.wmo.int/wmdr/unit/DU"
+              "id": "DU",
+              "url": "http://codes.wmo.int/wmdr/unit/DU"
             },
             "dataFormat": [
               {
-                "id": "http://codes.wmo.int/wmdr/DataFormat/ascii"
+                "id": "ascii",
+                "url": "http://codes.wmo.int/wmdr/DataFormat/ascii"
               }
             ],
             "temporalReportingInterval": "PT1H",
@@ -419,23 +639,28 @@
         "id": "264-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
+          "id": "264",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+          "id": "verticalProfile",
+          "url": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -444,10 +669,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
+              "id": "SHADOZ",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -465,7 +692,8 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107"
+              "id": "107",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107"
             },
             "sourceOfObservation": null
           }
@@ -487,10 +715,12 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "levelOfData": {
-              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+              "id": "level1",
+              "url": "http://codes.wmo.int/wmdr/LevelOfData/level1"
             },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
@@ -503,23 +733,28 @@
         "id": "264-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
+          "id": "264",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+          "id": "verticalProfile",
+          "url": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -528,10 +763,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
+              "id": "SHADOZ",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -549,7 +786,8 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107"
+              "id": "107",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107"
             },
             "sourceOfObservation": null
           }
@@ -571,10 +809,12 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "levelOfData": {
-              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+              "id": "level1",
+              "url": "http://codes.wmo.int/wmdr/LevelOfData/level1"
             },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
@@ -587,23 +827,28 @@
         "id": "264-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
+          "id": "264",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+          "id": "verticalProfile",
+          "url": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -612,10 +857,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
+              "id": "SHADOZ",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -633,7 +880,8 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107"
+              "id": "107",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/107"
             },
             "sourceOfObservation": null
           }
@@ -655,10 +903,12 @@
           {
             "internationalExchange": true,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "levelOfData": {
-              "id": "http://codes.wmo.int/wmdr/LevelOfData/level1"
+              "id": "level1",
+              "url": "http://codes.wmo.int/wmdr/LevelOfData/level1"
             },
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
@@ -671,31 +921,38 @@
         "id": "264-verticalprofile",
         "title": "domain: atmosphere; geometry: verticalProfile; variable: 264",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
+          "id": "264",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/264"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
+          "id": "verticalProfile",
+          "url": "http://codes.wmo.int/wmdr/Geometry/verticalProfile"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "applicationAreas": [
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionForecasting"
+            "id": "atmosphericCompositionForecasting",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionForecasting"
           },
           {
-            "id": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
+            "id": "atmosphericCompositionMonitoring",
+            "url": "http://codes.wmo.int/wmdr/ApplicationArea/atmosphericCompositionMonitoring"
           }
         ],
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -704,10 +961,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
+              "id": "SHADOZ",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/SHADOZ"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -725,10 +984,12 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+              "id": "106",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
+              "id": "manualReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/manualReading"
             }
           }
         ],
@@ -749,16 +1010,20 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/WMOAdditional"
+              "id": "WMOAdditional",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/WMOAdditional"
             },
             "levelOfData": {
-              "id": "http://codes.wmo.int/wmdr/LevelOfData/level2"
+              "id": "level2",
+              "url": "http://codes.wmo.int/wmdr/LevelOfData/level2"
             },
             "timeStampMeaning": {
-              "id": "http://codes.wmo.int/wmdr/TimeStampMeaning/end"
+              "id": "end",
+              "url": "http://codes.wmo.int/wmdr/TimeStampMeaning/end"
             },
             "uom": {
-              "id": "http://codes.wmo.int/wmdr/unit/DU"
+              "id": "DU",
+              "url": "http://codes.wmo.int/wmdr/unit/DU"
             },
             "numberOfObservationsInReportingInterval": "1",
             "temporalReportingInterval": "P12D",
@@ -772,23 +1037,28 @@
         "id": "325-totalcolumn",
         "title": "domain: atmosphere; geometry: totalColumn; variable: 325",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/325"
+          "id": "325",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/325"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
+          "id": "totalColumn",
+          "url": "http://codes.wmo.int/wmdr/Geometry/totalColumn"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -797,7 +1067,8 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": null,
             "dates": [
@@ -807,10 +1078,12 @@
           },
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
+              "id": "AERONET",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/AERONET"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "2004-10-22",
@@ -828,23 +1101,28 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/244"
+              "id": "244",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/244"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "exposure": {
-              "id": "http://codes.wmo.int/wmdr/Exposure/class1"
+              "id": "class1",
+              "url": "http://codes.wmo.int/wmdr/Exposure/class1"
             },
             "verticalDistance": {
               "distances": [
                 2.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
+                "id": "naturalGround",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/naturalGround"
               }
             },
             "geometry": {
@@ -864,9 +1142,10 @@
             "dataPolicy": null
           }
         ],
-        "contactAssignments": [
+        "contacts": [
           {
-            "contact": "contact:nasa-goddard-space-flight-center-1a5ce78125",
+            "organization": "NASA Goddard Space Flight Center",
+            "identifier": "contact:nasa-goddard-space-flight-center-1a5ce78125",
             "roles": [
               "owner"
             ]
@@ -877,23 +1156,28 @@
         "id": "369-point",
         "title": "domain: atmosphere; geometry: point; variable: 369",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/369"
+          "id": "369",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/369"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -911,16 +1195,20 @@
               ]
             },
             "observingMethod": {
-              "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/240"
+              "id": "240",
+              "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/240"
             },
             "sourceOfObservation": {
-              "id": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
+              "id": "automaticReading",
+              "url": "http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading"
             },
             "operatingStatus": {
-              "id": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/InstrumentOperatingStatus/operational"
             },
             "exposure": {
-              "id": "http://codes.wmo.int/wmdr/Exposure/class3"
+              "id": "class3",
+              "url": "http://codes.wmo.int/wmdr/Exposure/class3"
             },
             "instrumentSerialNumber": "Fidas 6111",
             "verticalDistance": {
@@ -928,10 +1216,12 @@
                 2.0
               ],
               "unit": {
-                "id": "http://codes.wmo.int/wmdr/unit/m"
+                "id": "m",
+                "url": "http://codes.wmo.int/wmdr/unit/m"
               },
               "referenceSurface": {
-                "id": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/roofTerrace"
+                "id": "roofTerrace",
+                "url": "http://codes.wmo.int/wmdr/ReferenceSurfaceType/roofTerrace"
               }
             }
           }
@@ -948,7 +1238,8 @@
               ]
             },
             "strategy": {
-              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+              "id": "continuous",
+              "url": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
             }
           }
         ],
@@ -956,10 +1247,12 @@
           {
             "internationalExchange": true,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential"
+              "id": "WMOEssential",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/WMOEssential"
             },
             "uom": {
-              "id": "http://codes.wmo.int/wmdr/unit/cm-3"
+              "id": "cm-3",
+              "url": "http://codes.wmo.int/wmdr/unit/cm-3"
             },
             "temporalReportingInterval": "PT1H",
             "reportingSchedules": [
@@ -967,9 +1260,32 @@
             ]
           }
         ],
-        "contactAssignments": [
+        "contacts": [
           {
-            "contact": "contact:joerg.klausen@meteoswiss.ch",
+            "name": "Klausen,Jörg,Dr.",
+            "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
+            "contactInstructions": "europe",
+            "emails": [
+              {
+                "value": "joerg.klausen@meteoswiss.ch"
+              }
+            ],
+            "phones": [
+              {
+                "value": "+41584609223"
+              }
+            ],
+            "addresses": [
+              {
+                "deliveryPoint": [
+                  "Federal Department of Home Affairs FDHA Federal Office of Meteorology and Climatology MeteoSwiss Measurements and Data Operation Center 1 (OPC 1) P.O. Box 257"
+                ],
+                "city": "Zürich-Flughafen",
+                "postalCode": "CH-8058",
+                "country": "CHE"
+              }
+            ],
+            "identifier": "contact:joerg.klausen@meteoswiss.ch",
             "roles": [
               "principalInvestigator"
             ]
@@ -980,23 +1296,28 @@
         "id": "573-point",
         "title": "domain: atmosphere; geometry: point; variable: 573",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573"
+          "id": "573",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableAtmosphere/573"
         },
         "observedGeometry": {
-          "id": "http://codes.wmo.int/wmdr/Geometry/point"
+          "id": "point",
+          "url": "http://codes.wmo.int/wmdr/Geometry/point"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/atmosphere"
+            "id": "atmosphere",
+            "url": "http://codes.wmo.int/wmdr/Domain/atmosphere"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
+              "id": "GAWregional",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/GAWregional"
             },
             "reportingStatus": {
-              "id": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
+              "id": "operational",
+              "url": "http://codes.wmo.int/wmdr/ReportingStatus/operational"
             },
             "dates": [
               "1996-01-01",
@@ -1029,7 +1350,8 @@
               ]
             },
             "strategy": {
-              "id": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
+              "id": "continuous",
+              "url": "http://codes.wmo.int/wmdr/SamplingStrategy/continuous"
             }
           }
         ],
@@ -1037,7 +1359,8 @@
           {
             "internationalExchange": false,
             "dataPolicy": {
-              "id": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
+              "id": "noLimitation",
+              "url": "http://codes.wmo.int/wmdr/DataPolicy/noLimitation"
             },
             "temporalReportingInterval": "P1D",
             "reportingSchedules": [
@@ -1054,7 +1377,8 @@
         "model": "CE318TS9 (Sun Photometer)",
         "observingMethods": [
           {
-            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/244"
+            "id": "244",
+            "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/244"
           }
         ]
       },
@@ -1069,7 +1393,8 @@
         "model": "Dobson",
         "observingMethods": [
           {
-            "id": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
+            "id": "106",
+            "url": "http://codes.wmo.int/wmdr/ObservingMethodAtmosphere/106"
           }
         ]
       }
@@ -1103,220 +1428,6 @@
         "uid": "schedule_b4b3a322bb"
       }
     ],
-    "contacts": [
-      {
-        "name": "chabari,Kenneth,Mr",
-        "organization": "Kenyan Meteorological Department",
-        "contactInstructions": "africa",
-        "emails": [
-          {
-            "value": "ckennethkibaara@yahoo.com"
-          }
-        ],
-        "addresses": [
-          {
-            "city": "nairobi",
-            "country": "KEN"
-          }
-        ],
-        "identifier": "contact:ckennethkibaara@yahoo.com"
-      },
-      {
-        "name": "Romanens,Gonzague,Mr",
-        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
-        "contactInstructions": "europe",
-        "emails": [
-          {
-            "value": "gonzague.romanens@meteoswiss.ch"
-          }
-        ],
-        "addresses": [
-          {
-            "city": "Payerne",
-            "country": "CHE"
-          }
-        ],
-        "identifier": "contact:gonzague.romanens@meteoswiss.ch"
-      },
-      {
-        "name": "Klausen,Jörg,Dr.",
-        "organization": "Federal Office of Meteorology and Climatology MeteoSwiss",
-        "contactInstructions": "europe",
-        "emails": [
-          {
-            "value": "joerg.klausen@meteoswiss.ch"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+41584609223"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "Federal Department of Home Affairs FDHA Federal Office of Meteorology and Climatology MeteoSwiss Measurements and Data Operation Center 1 (OPC 1) P.O. Box 257"
-            ],
-            "city": "Zürich-Flughafen",
-            "postalCode": "CH-8058",
-            "country": "CHE"
-          }
-        ],
-        "identifier": "contact:joerg.klausen@meteoswiss.ch"
-      },
-      {
-        "name": "Mitei,Johana",
-        "organization": "Kenyan Meteorological Department",
-        "contactInstructions": "africa",
-        "emails": [
-          {
-            "value": "jokimi@yahoo.com"
-          }
-        ],
-        "addresses": [
-          {
-            "city": "Nairobi",
-            "country": "KEN"
-          }
-        ],
-        "identifier": "contact:jokimi@yahoo.com"
-      },
-      {
-        "organization": "Kenyan Meteorological Department",
-        "identifier": "contact:kenyan-meteorological-department-ebd1dd83c0"
-      },
-      {
-        "name": "Murageh,Josiah Kariuki",
-        "organization": "Kenyan Meteorological Department",
-        "contactInstructions": "africa",
-        "emails": [
-          {
-            "value": "kmurageh@yahoo.co.uk"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+254734294782"
-          },
-          {
-            "value": "+254203867880"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "Kenya Meteorological Department Dagoretti Corner P.O. Box 30259"
-            ],
-            "city": "Nairobi",
-            "postalCode": "00100",
-            "country": "KEN"
-          }
-        ],
-        "identifier": "contact:kmurageh@yahoo.co.uk"
-      },
-      {
-        "organization": "NASA Goddard Space Flight Center",
-        "identifier": "contact:nasa-goddard-space-flight-center-1a5ce78125"
-      },
-      {
-        "name": "Nguyo,John Kaniaru,Mr.",
-        "organization": "Kenyan Meteorological Department",
-        "contactInstructions": "africa",
-        "emails": [
-          {
-            "value": "nguyo2000@yahoo.com"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "Kenya Meteorological Department"
-            ],
-            "country": "KEN"
-          }
-        ],
-        "identifier": "contact:nguyo2000@yahoo.com"
-      },
-      {
-        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
-        "emails": [
-          {
-            "value": "oscar@wmo.int"
-          }
-        ],
-        "links": [
-          {
-            "href": "https://oscar.wmo.int/surface/#/feedback",
-            "rel": "about",
-            "type": "text/html"
-          },
-          {
-            "href": "https://oscar.wmo.int/surface",
-            "rel": "about",
-            "type": "text/html"
-          }
-        ],
-        "identifier": "contact:oscar@wmo.int"
-      },
-      {
-        "name": "Nyandida,Syprose,Mrs",
-        "organization": "Kenyan Meteorological Department",
-        "contactInstructions": "africa",
-        "emails": [
-          {
-            "value": "syprosenyadida1@gmail.com"
-          },
-          {
-            "value": "sawuor@meteo.go.ke"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+254722406492"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "P.O BOX 30259"
-            ],
-            "city": "Nairobi",
-            "postalCode": "00100",
-            "country": "KEN"
-          }
-        ],
-        "identifier": "contact:syprosenyadida1@gmail.com"
-      },
-      {
-        "name": "Waweru,Amos,Mr",
-        "organization": "Kenyan Meteorological Department",
-        "contactInstructions": "africa",
-        "emails": [
-          {
-            "value": "waweru_k@yahoo.com"
-          },
-          {
-            "value": "amoskamau1969@gmail.com"
-          }
-        ],
-        "phones": [
-          {
-            "value": "254723521586"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "Kenya Meteorological Department 30259 Nairobi Kenya"
-            ],
-            "city": "Nairobi",
-            "postalCode": "00100",
-            "country": "KEN"
-          }
-        ],
-        "identifier": "contact:waweru_k@yahoo.com"
-      }
-    ],
     "keywords": [
       "0-20008-0-NRB",
       "Nairobi"
@@ -1344,7 +1455,8 @@
     "methods": [
       [
         {
-          "id": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
+          "id": "gps",
+          "url": "http://codes.wmo.int/wmdr/GeopositioningMethod/gps"
         }
       ]
     ]

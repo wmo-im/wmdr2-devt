@@ -8,6 +8,13 @@ import convert_wmdr10_json_to_wmdr2_json as converter
 from schema_registry import validator_for_def
 
 
+def concept(uri: str) -> dict[str, str]:
+    """Return the v0.4.0 Concept representation expected for a URI."""
+    if "://codes.wmo.int/wmdr/" in uri:
+        return {"id": uri.rstrip("/").rsplit("/", 1)[-1], "url": uri}
+    return {"id": uri}
+
+
 def _validator():
     return validator_for_def("wmdr2-common.schema.json", "temporalGeometry")
 
@@ -32,7 +39,7 @@ def test_converter_emits_aligned_temporal_geometry_methods() -> None:
         "type": "MovingPoint",
         "coordinates": [[7.0, 46.0, 100], [7.1, 46.1, 101]],
         "dates": ["2020-01-01", "2021-01-01"],
-        "methods": [[{"id": method}], []],
+        "methods": [[concept(method)], []],
     }
     _validator().validate(temporal_geometry)
 
@@ -77,3 +84,5 @@ def test_temporal_geometry_uses_open_marker_for_missing_date() -> None:
     )
     assert temporal_geometry is not None
     assert temporal_geometry["dates"] == ["2020-01-01", ".."]
+
+

@@ -17,6 +17,9 @@ def load_converter():
 
 
 def concept(uri: str) -> dict[str, str]:
+    """Return the v0.4.0 Concept representation expected for a URI."""
+    if "://codes.wmo.int/wmdr/" in uri:
+        return {"id": uri.rstrip("/").rsplit("/", 1)[-1], "url": uri}
     return {"id": uri}
 
 

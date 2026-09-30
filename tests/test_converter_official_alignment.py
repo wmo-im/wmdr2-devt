@@ -12,6 +12,13 @@ SOURCE = 'http://codes.wmo.int/wmdr/SourceOfObservation/automaticReading'
 STATUS = 'http://codes.wmo.int/wmdr/ReportingStatus/operational'
 
 
+def concept(uri: str) -> dict[str, str]:
+    """Return the v0.4.0 Concept representation expected for a URI."""
+    if "://codes.wmo.int/wmdr/" in uri:
+        return {"id": uri.rstrip("/").rsplit("/", 1)[-1], "url": uri}
+    return {"id": uri}
+
+
 def base_payload():
     return {
         'header': {'dateStamp': '2020-01-02'},
@@ -60,29 +67,27 @@ def test_new_official_names_and_concepts():
     props = record['properties']
     assert 'observationSeries' not in props
     obs = props['observations'][0]
-    assert obs['observedProperty'] == {'id': OBS}
-    assert obs['observedGeometry'] == {'id': GEOM}
+    assert obs['observedProperty'] == concept(OBS)
+    assert obs['observedGeometry'] == concept(GEOM)
     assert 'observingConfigurations' not in obs
     cfg = obs['configurations'][0]
     assert cfg['id'] == 'dep-1'
-    assert cfg['observingMethod'] == {'id': METHOD}
-    assert cfg['sourceOfObservation'] == {'id': SOURCE}
+    assert cfg['observingMethod'] == concept(METHOD)
+    assert cfg["sourceOfObservation"] == concept(SOURCE)
     assert cfg['instrumentSerialNumber'] == 'SN1'
     assert 'serialNumber' not in cfg
-    assert props['wmoRegion'] == {
-        'id': 'https://codes.wmo.int/wmdr/WMORegion/europe'
-    }
+    assert props['wmoRegion'] == concept('http://codes.wmo.int/wmdr/WMORegion/europe')
 
 
 def test_programme_mapping_and_facility_identity():
     record = converter.convert_record(base_payload())
     props = record['properties']
-    assert props['externalIds'] == [{'scheme': 'GAW', 'value': 'JFJ'}]
+    assert props['externalIds'] == [{'scheme': PROGRAM, 'value': 'JFJ'}]
     assert props['additionalTitles'] == ['Alias', 'Jungfraujoch']
     assert 'programAffiliations' not in props
     aff = props['observations'][0]['programAffiliations'][0]
-    assert aff['programAffiliation'] == {'id': PROGRAM}
-    assert aff['reportingStatus'] == {'id': STATUS}
+    assert aff['programAffiliation'] == concept(PROGRAM)
+    assert aff['reportingStatus'] == concept(STATUS)
     assert aff['dates'] == ['2020-01-01', '..']
 
 
@@ -95,7 +100,7 @@ def test_reusable_instrument_registry_not_duplicated_in_configuration():
         'id': 'vaisala-hmp155',
         'manufacturer': 'Vaisala',
         'model': 'HMP155',
-        'observingMethods': [{'id': METHOD}],
+        'observingMethods': [concept(METHOD)],
     }]
     assert 'manufacturer' not in cfg
     assert 'model' not in cfg
@@ -106,8 +111,8 @@ def test_vertical_distance_uses_official_shape_and_full_unit_uri():
     vertical = record['properties']['observations'][0]['configurations'][0]['verticalDistance']
     assert vertical == {
         'distances': [2.0],
-        'unit': {'id': 'http://codes.wmo.int/wmdr/unit/m'},
-        'referenceSurface': {'id': 'http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround'},
+        'unit': concept('http://codes.wmo.int/wmdr/unit/m'),
+        'referenceSurface': concept('http://codes.wmo.int/wmdr/ReferenceSurfaceType/localGround'),
     }
 
 
@@ -125,7 +130,7 @@ def test_territory_uses_plural_and_dates():
     }
     record = converter.convert_record(payload)
     assert record['properties']['territories'] == [{
-        'territory': {'id': 'http://codes.wmo.int/wmdr/TerritoryName/CHE'},
+        'territory': concept('http://codes.wmo.int/wmdr/TerritoryName/CHE'),
         'dates': ['2020-01-01', '..'],
     }]
 
@@ -135,7 +140,7 @@ def test_programme_dates_not_invented_when_absent():
     payload['facility']['programAffiliation'][0].pop('reportingStatus')
     record = converter.convert_record(payload)
     affiliation = record['properties']['observations'][0]['programAffiliations'][0]
-    assert affiliation == {'programAffiliation': {'id': PROGRAM}}
+    assert affiliation == {'programAffiliation': concept(PROGRAM)}
 
 
 def test_status_history_splits_configuration_and_keeps_unique_ids():

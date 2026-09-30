@@ -18,15 +18,18 @@
     "created": "2023-03-31T00:00:00Z",
     "updated": "2023-03-31T00:00:00Z",
     "facilityType": {
-      "id": "http://codes.wmo.int/wmdr/FacilityType/landOnIce"
+      "id": "landOnIce",
+      "url": "http://codes.wmo.int/wmdr/FacilityType/landOnIce"
     },
     "wmoRegion": {
-      "id": "https://codes.wmo.int/wmdr/WMORegion/europe"
+      "id": "europe",
+      "url": "http://codes.wmo.int/wmdr/WMORegion/europe"
     },
     "territories": [
       {
         "territory": {
-          "id": "http://codes.wmo.int/wmdr/TerritoryName/FRA"
+          "id": "FRA",
+          "url": "http://codes.wmo.int/wmdr/TerritoryName/FRA"
         },
         "dates": [
           "1949-01-01",
@@ -34,21 +37,63 @@
         ]
       }
     ],
-    "contactAssignments": [
+    "contacts": [
       {
-        "contact": "contact:universit-grenoble-alpes-c157b9ef5d",
+        "organization": "Université Grenoble-Alpes",
+        "identifier": "contact:universit-grenoble-alpes-c157b9ef5d",
         "roles": [
-          "owner"
+          "supervisor"
         ]
       },
       {
-        "contact": "contact:delphine.six@univ-grenoble-alpes.fr",
+        "name": "SIX,Delphine,Mme",
+        "organization": "Université Grenoble-Alpes",
+        "contactInstructions": "europe",
+        "emails": [
+          {
+            "value": "delphine.six@univ-grenoble-alpes.fr"
+          }
+        ],
+        "phones": [
+          {
+            "value": "+33476824239"
+          }
+        ],
+        "addresses": [
+          {
+            "deliveryPoint": [
+              "UGA - IGE CS 40700"
+            ],
+            "city": "Grenoble",
+            "postalCode": "38058",
+            "country": "FRA"
+          }
+        ],
+        "identifier": "contact:delphine.six@univ-grenoble-alpes.fr",
         "roles": [
-          "principalInvestigator"
+          "custodian"
         ]
       },
       {
-        "contact": "contact:oscar@wmo.int",
+        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
+        "emails": [
+          {
+            "value": "oscar@wmo.int"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://oscar.wmo.int/surface/#/feedback",
+            "rel": "about",
+            "type": "text/html"
+          },
+          {
+            "href": "https://oscar.wmo.int/surface",
+            "rel": "about",
+            "type": "text/html"
+          }
+        ],
+        "identifier": "contact:oscar@wmo.int",
         "roles": [
           "owner"
         ]
@@ -59,17 +104,24 @@
         "id": "12010-unknown",
         "title": "domain: terrestrial; geometry: unknown; variable: 12010",
         "observedProperty": {
-          "id": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12010"
+          "id": "12010",
+          "url": "http://codes.wmo.int/wmdr/ObservedVariableTerrestrial/12010"
+        },
+        "observedGeometry": {
+          "id": "unknown",
+          "url": "http://codes.wmo.int/wmdr/Geometry/unknown"
         },
         "observedFeature": {
           "domain": {
-            "id": "http://codes.wmo.int/wmdr/Domain/terrestrial"
+            "id": "terrestrial",
+            "url": "http://codes.wmo.int/wmdr/Domain/terrestrial"
           }
         },
         "programAffiliations": [
           {
             "programAffiliation": {
-              "id": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
+              "id": "nonAffiliated",
+              "url": "http://codes.wmo.int/wmdr/ProgramAffiliation/nonAffiliated"
             }
           }
         ],
@@ -116,59 +168,6 @@
         "duration": "PT23H59M",
         "@type": "Event",
         "uid": "schedule_b38624328b"
-      }
-    ],
-    "contacts": [
-      {
-        "name": "SIX,Delphine,Mme",
-        "organization": "Université Grenoble-Alpes",
-        "contactInstructions": "europe",
-        "emails": [
-          {
-            "value": "delphine.six@univ-grenoble-alpes.fr"
-          }
-        ],
-        "phones": [
-          {
-            "value": "+33476824239"
-          }
-        ],
-        "addresses": [
-          {
-            "deliveryPoint": [
-              "UGA - IGE CS 40700"
-            ],
-            "city": "Grenoble",
-            "postalCode": "38058",
-            "country": "FRA"
-          }
-        ],
-        "identifier": "contact:delphine.six@univ-grenoble-alpes.fr"
-      },
-      {
-        "organization": "World Meteorological Organization WMO and Federal Office for Meteorology and Climatology MeteoSwiss",
-        "emails": [
-          {
-            "value": "oscar@wmo.int"
-          }
-        ],
-        "links": [
-          {
-            "href": "https://oscar.wmo.int/surface/#/feedback",
-            "rel": "about",
-            "type": "text/html"
-          },
-          {
-            "href": "https://oscar.wmo.int/surface",
-            "rel": "about",
-            "type": "text/html"
-          }
-        ],
-        "identifier": "contact:oscar@wmo.int"
-      },
-      {
-        "organization": "Université Grenoble-Alpes",
-        "identifier": "contact:universit-grenoble-alpes-c157b9ef5d"
       }
     ],
     "keywords": [
